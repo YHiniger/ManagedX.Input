@@ -98,7 +98,6 @@
     <None Include="README.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="XInput.NET.snk" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
