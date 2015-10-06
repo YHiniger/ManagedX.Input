@@ -80,7 +80,6 @@
     <Compile Include="code\structures\Keystroke.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="code\GameController.Manager.cs" />
     <None Include="LICENSE">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
