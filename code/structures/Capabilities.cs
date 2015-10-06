@@ -16,24 +16,18 @@ namespace ManagedX.Input.XInput
 	
 		private DeviceType type;
 		private DeviceSubType subType;
-		private Caps flags;				// capability flags
+		private Caps caps;				// capability flags
 		private GamePad gamePad;		// describes available controller features and control resolutions
 		private Vibration vibration;	// describes available vibration functionality and resolutions
 
 
 
 		/// <summary>Gets the <see cref="DeviceType">type</see> of the associated controller.</summary>
-		public DeviceType ControllerType
-		{
-			get { return type; }
-		}
+		public DeviceType ControllerType { get { return type; } }
 
 
 		/// <summary>Gets the <see cref="DeviceSubType">subtype</see> of the associated controller.</summary>
-		public DeviceSubType ControllerSubType
-		{
-			get { return subType; }
-		}
+		public DeviceSubType ControllerSubType { get { return subType; } }
 
 
 		/// <summary>Returns a value indicating whether a <see cref="Caps"/> is present.</summary>
@@ -41,14 +35,8 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified <paramref name="capability"/> is set, otherwise returns false.</returns>
 		public bool IsSet( Caps capability )
 		{
-			return this[ capability ];
+			return ( capability == Caps.None ) ? ( caps == Caps.None ) : caps.HasFlag( capability );
 		}
-
-
-		/// <summary>Gets a value indicating whether a <see cref="Caps"/> is present.</summary>
-		/// <param name="capability">A <see cref="Caps"/> value.</param>
-		/// <returns></returns>
-		public bool this[ Caps capability ] { get { return capability == Caps.None ? flags == Caps.None : flags.HasFlag( capability ); } }
 
 
 		/// <summary>Indicates whether the game controller has the specified button (or an equivalent).</summary>
@@ -116,7 +104,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a hash code for this <see cref="Capabilities"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return ( (int)type | ( (int)subType << 8 ) | ( (int)flags << 16 ) ) ^ gamePad.GetHashCode() ^ vibration.GetHashCode();
+			return ( (int)type | ( (int)subType << 8 ) | ( (int)caps << 16 ) ) ^ gamePad.GetHashCode() ^ vibration.GetHashCode();
 		}
 
 
@@ -125,7 +113,7 @@ namespace ManagedX.Input.XInput
 		/// <returns></returns>
 		public bool Equals( Capabilities other )
 		{
-			return ( type == other.type ) && ( subType == other.subType ) && ( flags == other.flags ) && gamePad.Equals( other.gamePad ) && vibration.Equals( other.vibration );
+			return ( type == other.type ) && ( subType == other.subType ) && ( caps == other.caps ) && gamePad.Equals( other.gamePad ) && vibration.Equals( other.vibration );
 		}
 
 

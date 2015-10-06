@@ -7,11 +7,17 @@ namespace ManagedX.Input.Design
 	using XInput;
 
 
-	/// <summary>Suggests properties and methods to implement managed XInput support.</summary>
+	/// <summary>Defines properties and methods to properly implement a managed XInput service.</summary>
 	public interface IXInput : IEnumerable<IXInputController>
 	{
 
-		/// <summary>Gets the version of the underlying XInput: 1.3, 1.4, etc.</summary>
+		/// <summary>Gets the version of the underlying XInput API:
+		/// <list type="bullet">
+		/// <item><description>1.3 (requires Windows Vista or newer)</description></item>
+		/// <item><description>1.4 (requires Windows 8 or newer)</description></item>
+		/// <item><description>1.5 (requires Windows 10)</description></item>
+		/// </list>
+		/// </summary>
 		Version Version { get; }
 
 
@@ -21,14 +27,16 @@ namespace ManagedX.Input.Design
 		string LibraryFileName { get; }
 
 
-		/// <summary>Gets or sets a value indicating whether XInput is disabled; defaults to false.</summary>
+		/// <summary>Gets or sets a value indicating whether XInput is disabled; defaults to false.
+		/// <para>This property is not supported by XInput 1.3 (Windows Vista and 7).</para>
+		/// </summary>
 		/// <remarks>Calls XInputEnable with the <code>enable</code> parameter set to the specified value.</remarks>
 		bool Suspended { get; set; }
 
 
 		/// <summary>Gets an XInput controller given its index.</summary>
-		/// <param name="index">The index of the desired XInput controller.</param>
-		/// <returns>Returns the XInput controller associated with the specified <see cref="GameControllerIndex">controller <paramref name="index"/></see>; can't be null.</returns>
+		/// <param name="index">The index of the desired XInput controller. On Windows Vista, 7, 8 and 8.1, the maximum controller index is <see cref="GameControllerIndex.Four"/>.</param>
+		/// <returns>Returns the XInput controller associated with the specified controller <paramref name="index"/>.</returns>
 		IXInputController this[ GameControllerIndex index ] { get; }
 
 

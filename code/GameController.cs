@@ -21,16 +21,21 @@ namespace ManagedX.Input.XInput
 	public sealed partial class GameController : InputDevice<GamePad, GamePadButtons>, IXInputController
 	{
 
-		/// <summary>Defines the maximum number of game controllers supported by XInput; this value is typically 4.</summary>
-		public const int MaxControllerCount = NativeMethods.MaxControllerCount;
+		/// <summary>Gets the maximum number of game controllers supported by XInput:
+		/// <list type="bullet">
+		/// <item><description>8 on Windows 10,</description></item>
+		/// <item><description>4 on Windows Vista/7/8/8.1</description></item>
+		/// </list>
+		/// </summary>
+		public static int MaxControllerCount { get { return NativeMethods.MaxControllerCount; } }
 
 
 		#region Static members
 
-		private static readonly IXInput ManagerInstance = new Manager();
+		private static readonly IXInput service = new XInputService();
 
 		/// <summary>Gets an interface providing access to all XInput controllers.</summary>
-		public static IXInput All { get { return ManagerInstance; } }
+		public static IXInput All { get { return service; } }
 
 
 		//private static bool IsWindows8OrGreater()
@@ -48,9 +53,6 @@ namespace ManagedX.Input.XInput
 		private Capabilities capabilities;
 		private BatteryInformation batteryInfo;
 		private DeadZoneMode deadZoneMode;
-#if XINPUT_1_4 || XBOX_360 || XBOX_ONE
-		private Keystroke keystroke;
-#endif
 #if XINPUT_1_4 || XINPUT_1_5
 		private string renderAudioDeviceId, captureAudioDeviceId;
 #elif XINPUT_1_3
@@ -58,9 +60,11 @@ namespace ManagedX.Input.XInput
 #endif
 
 
+		#region Constructor, destructor
+
 		/// <summary>Instantiates a new XInput <see cref="GameController"/>.</summary>
 		/// <param name="controllerIndex">The game controller index.</param>
-		private GameController( GameControllerIndex controllerIndex )
+		internal GameController( GameControllerIndex controllerIndex )
 			: base( (int)controllerIndex )
 		{
 			index = controllerIndex;
@@ -73,6 +77,8 @@ namespace ManagedX.Input.XInput
 		{
 			this.SetVibration( Vibration.Zero );
 		}
+
+		#endregion
 
 
 		/// <summary>Gets the <see cref="GameControllerIndex">index</see> of this <see cref="GameController">game controller</see>.</summary>
@@ -148,19 +154,29 @@ namespace ManagedX.Input.XInput
 		}
 
 
-#if XINPUT_1_4 || XBOX_360 || XBOX_ONE
-
 		/// <summary></summary>
-		public Keystroke Keystroke { get { return keystroke; } }
+		public Keystroke Keystroke
+		{
+			get
+			{
+				var output = Keystroke.Empty;
+				if( isConnected && capabilities.IsSet( Caps.PluginModuleDeviceSupported ) )
+				{
+					var errorCode = NativeMethods.XInputGetKeystroke( index, 0, out output );
+					if( errorCode != 0 )
+						output = Keystroke.Empty;
+				}
+				return output;
+			}
+		}
 
-#endif
 
 		/// <summary>Retrieves and returns the current state of the controller. This method is called by <see cref="Update"/>.</summary>
 		/// <returns>Returns the current state of the controller.</returns>
 		protected sealed override GamePad GetState()
 		{
 			State state;
-			int errorCode = NativeMethods.XInputGetState( index, out state );
+			var errorCode = NativeMethods.XInputGetState( index, out state );
 			bool success = ( errorCode == 0 );
 
 			if( errorCode == (int)ErrorCode.NotConnected )
@@ -195,9 +211,10 @@ namespace ManagedX.Input.XInput
 			if( isConnected = errorCode == 0 )
 			{
 #if XINPUT_1_4 || XINPUT_1_5
-				int inputLength, outputLength;
-				inputLength = outputLength = 0;
-				errorCode = NativeMethods.XInputGetAudioDeviceIds( index, out renderAudioDeviceId, ref outputLength, out captureAudioDeviceId, ref inputLength );
+				//int inputLength, outputLength;
+				//inputLength = outputLength = 0;
+				//errorCode = NativeMethods.XInputGetAudioDeviceIds( index, out renderAudioDeviceId, ref outputLength, out captureAudioDeviceId, ref inputLength );
+				errorCode = NativeMethods.XInputGetAudioDeviceIds( index, out renderAudioDeviceId, out captureAudioDeviceId );
 				if( errorCode != 0 )
 					renderAudioDeviceId = captureAudioDeviceId = null;
 #elif XINPUT_1_3
@@ -222,15 +239,6 @@ namespace ManagedX.Input.XInput
 				base.Update( time );
 
 				// THINKABOUTME - apply vibration based on a private VibrationSequence ?
-
-#if XINPUT_1_4 || XBOX_360 || XBOX_ONE
-				if( capabilities.IsSet( Caps.PluginModuleDeviceSupported ) )
-				{
-					int errorCode = NativeMethods.XInputGetKeystroke( (int)index, 0, out keystroke );
-					if( errorCode != 0 )
-						keystroke = Keystroke.Empty;
-				}
-#endif
 			}
 		}
 

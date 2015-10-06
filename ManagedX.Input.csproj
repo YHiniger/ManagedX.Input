@@ -7,7 +7,7 @@
     <ProjectGuid>{000F4F7F-7920-49FB-A270-A93C0A31B6D6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ManagedX.Input.XInput</RootNamespace>
+    <RootNamespace>ManagedX.Input</RootNamespace>
     <AssemblyName>ManagedX.Input</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -21,34 +21,23 @@
   <PropertyGroup>
     <ApplicationIcon>Game.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows 7, Vista|AnyCPU' ">
-    <OutputPath>..\..\..\Windows Vista, Windows 7\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <OutputPath>..\..\..\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>..\..\..\ManagedX.Input.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>..\..\..\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>..\..\..\Windows Vista, Windows 7\ManagedX.Input.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows 8.x|AnyCPU' ">
-    <OutputPath>..\..\..\Windows 8, Windows 8.1\</OutputPath>
-    <DefineConstants>TRACE;XINPUT_1_4</DefineConstants>
-    <DocumentationFile>..\..\..\Windows 8, Windows 8.1\ManagedX.Input.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows X|AnyCPU' ">
-    <OutputPath>..\..\..\Windows X\</OutputPath>
-    <DefineConstants>TRACE;XINPUT_1_5</DefineConstants>
-    <DocumentationFile>..\..\..\Windows X\ManagedX.Input.xml</DocumentationFile>
+    <DocumentationFile>..\..\..\ManagedX.Input.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
@@ -58,12 +47,13 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="code\InputDevice_T.cs" />
+    <None Include="code\VibrationSequence.cs" />
+    <Compile Include="code\XInputService.cs" />
+    <Compile Include="code\XInput.NativeMethods.cs" />
     <Compile Include="code\Design\IInputDevice_T.cs" />
-    <Compile Include="code\Design\InputDevice_T.cs" />
     <Compile Include="code\Design\IXInput.cs" />
-    <None Include="code\Design\VibrationSequence.cs" />
     <Compile Include="code\Design\IXInputController.cs" />
-    <Compile Include="code\GameController.NativeMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -90,7 +80,7 @@
     <Compile Include="code\structures\Keystroke.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="code\GameController.Manager.cs" />
+    <None Include="code\GameController.Manager.cs" />
     <None Include="LICENSE">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

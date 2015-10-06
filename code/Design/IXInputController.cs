@@ -19,12 +19,10 @@
 		BatteryInformation BatteryInfo { get; }
 
 
-#if XINPUT_1_4 || XBOX_360 || XBOX_ONE
-
-		/// <summary>Gets information about keystrokes.</summary>
+		/// <summary>Gets information about keystrokes.
+		/// <para>Only available on Windows 8 and newer (and Xbox 360/One).</para>
+		/// </summary>
 		Keystroke Keystroke { get; }
-
-#endif
 
 
 		/// <summary>Sends a vibration state to the controller.</summary>
@@ -32,17 +30,34 @@
 		/// <returns></returns>
 		bool SetVibration( Vibration vibration );
 
-//#if XINPUT_1_5
-
-//		/// <summary>Sends vibration states to the controller; requires XInput 1.5 (Windows X only ?).</summary>
-//		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-//		/// <param name="triggers">A <see cref="Vibration"/> structure for the triggers; requires an Xbox One controller.</param>
-//		/// <returns></returns>
-//		/// <remarks>Only supported in XInput 1.5?</remarks>
-//		bool SetVibration( Vibration vibration, Vibration triggers );
-
-//#endif
-
 	}
+
+
+	///// <summary>Defines properties and methods to properly implement an XInput 1.3 controller.</summary>
+	//public interface IXInputController13 : IXInputController
+	//{
+	// TODO - add the GetDSoundAudioDeviceGuids method
+	//}
+
+
+	///// <summary>Defines properties and methods to properly implement an XInput 1.4 controller.</summary>
+	//public interface IXInputController14 : IXInputController
+	//{
+	// TODO - add the GetAudioDeviceIds method
+	//}
+
+
+	///// <summary>Defines properties and methods to properly implement an XInput 1.5 controller.</summary>
+	//public interface IXInputController15 : IXInputController14
+	//{
+
+	//	/// <summary>Sends vibration states to the controller; requires XInput 1.5 (Windows 10 only ?).</summary>
+	//	/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+	//	/// <param name="triggers">A <see cref="Vibration"/> structure for the triggers; requires an Xbox One controller.</param>
+	//	/// <returns>Returns true on sucess, otherwise returns false (ie: disconnected controller, no vibration support, etc).</returns>
+	//	/// <remarks>Only supported in XInput 1.5 (to be confirmed, it might be exclusive to Xbox...)</remarks>
+	//	bool SetVibration( Vibration vibration, Vibration triggers );
+
+	//}
 
 }

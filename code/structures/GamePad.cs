@@ -103,14 +103,8 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified <paramref name="button"/> is pressed, otherwise returns false.</returns>
 		public bool IsPressed( GamePadButtons button )
 		{
-			return button == GamePadButtons.None ? buttons == GamePadButtons.None : buttons.HasFlag( button );
+			return ( button == GamePadButtons.None ) ? ( buttons == GamePadButtons.None ) : buttons.HasFlag( button );
 		}
-
-
-		/// <summary>Gets a value indicating whether a button is pressed. This property is identical to <see cref="IsPressed"/>.</summary>
-		/// <param name="button">A <see cref="GamePadButtons">button</see>.</param>
-		/// <returns>Returns true if the specified <paramref name="button"/> is pressed, otherwise returns false.</returns>
-		public bool this[ GamePadButtons button ] { get { return this.IsPressed( button ); } }
 
 
 		/// <summary>Gets a value in the range [0,1] representing the state of the left trigger.</summary>
@@ -202,13 +196,10 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Returns a value indicating whether this <see cref="GamePad"/> structure is equivalent to an object.</summary>
-		/// <param name="obj">An object; null is replaced with the <see cref="Empty"/> structure.</param>
+		/// <param name="obj">An object.</param>
 		/// <returns></returns>
 		public override bool Equals( object obj )
 		{
-			if( obj == null )
-				return this.Equals( Empty );
-			
 			return ( obj is GamePad ) && this.Equals( (GamePad)obj );
 		}
 
