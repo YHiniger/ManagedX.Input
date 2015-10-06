@@ -84,9 +84,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="ManagedX.snk" />
-    <None Include="README.md">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
