@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
 
@@ -11,7 +10,7 @@ namespace ManagedX.Input.XInput
 
 
 	/// <summary>Contains information on <see cref="BatteryType">battery type</see> and <see cref="BatteryLevel">charge state</see>.</summary>
-	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 2 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 2 )]
 	public struct BatteryInformation : IEquatable<BatteryInformation>
 	{
 
@@ -49,9 +48,6 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified object is a <see cref="BatteryInformation"/> structure which equals this structure.</returns>
 		public override bool Equals( object obj )
 		{
-			if( obj == null )
-				return this.Equals( Disconnected );
-			
 			return ( obj is BatteryInformation ) && this.Equals( (BatteryInformation)obj );
 		}
 
@@ -60,26 +56,32 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a string representing this <see cref="BatteryInformation"/> structure.</returns>
 		public override string ToString()
 		{
-			return string.Format( CultureInfo.InvariantCulture, "Type: {0}, Level: {1}", type, level );
+			return '{' + string.Format( CultureInfo.InvariantCulture, "Type: {0}, Level: {1}", type, level ) + '}';
 		}
 
 
 
-		/// <summary>The empty <see cref="BatteryInformation"/> structure.</summary>
+		/// <summary>The "disconnected" <see cref="BatteryInformation"/> structure.</summary>
 		public static readonly BatteryInformation Disconnected = new BatteryInformation();
 
 
 		#region Operators
 
 
-		/// <summary></summary>
+		/// <summary>Equality comparer.</summary>
+		/// <param name="batteryInfo">A <see cref="BatteryInformation"/> structure.</param>
+		/// <param name="other">A <see cref="BatteryInformation"/> structure.</param>
+		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
 		public static bool operator ==( BatteryInformation batteryInfo, BatteryInformation other )
 		{
 			return batteryInfo.Equals( other );
 		}
 
 
-		/// <summary></summary>
+		/// <summary>Inequality comparer.</summary>
+		/// <param name="batteryInfo">A <see cref="BatteryInformation"/> structure.</param>
+		/// <param name="other">A <see cref="BatteryInformation"/> structure.</param>
+		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
 		public static bool operator !=( BatteryInformation batteryInfo, BatteryInformation other )
 		{
 			return !batteryInfo.Equals( other );

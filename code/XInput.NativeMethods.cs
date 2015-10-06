@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -70,8 +71,10 @@ namespace ManagedX.Input.XInput
 		#endregion
 
 
+		[SuppressMessage( "Microsoft.Performance", "CA1802:UseLiteralsWhereAppropriate" )]
 		private static readonly string libraryName;
 		private static readonly Version version;
+		[SuppressMessage( "Microsoft.Performance", "CA1802:UseLiteralsWhereAppropriate" )]
 		private static readonly int maxControllerCount;
 		private static readonly EnableProc enableProc;
 		private static readonly GetCapabilitiesProc getCapsProc;
@@ -91,6 +94,8 @@ namespace ManagedX.Input.XInput
 		internal static int MaxControllerCount { get { return maxControllerCount; } }
 
 
+		/// <summary>Static constructor.</summary>
+		[SuppressMessage( "Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline" )]
 		static NativeMethods()
 		{
 			var windows8Version = new Version( 6, 2 );
@@ -254,7 +259,7 @@ namespace ManagedX.Input.XInput
 		/// If there is no headset connected to the controller, the function also retrieves <see cref="ErrorCode.None"/> with <see cref="Guid.Empty"/> as the values for <paramref name="dSoundRenderGuid"/> and <paramref name="dSoundCaptureGuid"/>.
 		/// If the controller port device is not physically connected, the function returns <see cref="ErrorCode.NotConnected"/>.
 		/// If the function fails, it returns a valid Win32 error code.</returns>
-		internal static int XInputGetDSoundAudioDeviceGuid( GameControllerIndex userIndex, out Guid dSoundRenderGuid, out Guid dSoundCaptureGuid )
+		internal static int XInputGetDSoundAudioDeviceGuids( GameControllerIndex userIndex, out Guid dSoundRenderGuid, out Guid dSoundCaptureGuid )
 		{
 			return getDSoundAudioDeviceGuidsProc( userIndex, out dSoundRenderGuid, out dSoundCaptureGuid );
 		}

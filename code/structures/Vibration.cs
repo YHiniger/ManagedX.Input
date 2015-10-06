@@ -6,15 +6,13 @@ namespace ManagedX.Input.XInput
 {
 
 	// http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_vibration%28v=vs.85%29.aspx
+	// XInput.h
 
 
 	/// <summary>An XInput VIBRATION structure.</summary>
 	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 4 )]
 	public struct Vibration : IEquatable<Vibration>
 	{
-
-		//public const float Precision = 1.0f / 65535.0f;
-
 
 		private ushort leftMotorSpeed;
 		private ushort rightMotorSpeed;
@@ -64,16 +62,16 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Returns a hash code for this <see cref="Vibration"/> structure.</summary>
-		/// <returns>Returns a hash code for this Vibration structure.</returns>
+		/// <returns>Returns a hash code for this <see cref="Vibration"/> structure.</returns>
 		public override int GetHashCode()
 		{
 			return ( ( (uint)leftMotorSpeed ) | ( ( (uint)rightMotorSpeed ) << 16 ) ).GetHashCode();
 		}
 
 
-		/// <summary>Returns a value indicating whether this <see cref="Vibration"/> structure is equivalent to another Vibration structure.</summary>
+		/// <summary>Returns a value indicating whether this <see cref="Vibration"/> structure is equivalent to another structure of the same type.</summary>
 		/// <param name="other">A vibration structure.</param>
-		/// <returns>Returns true if the <paramref name="other"/> Vibration structure has the same motor speeds as this structure.</returns>
+		/// <returns>Returns true if the <paramref name="other"/> Vibration structure has the same motor speeds as this structure, otherwise returns false.</returns>
 		public bool Equals( Vibration other )
 		{
 			return ( leftMotorSpeed == other.leftMotorSpeed ) && ( rightMotorSpeed == other.rightMotorSpeed );
@@ -82,18 +80,15 @@ namespace ManagedX.Input.XInput
 
 		/// <summary>Returns a value indicating whether this <see cref="Vibration"/> structure is equivalent to an object.</summary>
 		/// <param name="obj">An object.</param>
-		/// <returns>Returns true if the specified object is a Vibration structure with the same motor speeds, otherwise returns false.</returns>
+		/// <returns>Returns true if the specified object is a <see cref="Vibration"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			if( obj == null )
-				return this.Equals( Zero );
-
 			return ( obj is Vibration ) && this.Equals( (Vibration)obj );
 		}
 
 
 		/// <summary>Returns a string representing this <see cref="Vibration"/> structure.</summary>
-		/// <returns>Returns a string representing this Vibration structure.</returns>
+		/// <returns>Returns a string representing this <see cref="Vibration"/> structure.</returns>
 		public override string ToString()
 		{
 			return string.Format( System.Globalization.CultureInfo.InvariantCulture, "XInput.Vibration ({0:X4}/{1:X4})", this.leftMotorSpeed, this.rightMotorSpeed );
@@ -102,7 +97,7 @@ namespace ManagedX.Input.XInput
 
 
 
-		/// <summary>No vibration.</summary>
+		/// <summary>The zero <see cref="Vibration"/> structure.</summary>
 		public static readonly Vibration Zero = new Vibration();
 
 		/// <summary>Full throttle vibration.</summary>
@@ -189,14 +184,20 @@ namespace ManagedX.Input.XInput
 		#region Operators
 
 
-		/// <summary></summary>
+		/// <summary>Equality comparer.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
+		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
 		public static bool operator ==( Vibration vibration, Vibration other )
 		{
 			return vibration.Equals( other );
 		}
 
 
-		/// <summary></summary>
+		/// <summary>Inequality comparer.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
+		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
 		public static bool operator !=( Vibration vibration, Vibration other )
 		{
 			return !vibration.Equals( other );

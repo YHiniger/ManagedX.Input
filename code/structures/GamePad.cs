@@ -7,6 +7,7 @@ namespace ManagedX.Input.XInput
 {
 
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_gamepad%28v=vs.85%29.aspx
+	// XInput.h
 
 
 	/// <summary>Describes the state of an XInput controller.</summary>
@@ -131,8 +132,8 @@ namespace ManagedX.Input.XInput
 		#region Dead zone handling
 
 
-		/// <summary></summary>
-		/// <param name="threshold">[...]; must be lower than 255; defaults to <see cref="DefaultTriggerThreshold"/>.</param>
+		/// <summary>Applies a dead zone to the triggers.</summary>
+		/// <param name="threshold">The triggers threshold; must be lower than 255; defaults to <see cref="DefaultTriggerThreshold"/>.</param>
 		/// <exception cref="ArgumentOutOfRangeException"/>
 		public void ApplyTriggersDeadZone( byte threshold )
 		{
@@ -144,17 +145,17 @@ namespace ManagedX.Input.XInput
 			rightTrigger = (byte)( rightTrigger <= threshold ? 0.0f : (float)( rightTrigger - threshold ) * range );
 		}
 
-		/// <summary></summary>
+		/// <summary>Applies the default triggers dead zone.</summary>
 		public void ApplyTriggersDeadZone()
 		{
 			this.ApplyTriggersDeadZone( DefaultTriggerThreshold );
 		}
 
 
-		/// <summary></summary>
-		/// <param name="deadZoneMode"></param>
-		/// <param name="leftStickDeadZone"></param>
-		/// <param name="rightStickDeadZone"></param>
+		/// <summary>Applies a dead zone to the thumbsticks.</summary>
+		/// <param name="deadZoneMode">The kind of dead zone mode to apply.</param>
+		/// <param name="leftStickDeadZone">The dead zone for the left stick; defaults to <see cref="DefaultLeftThumbDeadZone"/>.</param>
+		/// <param name="rightStickDeadZone">The dead zone for the right stick; defaults to <see cref="DefaultRightThumbDeadZone"/>.</param>
 		public void ApplyThumbSticksDeadZone( DeadZoneMode deadZoneMode, short leftStickDeadZone, short rightStickDeadZone )
 		{
 			if( deadZoneMode != DeadZoneMode.None )
@@ -164,8 +165,8 @@ namespace ManagedX.Input.XInput
 			}
 		}
 
-		/// <summary></summary>
-		/// <param name="deadZoneMode"></param>
+		/// <summary>Applies the default thumbsticks dead zones.</summary>
+		/// <param name="deadZoneMode">The kind of dead zone mode to apply.</param>
 		public void ApplyThumbSticksDeadZone( DeadZoneMode deadZoneMode )
 		{
 			this.ApplyThumbSticksDeadZone( deadZoneMode, DefaultLeftThumbDeadZone, DefaultRightThumbDeadZone );
@@ -185,7 +186,7 @@ namespace ManagedX.Input.XInput
 
 		/// <summary>Returns a value indicating whether this <see cref="GamePad"/> structure equals another structure of the same type.</summary>
 		/// <param name="other">A <see cref="GamePad"/> structure.</param>
-		/// <returns></returns>
+		/// <returns>Returns true if this structure equals the <paramref name="other"/> structure, otherwise returns false.</returns>
 		public bool Equals( GamePad other )
 		{
 			return ( other.buttons == buttons ) &&
@@ -197,7 +198,7 @@ namespace ManagedX.Input.XInput
 
 		/// <summary>Returns a value indicating whether this <see cref="GamePad"/> structure is equivalent to an object.</summary>
 		/// <param name="obj">An object.</param>
-		/// <returns></returns>
+		/// <returns>Returns true if the specified object is a <see cref="GamePad"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
 			return ( obj is GamePad ) && this.Equals( (GamePad)obj );
@@ -211,14 +212,20 @@ namespace ManagedX.Input.XInput
 		#region Operators
 
 
-		/// <summary></summary>
+		/// <summary>Equality comparer.</summary>
+		/// <param name="gamePad">A <see cref="GamePad"/> structure.</param>
+		/// <param name="other">A <see cref="GamePad"/> structure.</param>
+		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
 		public static bool operator ==( GamePad gamePad, GamePad other )
 		{
 			return gamePad.Equals( other );
 		}
 
 
-		/// <summary></summary>
+		/// <summary>Inequality comparer.</summary>
+		/// <param name="gamePad">A <see cref="GamePad"/> structure.</param>
+		/// <param name="other">A <see cref="GamePad"/> structure.</param>
+		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
 		public static bool operator !=( GamePad gamePad, GamePad other )
 		{
 			return !gamePad.Equals( other );

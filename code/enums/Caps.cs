@@ -19,18 +19,20 @@ namespace ManagedX.Input.XInput
 		None = 0x0000,
 
 		/// <summary>The device supports force feedback functionality.
-		/// Note that these force-feedback features beyond rumble are not currently supported through XInput on Windows.
+		/// <para>Note that these force-feedback features beyond rumble are not currently supported through XInput on Windows.</para>
 		/// </summary>
 		ForceFeedbackSupported = 0x0001,
 
-		/// <summary>The device is wireless; only supported on Windows 8.</summary>
+		/// <summary>The device is wireless.
+		/// <para>Only supported on Windows 8.</para>
+		/// </summary>
 		Wireless = 0x0002,
 
 		/// <summary>The device has an integrated voice device.</summary>
 		VoiceSupported = 0x0004,
 
 		/// <summary>The device supports plug-in modules.
-		/// Note that plug-in modules like the text input device (TID) are not supported currently through XInput on Windows.
+		/// <para>Note that plug-in modules like the text input device (TID) are not supported currently through XInput on Windows.</para>
 		/// </summary>
 		PluginModuleDeviceSupported = 0x0008,
 

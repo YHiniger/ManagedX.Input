@@ -3,7 +3,7 @@
 	using XInput;
 
 
-	/// <summary>Defines properties and methods to implement an XInput controller; inherits from <see cref="IInputDevice&lt;TState,TButton&gt;"/>.</summary>
+	/// <summary>Defines properties and methods to properly implement an XInput controller; inherits from <see cref="IInputDevice&lt;TState,TButton&gt;"/>.</summary>
 	public interface IXInputController : IInputDevice<GamePad, GamePadButtons>
 	{
 
@@ -27,28 +27,32 @@
 
 		/// <summary>Sends a vibration state to the controller.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		/// <returns></returns>
+		/// <returns>Returns true on success, otherwise returns false (ie: not connected, no vibration support, etc).</returns>
 		bool SetVibration( Vibration vibration );
 
 	}
 
 
 	///// <summary>Defines properties and methods to properly implement an XInput 1.3 controller.</summary>
-	//public interface IXInputController13 : IXInputController
+	//internal interface IXInputController13 : IXInputController
 	//{
-	// TODO - add the GetDSoundAudioDeviceGuids method
+
+	//	bool GetDSoundAudioDeviceGuids( out System.Guid dSoundRenderGuid, out System.Guid dSoundCaptureGuid );
+
 	//}
 
 
 	///// <summary>Defines properties and methods to properly implement an XInput 1.4 controller.</summary>
-	//public interface IXInputController14 : IXInputController
+	//internal interface IXInputController14 : IXInputController
 	//{
-	// TODO - add the GetAudioDeviceIds method
+
+	//	bool GetAudioDeviceIds( out string renderDeviceId, out string captureDeviceId );
+
 	//}
 
 
 	///// <summary>Defines properties and methods to properly implement an XInput 1.5 controller.</summary>
-	//public interface IXInputController15 : IXInputController14
+	//internal interface IXInputController15 : IXInputController14
 	//{
 
 	//	/// <summary>Sends vibration states to the controller; requires XInput 1.5 (Windows 10 only ?).</summary>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 
@@ -41,7 +40,7 @@ namespace ManagedX.Input.XInput
 
 		/// <summary>Indicates whether the game controller has the specified button (or an equivalent).</summary>
 		/// <param name="button">A <see cref="GamePadButtons">gamepad button</see>.</param>
-		/// <returns></returns>
+		/// <returns>Returns true if the specified <paramref name="button"/> is present on the game controller, otherwise returns false.</returns>
 		public bool HasButton( GamePadButtons button )
 		{
 			return gamePad.IsPressed( button );
@@ -49,55 +48,31 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has support for the horizontal axis of the left stick.</summary>
-		public bool HasLeftThumbStickX
-		{
-			get { return gamePad.LeftThumbX != 0.0f; }
-		}
+		public bool HasLeftThumbStickX { get { return gamePad.LeftThumbX != 0.0f; } }
 
 		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has support for the vertical axis of the left stick.</summary>
-		public bool HasLeftThumbStickY
-		{
-			get { return gamePad.LeftThumbY != 0.0f; }
-		}
+		public bool HasLeftThumbStickY { get { return gamePad.LeftThumbY != 0.0f; } }
 
 
 		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has support for the horizontal axis of the right stick.</summary>
-		public bool HasRightThumbStickX
-		{
-			get { return gamePad.RightThumbX != 0.0f; }
-		}
+		public bool HasRightThumbStickX { get { return gamePad.RightThumbX != 0.0f; } }
 
 		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has support for the vertical axis of the right stick.</summary>
-		public bool HasRightThumbStickY
-		{
-			get { return gamePad.RightThumbY != 0.0f; }
-		}
+		public bool HasRightThumbStickY { get { return gamePad.RightThumbY != 0.0f; } }
 
 
 		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has a left-side (analogic) trigger.</summary>
-		public bool HasLeftTrigger
-		{
-			get { return gamePad.LeftTrigger != 0.0f; }
-		}
+		public bool HasLeftTrigger { get { return gamePad.LeftTrigger != 0.0f; } }
 
 		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has a right-side (analogic) trigger.</summary>
-		public bool HasRightTrigger
-		{
-			get { return gamePad.RightTrigger != 0.0f; }
-		}
+		public bool HasRightTrigger { get { return gamePad.RightTrigger != 0.0f; } }
 
 
 		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has a left motor (for vibration).</summary>
-		public bool HasLeftMotor
-		{
-			get { return vibration.LeftMotorSpeed != 0.0f; }
-		}
+		public bool HasLeftMotor { get { return vibration.LeftMotorSpeed != 0.0f; } }
 
 		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has a right motor (for vibration).</summary>
-		public bool HasRightMotor
-		{
-			get { return vibration.RightMotorSpeed != 0.0f; }
-		}
+		public bool HasRightMotor { get { return vibration.RightMotorSpeed != 0.0f; } }
 
 
 		/// <summary>Returns a hash code for this <see cref="Capabilities"/> structure.</summary>
@@ -110,7 +85,7 @@ namespace ManagedX.Input.XInput
 
 		/// <summary>Returns a value indicating whether this <see cref="Capabilities"/> structure equals another structure of the same type.</summary>
 		/// <param name="other">A <see cref="Capabilities"/> structure.</param>
-		/// <returns></returns>
+		/// <returns>Returns true if this <see cref="Capabilities"/> structure equals the <paramref name="other"/> structure, otherwise returns false.</returns>
 		public bool Equals( Capabilities other )
 		{
 			return ( type == other.type ) && ( subType == other.subType ) && ( caps == other.caps ) && gamePad.Equals( other.gamePad ) && vibration.Equals( other.vibration );
@@ -122,9 +97,6 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified object is a <see cref="Capabilities"/> structure equivalent to this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			if( obj == null )
-				return this.Equals( Empty );
-			
 			return ( obj is Capabilities ) && this.Equals( (Capabilities)obj );
 		}
 
@@ -137,13 +109,19 @@ namespace ManagedX.Input.XInput
 		#region Operators
 
 
-		/// <summary></summary>
+		/// <summary>Equality comparer.</summary>
+		/// <param name="caps">A <see cref="Capabilities"/> structure.</param>
+		/// <param name="other">A <see cref="Capabilities"/> structure.</param>
+		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
 		public static bool operator ==( Capabilities caps, Capabilities other )
 		{
 			return caps.Equals( other );
 		}
 
-		/// <summary></summary>
+		/// <summary>Inequality comparer.</summary>
+		/// <param name="caps">A <see cref="Capabilities"/> structure.</param>
+		/// <param name="other">A <see cref="Capabilities"/> structure.</param>
+		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
 		public static bool operator !=( Capabilities caps, Capabilities other )
 		{
 			return !caps.Equals( other );

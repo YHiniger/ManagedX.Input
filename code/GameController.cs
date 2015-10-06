@@ -35,7 +35,7 @@ namespace ManagedX.Input.XInput
 		private static readonly IXInput service = new XInputService();
 
 		/// <summary>Gets an interface providing access to all XInput controllers.</summary>
-		public static IXInput All { get { return service; } }
+		public static IXInput XInput { get { return service; } }
 
 
 		//private static bool IsWindows8OrGreater()
@@ -53,11 +53,6 @@ namespace ManagedX.Input.XInput
 		private Capabilities capabilities;
 		private BatteryInformation batteryInfo;
 		private DeadZoneMode deadZoneMode;
-#if XINPUT_1_4 || XINPUT_1_5
-		private string renderAudioDeviceId, captureAudioDeviceId;
-#elif XINPUT_1_3
-		private Guid renderAudioDeviceGuid, captureAudioDeviceGuid;
-#endif
 
 
 		#region Constructor, destructor
@@ -154,7 +149,9 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary></summary>
+		/// <summary>Gets information about keystrokes.
+		/// <para>Only available on Windows 8 and newer (and Xbox 360/One).</para>
+		/// </summary>
 		public Keystroke Keystroke
 		{
 			get
@@ -199,31 +196,14 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Initializes the game controller. This method is called by <see cref="Update"/> when required (ie: checking whether the controller is connected).
-		/// It relies on:
-		/// <para>XInputGetCapabilities,</para>
-		/// <para>XInputGetDSoundAudioDeviceGuids or XInputGetAudioDeviceIds (depending on XInput version),</para>
-		/// <para>XInputGetState (through <see cref="GetState"/>) to read the initial state.</para>
+		/// <summary>Initializes the game controller.
+		/// <para>This method is called by <see cref="Update"/> when required (ie: checking whether the controller is connected).</para>
 		/// </summary>
 		protected sealed override void Initialize()
 		{
 			int errorCode = NativeMethods.XInputGetCapabilities( index, 1, out capabilities );
-			if( isConnected = errorCode == 0 )
-			{
-#if XINPUT_1_4 || XINPUT_1_5
-				//int inputLength, outputLength;
-				//inputLength = outputLength = 0;
-				//errorCode = NativeMethods.XInputGetAudioDeviceIds( index, out renderAudioDeviceId, ref outputLength, out captureAudioDeviceId, ref inputLength );
-				errorCode = NativeMethods.XInputGetAudioDeviceIds( index, out renderAudioDeviceId, out captureAudioDeviceId );
-				if( errorCode != 0 )
-					renderAudioDeviceId = captureAudioDeviceId = null;
-#elif XINPUT_1_3
-				errorCode = NativeMethods.XInputGetDSoundAudioDeviceGuids( index, out renderAudioDeviceGuid, out captureAudioDeviceGuid );
-				if( errorCode != 0 )
-					renderAudioDeviceGuid = captureAudioDeviceGuid = Guid.Empty;
-#endif
+			if( isConnected = ( errorCode == 0 ) )
 				base.Initialize();
-			}
 		}
 
 
@@ -261,31 +241,46 @@ namespace ManagedX.Input.XInput
 		}
 
 
+		/// <summary>Retrieves the sound rendering and sound capture audio device IDs that are associated with the headset connected to the specified controller.
+		/// <para>Not supported by XInput 1.3.</para>
+		/// </summary>
+		/// <param name="renderDeviceId">Receives the Windows Core Audio device ID string for render (speakers); on Windows Vista and 7, this is always null.</param>
+		/// <param name="captureDeviceId">Receives the Windows Core Audio device ID string for capture (microphone); on Windows Vista and 7, this is always null.</param>
+		/// <returns>
+		/// If the function successfully retrieves the device IDs for render and capture, the return code is <see cref="ErrorCode.None"/>.
+		/// If there is no headset connected to the controller, the function will also return <see cref="ErrorCode.None"/> with null as the values for <paramref name="renderDeviceId"/> and <paramref name="captureDeviceId"/>.
+		/// If the controller port device is not physically connected, the function will return <see cref="ErrorCode.NotConnected"/>.
+		/// If the function fails, it will return a valid Win32 error code.
+		/// </returns>
+		public bool GetAudioDeviceIds( out string renderDeviceId, out string captureDeviceId )
+		{
+			return NativeMethods.XInputGetAudioDeviceIds( this.index, out renderDeviceId, out captureDeviceId ) == 0;
+		}
+
+
+		/// <summary>Gets the sound rendering and sound capture device GUIDs that are associated with the headset connected to the specified controller.
+		/// <para>Only supported by XInput 1.3.</para>
+		/// </summary>
+		/// <param name="dSoundRenderGuid">Receives the <see cref="Guid"/> of the headset sound rendering device; on Windows 8 and greater, this is always an empty GUID.</param>
+		/// <param name="dSoundCaptureGuid">Receives the <see cref="Guid"/> of the headset sound capture device; on Windows 8 and greater, this is always an empty GUID.</param>
+		/// <returns>
+		/// If the function successfully retrieves the device IDs for render and capture, the return code is <see cref="ErrorCode.None"/>.
+		/// If there is no headset connected to the controller, the function also retrieves <see cref="ErrorCode.None"/> with <see cref="Guid.Empty"/> as the values for <paramref name="dSoundRenderGuid"/> and <paramref name="dSoundCaptureGuid"/>.
+		/// If the controller port device is not physically connected, the function returns <see cref="ErrorCode.NotConnected"/>.
+		/// If the function fails, it returns a valid Win32 error code.
+		/// </returns>
+		public bool GetDSoundAudioDeviceGuids( out Guid dSoundRenderGuid, out Guid dSoundCaptureGuid )
+		{
+			return NativeMethods.XInputGetDSoundAudioDeviceGuids( this.index, out dSoundRenderGuid, out dSoundCaptureGuid ) == 0;
+		}
+
+
 		/// <summary>Returns "XInput controller".</summary>
 		/// <returns>Returns "XInput controller".</returns>
 		public sealed override string ToString()
 		{
 			return Properties.Resources.GameController;
 		}
-
-
-#if XINPUT_1_4 || XINPUT_1_5
-
-		/// <summary></summary>
-		public string CaptureAudioDeviceId { get { return string.Copy( captureAudioDeviceId ?? string.Empty ); } }
-
-		/// <summary></summary>
-		public string RenderAudioDeviceId { get { return string.Copy( renderAudioDeviceId ?? string.Empty ); } }
-
-#elif XINPUT_1_3
-
-		/// <summary></summary>
-		public Guid CaptureAudioDeviceGuid { get { return captureAudioDeviceGuid; } }
-		
-		/// <summary></summary>
-		public Guid RenderAudioDeviceGuid { get { return renderAudioDeviceGuid; } }
-
-#endif
 
 	}
 

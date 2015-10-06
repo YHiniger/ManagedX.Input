@@ -2,7 +2,7 @@
 {
 
 	/// <summary>Enumerates some of Windows error codes (defined in WinError.h) known to be returned by XInput functions.</summary>
-	public enum ErrorCode : int
+	internal enum ErrorCode : int
 	{
 		
 		/// <summary>The operation was successful.</summary>

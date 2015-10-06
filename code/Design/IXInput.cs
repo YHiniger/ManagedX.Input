@@ -27,15 +27,12 @@ namespace ManagedX.Input.Design
 		string LibraryFileName { get; }
 
 
-		/// <summary>Gets or sets a value indicating whether XInput is disabled; defaults to false.
-		/// <para>This property is not supported by XInput 1.3 (Windows Vista and 7).</para>
-		/// </summary>
-		/// <remarks>Calls XInputEnable with the <code>enable</code> parameter set to the specified value.</remarks>
+		/// <summary>Gets or sets a value indicating whether XInput is disabled; defaults to false.</summary>
 		bool Suspended { get; set; }
 
 
 		/// <summary>Gets an XInput controller given its index.</summary>
-		/// <param name="index">The index of the desired XInput controller. On Windows Vista, 7, 8 and 8.1, the maximum controller index is <see cref="GameControllerIndex.Four"/>.</param>
+		/// <param name="index">The index of the desired XInput controller. On Windows Vista/7/8/8.1, the maximum controller index is <see cref="GameControllerIndex.Four"/>.</param>
 		/// <returns>Returns the XInput controller associated with the specified controller <paramref name="index"/>.</returns>
 		IXInputController this[ GameControllerIndex index ] { get; }
 

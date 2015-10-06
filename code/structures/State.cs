@@ -16,17 +16,11 @@ namespace ManagedX.Input.XInput
 
 		/// <summary>Gets the state packet number. The packet number indicates whether there have been any changes in the state of the controller.
 		/// If the packet number [...] is the same in sequentially returned <see cref="State"/> structures, the controller state has not changed.</summary>
-		public int PacketNumber
-		{
-			get { return packetNumber; }
-		}
+		public int PacketNumber { get { return packetNumber; } }
 
 
 		/// <summary>Gets an <see cref="GamePad"/> structure containing the state of an XInput Controller.</summary>
-		public GamePad GamePadState
-		{
-			get { return state; }
-		}
+		public GamePad GamePadState { get { return state; } }
 
 
 		/// <summary>Returns the hash code of the <see cref="GamePadState"/>.</summary>
@@ -51,9 +45,6 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified object is a <see cref="State"/> structure equal to this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			if( obj == null )
-				return this.Equals( Empty );
-
 			return ( obj is State ) && this.Equals( (State)obj );
 		}
 
@@ -65,14 +56,20 @@ namespace ManagedX.Input.XInput
 		#region Operators
 
 
-		/// <summary></summary>
+		/// <summary>Equality comparer.</summary>
+		/// <param name="state">A <see cref="State"/> structure.</param>
+		/// <param name="other">A <see cref="State"/> structure.</param>
+		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
 		public static bool operator ==( State state, State other )
 		{
 			return state.Equals( other );
 		}
 
-		
-		/// <summary></summary>
+
+		/// <summary>Inequality comparer.</summary>
+		/// <param name="state">A <see cref="State"/> structure.</param>
+		/// <param name="other">A <see cref="State"/> structure.</param>
+		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
 		public static bool operator !=( State state, State other )
 		{
 			return !state.Equals( other );
