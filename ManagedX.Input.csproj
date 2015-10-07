@@ -50,6 +50,9 @@
     <Compile Include="code\enums\APIVersion.cs" />
     <Compile Include="code\InputDevice_T.cs" />
     <None Include="code\VibrationSequence.cs" />
+    <Compile Include="code\Keyboard\Key.cs" />
+    <Compile Include="code\Keyboard\KeyboardDevice.cs" />
+    <Compile Include="code\Keyboard\KeyboardState.cs" />
     <Compile Include="code\structures\AudioDeviceIds.cs" />
     <Compile Include="code\structures\DSoundAudioDeviceGuids.cs" />
     <Compile Include="code\XInputService.cs" />
