@@ -93,11 +93,11 @@ namespace ManagedX.Input.XInput
 			deadZoneMode = DeadZoneMode.Circular;
 
 			if( version == APIVersion.XInput15 )
-				this.Init15();
+				this.Setup15();
 			else if( version == APIVersion.XInput14 )
-				this.Init14();
+				this.Setup14();
 			else
-				this.Init13();
+				this.Setup13();
 		}
 
 
@@ -110,7 +110,7 @@ namespace ManagedX.Input.XInput
 		#endregion
 
 
-		private void Init15()
+		private void Setup15()
 		{
 			getCapsProc = NativeMethods.XInput15GetCapabilities;
 			getBatteryInfoProc = NativeMethods.XInput15GetBatteryInformation;
@@ -121,7 +121,7 @@ namespace ManagedX.Input.XInput
 			getDSoundAudioDeviceGuidsProc = NativeMethods.XInput15GetDSoundAudioDeviceGuids;
 		}
 
-		private void Init14()
+		private void Setup14()
 		{
 			getCapsProc = NativeMethods.XInput14GetCapabilities;
 			getBatteryInfoProc = NativeMethods.XInput14GetBatteryInformation;
@@ -132,7 +132,7 @@ namespace ManagedX.Input.XInput
 			getDSoundAudioDeviceGuidsProc = NativeMethods.XInput14GetDSoundAudioDeviceGuids;
 		}
 
-		private void Init13()
+		private void Setup13()
 		{
 			getCapsProc = NativeMethods.XInput13GetCapabilities;
 			getBatteryInfoProc = NativeMethods.XInput13GetBatteryInformation;
