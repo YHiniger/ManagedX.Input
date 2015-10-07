@@ -128,8 +128,8 @@ namespace ManagedX.Input.XInput
 
 		/// <summary>Returns the result of the addition of two <see cref="Vibration"/> structures.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		/// <param name="other">Another <see cref="Vibration"/> strcture.</param>
-		/// <returns>Returns the result of the addition of two <see cref="Vibration"/> structures.</returns>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
+		/// <returns>Returns the result of the addition of the two <see cref="Vibration"/> structures.</returns>
 		public static Vibration Add( Vibration vibration, Vibration other )
 		{
 			int left = (int)vibration.leftMotorSpeed + (int)other.leftMotorSpeed;
@@ -139,8 +139,8 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary></summary>
-		/// <param name="vibration"></param>
-		/// <param name="other"></param>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <returns></returns>
 		public static Vibration Multiply( Vibration vibration, Vibration other )
 		{
@@ -148,7 +148,7 @@ namespace ManagedX.Input.XInput
 		}
 
 		/// <summary></summary>
-		/// <param name="vibration"></param>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="factor"></param>
 		/// <returns></returns>
 		public static Vibration Multiply( Vibration vibration, float factor )
@@ -165,16 +165,17 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Performs a linear interpolation between two <see cref="Vibration"/>.</summary>
-		/// <param name="vibration"></param>
-		/// <param name="other"></param>
+		/// <summary>Performs a linear interpolation between two <see cref="Vibration"/> structures.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <param name="amount"></param>
 		/// <returns></returns>
 		public static Vibration Lerp( Vibration vibration, Vibration other, float amount )
 		{
 			return new Vibration( 
 				vibration.LeftMotorSpeed * ( 1.0f - amount ) + other.LeftMotorSpeed * amount, 
-				vibration.RightMotorSpeed * ( 1.0f - amount ) + other.RightMotorSpeed * amount );
+				vibration.RightMotorSpeed * ( 1.0f - amount ) + other.RightMotorSpeed * amount
+			);
 		}
 
 
@@ -205,6 +206,9 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary></summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
+		/// <returns></returns>
 		public static Vibration operator +( Vibration vibration, Vibration other )
 		{
 			return Add( vibration, other );
@@ -212,19 +216,27 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary></summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
+		/// <returns></returns>
 		public static Vibration operator *( Vibration vibration, Vibration other )
 		{
 			return Multiply( vibration, other );
 		}
 
-
 		/// <summary></summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		public static Vibration operator *( Vibration vibration, float value )
 		{
 			return Multiply( vibration, value );
 		}
 
 		/// <summary></summary>
+		/// <param name="value"></param>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <returns></returns>
 		public static Vibration operator *( float value, Vibration vibration )
 		{
 			return Multiply( vibration, value );

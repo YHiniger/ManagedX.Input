@@ -2,11 +2,6 @@
 
 
 /*
- * By default, this library uses XInput1_3.dll (available on Windows Vista and later versions).
- * To specify which version to use, define one of the following conditional compilation symbols in your project settings, depending on the target platform:
- *	XINPUT_1_5 : Windows X only; work in progress, not yet tested
- *	XINPUT_1_4 : Windows 8 and Windows 8.1
- *
  * IMPORTANT : legacy (XInput9_1_0) and older versions (1.2, 1.1 etc) aren't (and won't be) supported.
  * Xbox 360 and Xbox One are not supported.
  */
@@ -18,34 +13,58 @@ namespace ManagedX.Input.XInput
 
 
 	/// <summary>An XInput controller; inherits from <see cref="InputDevice&lt;TState, TButton&gt;"/> and implements <see cref="IXInputController"/>.</summary>
-	public sealed partial class GameController : InputDevice<GamePad, GamePadButtons>, IXInputController
+	public sealed class GameController : InputDevice<GamePad, GamePadButtons>, IXInputController
 	{
 
-		/// <summary>Gets the maximum number of game controllers supported by XInput:
-		/// <list type="bullet">
-		/// <item><description>8 on Windows 10,</description></item>
-		/// <item><description>4 on Windows Vista/7/8/8.1</description></item>
-		/// </list>
-		/// </summary>
-		public static int MaxControllerCount { get { return NativeMethods.MaxControllerCount; } }
+		/// <summary>Gets the XInput "service".</summary>
+		public static IXInput XInput { get { return XInputService.Instance; } }
 
 
-		#region Static members
+		#region Delegates
 
-		private static readonly IXInput service = new XInputService();
+		private delegate int GetCapabilitiesProc(
+			GameControllerIndex userIndex,
+			int flags,
+			out Capabilities capabilities
+		);
 
-		/// <summary>Gets an interface providing access to all XInput controllers.</summary>
-		public static IXInput XInput { get { return service; } }
+		private delegate int GetBatteryInformationProc(
+			GameControllerIndex userIndex,
+			BatteryDeviceType deviceType,
+			out BatteryInformation batteryInformation
+		);
 
+		private delegate int GetStateProc(
+			GameControllerIndex userIndex,
+			out State state
+		);
 
-		//private static bool IsWindows8OrGreater()
-		//{
-		//	OperatingSystem oS = Environment.OSVersion;
-		//	return ( oS.Platform == PlatformID.Win32NT ) && ( oS.Version.Major >= 6 ) && ( oS.Version.Minor >= 2 );
-		//}
+		private delegate int SetStateProc(
+			GameControllerIndex userIndex,
+			ref Vibration vibration
+		);
 
+		private delegate int GetKeystrokeProc(
+			GameControllerIndex userIndex,
+			int reserved,
+			out Keystroke keystroke
+		);
 
-		#endregion // Static members
+		private delegate int GetAudioDeviceIdsProc(
+			GameControllerIndex userIndex,
+			out string renderDeviceId,
+			ref int renderDeviceIdLength,
+			out string captureDeviceId,
+			ref int captureDeviceIdLength
+		);
+
+		private delegate int GetDSoundAudioDeviceGuidsProc(
+			GameControllerIndex userIndex,
+			out Guid dSoundRenderGuid,
+			out Guid dSoundCaptureGuid
+		);
+
+		#endregion
 
 
 		private GameControllerIndex index;
@@ -53,17 +72,32 @@ namespace ManagedX.Input.XInput
 		private Capabilities capabilities;
 		private BatteryInformation batteryInfo;
 		private DeadZoneMode deadZoneMode;
+		private GetCapabilitiesProc getCapsProc;
+		private GetBatteryInformationProc getBatteryInfoProc;
+		private GetStateProc getStateProc;
+		private SetStateProc setStateProc;
+		private GetKeystrokeProc getKeystrokeProc;
+		private GetAudioDeviceIdsProc getAudioDeviceIdsProc;
+		private GetDSoundAudioDeviceGuidsProc getDSoundAudioDeviceGuidsProc;
 
 
 		#region Constructor, destructor
 
 		/// <summary>Instantiates a new XInput <see cref="GameController"/>.</summary>
 		/// <param name="controllerIndex">The game controller index.</param>
-		internal GameController( GameControllerIndex controllerIndex )
+		/// <param name="version">Indicates which version of the XInput API to use.</param>
+		internal GameController( GameControllerIndex controllerIndex, APIVersion version )
 			: base( (int)controllerIndex )
 		{
 			index = controllerIndex;
 			deadZoneMode = DeadZoneMode.Circular;
+
+			if( version == APIVersion.XInput15 )
+				this.Init15();
+			else if( version == APIVersion.XInput14 )
+				this.Init14();
+			else
+				this.Init13();
 		}
 
 
@@ -74,6 +108,40 @@ namespace ManagedX.Input.XInput
 		}
 
 		#endregion
+
+
+		private void Init15()
+		{
+			getCapsProc = NativeMethods.XInput15GetCapabilities;
+			getBatteryInfoProc = NativeMethods.XInput15GetBatteryInformation;
+			getStateProc = NativeMethods.XInput15GetState;
+			setStateProc = NativeMethods.XInput15SetState;
+			getKeystrokeProc = NativeMethods.XInput15GetKeystroke;
+			getAudioDeviceIdsProc = NativeMethods.XInput15GetAudioDeviceIds;
+			getDSoundAudioDeviceGuidsProc = NativeMethods.XInput15GetDSoundAudioDeviceGuids;
+		}
+
+		private void Init14()
+		{
+			getCapsProc = NativeMethods.XInput14GetCapabilities;
+			getBatteryInfoProc = NativeMethods.XInput14GetBatteryInformation;
+			getStateProc = NativeMethods.XInput14GetState;
+			setStateProc = NativeMethods.XInput14SetState;
+			getKeystrokeProc = NativeMethods.XInput14GetKeystroke;
+			getAudioDeviceIdsProc = NativeMethods.XInput14GetAudioDeviceIds;
+			getDSoundAudioDeviceGuidsProc = NativeMethods.XInput14GetDSoundAudioDeviceGuids;
+		}
+
+		private void Init13()
+		{
+			getCapsProc = NativeMethods.XInput13GetCapabilities;
+			getBatteryInfoProc = NativeMethods.XInput13GetBatteryInformation;
+			getStateProc = NativeMethods.XInput13GetState;
+			setStateProc = NativeMethods.XInput13SetState;
+			getKeystrokeProc = NativeMethods.XInput13GetKeystroke;
+			getDSoundAudioDeviceGuidsProc = NativeMethods.XInput13GetDSoundAudioDeviceGuids;
+			getAudioDeviceIdsProc = NativeMethods.XInput13GetAudioDeviceIds;
+		}
 
 
 		/// <summary>Gets the <see cref="GameControllerIndex">index</see> of this <see cref="GameController">game controller</see>.</summary>
@@ -89,7 +157,7 @@ namespace ManagedX.Input.XInput
 		{
 			get
 			{
-				var errorCode = NativeMethods.XInputGetCapabilities( index, 1, out capabilities );
+				var errorCode = getCapsProc( index, 1, out capabilities );
 				if( errorCode == (int)ErrorCode.NotConnected )
 					isConnected = false;
 				else if( errorCode == 0 )
@@ -106,8 +174,7 @@ namespace ManagedX.Input.XInput
 		{
 			get
 			{
-				var errorCode = NativeMethods.XInputGetBatteryInformation( index, BatteryDeviceType.Gamepad, out batteryInfo );
-
+				var errorCode = getBatteryInfoProc( index, BatteryDeviceType.Gamepad, out batteryInfo );
 				if( errorCode == (int)ErrorCode.NotConnected )
 					isConnected = false;
 				else if( errorCode == 0 )
@@ -126,8 +193,8 @@ namespace ManagedX.Input.XInput
 			if( !( capabilities.HasLeftMotor || capabilities.HasRightMotor ) )
 				return false;
 
-			var errorCode = NativeMethods.XInputSetState( index, ref vibration );
-			return isConnected = errorCode == 0;
+			var errorCode = setStateProc( index, ref vibration );
+			return isConnected = ( errorCode == 0 );
 		}
 		
 
@@ -159,7 +226,7 @@ namespace ManagedX.Input.XInput
 				var output = Keystroke.Empty;
 				if( isConnected && capabilities.IsSet( Caps.PluginModuleDeviceSupported ) )
 				{
-					var errorCode = NativeMethods.XInputGetKeystroke( index, 0, out output );
+					var errorCode = getKeystrokeProc( index, 0, out output );
 					if( errorCode != 0 )
 						output = Keystroke.Empty;
 				}
@@ -173,12 +240,11 @@ namespace ManagedX.Input.XInput
 		protected sealed override GamePad GetState()
 		{
 			State state;
-			var errorCode = NativeMethods.XInputGetState( index, out state );
-			bool success = ( errorCode == 0 );
+			var errorCode = getStateProc( index, out state );
 
 			if( errorCode == (int)ErrorCode.NotConnected )
 				isConnected = false;
-			else if( success )
+			else if( errorCode == 0 )
 			{
 				isConnected = true;
 				//previousStatePacketNumber = currentStatePacketNumber;
@@ -201,7 +267,7 @@ namespace ManagedX.Input.XInput
 		/// </summary>
 		protected sealed override void Initialize()
 		{
-			int errorCode = NativeMethods.XInputGetCapabilities( index, 1, out capabilities );
+			var errorCode = getCapsProc( index, 1, out capabilities );
 			if( isConnected = ( errorCode == 0 ) )
 				base.Initialize();
 		}
@@ -241,37 +307,35 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Retrieves the sound rendering and sound capture audio device IDs that are associated with the headset connected to the specified controller.
-		/// <para>Not supported by XInput 1.3.</para>
+		/// <summary>Gets the sound rendering and sound capture audio device IDs associated with the headset connected to this controller.
+		/// <para>Not supported through XInput 1.3 (Windows Vista/7).</para>
 		/// </summary>
-		/// <param name="renderDeviceId">Receives the Windows Core Audio device ID string for render (speakers); on Windows Vista and 7, this is always null.</param>
-		/// <param name="captureDeviceId">Receives the Windows Core Audio device ID string for capture (microphone); on Windows Vista and 7, this is always null.</param>
-		/// <returns>
-		/// If the function successfully retrieves the device IDs for render and capture, the return code is <see cref="ErrorCode.None"/>.
-		/// If there is no headset connected to the controller, the function will also return <see cref="ErrorCode.None"/> with null as the values for <paramref name="renderDeviceId"/> and <paramref name="captureDeviceId"/>.
-		/// If the controller port device is not physically connected, the function will return <see cref="ErrorCode.NotConnected"/>.
-		/// If the function fails, it will return a valid Win32 error code.
-		/// </returns>
-		public bool GetAudioDeviceIds( out string renderDeviceId, out string captureDeviceId )
+		public AudioDeviceIds AudioDeviceIds
 		{
-			return NativeMethods.XInputGetAudioDeviceIds( this.index, out renderDeviceId, out captureDeviceId ) == 0;
+			get
+			{
+				int renderDeviceIdLength = 0;
+				int captureDeviceIdLength = 0;
+				AudioDeviceIds deviceIds;
+				if( getAudioDeviceIdsProc( index, out deviceIds.RenderDeviceId, ref renderDeviceIdLength, out deviceIds.CaptureDeviceId, ref captureDeviceIdLength ) != 0 )
+					deviceIds = AudioDeviceIds.Empty;
+				return deviceIds;
+			}
 		}
 
 
-		/// <summary>Gets the sound rendering and sound capture device GUIDs that are associated with the headset connected to the specified controller.
-		/// <para>Only supported by XInput 1.3.</para>
+		/// <summary>Gets the sound rendering and sound capture device GUIDs associated with the headset connected to this controller.
+		/// <para>Only supported through XInput 1.3, deprecated.</para>
 		/// </summary>
-		/// <param name="dSoundRenderGuid">Receives the <see cref="Guid"/> of the headset sound rendering device; on Windows 8 and greater, this is always an empty GUID.</param>
-		/// <param name="dSoundCaptureGuid">Receives the <see cref="Guid"/> of the headset sound capture device; on Windows 8 and greater, this is always an empty GUID.</param>
-		/// <returns>
-		/// If the function successfully retrieves the device IDs for render and capture, the return code is <see cref="ErrorCode.None"/>.
-		/// If there is no headset connected to the controller, the function also retrieves <see cref="ErrorCode.None"/> with <see cref="Guid.Empty"/> as the values for <paramref name="dSoundRenderGuid"/> and <paramref name="dSoundCaptureGuid"/>.
-		/// If the controller port device is not physically connected, the function returns <see cref="ErrorCode.NotConnected"/>.
-		/// If the function fails, it returns a valid Win32 error code.
-		/// </returns>
-		public bool GetDSoundAudioDeviceGuids( out Guid dSoundRenderGuid, out Guid dSoundCaptureGuid )
+		public DSoundAudioDeviceGuids DSoundAudioDeviceGuids
 		{
-			return NativeMethods.XInputGetDSoundAudioDeviceGuids( this.index, out dSoundRenderGuid, out dSoundCaptureGuid ) == 0;
+			get
+			{
+				DSoundAudioDeviceGuids deviceGuids;
+				if( getDSoundAudioDeviceGuidsProc( index, out deviceGuids.RenderDeviceGuid, out deviceGuids.CaptureDeviceGuid ) != 0 )
+					deviceGuids = DSoundAudioDeviceGuids.Empty;
+				return deviceGuids;
+			}
 		}
 
 
@@ -281,6 +345,23 @@ namespace ManagedX.Input.XInput
 		{
 			return Properties.Resources.GameController;
 		}
+
+
+
+		//private int GetDSoundAudioDeviceGuidsCompat( GameControllerIndex userIndex, out Guid dSoundRenderGuid, out Guid dSoundCaptureGuid )
+		//{
+		//	dSoundCaptureGuid = dSoundRenderGuid = Guid.Empty;
+		//	Capabilities caps;
+		//	return getCapsProc( userIndex, 1, out caps );
+		//}
+
+		//private int GetAudioDeviceIdsCompat( GameControllerIndex userIndex, out string renderDeviceId, ref int renderDeviceIdLength, out string captureDeviceId, ref int captureDeviceIdLength )
+		//{
+		//	renderDeviceId = captureDeviceId = null;
+		//	renderDeviceIdLength = captureDeviceIdLength = 0;
+		//	Capabilities caps;
+		//	return getCapsProc( userIndex, 1, out caps );
+		//}
 
 	}
 

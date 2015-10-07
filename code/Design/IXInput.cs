@@ -30,9 +30,13 @@ namespace ManagedX.Input.Design
 		/// <summary>Gets or sets a value indicating whether XInput is disabled; defaults to false.</summary>
 		bool Suspended { get; set; }
 
+		
+		/// <summary>Gets the maximum number of game controllers supported by XInput.</summary>
+		int SupportedControllerCount { get; }
+
 
 		/// <summary>Gets an XInput controller given its index.</summary>
-		/// <param name="index">The index of the desired XInput controller. On Windows Vista/7/8/8.1, the maximum controller index is <see cref="GameControllerIndex.Four"/>.</param>
+		/// <param name="index">The index of the desired XInput controller. On Windows 10, the maximum controller index is <see cref="GameControllerIndex.Eight"/>, otherwise, it's <see cref="GameControllerIndex.Four"/>.</param>
 		/// <returns>Returns the XInput controller associated with the specified controller <paramref name="index"/>.</returns>
 		IXInputController this[ GameControllerIndex index ] { get; }
 
