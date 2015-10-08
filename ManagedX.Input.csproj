@@ -53,6 +53,10 @@
     <Compile Include="code\Keyboard\Key.cs" />
     <Compile Include="code\Keyboard\KeyboardDevice.cs" />
     <Compile Include="code\Keyboard\KeyboardState.cs" />
+    <Compile Include="code\Mouse\CursorInfo.cs" />
+    <Compile Include="code\Mouse\MouseButton.cs" />
+    <Compile Include="code\Mouse\MouseDevice.cs" />
+    <Compile Include="code\Mouse\MouseState.cs" />
     <Compile Include="code\structures\AudioDeviceIds.cs" />
     <Compile Include="code\structures\DSoundAudioDeviceGuids.cs" />
     <Compile Include="code\XInputService.cs" />
@@ -103,6 +107,13 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ManagedX\trunk\ManagedX.csproj">
+      <Project>{d69df2e9-a523-4b18-9dc2-2473033f9739}</Project>
+      <Name>ManagedX</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
