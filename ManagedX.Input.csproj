@@ -82,7 +82,6 @@
     <Compile Include="code\structures\Capabilities.cs" />
     <Compile Include="code\enums\DeviceSubType.cs" />
     <Compile Include="code\enums\DeviceType.cs" />
-    <Compile Include="code\enums\ErrorCode.cs" />
     <Compile Include="code\structures\GamePad.cs" />
     <Compile Include="code\enums\GamePadButtons.cs" />
     <Compile Include="code\structures\State.cs" />

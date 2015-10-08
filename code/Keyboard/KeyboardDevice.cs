@@ -87,14 +87,14 @@ namespace ManagedX.Input
 			{
 				var errorCode = Marshal.GetLastWin32Error();
 				isConnected = false;
-				if( errorCode == (int)XInput.ErrorCode.NotConnected )
+				if( errorCode == (int)ErrorCode.NotConnected )
 					return KeyboardState.Empty;
 
 				var exception = Marshal.GetExceptionForHR( errorCode );
-				if( exception == null )
-					return KeyboardState.Empty;
-
-				throw exception;
+				if( exception != null )
+					throw exception;
+				
+				return KeyboardState.Empty;
 			}
 
 			isConnected = true;
