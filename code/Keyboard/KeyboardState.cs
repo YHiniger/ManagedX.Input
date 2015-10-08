@@ -77,7 +77,7 @@ namespace ManagedX.Input
 		/// <summary>Returns a value indicating whether this <see cref="KeyboardState"/> structure equals another structure of the same type.</summary>
 		/// <param name="other">A <see cref="KeyboardState"/> structure.</param>
 		/// <returns>Returns true if this <see cref="KeyboardState"/> structure and the <paramref name="other"/> structure are equal, otherwise returns false.</returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062", MessageId = "0" )]
 		public bool Equals( KeyboardState other )
 		{
 			if( other.data == null )
@@ -101,7 +101,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>The empty <see cref="KeyboardState"/> structure.</summary>
-		public static readonly KeyboardState Default = new KeyboardState( new byte[ 256 ] );
+		public static readonly KeyboardState Empty = new KeyboardState( new byte[ 256 ] );
 
 
 		#region Operators

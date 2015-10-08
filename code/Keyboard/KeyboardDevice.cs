@@ -88,11 +88,11 @@ namespace ManagedX.Input
 				var errorCode = Marshal.GetLastWin32Error();
 				isConnected = false;
 				if( errorCode == (int)XInput.ErrorCode.NotConnected )
-					return KeyboardState.Default;
+					return KeyboardState.Empty;
 
 				var exception = Marshal.GetExceptionForHR( errorCode );
 				if( exception == null )
-					return KeyboardState.Default;
+					return KeyboardState.Empty;
 
 				throw exception;
 			}
