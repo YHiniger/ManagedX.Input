@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 
@@ -100,7 +101,7 @@ namespace ManagedX.Input.XInput
 		/// <summary>The zero <see cref="Vibration"/> structure.</summary>
 		public static readonly Vibration Zero = new Vibration();
 
-		/// <summary>Full throttle vibration.</summary>
+		/// <summary>Full throttle <see cref="Vibration"/>.</summary>
 		public static readonly Vibration FullThrottle = new Vibration( ushort.MaxValue, ushort.MaxValue );
 
 
@@ -125,56 +126,112 @@ namespace ManagedX.Input.XInput
 		}
 
 
-
-		/// <summary>Returns the result of the addition of two <see cref="Vibration"/> structures.</summary>
+		/// <summary>Calculates the sum of two <see cref="Vibration"/> values.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
-		/// <returns>Returns the result of the addition of the two <see cref="Vibration"/> structures.</returns>
+		/// <param name="result">Receives a <see cref="Vibration"/> structure initialized with the sum (clamped to the valid range) of the two specified values.</param>
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		public static void Add( ref Vibration vibration, ref Vibration other, out Vibration result )
+		{
+			result = new Vibration(
+				(ushort)Math.Min( (int)vibration.leftMotorSpeed + (int)other.leftMotorSpeed, ushort.MaxValue ),
+				(ushort)Math.Min( (int)vibration.rightMotorSpeed + (int)other.rightMotorSpeed, ushort.MaxValue )
+			);
+		}
+
+		/// <summary>Returns the sum of two <see cref="Vibration"/> structures.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
+		/// <returns>Returns a <see cref="Vibration"/> initialized with the sum of the two specified <see cref="Vibration"/> values.</returns>
 		public static Vibration Add( Vibration vibration, Vibration other )
 		{
-			int left = (int)vibration.leftMotorSpeed + (int)other.leftMotorSpeed;
-			int right = (int)vibration.rightMotorSpeed + (int)other.rightMotorSpeed;
-			return new Vibration( (ushort)Math.Min( left, 65535 ), (ushort)Math.Min( right, 65535 ) );
+			return new Vibration(
+				(ushort)Math.Min( (int)vibration.leftMotorSpeed + (int)other.leftMotorSpeed, ushort.MaxValue ),
+				(ushort)Math.Min( (int)vibration.rightMotorSpeed + (int)other.rightMotorSpeed, ushort.MaxValue )
+			);
 		}
 
 
-		/// <summary></summary>
+		/// <summary>Calculates the product of two <see cref="Vibration"/> values.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
-		/// <returns></returns>
+		/// <param name="result">Receives a <see cref="Vibration"/> initialized with the product of the two specified values.</param>
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		public static void Multiply( ref Vibration vibration, ref Vibration other, out Vibration result )
+		{
+			result = new Vibration(
+				(ushort)( vibration.LeftMotorSpeed * (float)other.leftMotorSpeed ),
+				(ushort)( vibration.RightMotorSpeed * (float)other.rightMotorSpeed )
+			);
+		}
+
+		/// <summary>Multiplies two <see cref="Vibration"/> values.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
+		/// <returns>Returns the scaled <see cref="Vibration"/>.</returns>
 		public static Vibration Multiply( Vibration vibration, Vibration other )
 		{
-			return new Vibration( (ushort)( vibration.LeftMotorSpeed * (float)other.leftMotorSpeed ), (ushort)( vibration.RightMotorSpeed * (float)other.rightMotorSpeed ) );
+			return new Vibration(
+				(ushort)( vibration.LeftMotorSpeed * (float)other.leftMotorSpeed ),
+				(ushort)( vibration.RightMotorSpeed * (float)other.rightMotorSpeed )
+			);
 		}
 
-		/// <summary></summary>
+
+		/// <summary>Multiplies a <see cref="Vibration"/> with a value.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		/// <param name="factor"></param>
-		/// <returns></returns>
-		public static Vibration Multiply( Vibration vibration, float factor )
+		/// <param name="value">A finite single-precision floating-point value.</param>
+		/// <param name="result">Returns the scaled <see cref="Vibration"/>.</param>
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		public static void Multiply( ref Vibration vibration, float value, out Vibration result )
 		{
-			bool isZero = vibration.Equals( Zero );
-			
-			if( isZero || float.IsNaN( factor ) || float.IsNegativeInfinity( factor ) || factor <= 0.0f )
-				return Zero;
-
-			if( float.IsPositiveInfinity( factor ) && !isZero )
-				return FullThrottle;
-
-			return new Vibration( vibration.LeftMotorSpeed * factor, vibration.RightMotorSpeed * factor );
+			value = value.Clamp( 0.0f, float.MaxValue );
+			result = new Vibration( vibration.LeftMotorSpeed * value, vibration.RightMotorSpeed * value );
 		}
+
+		/// <summary>Multiplies a <see cref="Vibration"/> with a value.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="value">A finite single-precision floating-point value.</param>
+		/// <returns>Returns the scaled <see cref="Vibration"/>.</returns>
+		public static Vibration Multiply( Vibration vibration, float value )
+		{
+			value = value.Clamp( 0.0f, float.MaxValue );
+			return new Vibration( vibration.LeftMotorSpeed * value, vibration.RightMotorSpeed * value );
+		}
+
 
 
 		/// <summary>Performs a linear interpolation between two <see cref="Vibration"/> structures.</summary>
-		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		/// <param name="other">A <see cref="Vibration"/> structure.</param>
-		/// <param name="amount"></param>
-		/// <returns></returns>
-		public static Vibration Lerp( Vibration vibration, Vibration other, float amount )
+		/// <param name="source">A <see cref="Vibration"/> structure.</param>
+		/// <param name="target">A <see cref="Vibration"/> structure.</param>
+		/// <param name="amount">The weight factor.</param>
+		/// <param name="result">Receives the interpolated <see cref="Vibration"/>.</param>
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "3#", Justification = "Performance matters." )]
+		public static void Lerp( ref Vibration source, ref Vibration target, float amount, out Vibration result )
 		{
-			return new Vibration( 
-				vibration.LeftMotorSpeed * ( 1.0f - amount ) + other.LeftMotorSpeed * amount, 
-				vibration.RightMotorSpeed * ( 1.0f - amount ) + other.RightMotorSpeed * amount
+			result = new Vibration(
+				XMath.Lerp( source.LeftMotorSpeed, target.LeftMotorSpeed, amount ),
+				XMath.Lerp( source.RightMotorSpeed, target.RightMotorSpeed, amount )
+			);
+		}
+
+		/// <summary>Performs a linear interpolation between two <see cref="Vibration"/> structures.</summary>
+		/// <param name="source">A <see cref="Vibration"/> structure.</param>
+		/// <param name="target">A <see cref="Vibration"/> structure.</param>
+		/// <param name="amount">The weight factor.</param>
+		/// <returns>Returns the interpolated <see cref="Vibration"/>.</returns>
+		public static Vibration Lerp( Vibration source, Vibration target, float amount )
+		{
+			return new Vibration(
+				XMath.Lerp( source.LeftMotorSpeed, target.LeftMotorSpeed, amount ),
+				XMath.Lerp( source.RightMotorSpeed, target.RightMotorSpeed, amount )
 			);
 		}
 
@@ -184,7 +241,6 @@ namespace ManagedX.Input.XInput
 
 		#region Operators
 
-
 		/// <summary>Equality comparer.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
@@ -193,7 +249,6 @@ namespace ManagedX.Input.XInput
 		{
 			return vibration.Equals( other );
 		}
-
 
 		/// <summary>Inequality comparer.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
@@ -205,45 +260,52 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary></summary>
+		/// <summary>Addition operator.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
-		/// <returns></returns>
+		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the sum of the specified values.</returns>
 		public static Vibration operator +( Vibration vibration, Vibration other )
 		{
-			return Add( vibration, other );
+			Vibration sum;
+			Add( ref vibration, ref other, out sum );
+			return sum;
 		}
 
 
-		/// <summary></summary>
+		/// <summary>Multiplication operator.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
-		/// <returns></returns>
+		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the product of the specified values.</returns>
 		public static Vibration operator *( Vibration vibration, Vibration other )
 		{
-			return Multiply( vibration, other );
+			Vibration result;
+			Multiply( ref vibration, ref other, out result );
+			return result;
 		}
 
-		/// <summary></summary>
+		/// <summary>Multiplication operator.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		/// <param name="value"></param>
-		/// <returns></returns>
+		/// <param name="value">A finite single-precision floating-point value.</param>
+		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the product of the specified values.</returns>
 		public static Vibration operator *( Vibration vibration, float value )
 		{
-			return Multiply( vibration, value );
+			Vibration result;
+			Multiply( ref vibration, value, out result );
+			return result;
 		}
 
-		/// <summary></summary>
-		/// <param name="value"></param>
+		/// <summary>Multiplication operator.</summary>
+		/// <param name="value">A finite single-precision floating-point value.</param>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		/// <returns></returns>
+		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the product of the specified values.</returns>
 		public static Vibration operator *( float value, Vibration vibration )
 		{
-			return Multiply( vibration, value );
+			Vibration result;
+			Multiply( ref vibration, value, out result );
+			return result;
 		}
 
 		#endregion
-
 
 	}
 
