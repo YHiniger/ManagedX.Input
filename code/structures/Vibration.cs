@@ -106,7 +106,7 @@ namespace ManagedX.Input.XInput
 
 
 
-		#region Static methods
+		#region Static methods (Add, Multiply, Lerp)
 
 
 		private static float UShortToFloat( ushort value )
