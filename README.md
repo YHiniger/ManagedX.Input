@@ -11,6 +11,6 @@ Also supports keyboard and mouse.
 - built taking into account code analysis (all rules enabled)
 
 
-# Requirements:
+## Requirements:
 - ManagedX
 - Windows Vista and 7 users also need the DirectX End-User Runtime (June 2010).
