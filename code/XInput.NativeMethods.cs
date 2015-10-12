@@ -376,11 +376,14 @@ namespace ManagedX.Input.XInput
 		#endregion
 
 
-		/// <summary></summary>
-		/// <param name="userIndex"></param>
-		/// <param name="dSoundRenderGuid"></param>
-		/// <param name="dSoundCaptureGuid"></param>
-		/// <returns></returns>
+		/// <summary>Compatiblity function.</summary>
+		/// <param name="userIndex">Index of the user's controller.</param>
+		/// <param name="dSoundRenderGuid">Receives the <see cref="Guid"/> of the headset sound rendering device; this is always set to empty.</param>
+		/// <param name="dSoundCaptureGuid">Receives the <see cref="Guid"/> of the headset sound capture device; this is always set to empty.</param>
+		/// <returns>If the function successfully retrieves the device IDs for render and capture, the return code is <see cref="ErrorCode.None"/>.
+		/// If there is no headset connected to the controller, the function also retrieves <see cref="ErrorCode.None"/> with <see cref="Guid.Empty"/> as the values for <paramref name="dSoundRenderGuid"/> and <paramref name="dSoundCaptureGuid"/>.
+		/// If the controller port device is not physically connected, the function returns <see cref="ErrorCode.NotConnected"/>.
+		/// If the function fails, it returns a valid Win32 error code.</returns>
 		internal static int XInput15GetDSoundAudioDeviceGuids(
 			GameControllerIndex userIndex,
 			out Guid dSoundRenderGuid,
@@ -393,11 +396,15 @@ namespace ManagedX.Input.XInput
 			return XInput15GetCapabilities( userIndex, 1, out caps );
 		}
 
-		/// <summary></summary>
-		/// <param name="userIndex"></param>
-		/// <param name="dSoundRenderGuid"></param>
-		/// <param name="dSoundCaptureGuid"></param>
-		/// <returns></returns>
+
+		/// <summary>Compatiblity function.</summary>
+		/// <param name="userIndex">Index of the user's controller.</param>
+		/// <param name="dSoundRenderGuid">Receives the <see cref="Guid"/> of the headset sound rendering device; this is always set to empty.</param>
+		/// <param name="dSoundCaptureGuid">Receives the <see cref="Guid"/> of the headset sound capture device; this is always set to empty.</param>
+		/// <returns>If the function successfully retrieves the device IDs for render and capture, the return code is <see cref="ErrorCode.None"/>.
+		/// If there is no headset connected to the controller, the function also retrieves <see cref="ErrorCode.None"/> with <see cref="Guid.Empty"/> as the values for <paramref name="dSoundRenderGuid"/> and <paramref name="dSoundCaptureGuid"/>.
+		/// If the controller port device is not physically connected, the function returns <see cref="ErrorCode.NotConnected"/>.
+		/// If the function fails, it returns a valid Win32 error code.</returns>
 		internal static int XInput14GetDSoundAudioDeviceGuids(
 			GameControllerIndex userIndex,
 			out Guid dSoundRenderGuid,
@@ -410,13 +417,18 @@ namespace ManagedX.Input.XInput
 			return XInput14GetCapabilities( userIndex, 1, out caps );
 		}
 
-		/// <summary></summary>
-		/// <param name="userIndex"></param>
-		/// <param name="renderDeviceId"></param>
-		/// <param name="renderDeviceIdLength"></param>
-		/// <param name="captureDeviceId"></param>
-		/// <param name="captureDeviceIdLength"></param>
-		/// <returns></returns>
+
+		/// <summary>Compatiblity function.</summary>
+		/// <param name="userIndex">Index of the user's controller.</param>
+		/// <param name="renderDeviceId">Receives the Windows Core Audio device ID string for render (speakers); this is always null.</param>
+		/// <param name="renderDeviceIdLength">The size, in wide-chars, of the render device ID string buffer; this is always 0.</param>
+		/// <param name="captureDeviceId">Receives the Windows Core Audio device ID string for capture (microphone); this is always null.</param>
+		/// <param name="captureDeviceIdLength">The size, in wide-chars, of capture device ID string buffer; this is always 0.</param>
+		/// <returns>If the function successfully retrieves the device IDs for render and capture, the return code is <see cref="ErrorCode.None"/>.
+		/// If there is no headset connected to the controller, the function will also return <see cref="ErrorCode.None"/> with null as the values for <paramref name="renderDeviceId"/> and <paramref name="captureDeviceId"/>.
+		/// If the controller port device is not physically connected, the function will return <see cref="ErrorCode.NotConnected"/>.
+		/// If the function fails, it will return a valid Win32 error code.
+		/// </returns>
 		internal static int XInput13GetAudioDeviceIds(
 			GameControllerIndex userIndex,
 			out string renderDeviceId,
