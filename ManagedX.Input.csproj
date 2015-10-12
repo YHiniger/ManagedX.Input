@@ -59,6 +59,7 @@
     <Compile Include="code\Mouse\MouseState.cs" />
     <Compile Include="code\structures\AudioDeviceIds.cs" />
     <Compile Include="code\structures\DSoundAudioDeviceGuids.cs" />
+    <Compile Include="code\VirtualKeyCode.cs" />
     <Compile Include="code\XInputService.cs" />
     <Compile Include="code\XInput.NativeMethods.cs" />
     <Compile Include="code\Design\IInputDevice_T.cs" />

@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
+using VKeyCode = ManagedX.Input.VirtualKeyCode;
+
 
 namespace ManagedX.Input.XInput
 {
@@ -13,115 +15,115 @@ namespace ManagedX.Input.XInput
 	{
 
 		/// <summary>No key.</summary>
-		None = 0x0000,
+		None = VKeyCode.None,
 
 
 		/// <summary>The A (cross) button.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A" )]
-		A = 0x5800,
+		A = VKeyCode.GamepadA,
 		
 		/// <summary>The B (circle) button.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "B" )]
-		B = 0x5801,
+		B = VKeyCode.GamepadB,
 		
 		/// <summary>The X (square) button.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "X" )]
-		X = 0x5802,
+		X = VKeyCode.GamepadX,
 		
 		/// <summary>The Y (triangle) button.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Y" )]
-		Y = 0x5803,
+		Y = VKeyCode.GamepadY,
 
 
 		/// <summary>The right bumper (R1).</summary>
-		RightShoulder = 0x5804,
+		RightShoulder = VKeyCode.GamepadRightShoulder,
 		
 		/// <summary>The left bumper (L1).</summary>
-		LeftShoulder = 0x5805,
+		LeftShoulder = VKeyCode.GamepadLeftShoulder,
 
 
 		/// <summary>The left trigger (L2).</summary>
-		LeftTrigger = 0x5806,
+		LeftTrigger = VKeyCode.GamepadLeftTrigger,
 		
 		/// <summary>The right trigger (R2).</summary>
-		RightTrigger = 0x5807,
+		RightTrigger = VKeyCode.GamepadRightTrigger,
 
 
 		/// <summary>The directional pad up.</summary>
-		DPadUp = 0x5810,
+		DPadUp = VKeyCode.GamepadDPadUp,
 		
 		/// <summary>The directional pad down.</summary>
-		DPadDown = 0x5811,
+		DPadDown = VKeyCode.GamepadDPadDown,
 		
 		/// <summary>The directional pad left.</summary>
-		DPadLeft = 0x5812,
+		DPadLeft = VKeyCode.GamepadDPadLeft,
 		
 		/// <summary>The directional pad right.</summary>
-		DPadRight = 0x5813,
+		DPadRight = VKeyCode.GamepadDPadRight,
 
 
 		/// <summary>The Start button.</summary>
-		Start = 0x5814,
+		Start = VKeyCode.GamepadStart,
 		
 		/// <summary>The Back (Select) button.</summary>
-		Back = 0x5815,
+		Back = VKeyCode.GamepadBack,
 
 		
 		/// <summary>The left stick button.</summary>
-		LeftThumb = 0x5816,
+		LeftThumb = VKeyCode.GamepadLeftThumb,
 		
 		/// <summary>The right stick button.</summary>
-		RightThumb = 0x5817,
+		RightThumb = VKeyCode.GamepadRightThumb,
 
 		
 		/// <summary>The left stick up direction.</summary>
-		LeftThumbUp = 0x5820,
+		LeftThumbUp = VKeyCode.GamepadLeftThumbUp,
 		
 		/// <summary>The left stick down direction.</summary>
-		LeftThumbDown = 0x5821,
+		LeftThumbDown = VKeyCode.GamepadLeftThumbDown,
 		
 		/// <summary>The left stick right direction.</summary>
-		LeftThumbRight = 0x5822,
+		LeftThumbRight = VKeyCode.GamepadLeftThumbRight,
 		
 		/// <summary>The left stick left direction.</summary>
-		LeftThumbLeft = 0x5823,
+		LeftThumbLeft = VKeyCode.GamepadLeftThumbLeft,
 		
 		/// <summary>The left stick up left direction.</summary>
-		LeftThumbUpLeft = 0x5824,
+		LeftThumbUpLeft = VKeyCode.GamepadLeftThumbUpLeft,
 		
 		/// <summary>The left stick up right direction.</summary>
-		LeftThumbUpRight = 0x5825,
+		LeftThumbUpRight = VKeyCode.GamepadLeftThumbUpRight,
 		
 		/// <summary>The left stick down right direction.</summary>
-		LeftThumbDownRight = 0x5826,
+		LeftThumbDownRight = VKeyCode.GamepadLeftThumbDownRight,
 		
 		/// <summary>The left stick down left direction.</summary>
-		LeftThumbDownLeft = 0x5827,
+		LeftThumbDownLeft = VKeyCode.GamepadLeftThumbDownLeft,
 
 		
 		/// <summary>The right stick up direction.</summary>
-		RightThumbUp = 0x5830,
+		RightThumbUp = VKeyCode.GamepadRightThumbUp,
 		
 		/// <summary>The right stick down direction.</summary>
-		RightThumbDown = 0x5831,
+		RightThumbDown = VKeyCode.GamepadRightThumbDown,
 		
 		/// <summary>The right stick right direction.</summary>
-		RightThumbRight = 0x5832,
+		RightThumbRight = VKeyCode.GamepadRightThumbRight,
 		
 		/// <summary>The right stick left direction.</summary>
-		RightThumbLeft = 0x5833,
+		RightThumbLeft = VKeyCode.GamepadRightThumbLeft,
 		
 		/// <summary>The right stick up left direction.</summary>
-		RightThumbUpLeft = 0x5834,
+		RightThumbUpLeft = VKeyCode.GamepadRightThumbUpLeft,
 		
 		/// <summary>The right stick up right direction.</summary>
-		RightThumbUpRight = 0x5835,
+		RightThumbUpRight = VKeyCode.GamepadRightThumbUpRight,
 		
 		/// <summary>The right stick down right direction.</summary>
-		RightThumbDownRight = 0x5836,
+		RightThumbDownRight = VKeyCode.GamepadRightThumbDownRight,
 		
 		/// <summary>The right stick down left direction.</summary>
-		RightThumbDownLeft = 0x5837
+		RightThumbDownLeft = VKeyCode.GamepadRightThumbDownLeft
 
 	}
 

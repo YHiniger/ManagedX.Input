@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace XInput.Design
+namespace ManagedX.Input.XInput
 {
 
 	/// <summary>Contains a sequence of <see cref="Vibration"/> structures.</summary>

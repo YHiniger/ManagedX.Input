@@ -376,7 +376,7 @@ namespace ManagedX.Input.XInput
 		#endregion
 
 
-		/// <summary>Compatiblity function.</summary>
+		/// <summary>Compatibility function.</summary>
 		/// <param name="userIndex">Index of the user's controller.</param>
 		/// <param name="dSoundRenderGuid">Receives the <see cref="Guid"/> of the headset sound rendering device; this is always set to empty.</param>
 		/// <param name="dSoundCaptureGuid">Receives the <see cref="Guid"/> of the headset sound capture device; this is always set to empty.</param>
@@ -397,7 +397,7 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Compatiblity function.</summary>
+		/// <summary>Compatibility function.</summary>
 		/// <param name="userIndex">Index of the user's controller.</param>
 		/// <param name="dSoundRenderGuid">Receives the <see cref="Guid"/> of the headset sound rendering device; this is always set to empty.</param>
 		/// <param name="dSoundCaptureGuid">Receives the <see cref="Guid"/> of the headset sound capture device; this is always set to empty.</param>
@@ -418,7 +418,7 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Compatiblity function.</summary>
+		/// <summary>Compatibility function.</summary>
 		/// <param name="userIndex">Index of the user's controller.</param>
 		/// <param name="renderDeviceId">Receives the Windows Core Audio device ID string for render (speakers); this is always null.</param>
 		/// <param name="renderDeviceIdLength">The size, in wide-chars, of the render device ID string buffer; this is always 0.</param>

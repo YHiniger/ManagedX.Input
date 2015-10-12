@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Windows.Forms;
+using System.Windows.Forms; // for the Message structure
 
 
 namespace ManagedX.Input
@@ -21,22 +21,22 @@ namespace ManagedX.Input
 		private enum ButtonVirtualKeyCode : int
 		{
 
-			/// <summary>Left mouse button.</summary>
-			Left = 1,
+			/// <summary>The left mouse button.</summary>
+			Left = VirtualKeyCode.MouseLeft,
 
-			/// <summary>Right mouse button.</summary>
-			Right = 2,
+			/// <summary>The right mouse button.</summary>
+			Right = VirtualKeyCode.MouseRight,
 
-			/// <summary>Middle mouse button.</summary>
-			Middle = 4,
+			/// <summary>The middle mouse button.</summary>
+			Middle = VirtualKeyCode.MouseMiddle,
 
-			/// <summary>Extended button 1.</summary>
-			X1 = 5,
+			/// <summary>The extended button 1.</summary>
+			X1 = VirtualKeyCode.MouseX1,
 
-			/// <summary>Extended button 2.</summary>
-			X2 = 6
+			/// <summary>The extended button 2.</summary>
+			X2 = VirtualKeyCode.MouseX2
 
-		} // TODO - make this a subset of the "global" (Mouse, Keyboard, XInput) VirtualKeyCode enumeration
+		}
 
 
 		/// <summary>Provides access to Win32 API functions defined in WinUser.h, and stored in User32.dll.</summary>
@@ -149,28 +149,20 @@ namespace ManagedX.Input
 
 		private static ButtonVirtualKeyCode GetVirtualKeyCode( MouseButton button )
 		{
-			switch( button )
-			{
-				case MouseButton.Left:
-					return ButtonVirtualKeyCode.Left;
+			if( button == MouseButton.Left )
+				return ButtonVirtualKeyCode.Left;
 
-				case MouseButton.Right:
-					return ButtonVirtualKeyCode.Right;
+			if( button == MouseButton.Right )
+				return ButtonVirtualKeyCode.Right;
 
-				case MouseButton.Middle:
-					return ButtonVirtualKeyCode.Middle;
+			if( button == MouseButton.Middle )
+				return ButtonVirtualKeyCode.Middle;
 
-				case MouseButton.X1:
-					return ButtonVirtualKeyCode.X1;
+			if( button == MouseButton.X1 )
+				return ButtonVirtualKeyCode.X1;
 
-				case MouseButton.X2:
-					return ButtonVirtualKeyCode.X2;
-
-				default:
-					throw new InvalidEnumArgumentException( "button", (int)button, typeof( MouseButton ) );
-			}
+			return ButtonVirtualKeyCode.X2;
 		}
-
 
 		#endregion
 
@@ -227,7 +219,7 @@ namespace ManagedX.Input
 
 		/// <summary>Processes Windows messages to ensure the mouse wheel state is up-to-date.</summary>
 		/// <param name="message">A Windows message.</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Required by implementation." )]
 		public static void WndProc( ref Message message )
 		{
 			if( message.Msg == 522 ) // WindowMessage.MouseWheel
