@@ -119,11 +119,14 @@
   </resheader>
   <data name="GameController" xml:space="preserve">
     <value>XInput controller</value>
+    <comment>The default GameController string.</comment>
   </data>
   <data name="Keyboard" xml:space="preserve">
     <value>Keyboard</value>
+    <comment>The default KeyboardDevice string.</comment>
   </data>
   <data name="Mouse" xml:space="preserve">
     <value>Mouse</value>
+    <comment>The default MouseDevice string.</comment>
   </data>
 </root>
