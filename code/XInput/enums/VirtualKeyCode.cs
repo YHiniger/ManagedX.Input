@@ -9,7 +9,7 @@ namespace ManagedX.Input.XInput
 	// XInput.h
 
 	
-	/// <summary>Enumerates XInput virtual key codes.</summary>
+	/// <summary>Enumerates XInput virtual key codes, as defined in <see cref="ManagedX.Input.VirtualKeyCode"/>.</summary>
 	[SuppressMessage( "Microsoft.Design", "CA1028:EnumStorageShouldBeInt32", Justification = "Required by implementation." )]
 	public enum VirtualKeyCode : short
 	{

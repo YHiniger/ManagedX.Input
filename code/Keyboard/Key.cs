@@ -3,9 +3,9 @@
 
 namespace ManagedX.Input
 {
-	// TODO - make this a subset of the "global" (Mouse, Keyboard, XInput) ManagedX.Input.VirtualKeyCode enumeration:
+	// TODO - make this a subset of the VirtualKeyCode enumeration:
 
-	/// <summary>Enumerates keyboard keys.</summary>
+	/// <summary>Enumerates keyboard keys using their <see cref="VirtualKeyCode"/>.</summary>
 	public enum Key : int
 	{
 
@@ -49,22 +49,22 @@ namespace ManagedX.Input
 		CapsLock = 20,
 
 		
-		/// <summary>La touche mode Kana IME.</summary>
+		/// <summary>The IME Kana mode key.</summary>
 		KanaMode = 21,
 		
-		/// <summary>La touche mode Hangul IME.</summary>
+		/// <summary>The IME Hangul mode key.</summary>
 		HangulMode = 21,
 		
-		/// <summary>La touche mode Junja IME.</summary>
+		/// <summary>The IME Junja mode key.</summary>
 		JunjaMode = 23,
 		
-		/// <summary>La touche mode final IME.</summary>
+		/// <summary>The IME final mode key.</summary>
 		FinalMode = 24,
 		
-		/// <summary>La touche mode Hanja IME.</summary>
+		/// <summary>The IME Hanja mode key.</summary>
 		HanjaMode = 25,
 		
-		/// <summary>La touche mode Kanji IME.</summary>
+		/// <summary>The IME Kanji mode key.</summary>
 		KanjiMode = 25,
 
 
@@ -266,7 +266,7 @@ namespace ManagedX.Input
 		/// <summary>The application key (Microsoft Natural Keyboard).</summary>
 		Apps = 93,
 		
-		/// <summary>La touche de mise en veille de l'ordinateur.</summary>
+		/// <summary>The SLEEP key.</summary>
 		Sleep = 95,
 		
 		
@@ -275,47 +275,47 @@ namespace ManagedX.Input
 		
 		/// <summary>The 1 key on the numeric keypad.</summary>
 		NumPad1 = 97,
-		
-		/// <summary>La touche 2 du pavé numérique.</summary>
+
+		/// <summary>The 2 key on the numeric keypad.</summary>
 		NumPad2 = 98,
-		
-		/// <summary>La touche 3 du pavé numérique.</summary>
+
+		/// <summary>The 3 key on the numeric keypad.</summary>
 		NumPad3 = 99,
-		
-		/// <summary>La touche 4 du pavé numérique.</summary>
+
+		/// <summary>The 4 key on the numeric keypad.</summary>
 		NumPad4 = 100,
-		
-		/// <summary>La touche 5 du pavé numérique.</summary>
+
+		/// <summary>The 5 key on the numeric keypad.</summary>
 		NumPad5 = 101,
-		
-		/// <summary>La touche 6 du pavé numérique.</summary>
+
+		/// <summary>The 6 key on the numeric keypad.</summary>
 		NumPad6 = 102,
-		
-		/// <summary>La touche 7 du pavé numérique.</summary>
+
+		/// <summary>The 7 key on the numeric keypad.</summary>
 		NumPad7 = 103,
-		
+
 		/// <summary>The 8 key on the numeric keypad.</summary>
 		NumPad8 = 104,
-		
+
 		/// <summary>The 9 key on the numeric keypad.</summary>
 		NumPad9 = 105,
 		
-		/// <summary>La touche de multiplication.</summary>
+		/// <summary>The MULTIPLY key.</summary>
 		Multiply = 106,
 		
-		/// <summary>La touche Ajouter.</summary>
+		/// <summary>The ADD key.</summary>
 		Add = 107,
 		
-		/// <summary>La touche du séparateur.</summary>
+		/// <summary>The SEPARATOR key.</summary>
 		Separator = 108,
 		
-		/// <summary>La touche de soustraction.</summary>
+		/// <summary>The SUBTRACT key.</summary>
 		Subtract = 109,
 		
-		/// <summary>La touche de décimale.</summary>
+		/// <summary>The DECIMAL key.</summary>
 		Decimal = 110,
 		
-		/// <summary>La touche de division.</summary>
+		/// <summary>The DIVIDE key.</summary>
 		Divide = 111,
 		
 		
@@ -395,13 +395,13 @@ namespace ManagedX.Input
 		/// <summary>The NUM LOCK key.</summary>
 		NumLock = 144,
 
-		/// <summary>La touche ARRÊT DÉFILEMENT.</summary>
+		/// <summary>The SCROLL LOCK key.</summary>
 		ScrollLock = 145,
 
-		/// <summary>La touche MAJ de gauche.</summary>
+		/// <summary>The left SHIFT key.</summary>
 		LShiftKey = 160,
 		
-		/// <summary>La touche MAJ de droite.</summary>
+		/// <summary>The right SHIFT key.</summary>
 		RShiftKey = 161,
 		
 		/// <summary>The left CTRL key.</summary>
@@ -416,170 +416,161 @@ namespace ManagedX.Input
 		/// <summary>The right ALT key.</summary>
 		RMenu = 165,
 		
-		/// <summary>La touche Précédente du navigateur (Windows 2000 ou version ultérieure).</summary>
+		
+		/// <summary>The browser BACK key.</summary>
 		BrowserBack = 166,
 		
-		/// <summary>La touche Suivante du navigateur (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The browser NEXT key.</summary>
 		BrowserForward = 167,
 		
-		/// <summary>La touche Actualiser du navigateur (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The browser REFRESH key.</summary>
 		BrowserRefresh = 168,
 		
-		/// <summary>La touche Arrêter du navigateur (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The browser STOP key.</summary>
 		BrowserStop = 169,
 		
-		/// <summary>La touche Rechercher du navigateur (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The browser SEARCH key.</summary>
 		BrowserSearch = 170,
 		
-		/// <summary>La touche Favoris du navigateur (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The browser FAVORITES key.</summary>
 		BrowserFavorites = 171,
 		
-		/// <summary>La touche Démarrage du navigateur (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The browser HOME key.</summary>
 		BrowserHome = 172,
 		
-		/// <summary>La touche Volume muet (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The VOLUME MUTE key.</summary>
 		VolumeMute = 173,
 		
-		/// <summary>La touche Descendre le volume (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The VOLUME DOWN key.</summary>
 		VolumeDown = 174,
 		
-		/// <summary>La touche Monter le volume (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The VOLUME UP key.</summary>
 		VolumeUp = 175,
 		
-		/// <summary>La touche Piste suivante du média (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The MEDIA NEXT TRACK key.</summary>
 		MediaNextTrack = 176,
 		
-		/// <summary>La touche Piste précédente du média (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The MEDIA PREVIOUS TRACK key.</summary>
 		MediaPreviousTrack = 177,
 		
-		/// <summary>La touche Arrêter du média (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The MEDIA STOP key.</summary>
 		MediaStop = 178,
 		
-		/// <summary>La touche Lecture/Pause du média (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The MEDIA PLAY/PAUSE key.</summary>
 		MediaPlayPause = 179,
 		
-		/// <summary>La touche Démarrer la messagerie (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The LAUNCH MAIL key.</summary>
 		LaunchMail = 180,
 		
-		/// <summary>La touche Sélectionner le média (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The SELECT MEDIA key.</summary>
 		SelectMedia = 181,
-		
-		/// <summary>La touche Démarrer l'application 1 (Windows 2000 ou version ultérieure).</summary>
+
+		/// <summary>The LAUNCH APPLICATION #1 key.</summary>
 		LaunchApplication1 = 182,
 		
-		/// <summary>La touche Démarrer l'application 2 (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The LAUNCH APPLICATION #2 key.</summary>
 		LaunchApplication2 = 183,
 		
-		/// <summary>La touche OEM du point-virgule sur un clavier standard américain (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The OEM SEMICOLON key.</summary>
 		OemSemicolon = 186,
 		
 		/// <summary>The OEM 1 key.</summary>
 		Oem1 = 186,
 		
-		/// <summary>La touche OEM d'addition sur un clavier régional (Windows 2000 ou version ultérieure).</summary>
-		Oemplus = 187,
-		/// <summary>La touche OEM de virgule sur un clavier régional (Windows 2000 ou version ultérieure).</summary>
-		Oemcomma = 188,
+		/// <summary>The OEM PLUS key.</summary>
+		OemPlus = 187,
+		
+		/// <summary>The OEM COMMA key.</summary>
+		OemComma = 188,
 
-		/// <summary>La touche OEM de soustraction sur un clavier régional (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The OEM MINUS key.</summary>
 		OemMinus = 189,
 
-		/// <summary>La touche OEM de point sur un clavier régional (Windows 2000 ou version ultérieure).</summary>
+		/// <summary>The OEM PERIOD key.</summary>
 		OemPeriod = 190,
 
-		/// <summary>La touche OEM du point d'interrogation sur un clavier standard américain (Windows 2000 ou version ultérieure).</summary>
-		OemQuestion = 191,
 		/// <summary>The OEM 2 key.</summary>
 		Oem2 = 191,
 
-		/// <summary>La touche OEM du tilde sur un clavier standard américain (Windows 2000 ou version ultérieure).</summary>
-		Oemtilde = 192,
 		/// <summary>The OEM 3 key.</summary>
 		Oem3 = 192,
 
-		/// <summary>La touche OEM de crochet ouvrant sur un clavier standard américain (Windows 2000 ou version ultérieure).</summary>
-		OemOpenBrackets = 219,
 		/// <summary>The OEM 4 key.</summary>
 		Oem4 = 219,
 
-		/// <summary>La touche OEM du signe | sur un clavier standard américain (Windows 2000 ou version ultérieure).</summary>
-		OemPipe = 220,
 		/// <summary>The OEM 5 key.</summary>
 		Oem5 = 220,
 
-		/// <summary>La touche OEM de crochet fermant sur un clavier standard américain (Windows 2000 ou version ultérieure).</summary>
-		OemCloseBrackets = 221,
 		/// <summary>The OEM 6 key.</summary>
 		Oem6 = 221,
 
-		/// <summary>La touche OEM des guillemets simples et doubles sur un clavier standard américain (Windows 2000 ou version ultérieure).</summary>
-		OemQuotes = 222,
 		/// <summary>The OEM 7 key.</summary>
 		Oem7 = 222,
 
 		/// <summary>The OEM 8 key.</summary>
 		Oem8 = 223,
 
-		/// <summary>La touche OEM de guillemets ou de barre oblique inverse sur le clavier RT de 102 touches (Windows 2000 ou version ultérieure).</summary>
-		OemBackslash = 226,
 		/// <summary>The OEM 102 key.</summary>
 		Oem102 = 226,
 
-		/// <summary>La touche PROCESS KEY.</summary>
-		ProcessKey = 229,
+		/// <summary>The PROCESS key.</summary>
+		ProcessKey = VirtualKeyCode.ProcessKey,
 
 		/// <summary>Permet de passer des caractères Unicode comme s'il s'agissait de séquences de touches.
-		/// La valeur de la touche Paquet est le mot inférieur d'une valeur de clé virtuelle 32 bits utilisée pour les méthodes d'entrée autres qu'au clavier.</summary>
-		Packet = 231,
+		/// <para>La valeur de la touche Packet est le mot inférieur d'une valeur de clé virtuelle 32 bits utilisée pour les méthodes d'entrée autres qu'au clavier.</para>
+		/// </summary>
+		Packet = VirtualKeyCode.Packet,
 
 		/// <summary>The ATTN key.</summary>
-		Attn = 246,
+		Attn = VirtualKeyCode.Attn,
 
-		/// <summary>La touche CRSEL.</summary>
-		Crsel = 247,
+		/// <summary>The CRSEL key.</summary>
+		Crsel = VirtualKeyCode.Crsel,
 
-		/// <summary>La touche EXSEL.</summary>
-		Exsel = 248,
+		/// <summary>The EXSEL key.</summary>
+		Exsel = VirtualKeyCode.Exsel,
 
 		/// <summary>The ERASE EOF key.</summary>
-		EraseEof = 249,
+		EraseEof = VirtualKeyCode.EraseEof,
 
 		/// <summary>The PLAY key.</summary>
-		Play = 250,
+		Play = VirtualKeyCode.Play,
 
 		/// <summary>The ZOOM key.</summary>
-		Zoom = 251,
+		Zoom = VirtualKeyCode.Zoom,
 
 		///// <summary>Reserved for future use.</summary>
 		//NoName = 252,
 
-		/// <summary>La touche PA1.</summary>
+		/// <summary>The PA1 key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Pa" )]
-		Pa1 = 253,
+		Pa1 = VirtualKeyCode.Pa1,
 
 		/// <summary>The CLEAR key.</summary>
-		OemClear = 254,
+		OemClear = VirtualKeyCode.OemClear,
 
 
 		/// <summary>The SHIFT modifier key.</summary>
-		Shift = 65536,
+		Shift = VirtualKeyCode.Shift,
 
 		/// <summary>The CTRL modifier key.</summary>
-		Control = 131072,
+		Control = VirtualKeyCode.Control,
 
 		/// <summary>The ALT modifier key.</summary>
-		Alt = 262144,
+		Alt = VirtualKeyCode.Alt,
 
 
-		#region BitMasks
+		//#region BitMasks
 
-		/// <summary>Le masque de bits pour extraire un code de touche à partir d'une valeur de touche.</summary>
-		KeyCode = 65535,
+		// FIXME - this is not part of this enumeration !
 
-		/// <summary>Le masque de bits pour extraire les modificateurs à partir d'une valeur de touche.</summary>
-		Modifiers = -65536
+		///// <summary>Le masque de bits pour extraire un code de touche à partir d'une valeur de touche.</summary>
+		//KeyCode = 65535,
 
-		#endregion
+		///// <summary>Le masque de bits pour extraire les modificateurs à partir d'une valeur de touche.</summary>
+		//Modifiers = -65536
+
+		//#endregion
 
 	}
 

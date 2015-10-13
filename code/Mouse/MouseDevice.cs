@@ -13,7 +13,7 @@ namespace ManagedX.Input
 	public sealed class MouseDevice : InputDevice<MouseState, MouseButton>, Design.IMouse
 	{
 
-		/// <summary>Enumerates mouse buttons, using their virtual key code.</summary>
+		/// <summary>Enumerates mouse buttons, using their <see cref="VirtualKeyCode"/>.</summary>
 		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731%28v=vs.85%29.aspx</remarks>
 		private enum ButtonVirtualKeyCode : int
 		{

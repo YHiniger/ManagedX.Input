@@ -114,7 +114,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ManagedX\trunk\ManagedX.csproj">
       <Project>{d69df2e9-a523-4b18-9dc2-2473033f9739}</Project>
-      <Name>ManagedX</Name>
+      <Name>ManagedX %28ManagedX\ManagedX%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
