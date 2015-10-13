@@ -8,7 +8,7 @@ namespace ManagedX.Input.Design
 	public interface IInputDevice
 	{
 
-		/// <summary>Gets the (zero-based) controller index.</summary>
+		/// <summary>Gets the controller index.</summary>
 		GameControllerIndex Index { get; }
 
 

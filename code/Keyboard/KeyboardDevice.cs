@@ -6,7 +6,6 @@ using System.Security;
 namespace ManagedX.Input
 {
 
-
 	/// <summary>Represents a keyboard, as a managed input device.</summary>
 	public sealed class KeyboardDevice : InputDevice<KeyboardState, Key>, Design.IKeyboard
 	{

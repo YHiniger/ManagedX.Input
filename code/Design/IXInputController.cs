@@ -18,9 +18,7 @@ namespace ManagedX.Input.Design
 		BatteryInformation BatteryInfo { get; }
 
 
-		/// <summary>Gets information about keystrokes.
-		/// <para>Only available on Windows 8 and newer (and Xbox 360/One).</para>
-		/// </summary>
+		/// <summary>Gets information about keystrokes.</summary>
 		Keystroke Keystroke { get; }
 
 

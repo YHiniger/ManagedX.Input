@@ -7,13 +7,10 @@ using System.Windows.Forms; // for the Message structure
 
 namespace ManagedX.Input
 {
-	using Design;
-
 	// TODO - make use of RawInput (at least to retrieve the mouse display name, maybe to check for device connection and to support more than one mouse ?).
 
-
 	/// <summary>Represents the mouse.</summary>
-	public sealed class MouseDevice : InputDevice<MouseState, MouseButton>, IMouse
+	public sealed class MouseDevice : InputDevice<MouseState, MouseButton>, Design.IMouse
 	{
 
 		/// <summary>Enumerates mouse buttons, using their virtual key code.</summary>
@@ -165,7 +162,6 @@ namespace ManagedX.Input
 				defaultMouse.wheelValue += ( message.WParam.ToInt32() >> 16 ) / 120;
 		}
 
-
 		#endregion
 
 
@@ -269,7 +265,7 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Gets a value indicating the mouse cursor state.</summary>
+		/// <summary>Gets or sets a value indicating the mouse cursor state.</summary>
 		public MouseCursorOptions CursorState
 		{
 			get { return cursorState; }
