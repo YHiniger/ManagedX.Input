@@ -6,8 +6,8 @@ namespace ManagedX.Input
 {
 
 
-	/// <summary>A keyboard.</summary>
-	public sealed class KeyboardDevice : InputDevice<KeyboardState, Key>
+	/// <summary>Represents a keyboard, as a managed input device.</summary>
+	public sealed class KeyboardDevice : InputDevice<KeyboardState, Key>, Design.IKeyboard
 	{
 
 		private const short AsyncKeyDownMask = 0x0001;
@@ -51,14 +51,13 @@ namespace ManagedX.Input
 		}
 
 
-		#region Static fields
-
+		#region Static
 
 		private static readonly KeyboardDevice defaultKeyboard = new KeyboardDevice();
 
+		
 		/// <summary>Gets the default <see cref="KeyboardDevice"/>.</summary>
 		public static KeyboardDevice Default { get { return defaultKeyboard; } }
-
 		
 		#endregion
 
@@ -69,12 +68,17 @@ namespace ManagedX.Input
 
 
 		private KeyboardDevice()
-			: base( 0 )
+			: base( GameControllerIndex.One )
 		{
 			state = new byte[ 256 ];
 		}
 
 
+		
+		/// <summary>Gets a value indicating the type of this input device.</summary>
+		public sealed override InputDeviceType DeviceType { get { return InputDeviceType.Keyboard; } }
+
+		
 		/// <summary>Gets a value indicating whether the keyboard is connected.</summary>
 		public sealed override bool IsConnected { get { return isConnected; } }
 

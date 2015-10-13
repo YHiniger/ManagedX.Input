@@ -5,10 +5,12 @@ namespace ManagedX.Input
 {
 
 	/// <summary>A mouse state.</summary>
+	[Serializable]
 	public struct MouseState : IEquatable<MouseState>
 	{
 
-		private const int MaxSupportedButtonCount = 5;
+		/// <summary>Defines the number of buttons supported by this implementation.</summary>
+		internal const int MaxSupportedButtonCount = 5;
 
 
 		private Point position;
@@ -56,7 +58,7 @@ namespace ManagedX.Input
 		/// <summary>Returns a value indicating whether a button is down.</summary>
 		/// <param name="button">A mouse button.</param>
 		/// <returns>Returns true if the button is down, otherwise returns false.</returns>
-		public bool IsDown( MouseButton button )
+		public bool IsPressed( MouseButton button )
 		{
 			return buttons[ (int)button ];
 		}

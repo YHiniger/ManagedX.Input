@@ -67,7 +67,6 @@ namespace ManagedX.Input.XInput
 		#endregion
 
 
-		private GameControllerIndex index;
 		private bool isConnected;
 		private Capabilities capabilities;
 		private BatteryInformation batteryInfo;
@@ -87,9 +86,8 @@ namespace ManagedX.Input.XInput
 		/// <param name="controllerIndex">The game controller index.</param>
 		/// <param name="version">Indicates which version of the XInput API to use.</param>
 		internal GameController( GameControllerIndex controllerIndex, APIVersion version )
-			: base( (int)controllerIndex )
+			: base( controllerIndex )
 		{
-			index = controllerIndex;
 			deadZoneMode = DeadZoneMode.Circular;
 
 			if( version == APIVersion.XInput15 )
@@ -144,8 +142,9 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Gets the <see cref="GameControllerIndex">index</see> of this <see cref="GameController">game controller</see>.</summary>
-		new public GameControllerIndex Index { get { return index; } }
+
+		/// <summary>Gets a value indicating the type of this input device.</summary>
+		public sealed override InputDeviceType DeviceType { get { return InputDeviceType.HumanInterfaceDevice; } }
 
 
 		/// <summary>Gets a value indicating whether this game controller is connected.</summary>
@@ -157,7 +156,7 @@ namespace ManagedX.Input.XInput
 		{
 			get
 			{
-				var errorCode = getCapsProc( index, 1, out capabilities );
+				var errorCode = getCapsProc( base.Index, 1, out capabilities );
 				if( errorCode == (int)ErrorCode.NotConnected )
 					isConnected = false;
 				else if( errorCode == 0 )
@@ -174,7 +173,7 @@ namespace ManagedX.Input.XInput
 		{
 			get
 			{
-				var errorCode = getBatteryInfoProc( index, BatteryDeviceType.Gamepad, out batteryInfo );
+				var errorCode = getBatteryInfoProc( base.Index, BatteryDeviceType.Gamepad, out batteryInfo );
 				if( errorCode == (int)ErrorCode.NotConnected )
 					isConnected = false;
 				else if( errorCode == 0 )
@@ -193,7 +192,7 @@ namespace ManagedX.Input.XInput
 			if( !( capabilities.HasLeftMotor || capabilities.HasRightMotor ) )
 				return false;
 
-			var errorCode = setStateProc( index, ref vibration );
+			var errorCode = setStateProc( base.Index, ref vibration );
 			return isConnected = ( errorCode == 0 );
 		}
 		
@@ -226,7 +225,7 @@ namespace ManagedX.Input.XInput
 				var output = Keystroke.Empty;
 				if( isConnected && capabilities.IsSet( Caps.PluginModuleDeviceSupported ) )
 				{
-					var errorCode = getKeystrokeProc( index, 0, out output );
+					var errorCode = getKeystrokeProc( base.Index, 0, out output );
 					if( errorCode != 0 )
 						output = Keystroke.Empty;
 				}
@@ -240,7 +239,7 @@ namespace ManagedX.Input.XInput
 		protected sealed override GamePad GetState()
 		{
 			State state;
-			var errorCode = getStateProc( index, out state );
+			var errorCode = getStateProc( base.Index, out state );
 
 			if( errorCode == (int)ErrorCode.NotConnected )
 				isConnected = false;
@@ -267,7 +266,7 @@ namespace ManagedX.Input.XInput
 		/// </summary>
 		protected sealed override void Initialize()
 		{
-			var errorCode = getCapsProc( index, 1, out capabilities );
+			var errorCode = getCapsProc( base.Index, 1, out capabilities );
 			if( isConnected = ( errorCode == 0 ) )
 				base.Initialize();
 		}
@@ -317,7 +316,7 @@ namespace ManagedX.Input.XInput
 				int renderDeviceIdLength = 0;
 				int captureDeviceIdLength = 0;
 				AudioDeviceIds deviceIds;
-				if( getAudioDeviceIdsProc( index, out deviceIds.RenderDeviceId, ref renderDeviceIdLength, out deviceIds.CaptureDeviceId, ref captureDeviceIdLength ) != 0 )
+				if( getAudioDeviceIdsProc( base.Index, out deviceIds.RenderDeviceId, ref renderDeviceIdLength, out deviceIds.CaptureDeviceId, ref captureDeviceIdLength ) != 0 )
 					deviceIds = AudioDeviceIds.Empty;
 				return deviceIds;
 			}
@@ -332,7 +331,7 @@ namespace ManagedX.Input.XInput
 			get
 			{
 				DSoundAudioDeviceGuids deviceGuids;
-				if( getDSoundAudioDeviceGuidsProc( index, out deviceGuids.RenderDeviceGuid, out deviceGuids.CaptureDeviceGuid ) != 0 )
+				if( getDSoundAudioDeviceGuidsProc( base.Index, out deviceGuids.RenderDeviceGuid, out deviceGuids.CaptureDeviceGuid ) != 0 )
 					deviceGuids = DSoundAudioDeviceGuids.Empty;
 				return deviceGuids;
 			}

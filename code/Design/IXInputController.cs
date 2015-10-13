@@ -10,10 +10,6 @@ namespace ManagedX.Input.Design
 	public interface IXInputController : IInputDevice<GamePad, GamePadButtons>
 	{
 
-		/// <summary>Gets the controller index.</summary>
-		new GameControllerIndex Index { get; }
-
-
 		/// <summary>Gets the information about the controller capabilities.</summary>
 		Capabilities Capabilities { get; }
 

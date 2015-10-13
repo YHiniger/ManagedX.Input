@@ -47,21 +47,26 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="code\enums\APIVersion.cs" />
+    <Compile Include="code\Design\IInputDevice.cs" />
+    <Compile Include="code\Design\IKeyboard.cs" />
+    <Compile Include="code\Design\IMouse.cs" />
+    <Compile Include="code\XInput\APIVersion.cs" />
+    <Compile Include="code\InputDeviceType.cs" />
     <Compile Include="code\InputDevice_T.cs" />
     <None Include="code\VibrationSequence.cs" />
     <Compile Include="code\Keyboard\Key.cs" />
     <Compile Include="code\Keyboard\KeyboardDevice.cs" />
     <Compile Include="code\Keyboard\KeyboardState.cs" />
     <Compile Include="code\Mouse\CursorInfo.cs" />
+    <Compile Include="code\Mouse\MouseCursorOptions.cs" />
     <Compile Include="code\Mouse\MouseButton.cs" />
     <Compile Include="code\Mouse\MouseDevice.cs" />
     <Compile Include="code\Mouse\MouseState.cs" />
-    <Compile Include="code\structures\AudioDeviceIds.cs" />
-    <Compile Include="code\structures\DSoundAudioDeviceGuids.cs" />
+    <Compile Include="code\XInput\AudioDeviceIds.cs" />
+    <Compile Include="code\XInput\DSoundAudioDeviceGuids.cs" />
     <Compile Include="code\VirtualKeyCode.cs" />
-    <Compile Include="code\XInputService.cs" />
-    <Compile Include="code\XInput.NativeMethods.cs" />
+    <Compile Include="code\XInput\XInputService.cs" />
+    <Compile Include="code\XInput\XInput.NativeMethods.cs" />
     <Compile Include="code\Design\IInputDevice_T.cs" />
     <Compile Include="code\Design\IXInput.cs" />
     <Compile Include="code\Design\IXInputController.cs" />
@@ -70,24 +75,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="code\enums\BatteryDeviceType.cs" />
-    <Compile Include="code\enums\Caps.cs" />
-    <Compile Include="code\enums\GameControllerIndex.cs" />
-    <Compile Include="code\enums\KeyStates.cs" />
-    <Compile Include="code\enums\DeadZoneMode.cs" />
-    <Compile Include="code\enums\VirtualKeyCode.cs" />
+    <Compile Include="code\XInput\enums\BatteryDeviceType.cs" />
+    <Compile Include="code\XInput\enums\Caps.cs" />
+    <Compile Include="code\GameControllerIndex.cs" />
+    <Compile Include="code\XInput\enums\KeyStates.cs" />
+    <Compile Include="code\XInput\enums\DeadZoneMode.cs" />
+    <Compile Include="code\XInput\enums\VirtualKeyCode.cs" />
     <Compile Include="code\GameController.cs" />
-    <Compile Include="code\structures\BatteryInformation.cs" />
-    <Compile Include="code\enums\BatteryLevel.cs" />
-    <Compile Include="code\enums\BatteryType.cs" />
-    <Compile Include="code\structures\Capabilities.cs" />
-    <Compile Include="code\enums\DeviceSubType.cs" />
-    <Compile Include="code\enums\DeviceType.cs" />
-    <Compile Include="code\structures\GamePad.cs" />
-    <Compile Include="code\enums\GamePadButtons.cs" />
-    <Compile Include="code\structures\State.cs" />
-    <Compile Include="code\structures\Vibration.cs" />
-    <Compile Include="code\structures\Keystroke.cs" />
+    <Compile Include="code\XInput\structs\BatteryInformation.cs" />
+    <Compile Include="code\XInput\enums\BatteryLevel.cs" />
+    <Compile Include="code\XInput\enums\BatteryType.cs" />
+    <Compile Include="code\XInput\structs\Capabilities.cs" />
+    <Compile Include="code\XInput\enums\DeviceSubType.cs" />
+    <Compile Include="code\XInput\enums\DeviceType.cs" />
+    <Compile Include="code\XInput\structs\GamePad.cs" />
+    <Compile Include="code\XInput\enums\GamePadButtons.cs" />
+    <Compile Include="code\XInput\structs\State.cs" />
+    <Compile Include="code\XInput\structs\Vibration.cs" />
+    <Compile Include="code\XInput\structs\Keystroke.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="LICENSE" />
@@ -113,6 +118,7 @@
       <Name>ManagedX</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,4 +1,4 @@
-﻿namespace ManagedX.Input.XInput
+﻿namespace ManagedX.Input
 {
 
 	/// <summary>Enumerates supported XInput game controller indexes.</summary>

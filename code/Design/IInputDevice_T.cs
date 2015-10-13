@@ -4,21 +4,13 @@
 namespace ManagedX.Input.Design
 {
 
-	/// <summary>Defines properties and methods to implement an input device.</summary>
+	/// <summary>Defines properties and methods to properly implement a managed input device.</summary>
 	/// <typeparam name="TState">A structure representing the device state.</typeparam>
 	/// <typeparam name="TButton">An enumeration representing the controller buttons.</typeparam>
-	public interface IInputDevice<TState, TButton>
+	public interface IInputDevice<TState, TButton> : IInputDevice
 		where TState : struct
 		where TButton : struct
 	{
-
-		/// <summary>Gets the (zero-based) controller index.</summary>
-		int Index { get; }
-
-
-		/// <summary>Gets a value indicating whether the controller is connected.</summary>
-		bool IsConnected { get; }
-
 
 		/// <summary>Gets the last known controller state.</summary>
 		TState CurrentState { get; }
@@ -32,11 +24,6 @@ namespace ManagedX.Input.Design
 
 		/// <summary>Gets the time associated with the <see cref="PreviousState">previous state</see>.</summary>
 		TimeSpan PreviousStateTime { get; }
-
-
-		/// <summary>Updates the controller state.</summary>
-		/// <param name="time">The time elapsed since the application start.</param>
-		void Update( TimeSpan time );
 
 
 		/// <summary>Returns a value indicating whether a button was released in the previous state but is pressed in the current state.</summary>

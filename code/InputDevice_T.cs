@@ -14,30 +14,29 @@ namespace ManagedX.Input
 		where TButton : struct
 	{
 
-		private int index;
+		private GameControllerIndex index;
 		private TimeSpan currentStateTime, previousStateTime;
 		private TState currentState, previousState;
 
 
 		/// <summary>Constructor.</summary>
 		/// <param name="controllerIndex">The zero-based index of this controller/input device; must not be negative.</param>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="controllerIndex"/> is negative.</exception>
-		protected InputDevice( int controllerIndex )
+		protected InputDevice( GameControllerIndex controllerIndex )
 		{
-			if( controllerIndex < 0 )
-				throw new ArgumentOutOfRangeException( "controllerIndex" );
-
 			index = controllerIndex;
 		}
 
 
-		/// <summary>Gets the index of this controller.</summary>
-		public int Index { get { return index; } }
+		/// <summary>Gets the index of this input device.</summary>
+		public GameControllerIndex Index { get { return index; } }
 
 
-		/// <summary>When overridden, gets a value indicating whether the controller is connected.</summary>
+		/// <summary>When overridden, gets a value indicating whether the input device is connected.</summary>
 		public abstract bool IsConnected { get; }
 
+		
+		/// <summary>When overridden, gets a value indicating the type of the input device.</summary>
+		public abstract InputDeviceType DeviceType { get; }
 
 
 		#region States
