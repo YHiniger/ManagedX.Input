@@ -175,8 +175,8 @@ namespace ManagedX.Input
 		private MouseDevice()
 			: base( GameControllerIndex.One )
 		{
+			base.Reset();
 		}
-
 
 
 		/// <summary>Gets a value indicating the type of this input device.</summary>
@@ -187,8 +187,10 @@ namespace ManagedX.Input
 		public sealed override bool IsConnected { get { return isConnected; } }
 
 		
-		/// <summary>Reads and returns the mouse state.</summary>
-		/// <returns>The mouse state.</returns>
+		/// <summary>Returns the mouse state.
+		/// <para>This method is called by Reset and Update.</para>
+		/// </summary>
+		/// <returns>Returns the mouse state.</returns>
 #if DEBUG
 		/// <exception cref="InvalidOperationException"/>
 #endif
@@ -274,7 +276,7 @@ namespace ManagedX.Input
 				if( value.HasFlag( MouseCursorOptions.Suppressed ) )
 					value = MouseCursorOptions.Hidden;
 				cursorState = value;
-				SafeNativeMethods.ShowCursor( cursorState == MouseCursorOptions.Showing );
+				var counter = SafeNativeMethods.ShowCursor( cursorState == MouseCursorOptions.Showing );
 			}
 		}
 

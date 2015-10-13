@@ -6,7 +6,9 @@ namespace ManagedX.Input
 	using Design;
 
 
-	/// <summary>Base class for input devices and (game) controllers; implements the <see cref="IInputDevice&lt;TState,TButton&gt;"/> interface.</summary>
+	/// <summary>Default implementation of the <see cref="IInputDevice&lt;TState,TButton&gt;"/> interface.
+	/// <para>Base class for input devices, including game controllers.</para>
+	/// </summary>
 	/// <typeparam name="TState">A structure representing the input device state.</typeparam>
 	/// <typeparam name="TButton">An enumeration representing the controller buttons (or key).</typeparam>
 	public abstract class InputDevice<TState, TButton> : IInputDevice<TState, TButton>
@@ -20,11 +22,12 @@ namespace ManagedX.Input
 
 
 		/// <summary>Constructor.</summary>
-		/// <param name="controllerIndex">The zero-based index of this controller/input device; must not be negative.</param>
+		/// <param name="controllerIndex">The index of this input device.</param>
 		protected InputDevice( GameControllerIndex controllerIndex )
 		{
 			index = controllerIndex;
 		}
+
 
 
 		/// <summary>Gets the index of this input device.</summary>
@@ -43,9 +46,9 @@ namespace ManagedX.Input
 
 
 		/// <summary>When overridden, reads and returns the input device state.
-		/// <para>This method is called by <see cref="Initialize"/> and <see cref="Update"/> to retrieve the device state (<see cref="CurrentState"/>).</para>
+		/// <para>This method is called by <see cref="Reset"/> and <see cref="Update"/> to retrieve the device state (<see cref="CurrentState"/>).</para>
 		/// </summary>
-		/// <returns>The input device state.</returns>
+		/// <returns>Returns the input device state.</returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Disambiguation: this method retrieves the device state." )]
 		protected abstract TState GetState();
 
@@ -67,17 +70,25 @@ namespace ManagedX.Input
 		#endregion
 
 
-		/// <summary>Reads the initial state, and sets the <see cref="PreviousState">previous state</see> with the same value as the <see cref="CurrentState">current state</see>.</summary>
-		protected virtual void Initialize()
+		/// <summary>Reads the device state through <see cref="GetState"/>, and copies it to the <see cref="PreviousState"/> and the <see cref="CurrentState"/>.
+		/// <para>This method must be called in the constructor of the "final classes" for proper initialization.</para>
+		/// </summary>
+		protected virtual void Reset()
 		{
+			//previousStateTime = currentStateTime = TimeSpan.Zero;
 			previousState = currentState = this.GetState();
 		}
 
 
-		/// <summary>Saves the <see cref="CurrentState">current state</see> to the <see cref="PreviousState">previous state</see>, and calls <see cref="GetState"/> to update the former.</summary>
+		/// <summary>Copies the <see cref="CurrentState"/> to the <see cref="PreviousState"/>, and calls <see cref="GetState"/> to update the former.
+		/// <para>If the device is not connected, calls <see cref="Reset"/> prior to the copy and state update.</para>
+		/// </summary>
 		/// <param name="time">The current time.</param>
-		public virtual void Update( TimeSpan time )
+		public void Update( TimeSpan time )
 		{
+			if( !this.IsConnected )
+				this.Reset();
+			
 			previousState = currentState;
 			previousStateTime = currentStateTime;
 			

@@ -96,6 +96,8 @@ namespace ManagedX.Input.XInput
 				this.Setup14();
 			else
 				this.Setup13();
+
+			this.Reset();
 		}
 
 
@@ -234,8 +236,10 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Retrieves and returns the current state of the controller. This method is called by <see cref="Update"/>.</summary>
-		/// <returns>Returns the current state of the controller.</returns>
+		/// <summary>Returns the state of the controller.
+		/// <para>This method is called by <see cref="Reset"/> and Update.</para>
+		/// </summary>
+		/// <returns>Returns the state of the controller.</returns>
 		protected sealed override GamePad GetState()
 		{
 			State state;
@@ -262,29 +266,13 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Initializes the game controller.
-		/// <para>This method is called by <see cref="Update"/> when required (ie: checking whether the controller is connected).</para>
+		/// <para>This method is called by the constructor, and by Update when required (ie: checking whether the controller is connected).</para>
 		/// </summary>
-		protected sealed override void Initialize()
+		protected sealed override void Reset()
 		{
 			var errorCode = getCapsProc( base.Index, 1, out capabilities );
 			if( isConnected = ( errorCode == 0 ) )
-				base.Initialize();
-		}
-
-
-		/// <summary>Updates the game pad state.</summary>
-		/// <param name="time">A time indicator (ie: the time elapsed since the start of the program).</param>
-		public sealed override void Update( TimeSpan time )
-		{
-			if( !isConnected )
-				this.Initialize();
-
-			if( isConnected )
-			{
-				base.Update( time );
-
-				// THINKABOUTME - apply vibration based on a private VibrationSequence ?
-			}
+				base.Reset();
 		}
 
 
@@ -344,23 +332,6 @@ namespace ManagedX.Input.XInput
 		{
 			return Properties.Resources.GameController;
 		}
-
-
-
-		//private int GetDSoundAudioDeviceGuidsCompat( GameControllerIndex userIndex, out Guid dSoundRenderGuid, out Guid dSoundCaptureGuid )
-		//{
-		//	dSoundCaptureGuid = dSoundRenderGuid = Guid.Empty;
-		//	Capabilities caps;
-		//	return getCapsProc( userIndex, 1, out caps );
-		//}
-
-		//private int GetAudioDeviceIdsCompat( GameControllerIndex userIndex, out string renderDeviceId, ref int renderDeviceIdLength, out string captureDeviceId, ref int captureDeviceIdLength )
-		//{
-		//	renderDeviceId = captureDeviceId = null;
-		//	renderDeviceIdLength = captureDeviceIdLength = 0;
-		//	Capabilities caps;
-		//	return getCapsProc( userIndex, 1, out caps );
-		//}
 
 	}
 

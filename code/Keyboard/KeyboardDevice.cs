@@ -58,6 +58,8 @@ namespace ManagedX.Input
 			: base( GameControllerIndex.One )
 		{
 			state = new byte[ 256 ];
+
+			base.Reset();
 		}
 
 
@@ -70,7 +72,9 @@ namespace ManagedX.Input
 		public sealed override bool IsConnected { get { return isConnected; } }
 
 
-		/// <summary>Retrieves the keyboard state and returns it.</summary>
+		/// <summary>Retrieves the keyboard state and returns it.
+		/// <para>This method is called by Reset and Update.</para>
+		/// </summary>
 		/// <returns>Returns a <see cref="KeyboardState"/> structure representing the current state of the keyboard.</returns>
 #if DEBUG
 		/// <exception cref="InvalidOperationException"/>

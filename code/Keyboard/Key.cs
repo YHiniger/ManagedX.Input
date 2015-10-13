@@ -12,9 +12,11 @@ namespace ManagedX.Input
 		/// <summary>No key.</summary>
 		None = VirtualKeyCode.None,
 
+
 		/// <summary>The CANCEL key.</summary>
 		Cancel = 3,
 
+		
 		/// <summary>The BACKSPACE key.</summary>
 		Back = 8,
 		
@@ -27,12 +29,10 @@ namespace ManagedX.Input
 		/// <summary>The CLEAR key.</summary>
 		Clear = 12,
 		
-		/// <summary>The RETURN key.</summary>
-		Return = 13,
-		
-		/// <summary>The ENTER key.</summary>
+		/// <summary>The ENTER or RETURN key.</summary>
 		Enter = 13,
 		
+
 		/// <summary>The SHIFT key.</summary>
 		ShiftKey = 16,
 		
@@ -66,6 +66,7 @@ namespace ManagedX.Input
 		
 		/// <summary>La touche mode Kanji IME.</summary>
 		KanjiMode = 25,
+
 
 
 		/// <summary>The ESC key.</summary>
