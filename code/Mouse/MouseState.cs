@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 
 
 namespace ManagedX.Input
@@ -9,42 +8,39 @@ namespace ManagedX.Input
 	public struct MouseState : IEquatable<MouseState>
 	{
 
-		private int x;
-		private int y;
+		private const int MaxSupportedButtonCount = 5;
+
+
+		private Point position;
 		private int wheel;
 		private bool[] buttons;
 
 
+		#region Constructors
+
 		/// <summary>Initializes a new <see cref="MouseState"/> structure.</summary>
-		/// <param name="x">The horizontal position of the mouse cursor.</param>
-		/// <param name="y">The vertical position of the mouse cursor.</param>
+		/// <param name="position">The mouse cursor position.</param>
 		/// <param name="wheel">The mouse wheel value.</param>
 		/// <param name="buttons">An array of 5 boolean values indicating whether a button is pressed.</param>
-		/// <exception cref="ArgumentNullException"/>
-		/// <exception cref="ArgumentException"/>
-		internal MouseState( int x, int y, int wheel, bool[] buttons )
+		internal MouseState( ref Point position, int wheel, bool[] buttons )
 		{
-#if DEBUG
-			if( buttons == null )
-				throw new ArgumentNullException( "buttons" );
-			
-			if( buttons.Length != 5 )
-				throw new ArgumentException( "Mouse buttons state array must be 5 bool-long.", "buttons" );
-#endif	
-			this.x = x;
-			this.y = y;
+			this.position = position;
 			this.wheel = wheel;
 			this.buttons = buttons;
 		}
 
+		private MouseState( int buttonCount )
+		{
+			this.position = Point.Zero;
+			this.wheel = 0;
+			this.buttons = new bool[ buttonCount ];
+		}
 
-		/// <summary>Gets the horizontal mouse position, in pixels.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "X" )]
-		public int X { get { return x; } }
+		#endregion
+		
 
-		/// <summary>Gets the vertical mouse position, in pixels.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Y" )]
-		public int Y { get { return y; } }
+		/// <summary>Gets the mouse cursor position.</summary>
+		public Point Position { get { return this.position; } }
 
 
 		/// <summary>Gets the wheel value.</summary>
@@ -57,11 +53,20 @@ namespace ManagedX.Input
 		public bool this[ MouseButton button ] { get { return buttons[ (int)button ]; } }
 
 
+		/// <summary>Returns a value indicating whether a button is down.</summary>
+		/// <param name="button">A mouse button.</param>
+		/// <returns>Returns true if the button is down, otherwise returns false.</returns>
+		public bool IsDown( MouseButton button )
+		{
+			return buttons[ (int)button ];
+		}
+
+
 		/// <summary>Returns a hash code for this <see cref="MouseState"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="MouseState"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return x ^ y ^ wheel ^ buttons.GetHashCode();
+			return position.GetHashCode() ^ wheel ^ ( ( buttons == null ) ? 0 : buttons.GetHashCode() );
 		}
 
 
@@ -70,7 +75,7 @@ namespace ManagedX.Input
 		/// <returns>Returns true if this structure equals the <paramref name="other"/> structure, otherwise returns false.</returns>
 		public bool Equals( MouseState other )
 		{
-			return ( x == other.x ) && ( y == other.y ) && ( wheel == other.wheel ) && ( buttons == other.buttons );
+			return position.Equals( other.position ) && ( wheel == other.wheel ) && ( buttons == other.buttons );
 		}
 
 
@@ -85,7 +90,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>The empty <see cref="MouseState"/> structure.</summary>
-		public static readonly MouseState Empty = new MouseState( 0, 0, 0, new bool[ 5 ] );
+		public static readonly MouseState Empty = new MouseState( MaxSupportedButtonCount );
 
 
 		#region Operators
