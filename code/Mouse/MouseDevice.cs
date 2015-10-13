@@ -179,7 +179,6 @@ namespace ManagedX.Input
 		private MouseDevice()
 			: base( GameControllerIndex.One )
 		{
-			this.Initialize();
 		}
 
 
