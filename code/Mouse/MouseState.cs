@@ -97,7 +97,6 @@ namespace ManagedX.Input
 
 		#region Operators
 
-
 		/// <summary>Equality comparer.</summary>
 		/// <param name="mouseState">A <see cref="MouseState"/> structure.</param>
 		/// <param name="other">A <see cref="MouseState"/> structure.</param>
@@ -116,7 +115,6 @@ namespace ManagedX.Input
 		{
 			return !mouseState.Equals( other );
 		}
-
 
 		#endregion
 

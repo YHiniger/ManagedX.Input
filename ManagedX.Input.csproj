@@ -54,7 +54,7 @@
     <Compile Include="code\XInput\APIVersion.cs" />
     <Compile Include="code\InputDeviceType.cs" />
     <Compile Include="code\InputDevice_T.cs" />
-    <None Include="code\VibrationSequence.cs" />
+    <None Include="code\XInput\VibrationSequence.cs" />
     <Compile Include="code\Keyboard\Key.cs" />
     <Compile Include="code\Keyboard\KeyboardDevice.cs" />
     <Compile Include="code\Keyboard\KeyboardState.cs" />
@@ -82,7 +82,7 @@
     <Compile Include="code\XInput\enums\KeyStates.cs" />
     <Compile Include="code\XInput\enums\DeadZoneMode.cs" />
     <Compile Include="code\XInput\enums\VirtualKeyCode.cs" />
-    <Compile Include="code\GameController.cs" />
+    <Compile Include="code\XInput\GameController.cs" />
     <Compile Include="code\XInput\structs\BatteryInformation.cs" />
     <Compile Include="code\XInput\enums\BatteryLevel.cs" />
     <Compile Include="code\XInput\enums\BatteryType.cs" />
@@ -114,7 +114,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ManagedX\trunk\ManagedX.csproj">
       <Project>{d69df2e9-a523-4b18-9dc2-2473033f9739}</Project>
-      <Name>ManagedX %28ManagedX\ManagedX%29</Name>
+      <Name>ManagedX</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

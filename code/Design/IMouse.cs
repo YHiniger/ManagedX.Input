@@ -1,7 +1,7 @@
 ﻿namespace ManagedX.Input.Design
 {
-	
-	/// <summary>Defines properties and methods to properly implement a mouse, as a managed input device.</summary>
+
+	/// <summary>Defines properties and methods to properly implement a mouse, as a managed input device (see <see cref="IInputDevice"/>).</summary>
 	public interface IMouse : IInputDevice<MouseState, MouseButton>
 	{
 		

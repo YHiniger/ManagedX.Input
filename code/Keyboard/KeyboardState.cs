@@ -32,6 +32,12 @@ namespace ManagedX.Input
 		}
 
 
+		/// <summary>Gets a value indicating whether a key is down(=pressed).</summary>
+		/// <param name="key">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
+		/// <exception cref="System.ComponentModel.InvalidEnumArgumentException"/>
+		public bool this[ Key key ] { get { return this.IsDown( key ); } }
+
+		
 		/// <summary>Returns a value indicating whether a key is down(=pressed).</summary>
 		/// <param name="key">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
 		/// <returns>Returns true if the specified <paramref name="key"/> is down, otherwise returns false.</returns>
@@ -44,12 +50,7 @@ namespace ManagedX.Input
 			return ( data[ (int)key ] & DownMask ) == DownMask;
 		}
 
-		/// <summary>Gets a value indicating whether a key is down(=pressed).</summary>
-		/// <param name="key">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
-		/// <exception cref="System.ComponentModel.InvalidEnumArgumentException"/>
-		public bool this[ Key key ] { get { return this.IsDown( key ); } }
 
-		
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		private bool GetToggleableKeyState( Key key )
 		{

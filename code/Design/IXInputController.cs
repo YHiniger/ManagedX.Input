@@ -6,11 +6,11 @@ namespace ManagedX.Input.Design
 	using XInput;
 
 
-	/// <summary>Defines properties and methods to properly implement a managed XInput controller; inherits from <see cref="IInputDevice&lt;TState,TButton&gt;"/>.</summary>
+	/// <summary>Defines properties and methods to properly implement an XInput controller, as a managed input device (see <see cref="IInputDevice"/>).</summary>
 	public interface IXInputController : IInputDevice<GamePad, GamePadButtons>
 	{
 
-		/// <summary>Gets the information about the controller capabilities.</summary>
+		/// <summary>Gets information about the controller capabilities.</summary>
 		Capabilities Capabilities { get; }
 
 

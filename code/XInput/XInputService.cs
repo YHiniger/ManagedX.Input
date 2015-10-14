@@ -116,11 +116,11 @@ namespace ManagedX.Input.XInput
 		///// Sending any value other than false will restore reading and writing functionality to normal.
 		///// </param>
 		/// <summary>Gets or sets a value indicating whether XInput is suspended.</summary>
-		/// <remarks>Calls XInputEnable with the <code>enable</code> parameter set to the specified value.</remarks>
+		/// <remarks>Calls XInputEnable with the <code>enable</code> parameter set to the inverse of the specified value.</remarks>
 		public bool Suspended
 		{
 			get { return suspended; }
-			set { enableProc( suspended = value ); }
+			set { enableProc( !( suspended = value ) ); }
 		}
 
 

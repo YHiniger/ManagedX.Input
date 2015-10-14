@@ -9,7 +9,7 @@ namespace ManagedX.Input
 {
 	// TODO - make use of RawInput (at least to retrieve the mouse display name, maybe to check for device connection and to support more than one mouse ?).
 
-	/// <summary>Represents the mouse.</summary>
+	/// <summary>A mouse, as a managed input device.</summary>
 	public sealed class MouseDevice : InputDevice<MouseState, MouseButton>, Design.IMouse
 	{
 
@@ -46,9 +46,9 @@ namespace ManagedX.Input
 
 
 			/// <summary>Retrieves information about the global cursor.</summary>
-			/// <param name="cursorInfo">A pointer to a <see cref="CursorInfo"/> structure that receives the information. Note that you must set the cbSize member to sizeof(<see cref="CursorInfo"/>) before calling this function.</param>
-			/// <returns>If the function succeeds, the return value is true.
-			/// If the function fails, the return value is false. To get extended error information, call GetLastError.
+			/// <param name="cursorInfo">A valid <see cref="CursorInfo"/> structure that receives the information.</param>
+			/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false.
+			/// <para>To get extended error information, call GetLastError.</para>
 			/// </returns>
 			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
 			[return: MarshalAs( UnmanagedType.Bool )]
@@ -84,7 +84,7 @@ namespace ManagedX.Input
 			/// <param name="show">If true, the display count is incremented by one; otherwise, the display count is decremented by one.</param>
 			/// <returns>The return value specifies the new display counter.</returns>
 			/// <remarks>
-			/// <para>Windows 8: Call GetCursorInfo to determine the cursor cursorState.</para>
+			/// <para>Windows 8: Call <see cref="GetCursorInfo"/> to determine the cursor cursorState.</para>
 			/// This function sets an internal display counter that determines whether the cursor should be displayed.
 			/// The cursor is displayed only if the display count is greater than or equal to 0.
 			/// If a mouse is installed, the initial display count is 0.
@@ -179,7 +179,7 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Gets a value indicating the type of this input device.</summary>
+		/// <summary>Gets a value indicating the type of this input device: <see cref="InputDeviceType.Mouse"/>.</summary>
 		public sealed override InputDeviceType DeviceType { get { return InputDeviceType.Mouse; } }
 
 
@@ -252,7 +252,9 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Sets the mouse cursor position.</summary>
+		/// <summary>Sets the mouse cursor position.
+		/// <para>A window should move the cursor only when the cursor is in the window's client area.</para>
+		/// </summary>
 		/// <param name="position">The new mouse cursor position.</param>
 		/// <exception cref="InvalidOperationException"/>
 		public void SetCursorPosition( Point position )
@@ -267,7 +269,9 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Gets or sets a value indicating the mouse cursor state.</summary>
+		/// <summary>Gets or sets a value indicating the mouse cursor state.
+		/// <para>Note: <see cref="MouseCursorOptions.Suppressed"/> is not well supported, and is handled as <see cref="MouseCursorOptions.Hidden"/>.</para>
+		/// </summary>
 		public MouseCursorOptions CursorState
 		{
 			get { return cursorState; }
@@ -276,7 +280,10 @@ namespace ManagedX.Input
 				if( value.HasFlag( MouseCursorOptions.Suppressed ) )
 					value = MouseCursorOptions.Hidden;
 				cursorState = value;
-				var counter = SafeNativeMethods.ShowCursor( cursorState == MouseCursorOptions.Showing );
+				if( cursorState == MouseCursorOptions.Showing )
+					while( SafeNativeMethods.ShowCursor( true ) < 0 );
+				else
+					while( SafeNativeMethods.ShowCursor( false ) >= 0 ) ;
 			}
 		}
 

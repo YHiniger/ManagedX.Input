@@ -1,12 +1,11 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security;
 
 
 namespace ManagedX.Input
 {
 
-	/// <summary>Represents a keyboard, as a managed input device.</summary>
+	/// <summary>A keyboard, as a managed input device.</summary>
 	public sealed class KeyboardDevice : InputDevice<KeyboardState, Key>, Design.IKeyboard
 	{
 
@@ -64,7 +63,7 @@ namespace ManagedX.Input
 
 
 		
-		/// <summary>Gets a value indicating the type of this input device.</summary>
+		/// <summary>Gets a value indicating the type of this input device: <see cref="InputDeviceType.Keyboard"/>.</summary>
 		public sealed override InputDeviceType DeviceType { get { return InputDeviceType.Keyboard; } }
 
 		
