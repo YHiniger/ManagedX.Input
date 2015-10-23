@@ -95,12 +95,10 @@ namespace ManagedX.Input.Raw
 		
 
 		/// <summary>The default <see cref="RawInputDevice"/> structure for mice.</summary>
-		public static readonly RawInputDevice MouseDefault = new RawInputDevice( MouseDeviceInfo.UsagePage, MouseDeviceInfo.Usage, RawInputDeviceRegistrationOptions.InputSink, IntPtr.Zero );
-
-		// TODO - secondary mouse support ?
+		internal static readonly RawInputDevice Mouse = new RawInputDevice( MouseDeviceInfo.UsagePage, MouseDeviceInfo.Usage, RawInputDeviceRegistrationOptions.InputSink, IntPtr.Zero );
 
 		/// <summary>The default <see cref="RawInputDevice"/> structure for the keyboard.</summary>
-		public static readonly RawInputDevice KeyboardDefault = new RawInputDevice( KeyboardDeviceInfo.UsagePage, KeyboardDeviceInfo.Usage, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
+		internal static readonly RawInputDevice Keyboard = new RawInputDevice( KeyboardDeviceInfo.UsagePage, KeyboardDeviceInfo.Usage, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
 
 
 

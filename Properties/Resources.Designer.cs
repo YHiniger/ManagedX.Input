@@ -68,23 +68,5 @@ namespace ManagedX.Input.Properties {
                 return ResourceManager.GetString("GameController", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Keyboard.
-        /// </summary>
-        internal static string Keyboard {
-            get {
-                return ResourceManager.GetString("Keyboard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Mouse.
-        /// </summary>
-        internal static string Mouse {
-            get {
-                return ResourceManager.GetString("Mouse", resourceCulture);
-            }
-        }
     }
 }

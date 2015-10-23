@@ -5,8 +5,6 @@
 	public interface IKeyboard : IInputDevice<KeyboardState, Key>
 	{
 		
-		// TODO - void SetState( bool capsLock, bool numLock, bool scrollLock );
-
 	}
 
 }

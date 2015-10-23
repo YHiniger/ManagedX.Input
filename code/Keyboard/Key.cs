@@ -14,46 +14,46 @@ namespace ManagedX.Input
 
 
 		/// <summary>The CANCEL key.</summary>
-		Cancel = 3,
+		Cancel = VirtualKeyCode.Cancel,
 
 		
 		/// <summary>The BACKSPACE key.</summary>
-		Back = 8,
+		Back = VirtualKeyCode.Back,
 		
 		/// <summary>The TAB key.</summary>
-		Tab = 9,
+		Tab = VirtualKeyCode.Tab,
 		
 		/// <summary>The LINE FEED key.</summary>
-		LineFeed = 10,
+		LineFeed = VirtualKeyCode.LineFeed,
 		
 		/// <summary>The CLEAR key.</summary>
-		Clear = 12,
+		Clear = VirtualKeyCode.Clear,
 		
 		/// <summary>The ENTER or RETURN key.</summary>
-		Enter = 13,
+		Enter = VirtualKeyCode.Enter,
 		
 
 		/// <summary>The SHIFT key.</summary>
-		ShiftKey = 16,
+		ShiftKey = VirtualKeyCode.ShiftKey,
 		
 		/// <summary>The CTRL key.</summary>
-		ControlKey = 17,
+		ControlKey = VirtualKeyCode.ControlKey,
 		
 		/// <summary>The ALT key.</summary>
-		Menu = 18,
+		Menu = VirtualKeyCode.Menu,
 		
 		/// <summary>The PAUSE key.</summary>
-		Pause = 19,
+		Pause = VirtualKeyCode.Pause,
 		
 		/// <summary>The CAPS LOCK key.</summary>
-		CapsLock = 20,
+		CapsLock = VirtualKeyCode.CapsLock,
 
 		
 		/// <summary>The IME Kana mode key.</summary>
 		KanaMode = 21,
 		
 		/// <summary>The IME Hangul mode key.</summary>
-		HangulMode = 21,
+		HangulMode = KanaMode,
 		
 		/// <summary>The IME Junja mode key.</summary>
 		JunjaMode = 23,
@@ -65,7 +65,7 @@ namespace ManagedX.Input
 		HanjaMode = 25,
 		
 		/// <summary>The IME Kanji mode key.</summary>
-		KanjiMode = 25,
+		KanjiMode = HanjaMode,
 
 
 
@@ -397,6 +397,7 @@ namespace ManagedX.Input
 
 		/// <summary>The SCROLL LOCK key.</summary>
 		ScrollLock = 145,
+
 
 		/// <summary>The left SHIFT key.</summary>
 		LShiftKey = 160,

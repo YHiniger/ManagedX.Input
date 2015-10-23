@@ -44,7 +44,6 @@ namespace ManagedX.Input.Design
 		/// <summary>Updates the state of all connected XInput controllers.</summary>
 		/// <param name="time">The time elapsed since the application start.</param>
 		void Update( TimeSpan time );
-		// TODO - move to IUpdateable ?
 
 	}
 

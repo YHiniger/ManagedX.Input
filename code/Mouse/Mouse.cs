@@ -224,7 +224,7 @@ namespace ManagedX.Input
 		/// <param name="options">One or more <see cref="RawInputDeviceRegistrationOptions"/>.</param>
 		public static void Register( IWin32Window targetWindow, RawInputDeviceRegistrationOptions options )
 		{
-			var device = RawInputDevice.MouseDefault;
+			var device = RawInputDevice.Mouse;
 			device.targetWindowHandle = ( targetWindow == null ) ? IntPtr.Zero : targetWindow.Handle;
 			device.flags = options;
 
