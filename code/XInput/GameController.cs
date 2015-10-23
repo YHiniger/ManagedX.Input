@@ -97,7 +97,8 @@ namespace ManagedX.Input.XInput
 			else
 				this.Setup13();
 
-			this.Reset();
+			var zero = TimeSpan.Zero;
+			this.Reset( ref zero );
 		}
 
 
@@ -149,8 +150,8 @@ namespace ManagedX.Input.XInput
 		public sealed override InputDeviceType DeviceType { get { return InputDeviceType.HumanInterfaceDevice; } }
 
 
-		/// <summary>Gets a value indicating whether this game controller is connected.</summary>
-		public sealed override bool IsConnected { get { return isConnected; } }
+		/// <summary>Gets a value indicating whether this game controller is disconnected.</summary>
+		public sealed override bool Disconnected { get { return !isConnected; } }
 
 
 		/// <summary>Gets the <see cref="ManagedX.Input.XInput.Capabilities">capabilities</see> of this <see cref="GameController"/>.</summary>
@@ -268,11 +269,12 @@ namespace ManagedX.Input.XInput
 		/// <summary>Initializes the game controller.
 		/// <para>This method is called by the constructor, and by Update when required (ie: checking whether the controller is connected).</para>
 		/// </summary>
-		protected sealed override void Reset()
+		/// <param name="time">The time elapsed since the application start.</param>
+		protected sealed override void Reset( ref TimeSpan time )
 		{
 			var errorCode = getCapsProc( base.Index, 1, out capabilities );
 			if( isConnected = ( errorCode == 0 ) )
-				base.Reset();
+				base.Reset( ref time );
 		}
 
 
