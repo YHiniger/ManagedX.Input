@@ -25,7 +25,6 @@ namespace ManagedX.Input.Design
 		/// <summary>Updates the input device state (ie: <see cref="Disconnected"/>).</summary>
 		/// <param name="time">The time elapsed since the application start.</param>
 		void Update( TimeSpan time );
-		// THINKABOUTME - should be part of an IUpdateable interface
 
 	}
 

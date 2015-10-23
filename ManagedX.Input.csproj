@@ -119,7 +119,6 @@
     <Compile Include="code\XInput\structs\State.cs" />
     <Compile Include="code\XInput\structs\Vibration.cs" />
     <Compile Include="code\XInput\structs\Keystroke.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="LICENSE" />
     <None Include="ManagedX.snk" />

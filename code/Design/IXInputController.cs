@@ -1,7 +1,4 @@
-﻿using System;
-
-
-namespace ManagedX.Input.Design
+﻿namespace ManagedX.Input.Design
 {
 	using XInput;
 

@@ -3,7 +3,7 @@
 	using Raw;
 
 
-	/// <summary>Defines properties and methods to properly implement a mouse as a managed raw input device.</summary>
+	/// <summary>Defines properties and methods to properly implement a mouse, as a managed raw input device.</summary>
 	public interface IRawMouse : IRawInputDevice, IMouse
 	{
 
