@@ -9,13 +9,13 @@
 		int WheelValue { get; set; }
 
 
-		/// <summary>Gets or sets a value indicating the state of the mouse cursor.</summary>
-		MouseCursorOptions CursorState { get; set; }
+		///// <summary>Gets or sets a value indicating the state of the mouse cursor.</summary>
+		//MouseCursorOptions CursorState { get; set; }
 
 
-		/// <summary>Sets the mouse cursor position.</summary>
-		/// <param name="position">The new cursor position.</param>
-		void SetCursorPosition( Point position );
+		///// <summary>Sets the mouse cursor position.</summary>
+		///// <param name="position">The new cursor position.</param>
+		//void SetCursorPosition( Point position );
 
 	}
 

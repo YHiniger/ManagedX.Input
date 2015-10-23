@@ -18,14 +18,14 @@ namespace ManagedX.Input.Design
 		InputDeviceType DeviceType { get; }
 
 		
-		/// <summary>Gets a value indicating whether the input device is connected.</summary>
-		bool IsConnected { get; }
+		/// <summary>Gets a value indicating whether the input device is disconnected.</summary>
+		bool Disconnected { get; }
 
 
-		/// <summary>Updates the input device state (ie: <see cref="IsConnected"/>).</summary>
+		/// <summary>Updates the input device state (ie: <see cref="Disconnected"/>).</summary>
 		/// <param name="time">The time elapsed since the application start.</param>
 		void Update( TimeSpan time );
-		// TODO - should be part of an IUpdateable interface
+		// THINKABOUTME - should be part of an IUpdateable interface
 
 	}
 

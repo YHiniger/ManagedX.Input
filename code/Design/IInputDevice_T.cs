@@ -8,7 +8,7 @@ namespace ManagedX.Input.Design
 	/// <typeparam name="TState">A structure representing the device state.</typeparam>
 	/// <typeparam name="TButton">An enumeration representing the device buttons.</typeparam>
 	public interface IInputDevice<TState, TButton> : IInputDevice
-		where TState : struct
+		where TState : struct //, IEquatable<TState>
 		where TButton : struct
 	{
 
