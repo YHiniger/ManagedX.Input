@@ -11,39 +11,25 @@ namespace ManagedX.Input
 	/// </summary>
 	/// <typeparam name="TState">A structure representing the input device state.</typeparam>
 	/// <typeparam name="TButton">An enumeration representing the controller buttons (or key).</typeparam>
-	public abstract class InputDevice<TState, TButton> : IInputDevice<TState, TButton>
+	public abstract class InputDevice<TState, TButton> : InputDevice, IInputDevice<TState, TButton>
 		where TState : struct
 		where TButton : struct
 	{
 
-		private GameControllerIndex index;
-		private TimeSpan currentStateTime, previousStateTime;
 		private TState currentState, previousState;
+		private TimeSpan currentStateTime, previousStateTime;
 
 
 		/// <summary>Constructor.</summary>
 		/// <param name="controllerIndex">The index of this input device.</param>
 		protected InputDevice( GameControllerIndex controllerIndex )
+			: base( controllerIndex )
 		{
-			index = controllerIndex;
 		}
 
 
 
-		/// <summary>Gets the index of this input device.</summary>
-		public GameControllerIndex Index { get { return index; } }
-
-
-		/// <summary>When overridden, gets a value indicating whether the input device is connected.</summary>
-		public abstract bool IsConnected { get; }
-
-		
-		/// <summary>When overridden, gets a value indicating the type of the input device.</summary>
-		public abstract InputDeviceType DeviceType { get; }
-
-
-		#region States
-
+		#region GetState, CurrentState*, PreviousState*
 
 		/// <summary>When overridden, reads and returns the input device state.
 		/// <para>This method is called by <see cref="Reset"/> and <see cref="Update"/> to retrieve the device state (<see cref="CurrentState"/>).</para>
@@ -66,28 +52,32 @@ namespace ManagedX.Input
 		/// <summary>Gets the time associated with the <see cref="PreviousState">previous state</see>.</summary>
 		public TimeSpan PreviousStateTime { get { return previousStateTime; } }
 
-
-		#endregion
+		#endregion // GetState, CurrentState*, PreviousState*
 
 
 		/// <summary>Reads the device state through <see cref="GetState"/>, and copies it to the <see cref="PreviousState"/> and the <see cref="CurrentState"/>.
 		/// <para>This method must be called in the constructor of the "final classes" for proper initialization.</para>
 		/// </summary>
-		protected virtual void Reset()
+		/// <param name="time">The time elapsed since the application start.</param>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
+		protected virtual void Reset( ref TimeSpan time )
 		{
-			//previousStateTime = currentStateTime = TimeSpan.Zero;
-			previousState = currentState = this.GetState();
+			previousStateTime = currentStateTime = time;
+			previousState = currentState = this.GetState();	// NOTE - GetState is in charge of setting Disconnected to the appropriate value.
 		}
 
 
 		/// <summary>Copies the <see cref="CurrentState"/> to the <see cref="PreviousState"/>, and calls <see cref="GetState"/> to update the former.
 		/// <para>If the device is not connected, calls <see cref="Reset"/> prior to the copy and state update.</para>
 		/// </summary>
-		/// <param name="time">The current time.</param>
-		public void Update( TimeSpan time )
+		/// <param name="time">The time elapsed since the application start.</param>
+		public sealed override void Update( TimeSpan time )
 		{
-			if( !this.IsConnected )
-				this.Reset();
+			if( this.Disconnected )
+			{
+				this.Reset( ref time );
+				return;
+			}
 			
 			previousState = currentState;
 			previousStateTime = currentStateTime;
@@ -95,9 +85,6 @@ namespace ManagedX.Input
 			currentStateTime = time;
 			currentState = this.GetState();
 		}
-
-
-		#region Buttons
 
 
 		/// <summary>When overridden, returns a value indicating whether a button (or key) has just been pressed.</summary>
@@ -111,9 +98,6 @@ namespace ManagedX.Input
 		/// <returns>Returns true if the button (or key) is pressed in the <see cref="PreviousState">previous state</see> and is released in the <see cref="CurrentState">current state</see>, otherwise returns false.</returns>
 		public abstract bool HasJustBeenReleased( TButton button );
 
-
-		#endregion
-		
 	}
 
 }
