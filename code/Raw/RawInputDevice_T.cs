@@ -28,13 +28,17 @@ namespace ManagedX.Input.Raw
 			
 			info = NativeMethods.GetRawInputDeviceInfo( deviceHandle, false );
 			deviceName = NativeMethods.GetRawInputDeviceName( deviceHandle );
-			displayName = NativeMethods.GetHIDProductString( deviceName );
-			//if( displayName == null )
-			//{
-			//	var tokens = deviceName.Substring( 4 ).Split( '#' );
-			//	var regKey = string.Format( System.Globalization.CultureInfo.InvariantCulture, @"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Enum\{0}\{1}\{2}", tokens[ 0 ], tokens[ 1 ], tokens[ 2 ] );
-			//	displayName = Microsoft.Win32.Registry.GetValue( regKey, "DeviceDesc", ";" ).ToString().Split( ';' )[ 1 ];
-			//}
+			
+			if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
+				displayName = NativeMethods.GetHIDProductString( deviceName ); // obviously, only works for HIDs ...
+
+			if( displayName == null )
+			{
+				// Mice and keyboards seem to require this:
+				var tokens = deviceName.Substring( 4 ).Split( '#' );
+				var regKey = string.Format( System.Globalization.CultureInfo.InvariantCulture, @"HKEY_LOCAL_MACHINE\System\CurrentControlSet\Enum\{0}\{1}\{2}", tokens[ 0 ], tokens[ 1 ], tokens[ 2 ] );
+				displayName = Microsoft.Win32.Registry.GetValue( regKey, "DeviceDesc", ";" ).ToString().Split( ';' )[ 1 ];
+			}
 		}
 
 
