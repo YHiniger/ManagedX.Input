@@ -154,6 +154,7 @@ namespace ManagedX.Input
 
 
 		private static readonly Dictionary<IntPtr, Mouse> mice = new Dictionary<IntPtr, Mouse>( 1 );
+		private static MouseCursorOptions cursorState;
 
 		
 		private static void Initialize()
@@ -201,6 +202,27 @@ namespace ManagedX.Input
 				var array = new Mouse[ mice.Count ];
 				mice.Values.CopyTo( array, 0 );
 				return new System.Collections.ObjectModel.ReadOnlyCollection<Mouse>( array );
+			}
+		}
+
+
+		/// <summary>Gets or sets a value indicating the state of the mouse cursor.
+		/// <para>Note: <see cref="MouseCursorOptions.Suppressed"/> is handled as <see cref="MouseCursorOptions.Hidden"/>.</para>
+		/// </summary>
+		public static MouseCursorOptions CursorState
+		{
+			get { return cursorState; }
+			set
+			{
+				if( value.HasFlag( MouseCursorOptions.Suppressed ) )
+					value = MouseCursorOptions.Hidden;
+
+				cursorState = value;
+
+				if( cursorState == MouseCursorOptions.Showing )
+					while( SafeNativeMethods.ShowCursor( true ) < 0 ) ;
+				else
+					while( SafeNativeMethods.ShowCursor( false ) >= 0 ) ;
 			}
 		}
 
@@ -291,7 +313,6 @@ namespace ManagedX.Input
 		private Point motion;
 		private int wheelDelta;
 		private int wheelValue;
-		private MouseCursorOptions cursorState; // FIXME - static
 
 
 		#region Constructor, destructor
@@ -398,27 +419,6 @@ namespace ManagedX.Input
 		{
 			get { return wheelValue; }
 			set { wheelValue = value; }
-		}
-
-
-		/// <summary>Gets or sets a value indicating the state of the mouse cursor.
-		/// <para>Note: <see cref="MouseCursorOptions.Suppressed"/> is handled as <see cref="MouseCursorOptions.Hidden"/>.</para>
-		/// </summary>
-		public MouseCursorOptions CursorState
-		{
-			get { return cursorState; }
-			set
-			{
-				if( value.HasFlag( MouseCursorOptions.Suppressed ) )
-					value = MouseCursorOptions.Hidden;
-				
-				cursorState = value;
-				
-				if( cursorState == MouseCursorOptions.Showing )
-					while( SafeNativeMethods.ShowCursor( true ) < 0 ) ;
-				else
-					while( SafeNativeMethods.ShowCursor( false ) >= 0 ) ;
-			}
 		}
 
 
