@@ -38,7 +38,7 @@ namespace ManagedX.Input.Raw
 		/// </summary>
 		NoLegacy = Exclude | PageOnly,
 
-		/// <summary>If set, this enables the caller to receive the input even when the caller is not in the foreground; note that TargetWindowHandle must be specified.</summary>
+		/// <summary>If set, this enables the caller to receive the input even when the caller is not in the foreground; note that targetWindowHandle must be specified.</summary>
 		InputSink = 0x00000100,
 
 		/// <summary>If set, the mouse button click does not activate the other window.</summary>
