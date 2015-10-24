@@ -10,7 +10,7 @@ namespace ManagedX.Input.XInput
 
 
 	/// <summary>Contains information on <see cref="BatteryType">battery type</see> and <see cref="BatteryLevel">charge state</see>.</summary>
-	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 2 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 2 )]
 	public struct BatteryInformation : IEquatable<BatteryInformation>
 	{
 

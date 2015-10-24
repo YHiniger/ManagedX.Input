@@ -13,7 +13,7 @@ namespace ManagedX.Input.Raw
 	/// <para>The native name of this structure is RAWHID.</para>
 	/// </summary>
 	[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "HID" )]
-	[StructLayout( LayoutKind.Sequential )] // 12 (x86) or 16 (x64) bytes
+	[StructLayout( LayoutKind.Sequential, Pack = 4 )] // 12 (x86) or 16 (x64) bytes
 	public struct RawHID : IEquatable<RawHID>
 	{
 

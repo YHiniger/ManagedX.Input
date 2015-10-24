@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.ComponentModel;
 
 
 namespace ManagedX.Input
@@ -9,52 +10,36 @@ namespace ManagedX.Input
 	public struct KeyboardState : IEquatable<KeyboardState>
 	{
 
-		private const byte ToggleMask = 0x01;
-		private const byte DownMask = 0x80;
+		internal byte[] Data;
 
-
-		private byte[] data;
-
-
-		/// <summary>Initializes a new <see cref="KeyboardState"/> structure.</summary>
-		/// <param name="data">An array of 256 bytes representing the state of each key; must not be null.</param>
-		/// <exception cref="ArgumentNullException"/>
-		/// <exception cref="ArgumentException"/>
-		internal KeyboardState( byte[] data )
-		{
-			if( data == null )
-				throw new ArgumentNullException( "data" );
-
-			if( data.Length != 256 )
-				throw new ArgumentException( "Keyboard state data must be 256 bytes-long.", "data" );
-
-			this.data = data;
-		}
 
 
 		/// <summary>Gets a value indicating whether a key is down(=pressed).</summary>
 		/// <param name="key">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
-		/// <exception cref="System.ComponentModel.InvalidEnumArgumentException"/>
+		/// <exception cref="InvalidEnumArgumentException"/>
 		public bool this[ Key key ] { get { return this.IsDown( key ); } }
 
 		
 		/// <summary>Returns a value indicating whether a key is down(=pressed).</summary>
 		/// <param name="key">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
 		/// <returns>Returns true if the specified <paramref name="key"/> is down, otherwise returns false.</returns>
-		/// <exception cref="System.ComponentModel.InvalidEnumArgumentException"/>
+		/// <exception cref="InvalidEnumArgumentException"/>
 		public bool IsDown( Key key )
 		{
+			const byte DownMask = 0x80;
+
 			if( key == Key.None )
 				throw new System.ComponentModel.InvalidEnumArgumentException( "key", (int)key, typeof( Key ) );
 
-			return ( data[ (int)key ] & DownMask ) == DownMask;
+			return ( Data[ (int)key ] & DownMask ) == DownMask;
 		}
 
 
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		private bool GetToggleableKeyState( Key key )
 		{
-			return ( data[ (int)key ] & ToggleMask ) == ToggleMask;
+			const byte ToggleMask = 0x01;
+			return ( Data[ (int)key ] & ToggleMask ) == ToggleMask;
 		}
 
 		/// <summary>Gets a value indicating whether the CapsLock toggle is active.</summary>
@@ -71,7 +56,7 @@ namespace ManagedX.Input
 		/// <returns>Returns a hash code for this <see cref="KeyboardState"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return data.GetHashCode();
+			return Data.GetHashCode();
 		}
 
 
@@ -81,11 +66,11 @@ namespace ManagedX.Input
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062", MessageId = "0" )]
 		public bool Equals( KeyboardState other )
 		{
-			if( other.data == null )
-				return data == null;
+			if( other.Data == null )
+				return Data == null;
 
 			for( int i = 0; i < 256; i++ )
-				if( data[ i ] != other.data[ i ] )
+				if( Data[ i ] != other.Data[ i ] )
 					return false;
 
 			return true;
@@ -102,7 +87,10 @@ namespace ManagedX.Input
 
 
 		/// <summary>The empty <see cref="KeyboardState"/> structure.</summary>
-		public static readonly KeyboardState Empty = new KeyboardState( new byte[ 256 ] );
+		public static readonly KeyboardState Empty = new KeyboardState()
+		{
+			Data = new byte[ 256 ]
+		};
 
 
 		#region Operators

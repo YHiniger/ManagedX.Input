@@ -11,7 +11,7 @@ namespace ManagedX.Input.Raw
 	/// <summary>Defines the raw input data coming from the specified Human Interface Device (HID).
 	/// <para>The native name of this structure is RID_DEVICE_INFO_HID.</para>
 	/// </summary>
-	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 16 )]
 	public struct HumanInterfaceDeviceInfo : IEquatable<HumanInterfaceDeviceInfo>
 	{
 

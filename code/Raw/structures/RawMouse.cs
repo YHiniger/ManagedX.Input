@@ -11,7 +11,7 @@ namespace ManagedX.Input.Raw
 	/// <summary>Contains information about the state of the mouse.
 	/// <para>The native name of this structure is RAWMOUSE.</para>
 	/// </summary>
-	[StructLayout( LayoutKind.Sequential, Size = 22 )]
+	[StructLayout( LayoutKind.Sequential, Size = 22 )] // for some reason packing can't be set...
 	public struct RawMouse : IEquatable<RawMouse>
 	{
 

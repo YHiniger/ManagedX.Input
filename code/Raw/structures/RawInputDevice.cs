@@ -11,7 +11,7 @@ namespace ManagedX.Input.Raw
 	/// <summary>Defines information for the raw input devices.
 	/// <para>The native name of this structure is RAWINPUTDEVICE.</para>
 	/// </summary>
-	[StructLayout( LayoutKind.Sequential )]
+	[StructLayout( LayoutKind.Sequential, Pack = 2 )]
 	internal struct RawInputDevice : IEquatable<RawInputDevice>
 	{
 

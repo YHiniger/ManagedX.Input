@@ -12,7 +12,7 @@ namespace ManagedX.Input.XInput
 
 
 	/// <summary>Specifies keystroke data returned by XInputGetKeystroke.</summary>
-	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 8 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 8 )]
 	public struct Keystroke : IEquatable<Keystroke>
 	{
 

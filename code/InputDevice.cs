@@ -13,8 +13,8 @@ namespace ManagedX.Input
 	{
 
 
-		/// <summary></summary>
-		/// <returns></returns>
+		/// <summary>Returns an exception for the last Win32 error.</summary>
+		/// <returns>Returns an exception for the last Win32 error.</returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate" )]
 		protected static Exception GetLastWin32Exception()
 		{

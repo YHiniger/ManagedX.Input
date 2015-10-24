@@ -197,18 +197,17 @@ namespace ManagedX.Input
 		/// <returns>Returns a <see cref="KeyboardState"/> structure representing the current state of the keyboard.</returns>
 		protected sealed override KeyboardState GetState()
 		{
-			var buffer = new byte[ 256 ];
-			
-			if( disconnected = !SafeNativeMethods.GetKeyboardState( buffer ) )
-			{
-				var lastException = GetLastWin32Exception();
-				if( lastException.HResult == (int)ErrorCode.NotConnected )
-					return KeyboardState.Empty;
+			KeyboardState state;
+			state.Data = new byte[ 256 ];
 
-				throw new System.ComponentModel.Win32Exception( "Failed to retrieve keyboard state.", lastException );
-			}
+			if( !( disconnected = !SafeNativeMethods.GetKeyboardState( state.Data ) ) )
+				return state;
 
-			return new KeyboardState( buffer );
+			var lastException = GetLastWin32Exception();
+			if( lastException.HResult == (int)ErrorCode.NotConnected )
+				return KeyboardState.Empty;
+
+			throw new System.ComponentModel.Win32Exception( "Failed to retrieve keyboard state.", lastException );
 		}
 
 

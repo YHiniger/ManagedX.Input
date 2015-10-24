@@ -11,7 +11,7 @@ namespace ManagedX.Input.Raw
 	/// <summary>Contains information about the state of the keyboard.
 	/// <para>The native name of this structure is RAWKEYBOARD.</para>
 	/// </summary>
-	[StructLayout( LayoutKind.Sequential, Size = 16 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 16 )]
 	public struct RawKeyboard : IEquatable<RawKeyboard>
 	{
 
