@@ -144,7 +144,6 @@ namespace ManagedX.Input
 
 
 		private bool disconnected;
-		private byte[] stateBuffer;
 
 
 		#region Constructor, destructor
@@ -155,8 +154,6 @@ namespace ManagedX.Input
 		private Keyboard( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
 			: base( controllerIndex, ref descriptor )
 		{
-			stateBuffer = new byte[ 256 ];
-
 			var zero = TimeSpan.Zero;
 			this.Reset( ref zero );
 		}
@@ -200,7 +197,9 @@ namespace ManagedX.Input
 		/// <returns>Returns a <see cref="KeyboardState"/> structure representing the current state of the keyboard.</returns>
 		protected sealed override KeyboardState GetState()
 		{
-			if( disconnected = !SafeNativeMethods.GetKeyboardState( stateBuffer ) )
+			var buffer = new byte[ 256 ];
+			
+			if( disconnected = !SafeNativeMethods.GetKeyboardState( buffer ) )
 			{
 				var lastException = GetLastWin32Exception();
 				if( lastException.HResult == (int)ErrorCode.NotConnected )
@@ -209,7 +208,7 @@ namespace ManagedX.Input
 				throw new System.ComponentModel.Win32Exception( "Failed to retrieve keyboard state.", lastException );
 			}
 
-			return new KeyboardState( stateBuffer );
+			return new KeyboardState( buffer );
 		}
 
 
