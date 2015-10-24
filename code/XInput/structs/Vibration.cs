@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 
@@ -11,6 +12,7 @@ namespace ManagedX.Input.XInput
 
 
 	/// <summary>An XInput VIBRATION structure.</summary>
+	[Serializable]
 	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 4 )]
 	public struct Vibration : IEquatable<Vibration>
 	{
@@ -37,7 +39,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="leftMotorSpeed">The speed of the left motor, in the range [0,1].</param>
 		/// <param name="rightMotorSpeed">The speed of the right motor, in the range [0,1].</param>
 		public Vibration( float leftMotorSpeed, float rightMotorSpeed )
-			: this( FloatToUShort( leftMotorSpeed ), FloatToUShort( rightMotorSpeed ) )
+			: this( ToUShort( leftMotorSpeed ), ToUShort( rightMotorSpeed ) )
 		{
 		}
 
@@ -48,16 +50,16 @@ namespace ManagedX.Input.XInput
 		/// <summary>Gets or sets the left motor speed, in the range [0,1].</summary>
 		public float LeftMotorSpeed
 		{
-			get { return UShortToFloat( leftMotorSpeed ); }
-			set { leftMotorSpeed = FloatToUShort( value ); }
+			get { return ToFloat( leftMotorSpeed ); }
+			set { leftMotorSpeed = ToUShort( value ); }
 		}
 
 
 		/// <summary>Gets or sets the right motor speed, in the range [0,1].</summary>
 		public float RightMotorSpeed
 		{
-			get { return UShortToFloat( rightMotorSpeed ); }
-			set { rightMotorSpeed = FloatToUShort( value ); }
+			get { return ToFloat( rightMotorSpeed ); }
+			set { rightMotorSpeed = ToUShort( value ); }
 		}
 
 
@@ -109,12 +111,14 @@ namespace ManagedX.Input.XInput
 		#region Static methods (Add, Multiply, Lerp)
 
 
-		private static float UShortToFloat( ushort value )
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
+		private static float ToFloat( ushort value )
 		{
 			return (float)value / 65535.0f;
 		}
 
-		private static ushort FloatToUShort( float value )
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
+		private static ushort ToUShort( float value )
 		{
 			if( float.IsNaN( value ) || float.IsNegativeInfinity( value ) || value <= 0.0f )
 				return 0;
@@ -126,19 +130,18 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Calculates the sum of two <see cref="Vibration"/> values.</summary>
+		/// <summary>Calculates the sum of two <see cref="Vibration"/>s.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <param name="result">Receives a <see cref="Vibration"/> structure initialized with the sum (clamped to the valid range) of the two specified values.</param>
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
 		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Add( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
-			result = new Vibration(
-				(ushort)Math.Min( (int)vibration.leftMotorSpeed + (int)other.leftMotorSpeed, ushort.MaxValue ),
-				(ushort)Math.Min( (int)vibration.rightMotorSpeed + (int)other.rightMotorSpeed, ushort.MaxValue )
-			);
+			result.leftMotorSpeed = (ushort)Math.Min( (uint)vibration.leftMotorSpeed + (uint)other.leftMotorSpeed, (uint)ushort.MaxValue );
+			result.rightMotorSpeed = (ushort)Math.Min( (uint)vibration.rightMotorSpeed + (uint)other.rightMotorSpeed, (uint)ushort.MaxValue );
 		}
 
 		/// <summary>Returns the sum of two <see cref="Vibration"/> structures.</summary>
@@ -147,10 +150,37 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a <see cref="Vibration"/> initialized with the sum of the two specified <see cref="Vibration"/> values.</returns>
 		public static Vibration Add( Vibration vibration, Vibration other )
 		{
-			return new Vibration(
-				(ushort)Math.Min( (int)vibration.leftMotorSpeed + (int)other.leftMotorSpeed, ushort.MaxValue ),
-				(ushort)Math.Min( (int)vibration.rightMotorSpeed + (int)other.rightMotorSpeed, ushort.MaxValue )
-			);
+			Vibration result;
+			result.leftMotorSpeed = (ushort)Math.Min( (uint)vibration.leftMotorSpeed + (uint)other.leftMotorSpeed, (uint)ushort.MaxValue );
+			result.rightMotorSpeed = (ushort)Math.Min( (uint)vibration.rightMotorSpeed + (uint)other.rightMotorSpeed, (uint)ushort.MaxValue );
+			return result;
+		}
+
+
+		/// <summary>Calculates the difference between two <see cref="Vibration"/>s.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
+		/// <param name="result">Receives a <see cref="Vibration"/> structure initialized with the difference (clamped to the valid range) of the two specified vibrations.</param>
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
+		public static void Subtract( ref Vibration vibration, ref Vibration other, out Vibration result )
+		{
+			result.leftMotorSpeed = (ushort)XMath.Clamp( (int)vibration.leftMotorSpeed - (int)other.leftMotorSpeed, 0, (int)ushort.MaxValue );
+			result.rightMotorSpeed = (ushort)XMath.Clamp( (int)vibration.rightMotorSpeed - (int)other.rightMotorSpeed, 0, (int)ushort.MaxValue );
+		}
+
+		/// <summary>Calculates the difference between two <see cref="Vibration"/>s.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
+		/// <returns>Returns a <see cref="Vibration"/> structure initialized with the difference (clamped to the valid range) of the two specified vibrations.</returns>
+		public static Vibration Subtract( Vibration vibration, Vibration other )
+		{
+			Vibration result;
+			result.leftMotorSpeed = (ushort)XMath.Clamp( (int)vibration.leftMotorSpeed - (int)other.leftMotorSpeed, 0, (int)ushort.MaxValue );
+			result.rightMotorSpeed = (ushort)XMath.Clamp( (int)vibration.rightMotorSpeed - (int)other.rightMotorSpeed, 0, (int)ushort.MaxValue );
+			return result;
 		}
 
 
@@ -161,12 +191,12 @@ namespace ManagedX.Input.XInput
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
 		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Multiply( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
-			result = new Vibration(
-				(ushort)( vibration.LeftMotorSpeed * (float)other.leftMotorSpeed ),
-				(ushort)( vibration.RightMotorSpeed * (float)other.rightMotorSpeed )
-			);
+			const uint Max = 65535u * 65535u;
+			result.leftMotorSpeed = (ushort)( (uint)vibration.leftMotorSpeed * (uint)other.leftMotorSpeed / Max );
+			result.rightMotorSpeed = (ushort)( (uint)vibration.rightMotorSpeed * (uint)other.rightMotorSpeed / Max );
 		}
 
 		/// <summary>Multiplies two <see cref="Vibration"/> values.</summary>
@@ -175,33 +205,37 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns the scaled <see cref="Vibration"/>.</returns>
 		public static Vibration Multiply( Vibration vibration, Vibration other )
 		{
-			return new Vibration(
-				(ushort)( vibration.LeftMotorSpeed * (float)other.leftMotorSpeed ),
-				(ushort)( vibration.RightMotorSpeed * (float)other.rightMotorSpeed )
-			);
+			const uint Max = 65535u * 65535u;
+			Vibration result;
+			result.leftMotorSpeed = (ushort)( (uint)vibration.leftMotorSpeed * (uint)other.leftMotorSpeed / Max );
+			result.rightMotorSpeed = (ushort)( (uint)vibration.rightMotorSpeed * (uint)other.rightMotorSpeed / Max );
+			return result;
 		}
 
 
 		/// <summary>Multiplies a <see cref="Vibration"/> with a value.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		/// <param name="value">A finite single-precision floating-point value.</param>
+		/// <param name="value">A finite, positive single-precision floating-point value.</param>
 		/// <param name="result">Returns the scaled <see cref="Vibration"/>.</param>
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
 		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Multiply( ref Vibration vibration, float value, out Vibration result )
 		{
-			value = value.Clamp( 0.0f, float.MaxValue );
-			result = new Vibration( vibration.LeftMotorSpeed * value, vibration.RightMotorSpeed * value );
+			result.leftMotorSpeed = (ushort)XMath.Clamp( (float)vibration.leftMotorSpeed * value, 0.0f, 65535.0f );
+			result.rightMotorSpeed  = (ushort)XMath.Clamp( (float)vibration.rightMotorSpeed * value, 0.0f, 65535.0f );
 		}
 
 		/// <summary>Multiplies a <see cref="Vibration"/> with a value.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		/// <param name="value">A finite single-precision floating-point value.</param>
+		/// <param name="value">A finite, positive single-precision floating-point value.</param>
 		/// <returns>Returns the scaled <see cref="Vibration"/>.</returns>
 		public static Vibration Multiply( Vibration vibration, float value )
 		{
-			value = value.Clamp( 0.0f, float.MaxValue );
-			return new Vibration( vibration.LeftMotorSpeed * value, vibration.RightMotorSpeed * value );
+			Vibration result;
+			result.leftMotorSpeed = (ushort)XMath.Clamp( (float)vibration.leftMotorSpeed * value, 0.0f, 65535.0f );
+			result.rightMotorSpeed = (ushort)XMath.Clamp( (float)vibration.rightMotorSpeed * value, 0.0f, 65535.0f );
+			return result;
 		}
 
 
@@ -214,12 +248,11 @@ namespace ManagedX.Input.XInput
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
 		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "3#", Justification = "Performance matters." )]
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Lerp( ref Vibration source, ref Vibration target, float amount, out Vibration result )
 		{
-			result = new Vibration(
-				XMath.Lerp( source.LeftMotorSpeed, target.LeftMotorSpeed, amount ),
-				XMath.Lerp( source.RightMotorSpeed, target.RightMotorSpeed, amount )
-			);
+			result.leftMotorSpeed = (ushort)XMath.Lerp( (float)source.leftMotorSpeed, (float)target.leftMotorSpeed, amount );
+			result.rightMotorSpeed = (ushort)XMath.Lerp( (float)source.rightMotorSpeed, (float)target.rightMotorSpeed, amount );
 		}
 
 		/// <summary>Performs a linear interpolation between two <see cref="Vibration"/> structures.</summary>
@@ -229,12 +262,11 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns the interpolated <see cref="Vibration"/>.</returns>
 		public static Vibration Lerp( Vibration source, Vibration target, float amount )
 		{
-			return new Vibration(
-				XMath.Lerp( source.LeftMotorSpeed, target.LeftMotorSpeed, amount ),
-				XMath.Lerp( source.RightMotorSpeed, target.RightMotorSpeed, amount )
-			);
+			Vibration result;
+			result.leftMotorSpeed = (ushort)XMath.Lerp( (float)source.leftMotorSpeed, (float)target.leftMotorSpeed, amount );
+			result.rightMotorSpeed = (ushort)XMath.Lerp( (float)source.rightMotorSpeed, (float)target.rightMotorSpeed, amount );
+			return result;
 		}
-
 
 		#endregion
 
@@ -269,6 +301,18 @@ namespace ManagedX.Input.XInput
 			Vibration sum;
 			Add( ref vibration, ref other, out sum );
 			return sum;
+		}
+
+
+		/// <summary>Subtraction operator.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <param name="other">A <see cref="Vibration"/> structure.</param>
+		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the difference between the two specified vibrations.</returns>
+		public static Vibration operator -( Vibration vibration, Vibration other )
+		{
+			Vibration result;
+			Subtract( ref vibration, ref other, out result );
+			return result;
 		}
 
 
