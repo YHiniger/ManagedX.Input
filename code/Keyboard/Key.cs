@@ -3,7 +3,6 @@
 
 namespace ManagedX.Input
 {
-	// TODO - make this a subset of the VirtualKeyCode enumeration:
 
 	/// <summary>Enumerates keyboard keys using their <see cref="VirtualKeyCode"/>.</summary>
 	public enum Key : int
@@ -283,248 +282,245 @@ namespace ManagedX.Input
 		
 		
 		/// <summary>The 0 key on the numeric keypad.</summary>
-		NumPad0 = 96,
+		NumPad0 = VirtualKeyCode.NumPad0,
 		
 		/// <summary>The 1 key on the numeric keypad.</summary>
-		NumPad1 = 97,
+		NumPad1 = VirtualKeyCode.NumPad1,
 
 		/// <summary>The 2 key on the numeric keypad.</summary>
-		NumPad2 = 98,
+		NumPad2 = VirtualKeyCode.NumPad2,
 
 		/// <summary>The 3 key on the numeric keypad.</summary>
-		NumPad3 = 99,
+		NumPad3 = VirtualKeyCode.NumPad3,
 
 		/// <summary>The 4 key on the numeric keypad.</summary>
-		NumPad4 = 100,
+		NumPad4 = VirtualKeyCode.NumPad4,
 
 		/// <summary>The 5 key on the numeric keypad.</summary>
-		NumPad5 = 101,
+		NumPad5 = VirtualKeyCode.NumPad5,
 
 		/// <summary>The 6 key on the numeric keypad.</summary>
-		NumPad6 = 102,
+		NumPad6 = VirtualKeyCode.NumPad6,
 
 		/// <summary>The 7 key on the numeric keypad.</summary>
-		NumPad7 = 103,
+		NumPad7 = VirtualKeyCode.NumPad7,
 
 		/// <summary>The 8 key on the numeric keypad.</summary>
-		NumPad8 = 104,
+		NumPad8 = VirtualKeyCode.NumPad8,
 
 		/// <summary>The 9 key on the numeric keypad.</summary>
-		NumPad9 = 105,
+		NumPad9 = VirtualKeyCode.NumPad9,
 		
 		/// <summary>The MULTIPLY key.</summary>
-		Multiply = 106,
+		Multiply = VirtualKeyCode.Multiply,
 		
 		/// <summary>The ADD key.</summary>
-		Add = 107,
+		Add = VirtualKeyCode.Add,
 		
 		/// <summary>The SEPARATOR key.</summary>
-		Separator = 108,
+		Separator = VirtualKeyCode.Separator,
 		
 		/// <summary>The SUBTRACT key.</summary>
-		Subtract = 109,
+		Subtract = VirtualKeyCode.Subtract,
 		
 		/// <summary>The DECIMAL key.</summary>
-		Decimal = 110,
+		Decimal = VirtualKeyCode.Decimal,
 		
 		/// <summary>The DIVIDE key.</summary>
-		Divide = 111,
+		Divide = VirtualKeyCode.Divide,
 		
 		
 		/// <summary>The F1 key.</summary>
-		F1 = 112,
+		F1 = VirtualKeyCode.F1,
 		
 		/// <summary>The F2 key.</summary>
-		F2 = 113,
+		F2 = VirtualKeyCode.F2,
 		
 		/// <summary>The F3 key.</summary>
-		F3 = 114,
+		F3 = VirtualKeyCode.F3,
 		
 		/// <summary>The F4 key.</summary>
-		F4 = 115,
+		F4 = VirtualKeyCode.F4,
 		
 		/// <summary>The F5 key.</summary>
-		F5 = 116,
+		F5 = VirtualKeyCode.F5,
 		
 		/// <summary>The F6 key.</summary>
-		F6 = 117,
+		F6 = VirtualKeyCode.F6,
 		
 		/// <summary>The F7 key.</summary>
-		F7 = 118,
+		F7 = VirtualKeyCode.F7,
 		
 		/// <summary>The F8 key.</summary>
-		F8 = 119,
+		F8 = VirtualKeyCode.F8,
 		
 		/// <summary>The F9 key.</summary>
-		F9 = 120,
+		F9 = VirtualKeyCode.F9,
 		
 		/// <summary>The F10 key.</summary>
-		F10 = 121,
+		F10 = VirtualKeyCode.F10,
 		
 		/// <summary>The F11 key.</summary>
-		F11 = 122,
+		F11 = VirtualKeyCode.F11,
 		
 		/// <summary>The F12 key.</summary>
-		F12 = 123,
+		F12 = VirtualKeyCode.F12,
 		
 		/// <summary>The F13 key.</summary>
-		F13 = 124,
+		F13 = VirtualKeyCode.F13,
 		
 		/// <summary>The F14 key.</summary>
-		F14 = 125,
+		F14 = VirtualKeyCode.F14,
 		
 		/// <summary>The F15 key.</summary>
-		F15 = 126,
+		F15 = VirtualKeyCode.F15,
 		
 		/// <summary>The F16 key.</summary>
-		F16 = 127,
+		F16 = VirtualKeyCode.F16,
 		
 		/// <summary>The F17 key.</summary>
-		F17 = 128,
+		F17 = VirtualKeyCode.F17,
 		
 		/// <summary>The F18 key.</summary>
-		F18 = 129,
+		F18 = VirtualKeyCode.F18,
 		
 		/// <summary>The F19 key.</summary>
-		F19 = 130,
+		F19 = VirtualKeyCode.F19,
 		
 		/// <summary>The F20 key.</summary>
-		F20 = 131,
+		F20 = VirtualKeyCode.F20,
 		
 		/// <summary>The F21 key.</summary>
-		F21 = 132,
+		F21 = VirtualKeyCode.F21,
 		
 		/// <summary>The F22 key.</summary>
-		F22 = 133,
+		F22 = VirtualKeyCode.F22,
 		
 		/// <summary>The F23 key.</summary>
-		F23 = 134,
+		F23 = VirtualKeyCode.F23,
 		
 		/// <summary>The F24 key.</summary>
-		F24 = 135,
+		F24 = VirtualKeyCode.F24,
 
 		
 		/// <summary>The NUM LOCK key.</summary>
-		NumLock = 144,
+		NumLock = VirtualKeyCode.NumLock,
 
 		/// <summary>The SCROLL LOCK key.</summary>
-		ScrollLock = 145,
+		ScrollLock = VirtualKeyCode.ScrollLock,
 
 
 		/// <summary>The left SHIFT key.</summary>
-		LShiftKey = 160,
+		LShiftKey = VirtualKeyCode.LShiftKey,
 		
 		/// <summary>The right SHIFT key.</summary>
-		RShiftKey = 161,
+		RShiftKey = VirtualKeyCode.RShiftKey,
 		
 		/// <summary>The left CTRL key.</summary>
-		LControlKey = 162,
+		LControlKey = VirtualKeyCode.LControlKey,
 		
 		/// <summary>The right CTRL key.</summary>
-		RControlKey = 163,
+		RControlKey = VirtualKeyCode.RControlKey,
 		
 		/// <summary>The left ALT key.</summary>
-		LMenu = 164,
+		LMenu = VirtualKeyCode.LMenu,
 		
 		/// <summary>The right ALT key.</summary>
-		RMenu = 165,
+		RMenu = VirtualKeyCode.RMenu,
 		
 		
 		/// <summary>The browser BACK key.</summary>
-		BrowserBack = 166,
+		BrowserBack = VirtualKeyCode.BrowserBack,
 		
 		/// <summary>The browser NEXT key.</summary>
-		BrowserForward = 167,
+		BrowserForward = VirtualKeyCode.BrowserForward,
 		
 		/// <summary>The browser REFRESH key.</summary>
-		BrowserRefresh = 168,
+		BrowserRefresh = VirtualKeyCode.BrowserRefresh,
 		
 		/// <summary>The browser STOP key.</summary>
-		BrowserStop = 169,
+		BrowserStop = VirtualKeyCode.BrowserStop,
 		
 		/// <summary>The browser SEARCH key.</summary>
-		BrowserSearch = 170,
+		BrowserSearch = VirtualKeyCode.BrowserSearch,
 		
 		/// <summary>The browser FAVORITES key.</summary>
-		BrowserFavorites = 171,
+		BrowserFavorites = VirtualKeyCode.BrowserFavorites,
 		
 		/// <summary>The browser HOME key.</summary>
-		BrowserHome = 172,
+		BrowserHome = VirtualKeyCode.BrowserHome,
 		
 		/// <summary>The VOLUME MUTE key.</summary>
-		VolumeMute = 173,
+		VolumeMute = VirtualKeyCode.VolumeMute,
 		
 		/// <summary>The VOLUME DOWN key.</summary>
-		VolumeDown = 174,
+		VolumeDown = VirtualKeyCode.VolumeDown,
 		
 		/// <summary>The VOLUME UP key.</summary>
-		VolumeUp = 175,
+		VolumeUp = VirtualKeyCode.VolumeUp,
 		
 		/// <summary>The MEDIA NEXT TRACK key.</summary>
-		MediaNextTrack = 176,
+		MediaNextTrack = VirtualKeyCode.MediaNextTrack,
 		
 		/// <summary>The MEDIA PREVIOUS TRACK key.</summary>
-		MediaPreviousTrack = 177,
+		MediaPreviousTrack = VirtualKeyCode.MediaPreviousTrack,
 		
 		/// <summary>The MEDIA STOP key.</summary>
-		MediaStop = 178,
+		MediaStop = VirtualKeyCode.MediaStop,
 		
 		/// <summary>The MEDIA PLAY/PAUSE key.</summary>
-		MediaPlayPause = 179,
+		MediaPlayPause = VirtualKeyCode.MediaPlayPause,
 		
 		/// <summary>The LAUNCH MAIL key.</summary>
-		LaunchMail = 180,
+		LaunchMail = VirtualKeyCode.LaunchMail,
 		
 		/// <summary>The SELECT MEDIA key.</summary>
-		SelectMedia = 181,
+		SelectMedia = VirtualKeyCode.SelectMedia,
 
 		/// <summary>The LAUNCH APPLICATION #1 key.</summary>
-		LaunchApplication1 = 182,
+		LaunchApplication1 = VirtualKeyCode.LaunchApplication1,
 		
 		/// <summary>The LAUNCH APPLICATION #2 key.</summary>
-		LaunchApplication2 = 183,
+		LaunchApplication2 = VirtualKeyCode.LaunchApplication2,
 		
 		/// <summary>The OEM SEMICOLON key.</summary>
-		OemSemicolon = 186,
-		
-		/// <summary>The OEM 1 key.</summary>
-		Oem1 = 186,
+		OemSemicolon = VirtualKeyCode.OemSemicolon,
 		
 		/// <summary>The OEM PLUS key.</summary>
-		OemPlus = 187,
+		OemPlus = VirtualKeyCode.OemPlus,
 		
 		/// <summary>The OEM COMMA key.</summary>
-		OemComma = 188,
+		OemComma = VirtualKeyCode.OemComma,
 
 		/// <summary>The OEM MINUS key.</summary>
-		OemMinus = 189,
+		OemMinus = VirtualKeyCode.OemMinus,
 
 		/// <summary>The OEM PERIOD key.</summary>
-		OemPeriod = 190,
+		OemPeriod = VirtualKeyCode.OemPeriod,
 
 		/// <summary>The OEM 2 key.</summary>
-		Oem2 = 191,
+		Oem2 = VirtualKeyCode.Oem2,
 
 		/// <summary>The OEM 3 key.</summary>
-		Oem3 = 192,
+		Oem3 = VirtualKeyCode.Oem3,
 
 		/// <summary>The OEM 4 key.</summary>
-		Oem4 = 219,
+		Oem4 = VirtualKeyCode.Oem4,
 
 		/// <summary>The OEM 5 key.</summary>
-		Oem5 = 220,
+		Oem5 = VirtualKeyCode.Oem5,
 
 		/// <summary>The OEM 6 key.</summary>
-		Oem6 = 221,
+		Oem6 = VirtualKeyCode.Oem6,
 
 		/// <summary>The OEM 7 key.</summary>
-		Oem7 = 222,
+		Oem7 = VirtualKeyCode.Oem7,
 
 		/// <summary>The OEM 8 key.</summary>
-		Oem8 = 223,
+		Oem8 = VirtualKeyCode.Oem8,
 
 		/// <summary>The OEM 102 key.</summary>
-		Oem102 = 226,
+		Oem102 = VirtualKeyCode.Oem102,
 
 		/// <summary>The PROCESS key.</summary>
 		ProcessKey = VirtualKeyCode.ProcessKey,
