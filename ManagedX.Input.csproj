@@ -59,7 +59,8 @@
     <Compile Include="code\Raw\enumerations\RawInputDeviceRegistrationOptions.cs" />
     <Compile Include="code\Raw\enumerations\RawMouseButtonStates.cs" />
     <Compile Include="code\Raw\enumerations\RawMouseStates.cs" />
-    <Compile Include="code\Raw\RawHumanInterfaceDevice.cs" />
+    <Compile Include="code\Raw\enumerations\TopLevelCollection.cs" />
+    <None Include="code\Raw\RawHumanInterfaceDevice.cs" />
     <Compile Include="code\Raw\RawInput.NativeMethods.cs" />
     <Compile Include="code\Raw\RawInputDevice_T.cs" />
     <Compile Include="code\Raw\structures\DeviceInfo.cs" />
