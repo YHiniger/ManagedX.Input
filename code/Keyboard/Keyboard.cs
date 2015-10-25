@@ -10,7 +10,7 @@ namespace ManagedX.Input
 
 	
 	/// <summary>A keyboard.</summary>
-	public sealed class Keyboard : RawInputDevice<KeyboardState, Key>, Design.IRawKeyboard
+	public sealed class Keyboard : RawInputDevice<KeyboardState, Key>
 	{
 
 		#region Static

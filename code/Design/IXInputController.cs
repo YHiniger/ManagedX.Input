@@ -28,20 +28,20 @@
 		//	/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		//	/// <param name="triggers">A <see cref="Vibration"/> structure for the triggers; requires an Xbox One controller.</param>
 		//	/// <returns>Returns true on sucess, otherwise returns false (ie: disconnected controller, no vibration support, etc).</returns>
-		//	/// <remarks>Only supported in XInput 1.5 (to be confirmed, it might be exclusive to Xbox...)</remarks>
+		//	/// <remarks>Only supported in XInput 1.5 (to be confirmed, it might be exclusive to Xbox One...)</remarks>
 		//	bool SetVibration( Vibration vibration, Vibration triggers );
 
 
-		/// <summary>Gets the sound rendering and sound capture audio device IDs associated with the headset connected to this controller.
-		/// <para>Not supported through XInput 1.3 (Windows Vista/7).</para>
-		/// </summary>
-		AudioDeviceIds AudioDeviceIds { get; }
+		///// <summary>Gets the sound rendering and sound capture audio device IDs associated with the headset connected to this controller.
+		///// <para>Not supported through XInput 1.3 (Windows Vista/7).</para>
+		///// </summary>
+		//AudioDeviceIds AudioDeviceIds { get; }
 
 		
-		/// <summary>Gets the sound rendering and sound capture device GUIDs associated with the headset connected to this controller.
-		/// <para>Deprecated, only supported through XInput 1.3.</para>
-		/// </summary>
-		DSoundAudioDeviceGuids DSoundAudioDeviceGuids { get; }
+		///// <summary>Gets the sound rendering and sound capture device GUIDs associated with the headset connected to this controller.
+		///// <para>Deprecated, only supported through XInput 1.3.</para>
+		///// </summary>
+		//DSoundAudioDeviceGuids DSoundAudioDeviceGuids { get; }
 
 	}
 

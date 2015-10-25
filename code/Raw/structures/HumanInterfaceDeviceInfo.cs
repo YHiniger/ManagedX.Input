@@ -15,6 +15,13 @@ namespace ManagedX.Input.Raw
 	public struct HumanInterfaceDeviceInfo : IEquatable<HumanInterfaceDeviceInfo>
 	{
 
+		/// <summary>Defines the top-level collection <see cref="Usage"/> for DirectInput joysticks (when <see cref="UsagePage"/> = 1): 4.</summary>
+		public const short JoystickUsage = 4;
+
+		/// <summary>Defines the top-level collection <see cref="Usage"/> for DirectInput gamepads (when <see cref="UsagePage"/> = 1): 5.</summary>
+		public const short GamepadUsage = 5;
+
+
 		private int vendorId;
 		private int productId;
 		private int versionNumber;

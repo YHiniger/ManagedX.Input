@@ -12,7 +12,7 @@ namespace ManagedX.Input
 
 	
 	/// <summary>A mouse.</summary>
-	public sealed class Mouse : RawInputDevice<MouseState, MouseButton>, Design.IRawMouse
+	public sealed class Mouse : RawInputDevice<MouseState, MouseButton>
 	{
 
 		/// <summary>Enumerates mouse buttons, using their <see cref="VirtualKeyCode"/>.</summary>

@@ -92,13 +92,19 @@ namespace ManagedX.Input.Raw
 
 		/// <summary>The empty <see cref="RawInputDevice"/> structure.</summary>
 		public static readonly RawInputDevice Empty = new RawInputDevice();
-		
 
 		/// <summary>The default <see cref="RawInputDevice"/> structure for mice.</summary>
 		internal static readonly RawInputDevice Mouse = new RawInputDevice( MouseDeviceInfo.UsagePage, MouseDeviceInfo.Usage, RawInputDeviceRegistrationOptions.InputSink, IntPtr.Zero );
 
-		/// <summary>The default <see cref="RawInputDevice"/> structure for the keyboard.</summary>
+		/// <summary>The default <see cref="RawInputDevice"/> structure for joysticks.</summary>
+		internal static readonly RawInputDevice Joystick = new RawInputDevice( 1, HumanInterfaceDeviceInfo.JoystickUsage, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
+
+		/// <summary>The default <see cref="RawInputDevice"/> structure for gamepads.</summary>
+		internal static readonly RawInputDevice Gamepad = new RawInputDevice( 1, HumanInterfaceDeviceInfo.GamepadUsage, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
+
+		/// <summary>The default <see cref="RawInputDevice"/> structure for keyboards.</summary>
 		internal static readonly RawInputDevice Keyboard = new RawInputDevice( KeyboardDeviceInfo.UsagePage, KeyboardDeviceInfo.Usage, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
+
 
 
 

@@ -49,11 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="code\Design\IInputDevice.cs" />
-    <Compile Include="code\Design\IKeyboard.cs" />
-    <Compile Include="code\Design\IMouse.cs" />
-    <Compile Include="code\Design\IRawHID.cs" />
     <Compile Include="code\Design\IRawInputDevice.cs" />
-    <Compile Include="code\Design\IRawKeyboard.cs" />
     <Compile Include="code\InputDevice.cs" />
     <Compile Include="code\Mouse\MouseButtons.cs" />
     <Compile Include="code\Keyboard\Keyboard.cs" />
@@ -63,7 +59,7 @@
     <Compile Include="code\Raw\enumerations\RawInputDeviceRegistrationOptions.cs" />
     <Compile Include="code\Raw\enumerations\RawMouseButtonStates.cs" />
     <Compile Include="code\Raw\enumerations\RawMouseStates.cs" />
-    <Compile Include="code\Design\IRawMouse.cs" />
+    <Compile Include="code\Raw\RawHumanInterfaceDevice.cs" />
     <Compile Include="code\Raw\RawInput.NativeMethods.cs" />
     <Compile Include="code\Raw\RawInputDevice_T.cs" />
     <Compile Include="code\Raw\structures\DeviceInfo.cs" />
