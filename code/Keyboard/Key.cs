@@ -49,225 +49,237 @@ namespace ManagedX.Input
 		CapsLock = VirtualKeyCode.CapsLock,
 
 		
-		/// <summary>The IME Kana mode key.</summary>
-		KanaMode = 21,
-		
-		/// <summary>The IME Hangul mode key.</summary>
-		HangulMode = KanaMode,
+		/// <summary>The IME Kana or Hangul mode key.</summary>
+		KanaMode = VirtualKeyCode.KanaMode,
 		
 		/// <summary>The IME Junja mode key.</summary>
-		JunjaMode = 23,
+		JunjaMode = VirtualKeyCode.JunjaMode,
 		
 		/// <summary>The IME final mode key.</summary>
-		FinalMode = 24,
+		FinalMode = VirtualKeyCode.FinalMode,
 		
-		/// <summary>The IME Hanja mode key.</summary>
-		HanjaMode = 25,
-		
-		/// <summary>The IME Kanji mode key.</summary>
-		KanjiMode = HanjaMode,
-
+		/// <summary>The IME Hanja or Kanji mode key.</summary>
+		HanjaMode = VirtualKeyCode.HanjaMode,
 
 
 		/// <summary>The ESC key.</summary>
-		Escape = 27,
+		Escape = VirtualKeyCode.Escape,
 		
 
 		/// <summary>The IME Convert key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IME" )]
-		IMEConvert = 28,
+		IMEConvert = VirtualKeyCode.IMEConvert,
 		
 		/// <summary>The IME Nonconvert key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IME" )]
-		IMENonconvert = 29,
+		IMENonconvert = VirtualKeyCode.IMENonconvert,
 		
 		/// <summary>The IME Accept key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IME" )]
-		IMEAccept = 30,
+		IMEAccept = VirtualKeyCode.IMEAccept,
 		
 		/// <summary>The IME mode modification key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IME" )]
-		IMEModeChange = 31,
+		IMEModeChange = VirtualKeyCode.IMEModeChange,
 		
 		
 		/// <summary>The SPACEBAR key.</summary>
-		Space = 32,
+		Space = VirtualKeyCode.Space,
 		
 		/// <summary>The PAGE UP key.</summary>
-		PageUp = 33,
+		PageUp = VirtualKeyCode.PageUp,
 		
 		/// <summary>The PAGE DOWN key.</summary>
-		PageDown = 34,
+		PageDown = VirtualKeyCode.PageDown,
 		
 		/// <summary>The END key.</summary>
-		End = 35,
+		End = VirtualKeyCode.End,
 		
 		/// <summary>The HOME key.</summary>
-		Home = 36,
+		Home = VirtualKeyCode.Home,
 		
 
 		/// <summary>The LEFT ARROW key.</summary>
-		Left = 37,
+		Left = VirtualKeyCode.Left,
 		
 		/// <summary>The UP ARROW key.</summary>
-		Up = 38,
+		Up = VirtualKeyCode.Up,
 		
 		/// <summary>The RIGHT ARROW key.</summary>
-		Right = 39,
+		Right = VirtualKeyCode.Right,
 		
 		/// <summary>The DOWN ARROW key.</summary>
-		Down = 40,
+		Down = VirtualKeyCode.Down,
 		
 
 		/// <summary>The SELECT key.</summary>
-		Select = 41,
+		Select = VirtualKeyCode.Select,
 		
 		/// <summary>The PRINT key.</summary>
-		Print = 42,
+		Print = VirtualKeyCode.Print,
 		
 		/// <summary>The EXECUTE key.</summary>
-		Execute = 43,
+		Execute = VirtualKeyCode.Execute,
 		
 		/// <summary>The PRINT SCREEN key.</summary>
-		PrintScreen = 44,
+		PrintScreen = VirtualKeyCode.PrintScreen,
 		
 		/// <summary>The INS key.</summary>
-		Insert = 45,
+		Insert = VirtualKeyCode.Insert,
 		
 		/// <summary>The DEL key.</summary>
-		Delete = 46,
+		Delete = VirtualKeyCode.Delete,
 		
 		/// <summary>The HELP key.</summary>
-		Help = 47,
+		Help = VirtualKeyCode.Help,
 		
 		/// <summary>The 0 key.</summary>
-		D0 = 48,
+		D0 = VirtualKeyCode.D0,
 		
 		/// <summary>The 1 key.</summary>
-		D1 = 49,
+		D1 = VirtualKeyCode.D1,
 		
 		/// <summary>The 2 key.</summary>
-		D2 = 50,
+		D2 = VirtualKeyCode.D2,
 		
 		/// <summary>The 3 key.</summary>
-		D3 = 51,
+		D3 = VirtualKeyCode.D3,
 		
 		/// <summary>The 4 key.</summary>
-		D4 = 52,
+		D4 = VirtualKeyCode.D4,
 		
 		/// <summary>The 5 key.</summary>
-		D5 = 53,
+		D5 = VirtualKeyCode.D5,
 
 		/// <summary>The 6 key.</summary>
-		D6 = 54,
+		D6 = VirtualKeyCode.D6,
 		
 		/// <summary>The 7 key.</summary>
-		D7 = 55,
+		D7 = VirtualKeyCode.D7,
 		
 		/// <summary>The 8 key.</summary>
-		D8 = 56,
+		D8 = VirtualKeyCode.D8,
 		
 		/// <summary>The 9 key.</summary>
-		D9 = 57,
+		D9 = VirtualKeyCode.D9,
 		
 		
 		/// <summary>The A key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "A" )]
-		A = 65,
+		A = VirtualKeyCode.A,
 		
 		/// <summary>The B key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "B" )]
-		B = 66,
+		B = VirtualKeyCode.B,
 		
 		/// <summary>The C key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "C" )]
-		C = 67,
+		C = VirtualKeyCode.C,
 		
 		/// <summary>The D key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "D" )]
-		D = 68,
+		D = VirtualKeyCode.D,
 		
 		/// <summary>The E key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "E" )]
-		E = 69,
+		E = VirtualKeyCode.E,
 		
 		/// <summary>The F key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "F" )]
-		F = 70,
+		F = VirtualKeyCode.F,
 		
 		/// <summary>The G key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "G" )]
-		G = 71,
+		G = VirtualKeyCode.G,
+		
 		/// <summary>The H key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "H" )]
-		H = 72,
+		H = VirtualKeyCode.H,
+		
 		/// <summary>The I key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I" )]
-		I = 73,
+		I = VirtualKeyCode.I,
+		
 		/// <summary>The J key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "J" )]
-		J = 74,
+		J = VirtualKeyCode.J,
+		
 		/// <summary>The K key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "K" )]
-		K = 75,
+		K = VirtualKeyCode.K,
+		
 		/// <summary>The L key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "L" )]
-		L = 76,
+		L = VirtualKeyCode.L,
+		
 		/// <summary>The M key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "M" )]
-		M = 77,
+		M = VirtualKeyCode.M,
+		
 		/// <summary>The N key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "N" )]
-		N = 78,
+		N = VirtualKeyCode.N,
+		
 		/// <summary>The O key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "O" )]
-		O = 79,
+		O = VirtualKeyCode.O,
+		
 		/// <summary>The P key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "P" )]
-		P = 80,
+		P = VirtualKeyCode.P,
+		
 		/// <summary>The Q key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Q" )]
-		Q = 81,
+		Q = VirtualKeyCode.Q,
+		
 		/// <summary>The R key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "R" )]
-		R = 82,
+		R = VirtualKeyCode.R,
+		
 		/// <summary>The S key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "S" )]
-		S = 83,
+		S = VirtualKeyCode.S,
+		
 		/// <summary>The T key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "T" )]
-		T = 84,
+		T = VirtualKeyCode.T,
+		
 		/// <summary>The U key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "U" )]
-		U = 85,
+		U = VirtualKeyCode.U,
+		
 		/// <summary>The V key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V" )]
-		V = 86,
+		V = VirtualKeyCode.V,
+		
 		/// <summary>The W key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "W" )]
-		W = 87,
+		W = VirtualKeyCode.W,
+		
 		/// <summary>The X key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "X" )]
-		X = 88,
+		X = VirtualKeyCode.X,
+		
 		/// <summary>The Y key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Y" )]
-		Y = 89,
+		Y = VirtualKeyCode.Y,
+		
 		/// <summary>The Z key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Z" )]
-		Z = 90,
+		Z = VirtualKeyCode.Z,
 		
 		
 		/// <summary>The left Windows logo key (Microsoft Natural Keyboard).</summary>
-		LWin = 91,
+		LWin = VirtualKeyCode.LWin,
 		
 		/// <summary>The right Windows logo key (Microsoft Natural Keyboard).</summary>
-		RWin = 92,
+		RWin = VirtualKeyCode.RWin,
 		
 		/// <summary>The application key (Microsoft Natural Keyboard).</summary>
-		Apps = 93,
+		Apps = VirtualKeyCode.Apps,
 		
 		/// <summary>The SLEEP key.</summary>
-		Sleep = 95,
+		Sleep = VirtualKeyCode.Sleep,
 		
 		
 		/// <summary>The 0 key on the numeric keypad.</summary>
@@ -517,10 +529,10 @@ namespace ManagedX.Input
 		/// <summary>The PROCESS key.</summary>
 		ProcessKey = VirtualKeyCode.ProcessKey,
 
-		/// <summary>Permet de passer des caractères Unicode comme s'il s'agissait de séquences de touches.
-		/// <para>La valeur de la touche Packet est le mot inférieur d'une valeur de clé virtuelle 32 bits utilisée pour les méthodes d'entrée autres qu'au clavier.</para>
-		/// </summary>
-		Packet = VirtualKeyCode.Packet,
+		///// <summary>Permet de passer des caractères Unicode comme s'il s'agissait de séquences de touches.
+		///// <para>La valeur de la touche Packet est le mot inférieur d'une valeur de clé virtuelle 32 bits utilisée pour les méthodes d'entrée autres qu'au clavier.</para>
+		///// </summary>
+		//Packet = VirtualKeyCode.Packet,
 
 		/// <summary>The ATTN key.</summary>
 		Attn = VirtualKeyCode.Attn,
@@ -540,9 +552,6 @@ namespace ManagedX.Input
 		/// <summary>The ZOOM key.</summary>
 		Zoom = VirtualKeyCode.Zoom,
 
-		///// <summary>Reserved for future use.</summary>
-		//NoName = 252,
-
 		/// <summary>The PA1 key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Pa" )]
 		Pa1 = VirtualKeyCode.Pa1,
@@ -558,20 +567,7 @@ namespace ManagedX.Input
 		Control = VirtualKeyCode.Control,
 
 		/// <summary>The ALT modifier key.</summary>
-		Alt = VirtualKeyCode.Alt,
-
-
-		//#region BitMasks
-
-		// FIXME - this is not part of this enumeration !
-
-		///// <summary>Le masque de bits pour extraire un code de touche à partir d'une valeur de touche.</summary>
-		//KeyCode = 65535,
-
-		///// <summary>Le masque de bits pour extraire les modificateurs à partir d'une valeur de touche.</summary>
-		//Modifiers = -65536
-
-		//#endregion
+		Alt = VirtualKeyCode.Alt
 
 	}
 
