@@ -4,11 +4,11 @@
 namespace ManagedX.Input.Design
 {
 
-	/// <summary>Defines properties and methods to properly implement a managed input device.</summary>
+	/// <summary>Defines properties and methods to properly implement a managed input device (see <see cref="IInputDevice"/>).</summary>
 	/// <typeparam name="TState">A structure representing the device state.</typeparam>
 	/// <typeparam name="TButton">An enumeration representing the device buttons.</typeparam>
 	public interface IInputDevice<TState, TButton> : IInputDevice
-		where TState : struct //, IEquatable<TState>
+		where TState : struct
 		where TButton : struct
 	{
 

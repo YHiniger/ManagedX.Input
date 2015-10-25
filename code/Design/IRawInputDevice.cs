@@ -3,10 +3,8 @@
 
 namespace ManagedX.Input.Design
 {
-	using Raw;
 
-
-	/// <summary>Defines properties and methods to properly implement a raw input device, as a managed input device.</summary>
+	/// <summary>Defines properties and methods to properly implement a raw input device, as a managed input device (see <see cref="IInputDevice"/>).</summary>
 	public interface IRawInputDevice : IInputDevice
 	{
 
