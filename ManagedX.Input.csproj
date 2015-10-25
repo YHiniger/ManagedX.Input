@@ -58,7 +58,6 @@
     <Compile Include="code\Mouse\MouseButtons.cs" />
     <Compile Include="code\Keyboard\Keyboard.cs" />
     <Compile Include="code\Mouse\Mouse.cs" />
-    <None Include="code\Raw\Device.cs" />
     <Compile Include="code\Raw\enumerations\GetDataCommand.cs" />
     <Compile Include="code\Raw\enumerations\GetInfoCommand.cs" />
     <Compile Include="code\Raw\enumerations\RawInputDeviceRegistrationOptions.cs" />
