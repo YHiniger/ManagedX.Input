@@ -15,13 +15,6 @@ namespace ManagedX.Input.Raw
 	public struct MouseDeviceInfo : IEquatable<MouseDeviceInfo>
 	{
 
-		/// <summary>Defines the usage page for the mouse: 1.</summary>
-		public const short UsagePage = 1;
-
-		/// <summary>Defines the usage for the mouse: 2.</summary>
-		public const short Usage = 2;
-
-
 		private int id;
 		private int buttonCount;
 		private int sampleRate;

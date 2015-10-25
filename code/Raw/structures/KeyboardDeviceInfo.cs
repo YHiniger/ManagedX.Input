@@ -15,13 +15,6 @@ namespace ManagedX.Input.Raw
 	public struct KeyboardDeviceInfo : IEquatable<KeyboardDeviceInfo>
 	{
 
-		/// <summary>Defines the usage page for the keyboard: 1.</summary>
-		public const short UsagePage = 1;
-		
-		/// <summary>Defines the usage for the keyboard: 6.</summary>
-		public const short Usage = 6;
-
-
 		private int type;
 		private int subType;
 		private int mode;
