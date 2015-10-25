@@ -11,51 +11,34 @@ namespace ManagedX.Input.Raw
 	/// <summary>Defines the raw input data coming from the specified Human Interface Device (HID).
 	/// <para>The native name of this structure is RID_DEVICE_INFO_HID.</para>
 	/// </summary>
-	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 16 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
 	public struct HumanInterfaceDeviceInfo : IEquatable<HumanInterfaceDeviceInfo>
 	{
-
-		/// <summary>Defines the top-level collection <see cref="Usage"/> for DirectInput joysticks (when <see cref="UsagePage"/> = 1): 4.</summary>
-		public const short JoystickUsage = 4;
-
-		/// <summary>Defines the top-level collection <see cref="Usage"/> for DirectInput gamepads (when <see cref="UsagePage"/> = 1): 5.</summary>
-		public const short GamepadUsage = 5;
-
 
 		private int vendorId;
 		private int productId;
 		private int versionNumber;
-		private short usagePage;	// For more info about usage page and usage id, see:
-		private short usage;		// https://msdn.microsoft.com/en-us/library/windows/hardware/ff543477%28v=vs.85%29.aspx
-		// DirectInput Gamepad: 1, 5 (shared access)
-		// Consumer Audio Control: 12, 1 (shared access)
-		// Joystick (1, 4) and System Control (1, 0x80) have also shared access; all other have exclusive access.
+		private int topLevelCollection;
 
 
-		/// <summary>The vendor identifier for the HID.</summary>
+		/// <summary>Gets the vendor identifier for the HID.</summary>
 		public int VendorId { get { return vendorId; } }
 
-		/// <summary>The product identifier for the HID.</summary>
+		/// <summary>Gets the product identifier for the HID.</summary>
 		public int ProductId { get { return productId; } }
 
-		/// <summary>The version number for the HID.</summary>
+		/// <summary>Gets the version number for the HID.</summary>
 		public int VersionNumber { get { return versionNumber; } }
-
-		/// <summary>The top-level collection Usage Page for the device.</summary>
-		public short UsagePage { get { return usagePage; } }
-
-		/// <summary>The top-level collection Usage for the device.</summary>
-		public short Usage { get { return usage; } }
+		
+		/// <summary>Gets the top-level collection (usage page and usage) for the device.</summary>
+		public int TopLevelCollection { get { return topLevelCollection; } }
 
 
 		/// <summary>Returns a hash code for this <see cref="HumanInterfaceDeviceInfo"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="HumanInterfaceDeviceInfo"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			var buffer = new byte[ 4 ];
-			Array.Copy( BitConverter.GetBytes( usagePage ), 0, buffer, 0, 2 );
-			Array.Copy( BitConverter.GetBytes( usage ), 0, buffer, 2, 2 );
-			return vendorId ^ productId ^ versionNumber ^ BitConverter.ToInt32( buffer, 0 );
+			return vendorId ^ productId ^ versionNumber ^ topLevelCollection;
 		}
 
 
@@ -68,8 +51,7 @@ namespace ManagedX.Input.Raw
 				( vendorId == other.vendorId ) &&
 				( productId == other.productId ) &&
 				( versionNumber == other.versionNumber ) &&
-				( usagePage == other.usagePage ) &&
-				( usage == other.usage );
+				( topLevelCollection == other.topLevelCollection );
 		}
 
 
