@@ -2,7 +2,6 @@
 {
 
 	/// <summary>Enumerates commands used by the GetRawInputDeviceInfo function.</summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1008:EnumsShouldHaveZeroValue" )]
 	internal enum GetInfoCommand : int
 	{
 

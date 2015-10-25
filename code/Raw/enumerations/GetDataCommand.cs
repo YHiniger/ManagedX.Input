@@ -5,7 +5,6 @@ namespace ManagedX.Input.Raw
 {
 	
 	/// <summary>Enumerates commands used by the GetRawInputData function.</summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1008:EnumsShouldHaveZeroValue" )]
 	internal enum GetDataCommand : int
 	{
 
