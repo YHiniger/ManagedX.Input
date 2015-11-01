@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Security;
 
 
 namespace ManagedX.Input.XInput
 {
 
 	/// <summary>Provides access to the XInput API functions.</summary>
-	[SuppressUnmanagedCodeSecurity]
+	[System.Security.SuppressUnmanagedCodeSecurity]
 	internal static class NativeMethods
 	{
 
@@ -16,7 +15,7 @@ namespace ManagedX.Input.XInput
 
 		internal const string LibraryName15 = "XInput1_5.dll";	// Windows 10
 		internal const string LibraryName14 = "XInput1_4.dll";	// Windows 8, 8.1
-		internal const string LibraryName13 = "XInput1_3.dll";	// Windows Vista, 7
+		internal const string LibraryName13 = "XInput1_3.dll";	// Windows Vista, 7: requires the DirectX End-User Runtime (June 2010)
 
 
 		#region XInput 1.5
