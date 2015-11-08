@@ -32,14 +32,15 @@ namespace ManagedX.Input.XInput
 			// assumes OSVersion.Platform == PlatformID.Win32NT
 
 			APIVersion version;
-			if( windowsVersion >= new Version( 10, 0 ) )		
-			{
-				// Windows 10
-				version = APIVersion.XInput15;
-				apiVersion = new Version( 1, 5 );
-				libraryFileName = SafeNativeMethods.LibraryName15;
-			}
-			else if( windowsVersion >= new Version( 6, 2 ) )	
+			//if( windowsVersion >= new Version( 10, 0 ) )		
+			//{
+			//	// Windows 10
+			//	version = APIVersion.XInput15;
+			//	apiVersion = new Version( 1, 5 );
+			//	libraryFileName = SafeNativeMethods.LibraryName15;
+			//}
+			//else
+			if( windowsVersion >= new Version( 6, 2 ) )	
 			{
 				// Windows 8/8.x
 				version = APIVersion.XInput14;

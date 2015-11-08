@@ -8,7 +8,7 @@ namespace ManagedX.Input.XInput
 	{
 		XInput13,
 		XInput14,
-		XInput15
+		//XInput15
 	}
 
 }

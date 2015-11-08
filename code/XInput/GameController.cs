@@ -91,9 +91,7 @@ namespace ManagedX.Input.XInput
 		{
 			deadZoneMode = DeadZoneMode.Circular;
 
-			if( version == APIVersion.XInput15 )
-				this.Setup15();
-			else if( version == APIVersion.XInput14 )
+			if( version >= APIVersion.XInput14 )
 				this.Setup14();
 			else
 				this.Setup13();
@@ -114,16 +112,16 @@ namespace ManagedX.Input.XInput
 		#endregion
 
 
-		private void Setup15()
-		{
-			getCapsProc = SafeNativeMethods.XInput15GetCapabilities;
-			getBatteryInfoProc = SafeNativeMethods.XInput15GetBatteryInformation;
-			getStateProc = SafeNativeMethods.XInput15GetState;
-			setStateProc = SafeNativeMethods.XInput15SetState;
-			getKeystrokeProc = SafeNativeMethods.XInput15GetKeystroke;
-			getAudioDeviceIdsProc = SafeNativeMethods.XInput15GetAudioDeviceIds;
-			getDSoundAudioDeviceGuidsProc = SafeNativeMethods.XInput15GetDSoundAudioDeviceGuids;
-		}
+		//private void Setup15()
+		//{
+		//	getCapsProc = SafeNativeMethods.XInput15GetCapabilities;
+		//	getBatteryInfoProc = SafeNativeMethods.XInput15GetBatteryInformation;
+		//	getStateProc = SafeNativeMethods.XInput15GetState;
+		//	setStateProc = SafeNativeMethods.XInput15SetState;
+		//	getKeystrokeProc = SafeNativeMethods.XInput15GetKeystroke;
+		//	getAudioDeviceIdsProc = SafeNativeMethods.XInput15GetAudioDeviceIds;
+		//	getDSoundAudioDeviceGuidsProc = SafeNativeMethods.XInput15GetDSoundAudioDeviceGuids;
+		//}
 
 		private void Setup14()
 		{
