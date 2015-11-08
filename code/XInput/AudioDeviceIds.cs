@@ -18,11 +18,23 @@ namespace ManagedX.Input.XInput
 		public string CaptureDeviceId;
 
 		
+
 		/// <summary>Returns a hash code for this <see cref="AudioDeviceIds"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="AudioDeviceIds"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return ( RenderDeviceId == null ? 0 : RenderDeviceId.GetHashCode() ) ^ ( CaptureDeviceId == null ? 0 : CaptureDeviceId.GetHashCode() );
+			if( RenderDeviceId == null )
+			{
+				if( CaptureDeviceId == null )
+					return 0;
+				
+				return CaptureDeviceId.GetHashCode();
+			}
+
+			if( CaptureDeviceId == null )
+				return RenderDeviceId.GetHashCode();
+
+			return RenderDeviceId.GetHashCode() ^ CaptureDeviceId.GetHashCode();
 		}
 
 
@@ -46,7 +58,7 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>The empty <see cref="AudioDeviceIds"/> structure.</summary>
-		public static readonly AudioDeviceIds Empty = new AudioDeviceIds();
+		public static readonly AudioDeviceIds Empty;
 
 
 		#region Operators
@@ -59,6 +71,7 @@ namespace ManagedX.Input.XInput
 		{
 			return deviceIds.Equals( other );
 		}
+
 
 		/// <summary>Inequality comparer.</summary>
 		/// <param name="deviceIds">An <see cref="AudioDeviceIds"/> structure.</param>

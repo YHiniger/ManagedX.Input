@@ -18,6 +18,7 @@ namespace ManagedX.Input.XInput
 		public Guid CaptureDeviceGuid;
 
 
+
 		/// <summary>Returns a hash code for this <see cref="DSoundAudioDeviceGuids"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="DSoundAudioDeviceGuids"/> structure.</returns>
 		public override int GetHashCode()
@@ -34,6 +35,7 @@ namespace ManagedX.Input.XInput
 			return ( this.RenderDeviceGuid == other.RenderDeviceGuid ) && ( this.CaptureDeviceGuid == other.CaptureDeviceGuid );
 		}
 
+
 		/// <summary>Returns a value indicating whether this <see cref="DSoundAudioDeviceGuids"/> structure is equivalent to an object.</summary>
 		/// <param name="obj">An object.</param>
 		/// <returns>Returns true if the specified object is a <see cref="DSoundAudioDeviceGuids"/> structure which equals this structure, otherwise returns false.</returns>
@@ -43,8 +45,9 @@ namespace ManagedX.Input.XInput
 		}
 
 
+		
 		/// <summary>The empty <see cref="DSoundAudioDeviceGuids"/> structure.</summary>
-		public static readonly DSoundAudioDeviceGuids Empty = new DSoundAudioDeviceGuids();
+		public static readonly DSoundAudioDeviceGuids Empty;
 
 
 		#region Operators
@@ -57,6 +60,7 @@ namespace ManagedX.Input.XInput
 		{
 			return guids.Equals( other );
 		}
+
 
 		/// <summary>Inequality comparer.</summary>
 		/// <param name="guids">A <see cref="DSoundAudioDeviceGuids"/> structure.</param>
