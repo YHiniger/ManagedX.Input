@@ -78,6 +78,7 @@ namespace ManagedX.Input.XInput
 		private GetKeystrokeProc getKeystrokeProc;
 		private GetAudioDeviceIdsProc getAudioDeviceIdsProc;
 		private GetDSoundAudioDeviceGuidsProc getDSoundAudioDeviceGuidsProc;
+		private bool isDisabled;
 
 
 		#region Constructor, destructor
@@ -99,6 +100,8 @@ namespace ManagedX.Input.XInput
 
 			var zero = TimeSpan.Zero;
 			this.Reset( ref zero );
+
+			isDisabled = !isConnected;
 		}
 
 
@@ -192,23 +195,18 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns false if the controller has no vibration support or is not connected, otherwise returns true.</returns>
 		public bool SetVibration( Vibration vibration )
 		{
-			if( !( capabilities.HasLeftMotor || capabilities.HasRightMotor ) )
+			if( isDisabled || !( capabilities.HasLeftMotor || capabilities.HasRightMotor ) )
 				return false;
 
 			var errorCode = setStateProc( base.Index, ref vibration );
-			return isConnected = ( errorCode == 0 );
+			if( errorCode == (int)ErrorCode.NotConnected )
+				isConnected = false;
+			else if( errorCode == 0 )
+				isConnected = true;
+
+			return isConnected;
 		}
 		
-
-		///// <summary>Sends a vibration state to the controller (XInput 1.5 only, not yet supported/implemented).</summary>
-		///// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		///// <param name="triggers">This parameter is currently ignored.</param>
-		///// <returns>Returns false if the controller is not connected or has no vibration support, otherwise returns true.</returns>
-		//public bool SetVibration( Vibration vibration, Vibration triggers )
-		//{
-		//	return this.SetVibration( vibration );
-		//}
-
 
 		/// <summary>Gets or sets a value indicating the type of dead zone to apply.</summary>
 		public DeadZoneMode DeadZoneMode
@@ -243,23 +241,23 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns the state of the controller.</returns>
 		protected sealed override GamePad GetState()
 		{
-			State state;
-			var errorCode = getStateProc( base.Index, out state );
-
-			if( errorCode == (int)ErrorCode.NotConnected )
-				isConnected = false;
-			else if( errorCode == 0 )
+			if( !isDisabled )
 			{
-				isConnected = true;
-				//previousStatePacketNumber = currentStatePacketNumber;
-				//currentStatePacketNumber = state.PacketNumber;
-				var gamePad = state.GamePadState;
-				if( deadZoneMode != DeadZoneMode.None )
+				State state;
+				var errorCode = getStateProc( base.Index, out state );
+
+				if( errorCode == (int)ErrorCode.NotConnected )
+					isConnected = false;
+				else if( errorCode == 0 )
 				{
-					gamePad.ApplyThumbSticksDeadZone( deadZoneMode, GamePad.DefaultLeftThumbDeadZone, GamePad.DefaultRightThumbDeadZone );
-					gamePad.ApplyTriggersDeadZone();
+					isConnected = true;
+					if( deadZoneMode != DeadZoneMode.None )
+					{
+						state.GamePadState.ApplyThumbSticksDeadZone( deadZoneMode, GamePad.DefaultLeftThumbDeadZone, GamePad.DefaultRightThumbDeadZone );
+						state.GamePadState.ApplyTriggersDeadZone();
+					}
+					return state.GamePadState;
 				}
-				return gamePad;
 			}
 
 			return GamePad.Empty;
@@ -293,6 +291,14 @@ namespace ManagedX.Input.XInput
 		public sealed override bool HasJustBeenReleased( GamePadButtons button )
 		{
 			return this.PreviousState.Buttons.HasFlag( button ) && !this.CurrentState.Buttons.HasFlag( button );
+		}
+
+
+		/// <summary>Gets or sets a value indicating whether the game controller is disabled.</summary>
+		public bool Disabled
+		{
+			get { return isDisabled; }
+			set { isDisabled = value; }
 		}
 
 

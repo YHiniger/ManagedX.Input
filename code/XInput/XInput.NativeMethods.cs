@@ -20,15 +20,16 @@ namespace ManagedX.Input.XInput
 
 		#region XInput 1.5
 
-		/// <summary>Sets the reporting state of XInput.</summary>
-		/// <param name="enable">If set to false, XInput will only send neutral data in response to <see cref="XInput15GetState"/> (all buttons up, axes centered, and triggers at 0).
-		/// <see cref="XInput15SetState"/> calls will be registered but not sent to the device.
-		/// Sending any value other than false will restore reading and writing functionality to normal.
-		/// </param>
-		[DllImport( LibraryName15, EntryPoint = "XInputEnable", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
-		internal static extern void XInput15Enable(
-			[In, MarshalAs( UnmanagedType.Bool )] bool enable
-		);
+		///// <summary>Sets the reporting state of XInput.</summary>
+		///// <param name="enable">If set to false, XInput will only send neutral data in response to <see cref="XInput15GetState"/> (all buttons up, axes centered, and triggers at 0).
+		///// <see cref="XInput15SetState"/> calls will be registered but not sent to the device.
+		///// Sending any value other than false will restore reading and writing functionality to normal.
+		///// </param>
+		//[Obsolete( "Marked as deprecated in XInput.h." )]
+		//[DllImport( LibraryName15, EntryPoint = "XInputEnable", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+		//internal static extern void XInput15Enable(
+		//	[In, MarshalAs( UnmanagedType.Bool )] bool enable
+		//);
 
 
 		/// <summary>Retrieves the capabilities and features of a connected controller.</summary>
@@ -141,15 +142,15 @@ namespace ManagedX.Input.XInput
 
 		#region XInput 1.4
 
-		/// <summary>Sets the reporting state of XInput.</summary>
-		/// <param name="enable">If set to false, XInput will only send neutral data in response to <see cref="XInput14GetState"/> (all buttons up, axes centered, and triggers at 0).
-		/// <see cref="XInput14SetState"/> calls will be registered but not sent to the device.
-		/// Sending any value other than false will restore reading and writing functionality to normal.
-		/// </param>
-		[DllImport( LibraryName14, EntryPoint = "XInputEnable", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
-		internal static extern void XInput14Enable(
-			[In, MarshalAs( UnmanagedType.Bool )] bool enable
-		);
+		///// <summary>Sets the reporting state of XInput.</summary>
+		///// <param name="enable">If set to false, XInput will only send neutral data in response to <see cref="XInput14GetState"/> (all buttons up, axes centered, and triggers at 0).
+		///// <see cref="XInput14SetState"/> calls will be registered but not sent to the device.
+		///// Sending any value other than false will restore reading and writing functionality to normal.
+		///// </param>
+		//[DllImport( LibraryName14, EntryPoint = "XInputEnable", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+		//internal static extern void XInput14Enable(
+		//	[In, MarshalAs( UnmanagedType.Bool )] bool enable
+		//);
 
 	
 		/// <summary>Retrieves the capabilities and features of a connected controller.</summary>
@@ -261,15 +262,15 @@ namespace ManagedX.Input.XInput
 
 		#region XInput 1.3
 
-		/// <summary>Sets the reporting state of XInput.</summary>
-		/// <param name="enable">If set to false, XInput will only send neutral data in response to <see cref="XInput14GetState"/> (all buttons up, axes centered, and triggers at 0).
-		/// <see cref="XInput14SetState"/> calls will be registered but not sent to the device.
-		/// Sending any value other than false will restore reading and writing functionality to normal.
-		/// </param>
-		[DllImport( LibraryName13, EntryPoint = "XInputEnable", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
-		internal static extern void XInput13Enable(
-			[In, MarshalAs( UnmanagedType.Bool )] bool enable
-		);
+		///// <summary>Sets the reporting state of XInput.</summary>
+		///// <param name="enable">If set to false, XInput will only send neutral data in response to <see cref="XInput14GetState"/> (all buttons up, axes centered, and triggers at 0).
+		///// <see cref="XInput14SetState"/> calls will be registered but not sent to the device.
+		///// Sending any value other than false will restore reading and writing functionality to normal.
+		///// </param>
+		//[DllImport( LibraryName13, EntryPoint = "XInputEnable", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+		//internal static extern void XInput13Enable(
+		//	[In, MarshalAs( UnmanagedType.Bool )] bool enable
+		//);
 
 
 		/// <summary>Retrieves the capabilities and features of a connected controller.</summary>
