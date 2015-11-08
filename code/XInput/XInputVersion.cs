@@ -4,7 +4,7 @@
 namespace ManagedX.Input.XInput
 {
 
-	internal enum APIVersion
+	internal enum XInputVersion
 	{
 		XInput13,
 		XInput14,

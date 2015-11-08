@@ -19,45 +19,49 @@ namespace ManagedX.Input.XInput
 		internal static readonly XInputService Instance = new XInputService();
 
 
-		private Version apiVersion;
-		private string libraryFileName;
-		private List<GameController> controllers;
+		/// <summary>Returns the version of XInput to use.</summary>
+		/// <returns>Returns a value indicating which version of XInput to use.</returns>
+		internal static XInputVersion GetXInputVersion()
+		{
+#if XINPUT_13
+			return XInputVersion.XInput13;
+#elif XINPUT_14
+			return XInputVersion.XInput14;
+#else
+			var windowsVersion = Environment.OSVersion.Version;
+			// assumes OSVersion.Platform == PlatformID.Win32NT
+
+			// Windows 8 or greater
+			if( windowsVersion >= new Version( 6, 2 ) )
+				return XInputVersion.XInput14;
+			
+			// Windows Vista or 7 (with DirectX End-User Runtime June 2010)
+			return XInputVersion.XInput13;
+#endif
+		}
+
+
+
+		private readonly XInputVersion xInputVersion;
+		private readonly Version apiVersion;
+		private readonly List<GameController> controllers;
+
 
 
 		#region Constructor, destructor
 
 		private XInputService()
 		{
-			var windowsVersion = Environment.OSVersion.Version;
-			// assumes OSVersion.Platform == PlatformID.Win32NT
-
-			APIVersion version;
-			//if( windowsVersion >= new Version( 10, 0 ) )		
-			//{
-			//	// Windows 10
-			//	version = APIVersion.XInput15;
-			//	apiVersion = new Version( 1, 5 );
-			//	libraryFileName = SafeNativeMethods.LibraryName15;
-			//}
-			//else
-			if( windowsVersion >= new Version( 6, 2 ) )	
-			{
-				// Windows 8/8.x
-				version = APIVersion.XInput14;
+			xInputVersion = GetXInputVersion();
+			
+			if( xInputVersion == XInputVersion.XInput14 )
 				apiVersion = new Version( 1, 4 );
-				libraryFileName = SafeNativeMethods.LibraryName14;
-			}
 			else												
-			{
-				// Windows Vista/7
-				version = APIVersion.XInput13;
 				apiVersion = new Version( 1, 3 );
-				libraryFileName = SafeNativeMethods.LibraryName13;
-			}
 
 			controllers = new List<GameController>( MaxControllerCount );
 			for( var index = 0; index < MaxControllerCount; index++ )
-				controllers.Add( new GameController( (GameControllerIndex)index, version ) );
+				controllers.Add( new GameController( (GameControllerIndex)index, xInputVersion ) );
 		}
 
 
@@ -65,22 +69,28 @@ namespace ManagedX.Input.XInput
 		~XInputService()
 		{
 			if( controllers != null )
-			{
 				controllers.Clear();
-				controllers = null;
-			}
 		}
 
 		#endregion
 
 
 
-		/// <summary>Gets the version of the underlying XInput API (ie: 1.3, 1.4, etc).</summary>
+		/// <summary>Gets the version of the underlying XInput API.</summary>
 		public Version Version { get { return apiVersion; } }
 
 
-		/// <summary>Gets the file name of the underlying XInput library (ie: XInput1_3.dll, XInput1_4.dll, etc).</summary>
-		public string LibraryFileName { get { return string.Copy( libraryFileName ); } }
+		/// <summary>Gets the file name of the underlying XInput library (ie: XInput1_4.dll).</summary>
+		public string LibraryFileName
+		{
+			get
+			{
+				if( xInputVersion == XInputVersion.XInput13 )
+					return SafeNativeMethods.LibraryName13;
+				
+				return SafeNativeMethods.LibraryName14;
+			}
+		}
 
 
 		/// <summary>Gets an XInput controller given its index.</summary>
@@ -89,7 +99,7 @@ namespace ManagedX.Input.XInput
 		public IXInputController this[ GameControllerIndex index ] { get { return controllers[ (int)index ]; } }
 
 
-		/// <summary>Updates the state of all supported XInput controllers.</summary>
+		/// <summary>Updates the state of all (non disabled) XInput controllers.</summary>
 		/// <param name="time">The time elapsed since the start of the application.</param>
 		public void Update( TimeSpan time )
 		{

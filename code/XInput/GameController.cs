@@ -86,12 +86,12 @@ namespace ManagedX.Input.XInput
 		/// <summary>Instantiates a new XInput <see cref="GameController"/>.</summary>
 		/// <param name="controllerIndex">The game controller index.</param>
 		/// <param name="version">Indicates which version of the XInput API to use.</param>
-		internal GameController( GameControllerIndex controllerIndex, APIVersion version )
+		internal GameController( GameControllerIndex controllerIndex, XInputVersion version )
 			: base( controllerIndex )
 		{
 			deadZoneMode = DeadZoneMode.Circular;
 
-			if( version >= APIVersion.XInput14 )
+			if( version >= XInputVersion.XInput14 )
 				this.Setup14();
 			else
 				this.Setup13();

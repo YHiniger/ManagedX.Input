@@ -49,6 +49,30 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'XInput 1.3|AnyCPU'">
+    <OutputPath>..\..\..\Windows Vista, Windows 7\</OutputPath>
+    <DefineConstants>TRACE;XINPUT_13</DefineConstants>
+    <DocumentationFile>..\..\..\Windows Vista, Windows 7\ManagedX.Input.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'XInput 1.4|AnyCPU'">
+    <OutputPath>..\..\..\Windows 8, Windows 8.1\</OutputPath>
+    <DefineConstants>TRACE;XINPUT_14</DefineConstants>
+    <DocumentationFile>..\..\..\Windows 8, Windows 8.1\ManagedX.Input.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="code\Design\IInputDevice.cs" />
     <Compile Include="code\Design\IRawInputDevice.cs" />
@@ -76,7 +100,6 @@
     <Compile Include="code\Raw\structures\RawInputHeader.cs" />
     <Compile Include="code\Raw\structures\RawKeyboard.cs" />
     <Compile Include="code\Raw\structures\RawMouse.cs" />
-    <Compile Include="code\XInput\APIVersion.cs" />
     <Compile Include="code\InputDeviceType.cs" />
     <Compile Include="code\InputDevice_T.cs" />
     <None Include="code\XInput\VibrationSequence.cs" />
@@ -94,6 +117,7 @@
     <Compile Include="code\Design\IInputDevice_T.cs" />
     <Compile Include="code\Design\IXInput.cs" />
     <Compile Include="code\Design\IXInputController.cs" />
+    <Compile Include="code\XInput\XInputVersion.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
