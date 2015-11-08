@@ -35,23 +35,23 @@ namespace ManagedX.Input.XInput
 			if( windowsVersion >= new Version( 10, 0 ) )		
 			{
 				// Windows 10
-				apiVersion = new Version( 1, 5 );
-				libraryFileName = NativeMethods.LibraryName15;
 				version = APIVersion.XInput15;
+				apiVersion = new Version( 1, 5 );
+				libraryFileName = SafeNativeMethods.LibraryName15;
 			}
 			else if( windowsVersion >= new Version( 6, 2 ) )	
 			{
 				// Windows 8/8.x
-				apiVersion = new Version( 1, 4 );
-				libraryFileName = NativeMethods.LibraryName14;
 				version = APIVersion.XInput14;
+				apiVersion = new Version( 1, 4 );
+				libraryFileName = SafeNativeMethods.LibraryName14;
 			}
 			else												
 			{
 				// Windows Vista/7
-				apiVersion = new Version( 1, 3 );
-				libraryFileName = NativeMethods.LibraryName13;
 				version = APIVersion.XInput13;
+				apiVersion = new Version( 1, 3 );
+				libraryFileName = SafeNativeMethods.LibraryName13;
 			}
 
 			controllers = new List<GameController>( MaxControllerCount );
@@ -92,8 +92,9 @@ namespace ManagedX.Input.XInput
 		/// <param name="time">The time elapsed since the start of the application.</param>
 		public void Update( TimeSpan time )
 		{
-			foreach( var controller in controllers )
-				controller.Update( time );
+			for( var c = 0; c < controllers.Count; c++ )
+				if( !controllers[ c ].Disabled )
+					controllers[ c ].Update( time );
 		}
 
 

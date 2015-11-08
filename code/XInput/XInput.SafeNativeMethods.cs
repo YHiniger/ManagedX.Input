@@ -5,12 +5,13 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.XInput
 {
 
-	/// <summary>Provides access to the XInput API functions.</summary>
+	/// <summary>Provides access to the XInput (1.3 to 1.5) API functions.</summary>
 	[System.Security.SuppressUnmanagedCodeSecurity]
-	internal static class NativeMethods
+	internal static class SafeNativeMethods
 	{
 
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/ee417005%28v=vs.85%29.aspx
+		// xInput.h
 
 
 		internal const string LibraryName15 = "XInput1_5.dll";	// Windows 10
@@ -136,8 +137,8 @@ namespace ManagedX.Input.XInput
 			[Out, MarshalAs( UnmanagedType.LPWStr, SizeParamIndex = 4 ), Optional] out string captureDeviceId,
 			[In, Out, Optional] ref int captureDeviceIdLength
 		);
-		
-		#endregion
+
+		#endregion // XInput 1.5
 
 
 		#region XInput 1.4
@@ -256,8 +257,8 @@ namespace ManagedX.Input.XInput
 			[Out, MarshalAs( UnmanagedType.LPWStr, SizeParamIndex = 4 ), Optional] out string captureDeviceId,
 			[In, Out, Optional] ref int captureDeviceIdLength
 		);
-		
-		#endregion
+
+		#endregion // XInput 1.4
 
 
 		#region XInput 1.3
@@ -373,8 +374,10 @@ namespace ManagedX.Input.XInput
 			[Out] out Guid dSoundCaptureGuid
 		);
 
-		#endregion
+		#endregion // XInput 1.3
 
+
+		#region Compatibility functions
 
 		/// <summary>Compatibility function.</summary>
 		/// <param name="userIndex">Index of the user's controller.</param>
@@ -442,6 +445,8 @@ namespace ManagedX.Input.XInput
 			Capabilities caps;
 			return XInput13GetCapabilities( userIndex, 1, out caps );
 		}
+
+		#endregion // Compatibility functions
 
 	}
 

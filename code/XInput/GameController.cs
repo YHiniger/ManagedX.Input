@@ -16,8 +16,8 @@ namespace ManagedX.Input.XInput
 	public sealed class GameController : InputDevice<GamePad, GamePadButtons>, IXInputController
 	{
 
-		/// <summary>Gets the XInput "service".</summary>
-		public static IXInput XInput { get { return XInputService.Instance; } }
+		/// <summary>Gets an interface to the managed XInput service.</summary>
+		public static IXInput Service { get { return XInputService.Instance; } }
 
 
 		#region Delegates
@@ -116,35 +116,35 @@ namespace ManagedX.Input.XInput
 
 		private void Setup15()
 		{
-			getCapsProc = NativeMethods.XInput15GetCapabilities;
-			getBatteryInfoProc = NativeMethods.XInput15GetBatteryInformation;
-			getStateProc = NativeMethods.XInput15GetState;
-			setStateProc = NativeMethods.XInput15SetState;
-			getKeystrokeProc = NativeMethods.XInput15GetKeystroke;
-			getAudioDeviceIdsProc = NativeMethods.XInput15GetAudioDeviceIds;
-			getDSoundAudioDeviceGuidsProc = NativeMethods.XInput15GetDSoundAudioDeviceGuids;
+			getCapsProc = SafeNativeMethods.XInput15GetCapabilities;
+			getBatteryInfoProc = SafeNativeMethods.XInput15GetBatteryInformation;
+			getStateProc = SafeNativeMethods.XInput15GetState;
+			setStateProc = SafeNativeMethods.XInput15SetState;
+			getKeystrokeProc = SafeNativeMethods.XInput15GetKeystroke;
+			getAudioDeviceIdsProc = SafeNativeMethods.XInput15GetAudioDeviceIds;
+			getDSoundAudioDeviceGuidsProc = SafeNativeMethods.XInput15GetDSoundAudioDeviceGuids;
 		}
 
 		private void Setup14()
 		{
-			getCapsProc = NativeMethods.XInput14GetCapabilities;
-			getBatteryInfoProc = NativeMethods.XInput14GetBatteryInformation;
-			getStateProc = NativeMethods.XInput14GetState;
-			setStateProc = NativeMethods.XInput14SetState;
-			getKeystrokeProc = NativeMethods.XInput14GetKeystroke;
-			getAudioDeviceIdsProc = NativeMethods.XInput14GetAudioDeviceIds;
-			getDSoundAudioDeviceGuidsProc = NativeMethods.XInput14GetDSoundAudioDeviceGuids;
+			getCapsProc = SafeNativeMethods.XInput14GetCapabilities;
+			getBatteryInfoProc = SafeNativeMethods.XInput14GetBatteryInformation;
+			getStateProc = SafeNativeMethods.XInput14GetState;
+			setStateProc = SafeNativeMethods.XInput14SetState;
+			getKeystrokeProc = SafeNativeMethods.XInput14GetKeystroke;
+			getAudioDeviceIdsProc = SafeNativeMethods.XInput14GetAudioDeviceIds;
+			getDSoundAudioDeviceGuidsProc = SafeNativeMethods.XInput14GetDSoundAudioDeviceGuids;
 		}
 
 		private void Setup13()
 		{
-			getCapsProc = NativeMethods.XInput13GetCapabilities;
-			getBatteryInfoProc = NativeMethods.XInput13GetBatteryInformation;
-			getStateProc = NativeMethods.XInput13GetState;
-			setStateProc = NativeMethods.XInput13SetState;
-			getKeystrokeProc = NativeMethods.XInput13GetKeystroke;
-			getDSoundAudioDeviceGuidsProc = NativeMethods.XInput13GetDSoundAudioDeviceGuids;
-			getAudioDeviceIdsProc = NativeMethods.XInput13GetAudioDeviceIds;
+			getCapsProc = SafeNativeMethods.XInput13GetCapabilities;
+			getBatteryInfoProc = SafeNativeMethods.XInput13GetBatteryInformation;
+			getStateProc = SafeNativeMethods.XInput13GetState;
+			setStateProc = SafeNativeMethods.XInput13SetState;
+			getKeystrokeProc = SafeNativeMethods.XInput13GetKeystroke;
+			getDSoundAudioDeviceGuidsProc = SafeNativeMethods.XInput13GetDSoundAudioDeviceGuids;
+			getAudioDeviceIdsProc = SafeNativeMethods.XInput13GetAudioDeviceIds;
 		}
 
 

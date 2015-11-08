@@ -89,8 +89,8 @@
     <Compile Include="code\XInput\AudioDeviceIds.cs" />
     <Compile Include="code\XInput\DSoundAudioDeviceGuids.cs" />
     <Compile Include="code\VirtualKeyCode.cs" />
+    <Compile Include="code\XInput\XInput.SafeNativeMethods.cs" />
     <Compile Include="code\XInput\XInputService.cs" />
-    <Compile Include="code\XInput\XInput.NativeMethods.cs" />
     <Compile Include="code\Design\IInputDevice_T.cs" />
     <Compile Include="code\Design\IXInput.cs" />
     <Compile Include="code\Design\IXInputController.cs" />
