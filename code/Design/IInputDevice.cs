@@ -22,7 +22,7 @@ namespace ManagedX.Input.Design
 		bool Disconnected { get; }
 
 
-		/// <summary>Updates the input device state (ie: <see cref="Disconnected"/>).</summary>
+		/// <summary>Updates the input device state.</summary>
 		/// <param name="time">The time elapsed since the application start.</param>
 		void Update( TimeSpan time );
 
