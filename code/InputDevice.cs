@@ -39,6 +39,14 @@ namespace ManagedX.Input
 
 
 
+		/// <summary>Gets the identifier of this <see cref="InputDevice"/>.</summary>
+		public abstract string Identifier { get; }
+
+
+		/// <summary>Gets the friendly name of this <see cref="InputDevice"/>.</summary>
+		public abstract string DisplayName { get; }
+
+
 		/// <summary>Gets the index of this input device.</summary>
 		public GameControllerIndex Index { get { return index; } }
 

@@ -140,7 +140,7 @@ namespace ManagedX.Input
 		//	}
 		//}
 
-		#endregion // Static
+		#endregion Static
 
 
 		private bool disconnected;
@@ -166,7 +166,7 @@ namespace ManagedX.Input
 				keyboards.Remove( this.DeviceHandle );
 		}
 
-		#endregion // Constructor, destructor
+		#endregion Constructor, destructor
 
 
 		/// <summary>Gets a value indicating whether the keyboard is disconnected.</summary>

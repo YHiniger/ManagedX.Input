@@ -146,6 +146,13 @@ namespace ManagedX.Input.XInput
 		}
 
 
+		/// <summary>Gets the identifier of this <see cref="GameController"/>.</summary>
+		public sealed override string Identifier { get { return "XInput#" + (int)this.Index; } }
+
+
+		/// <summary>Gets the friendly name of this <see cref="GameController"/>.</summary>
+		public sealed override string DisplayName { get { return Properties.Resources.GameController + " " + (int)this.Index; } }
+
 
 		/// <summary>Gets a value indicating the type of this input device.</summary>
 		public sealed override InputDeviceType DeviceType { get { return InputDeviceType.HumanInterfaceDevice; } }
@@ -332,11 +339,11 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Returns "XInput controller".</summary>
-		/// <returns>Returns "XInput controller".</returns>
+		/// <summary>Returns the <see cref="DisplayName"/> of this <see cref="GameController"/>.</summary>
+		/// <returns>Returns the <see cref="DisplayName"/> of this <see cref="GameController"/>.</returns>
 		public sealed override string ToString()
 		{
-			return Properties.Resources.GameController;
+			return this.DisplayName;
 		}
 
 	}

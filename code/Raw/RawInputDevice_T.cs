@@ -18,6 +18,7 @@ namespace ManagedX.Input.Raw
 		private string displayName;
 
 
+
 		/// <summary>Constructor.</summary>
 		/// <param name="controllerIndex">The index of the input device.</param>
 		/// <param name="descriptor">The raw input device descriptor.</param>
@@ -43,6 +44,14 @@ namespace ManagedX.Input.Raw
 
 
 
+		/// <summary>Gets the <see cref="DevicePath"/> of this raw input device.</summary>
+		public sealed override string Identifier { get { return this.DevicePath; } }
+
+
+		/// <summary>Gets the display name of this raw input device.</summary>
+		public sealed override string DisplayName { get { return string.Copy( displayName ?? string.Empty ); } }
+
+
 		/// <summary>Gets a value indicating the type of this raw input device.</summary>
 		public sealed override InputDeviceType DeviceType { get { return info.Type; } }
 
@@ -55,10 +64,6 @@ namespace ManagedX.Input.Raw
 		public string DevicePath { get { return string.Copy( deviceName ?? string.Empty ); } }
 
 
-		/// <summary>Gets the display name of this raw input device.</summary>
-		public string DisplayName { get { return string.Copy( displayName ?? string.Empty ); } }
-
-		
 		/// <summary>Gets information about this raw input device.</summary>
 		internal DeviceInfo Info { get { return info; } }
 

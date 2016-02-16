@@ -5,7 +5,7 @@ namespace ManagedX.Input.Design
 {
 	
 	/// <summary>Defines properties and a method to properly implement a managed input device.</summary>
-	public interface IInputDevice
+	public interface IInputDevice : ManagedX.Design.IDevice
 	{
 
 		/// <summary>Gets the index of the input device.
