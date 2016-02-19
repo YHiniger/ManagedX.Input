@@ -4,7 +4,7 @@
 	/// <summary>Enumerates raw mouse input transition states.</summary>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1028:EnumStorageShouldBeInt32", Justification = "Required by implementation." )]
 	[System.Flags]
-	public enum RawMouseButtonStates : short
+	public enum RawMouseButtonStateIndicators : short
 	{
 		
 		/// <summary>No state specified.</summary>

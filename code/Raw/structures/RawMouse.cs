@@ -15,8 +15,8 @@ namespace ManagedX.Input.Raw
 	public struct RawMouse : IEquatable<RawMouse>
 	{
 
-		private RawMouseStates flags;
-		private RawMouseButtonStates buttonFlags;
+		private RawMouseStateIndicators flags;
+		private RawMouseButtonStateIndicators buttonFlags;
 		private short buttonData;
 		private int rawButtons;
 		private int lastX;
@@ -26,14 +26,14 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>Gets the mouse state.</summary>
-		public RawMouseStates State { get { return flags; } }
+		public RawMouseStateIndicators State { get { return flags; } }
 
 
 		/// <summary>Gets the transition state of the mouse buttons.</summary>
-		public RawMouseButtonStates ButtonsState { get { return buttonFlags; } }
+		public RawMouseButtonStateIndicators ButtonsState { get { return buttonFlags; } }
 		
 
-		/// <summary>If <see cref="buttonFlags"/> is <see cref="RawMouseButtonStates.Wheel"/>, gets a signed value indicating the wheel delta.</summary>
+		/// <summary>If <see cref="buttonFlags"/> is <see cref="RawMouseButtonStateIndicators.Wheel"/>, gets a signed value indicating the wheel delta.</summary>
 		public short WheelDelta { get { return buttonData; } }
 		
 

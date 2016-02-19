@@ -83,8 +83,8 @@
     <Compile Include="code\Raw\enumerations\GetDataCommand.cs" />
     <Compile Include="code\Raw\enumerations\GetInfoCommand.cs" />
     <Compile Include="code\Raw\enumerations\RawInputDeviceRegistrationOptions.cs" />
-    <Compile Include="code\Raw\enumerations\RawMouseButtonStates.cs" />
-    <Compile Include="code\Raw\enumerations\RawMouseStates.cs" />
+    <Compile Include="code\Raw\enumerations\RawMouseButtonStateIndicators.cs" />
+    <Compile Include="code\Raw\enumerations\RawMouseStateIndicators.cs" />
     <Compile Include="code\Raw\enumerations\TopLevelCollection.cs" />
     <None Include="code\Raw\RawHumanInterfaceDevice.cs" />
     <Compile Include="code\Raw\RawInput.NativeMethods.cs" />

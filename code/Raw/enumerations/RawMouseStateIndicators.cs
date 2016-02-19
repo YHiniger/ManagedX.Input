@@ -9,7 +9,7 @@ namespace ManagedX.Input.Raw
 	[SuppressMessage( "Microsoft.Design", "CA1008:EnumsShouldHaveZeroValue", Justification = "MoveRelative is the zero value." )]
 	[SuppressMessage( "Microsoft.Design", "CA1028:EnumStorageShouldBeInt32", Justification = "Required by implementation." )]
 	[Flags]
-	public enum RawMouseStates : short
+	public enum RawMouseStateIndicators : short
 	{
 
 		/// <summary>Mouse movement data is relative to the last mouse position.</summary>

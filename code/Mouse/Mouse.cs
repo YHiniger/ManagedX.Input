@@ -286,14 +286,14 @@ namespace ManagedX.Input
 						return;
 
 					var mouseState = rawInput.Mouse.Value;
-					if( mouseState.State.HasFlag( RawMouseStates.MoveRelative ) )
+					if( mouseState.State.HasFlag( RawMouseStateIndicators.MoveRelative ) )
 					{
 						targetMouse.motion.X += mouseState.LastX;
 						targetMouse.motion.Y += mouseState.LastY;
 					}
 
 					// FIXME - doesn't seem to work... may be about the horizontal wheel ?
-					if( mouseState.ButtonsState.HasFlag( RawMouseButtonStates.Wheel ) )
+					if( mouseState.ButtonsState.HasFlag( RawMouseButtonStateIndicators.Wheel ) )
 						targetMouse.wheelValue += mouseState.WheelDelta;
 				}
 			}
