@@ -26,7 +26,9 @@ namespace ManagedX.Input
 		}
 
 
+
 		private GameControllerIndex index;
+		private bool isDisconnected;
 
 
 
@@ -55,8 +57,31 @@ namespace ManagedX.Input
 		public abstract InputDeviceType DeviceType { get; }
 
 
-		/// <summary>When overridden, gets a value indicating whether the input device is disconnected.</summary>
-		public abstract bool Disconnected { get; }
+		/// <summary>Raised when the input device is disconnected.</summary>
+		public event EventHandler Disconnected;
+
+		
+		/// <summary>Raises the <see cref="Disconnected"/> event.</summary>
+		private void OnDisconnected()
+		{
+			if( this.Disconnected != null )
+				this.Disconnected( this, EventArgs.Empty );
+		}
+
+
+		/// <summary>Gets a value indicating whether the input device is disconnected.</summary>
+		public bool IsDisconnected
+		{
+			get { return isDisconnected; }
+			protected set
+			{
+				if( value == isDisconnected )
+					return;
+
+				if( isDisconnected = value )
+					this.OnDisconnected();
+			}
+		}
 
 
 		/// <summary>When overridden, updates the state of the input device.</summary>

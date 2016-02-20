@@ -67,7 +67,6 @@ namespace ManagedX.Input.XInput
 		#endregion
 
 
-		private bool isConnected;
 		private Capabilities capabilities;
 		private BatteryInformation batteryInfo;
 		private DeadZoneMode deadZoneMode;
@@ -80,8 +79,6 @@ namespace ManagedX.Input.XInput
 		private GetDSoundAudioDeviceGuidsProc getDSoundAudioDeviceGuidsProc;
 		private bool isDisabled;
 
-
-		#region Constructor, destructor
 
 		/// <summary>Instantiates a new XInput <see cref="GameController"/>.</summary>
 		/// <param name="controllerIndex">The game controller index.</param>
@@ -99,17 +96,9 @@ namespace ManagedX.Input.XInput
 			var zero = TimeSpan.Zero;
 			this.Reset( ref zero );
 
-			isDisabled = !isConnected;
+			isDisabled = base.IsDisconnected;
 		}
 
-
-		/// <summary>Destructor.</summary>
-		~GameController()
-		{
-			this.SetVibration( Vibration.Zero );
-		}
-
-		#endregion
 
 
 		//private void Setup15()
@@ -158,20 +147,15 @@ namespace ManagedX.Input.XInput
 		public sealed override InputDeviceType DeviceType { get { return InputDeviceType.HumanInterfaceDevice; } }
 
 
-		/// <summary>Gets a value indicating whether this game controller is disconnected.</summary>
-		public sealed override bool Disconnected { get { return !isConnected; } }
-
-
 		/// <summary>Gets the <see cref="ManagedX.Input.XInput.Capabilities">capabilities</see> of this <see cref="GameController"/>.</summary>
 		public Capabilities Capabilities
 		{
 			get
 			{
 				var errorCode = getCapsProc( base.Index, 1, out capabilities );
+
 				if( errorCode == (int)ErrorCode.NotConnected )
-					isConnected = false;
-				else if( errorCode == 0 )
-					isConnected = true;
+					base.IsDisconnected = true;
 
 				return capabilities;
 			}
@@ -185,10 +169,9 @@ namespace ManagedX.Input.XInput
 			get
 			{
 				var errorCode = getBatteryInfoProc( base.Index, BatteryDeviceType.Gamepad, out batteryInfo );
+				
 				if( errorCode == (int)ErrorCode.NotConnected )
-					isConnected = false;
-				else if( errorCode == 0 )
-					isConnected = true;
+					base.IsDisconnected = true;
 
 				return batteryInfo;
 			}
@@ -204,12 +187,11 @@ namespace ManagedX.Input.XInput
 				return false;
 
 			var errorCode = setStateProc( base.Index, ref vibration );
+			
 			if( errorCode == (int)ErrorCode.NotConnected )
-				isConnected = false;
-			else if( errorCode == 0 )
-				isConnected = true;
-
-			return isConnected;
+				base.IsDisconnected = true;
+			
+			return errorCode == 0;
 		}
 		
 
@@ -229,7 +211,7 @@ namespace ManagedX.Input.XInput
 			get
 			{
 				var output = Keystroke.Empty;
-				if( isConnected && capabilities.IsSet( Caps.PluginModuleDeviceSupported ) )
+				if( !base.IsDisconnected && capabilities.IsSet( Caps.PluginModuleDeviceSupported ) )
 				{
 					var errorCode = getKeystrokeProc( base.Index, 0, out output );
 					if( errorCode != 0 )
@@ -252,10 +234,9 @@ namespace ManagedX.Input.XInput
 				var errorCode = getStateProc( base.Index, out state );
 
 				if( errorCode == (int)ErrorCode.NotConnected )
-					isConnected = false;
+					base.IsDisconnected = true;
 				else if( errorCode == 0 )
 				{
-					isConnected = true;
 					if( deadZoneMode != DeadZoneMode.None )
 					{
 						state.GamePadState.ApplyThumbSticksDeadZone( deadZoneMode, GamePad.DefaultLeftThumbDeadZone, GamePad.DefaultRightThumbDeadZone );
@@ -276,7 +257,7 @@ namespace ManagedX.Input.XInput
 		protected sealed override void Reset( ref TimeSpan time )
 		{
 			var errorCode = getCapsProc( base.Index, 1, out capabilities );
-			if( isConnected = ( errorCode == 0 ) )
+			if( !( base.IsDisconnected = ( errorCode != 0 ) ) )
 				base.Reset( ref time );
 		}
 
@@ -286,7 +267,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified <paramref name="button"/> is pressed in the current state and was released in the previous state; otherwise returns false.</returns>
 		public sealed override bool HasJustBeenPressed( GamePadButtons button )
 		{
-			return !this.PreviousState.Buttons.HasFlag( button ) && this.CurrentState.Buttons.HasFlag( button );
+			return !base.PreviousState.Buttons.HasFlag( button ) && base.CurrentState.Buttons.HasFlag( button );
 		}
 
 
@@ -295,7 +276,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified <paramref name="button"/> is released in the current state and was pressed in the previous state; otherwise returns false.</returns>
 		public sealed override bool HasJustBeenReleased( GamePadButtons button )
 		{
-			return this.PreviousState.Buttons.HasFlag( button ) && !this.CurrentState.Buttons.HasFlag( button );
+			return base.PreviousState.Buttons.HasFlag( button ) && !base.CurrentState.Buttons.HasFlag( button );
 		}
 
 

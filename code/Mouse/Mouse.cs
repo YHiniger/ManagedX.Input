@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -14,6 +16,10 @@ namespace ManagedX.Input
 	/// <summary>A mouse.</summary>
 	public sealed class Mouse : RawInputDevice<MouseState, MouseButton>
 	{
+
+		private const int MaxSupportedMice = 4;			// FIXME - actually only the primary mouse is properly supported...
+		private const int MaxSupportedButtonCount = 5;
+
 
 		/// <summary>Enumerates mouse buttons, using their <see cref="VirtualKeyCode"/>.</summary>
 		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731%28v=vs.85%29.aspx</remarks>
@@ -38,29 +44,6 @@ namespace ManagedX.Input
 			/// <summary>The extended button 2.</summary>
 			X2 = VirtualKeyCode.MouseX2
 
-		}
-
-
-		#region Static
-
-		private static ButtonVirtualKeyCode ToVirtualKeyCode( int buttonIndex )
-		{
-			if( buttonIndex == (int)MouseButton.Left )
-				return ButtonVirtualKeyCode.Left;
-
-			if( buttonIndex == (int)MouseButton.Right )
-				return ButtonVirtualKeyCode.Right;
-
-			if( buttonIndex == (int)MouseButton.Middle )
-				return ButtonVirtualKeyCode.Middle;
-
-			if( buttonIndex == (int)MouseButton.X1 )
-				return ButtonVirtualKeyCode.X1;
-
-			if( buttonIndex == (int)MouseButton.X2 )
-				return ButtonVirtualKeyCode.X2;
-
-			return ButtonVirtualKeyCode.None;
 		}
 
 
@@ -153,23 +136,59 @@ namespace ManagedX.Input
 		}
 
 
-		private static readonly Dictionary<IntPtr, Mouse> mice = new Dictionary<IntPtr, Mouse>( 1 );
+		#region Static
+
+		private static ButtonVirtualKeyCode ToVirtualKeyCode( int buttonIndex )
+		{
+			if( buttonIndex == (int)MouseButton.Left )
+				return ButtonVirtualKeyCode.Left;
+
+			if( buttonIndex == (int)MouseButton.Right )
+				return ButtonVirtualKeyCode.Right;
+
+			if( buttonIndex == (int)MouseButton.Middle )
+				return ButtonVirtualKeyCode.Middle;
+
+			if( buttonIndex == (int)MouseButton.X1 )
+				return ButtonVirtualKeyCode.X1;
+
+			if( buttonIndex == (int)MouseButton.X2 )
+				return ButtonVirtualKeyCode.X2;
+
+			return ButtonVirtualKeyCode.None;
+		}
+
+
+		private static readonly List<Mouse> mouseList = new List<Mouse>( 1 );
 		private static MouseCursorOptions cursorState;
 
 		
+		private static void OnMouseDisconnected( object sender, EventArgs e )
+		{
+			var mouse = (Mouse)sender;
+			mouse.Disconnected -= OnMouseDisconnected;
+			mouseList.Remove( mouse );
+		}
+
+
 		private static void Initialize()
 		{
 			var allDevices = NativeMethods.GetRawInputDeviceList();
 			var index = 0;
-			for( int d = 0; d < allDevices.Length; d++ )
+			for( var d = 0; d < allDevices.Length; d++ )
 			{
 				var descriptor = allDevices[ d ];
 				if( descriptor.DeviceType == InputDeviceType.Mouse )
 				{
 					var mouse = new Mouse( (GameControllerIndex)index, ref descriptor );
-					mice.Add( mouse.DeviceHandle, mouse );
-					if( ++index == 4 ) // "only" 4 mice are supported
-						break;
+					if( !mouse.IsDisconnected )
+					{
+						mouseList.Add( mouse );
+						mouse.Disconnected += OnMouseDisconnected;
+
+						if( ++index == MaxSupportedMice )
+							break;
+					}
 				}
 			}
 		}
@@ -180,30 +199,19 @@ namespace ManagedX.Input
 		{
 			get
 			{
-				if( mice.Count == 0 )
+				if( mouseList.Count == 0 )
 					Initialize();
 
-				foreach( var mouse in mice.Values )
-					return mouse;
+				if( mouseList.Count == 0 )
+					return null;
 
-				return null;
+				return mouseList[ 0 ];
 			}
 		}
 
 
 		/// <summary>Gets a read-only collection containing all known (up to 4) mice.</summary>
-		public static System.Collections.ObjectModel.ReadOnlyCollection<Mouse> All
-		{
-			get
-			{
-				if( mice.Count == 0 )
-					Initialize();
-
-				var array = new Mouse[ mice.Count ];
-				mice.Values.CopyTo( array, 0 );
-				return new System.Collections.ObjectModel.ReadOnlyCollection<Mouse>( array );
-			}
-		}
+		public static ReadOnlyCollection<Mouse> All { get { return new ReadOnlyCollection<Mouse>( mouseList ); } }
 
 
 		/// <summary>Gets or sets a value indicating the state of the mouse cursor.
@@ -246,12 +254,12 @@ namespace ManagedX.Input
 		/// <param name="options">One or more <see cref="RawInputDeviceRegistrationOptions"/>.</param>
 		public static void Register( IWin32Window targetWindow, RawInputDeviceRegistrationOptions options )
 		{
+			if( mouseList.Count == 0 )
+				Initialize();
+
 			var device = RawInputDevice.Mouse;
 			device.targetWindowHandle = ( targetWindow == null ) ? IntPtr.Zero : targetWindow.Handle;
 			device.flags = options;
-
-			if( mice.Count == 0 )
-				Initialize();
 
 			try
 			{
@@ -269,53 +277,77 @@ namespace ManagedX.Input
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Required by implementation." )]
 		public static void WndProc( ref Message message )
 		{
-			if( message.Msg == 254 ) // WindowMessage.InputDeviceChange
-			{
-				var wParam = message.WParam.ToInt32();
-				// Device arrival (wParam == 1) or removal (wParam == 2)
-				// TODO - mark the device as disconnected on removal, otherwise initialize a new RawInputDevice.
-			}
-			else if( message.Msg == 255 ) // WindowMessage.Input
+			if( message.Msg == 255 ) // WindowMessage.Input
 			{
 				RawInput rawInput;
 				NativeMethods.GetRawInputData( message.LParam, out rawInput );
 				if( rawInput.DeviceType == InputDeviceType.Mouse )
 				{
-					Mouse targetMouse;
-					if( !mice.TryGetValue( rawInput.DeviceHandle, out targetMouse ) )
+					Mouse targetMouse = null;
+					for( var m = 0; m < mouseList.Count; m++ )
+					{
+						if( mouseList[ m ].DeviceHandle == rawInput.DeviceHandle )
+						{
+							targetMouse = mouseList[ m ];
+							break;
+						}
+					}
+					
+					if( targetMouse == null )
 						return;
 
 					var mouseState = rawInput.Mouse.Value;
 					if( mouseState.State.HasFlag( RawMouseStateIndicators.MoveRelative ) )
 					{
-						targetMouse.motion.X += mouseState.LastX;
-						targetMouse.motion.Y += mouseState.LastY;
+						targetMouse.motionDelta.X += mouseState.LastX;
+						targetMouse.motionDelta.Y += mouseState.LastY;
 					}
 
 					// FIXME - doesn't seem to work... may be about the horizontal wheel ?
 					if( mouseState.ButtonsState.HasFlag( RawMouseButtonStateIndicators.Wheel ) )
 						targetMouse.wheelValue += mouseState.WheelDelta;
 				}
+				return;
 			}
-			else if( message.Msg == 522 ) // WindowMessage.MouseWheel
-				foreach( var mouse in mice.Values )
+			
+
+			if( message.Msg == 522 ) // WindowMessage.MouseWheel
+			{
+				var delta = message.WParam.ToInt32() >> 16;
+				// FIXME - find the mouse whose wheel has been scrolled, something in the form:
+				// miceByHandle[ message.LParam ].wheelDelta += delta;
+				var mice = All;
+				if( mice.Count > 0 )
+					mice[ 0 ].wheelDelta += delta;
+				return;
+			}
+
+
+			if( message.Msg == 254 ) // WindowMessage.InputDeviceChange
+			{
+				var wParam = message.WParam.ToInt32();
+				if( wParam == 1 )
 				{
-					mouse.wheelDelta += ( message.WParam.ToInt32() >> 16 );
-					break;
+					// Device arrival
 				}
+				else if( wParam == 2 )
+				{
+					// Device removal
+				}
+				// TODO - mark the device as disconnected on removal, otherwise initialize a new RawInputDevice.
+			}
 		}
 
-		#endregion // Static
+		#endregion Static
 
 
 
-		private bool disconnected;
-		private Point motion;
+		private MouseState state;
+		private Point motionDelta;
 		private int wheelDelta;
 		private int wheelValue;
 
 
-		#region Constructor, destructor
 
 		/// <summary>Constructor.</summary>
 		/// <param name="controllerIndex">The index of the mouse.</param>
@@ -328,54 +360,39 @@ namespace ManagedX.Input
 		}
 
 		
-		/// <summary>Destructor.</summary>
-		~Mouse()
-		{
-			if( mice.ContainsValue( this ) )
-				mice.Remove( this.DeviceHandle );
-		}
-
-		#endregion // Constructor, destructor
-
 
 		/// <summary>Resets the mouse device.</summary>
 		/// <param name="time">The time elapsed since the application start.</param>
 		protected sealed override void Reset( ref TimeSpan time )
 		{
-			motion = Point.Zero;
+			motionDelta = Point.Zero;
 			wheelDelta = 0;
 
 			base.Reset( ref time );
 		}
 
 
-		/// <summary>Gets a value indicating whether the mouse is disconnected.</summary>
-		public sealed override bool Disconnected { get { return disconnected; } }
-
-
 		/// <summary>Returns the mouse state.
 		/// <para>This method is called by Reset and Update.</para>
 		/// </summary>
 		/// <returns>Returns the mouse state.</returns>
-#if DEBUG
 		/// <exception cref="Win32Exception"/>
-#endif
 		protected sealed override MouseState GetState()
 		{
 			const short Mask = -32768;
-			const int MaxSupportedButtonCount = 5;
-
 
 			var cursorInfo = CursorInfo.Default;
-			if( disconnected = !SafeNativeMethods.GetCursorInfo( ref cursorInfo ) )
+			if( !SafeNativeMethods.GetCursorInfo( ref cursorInfo ) )
 			{
-#if DEBUG
-				throw new Win32Exception( "Failed to retrieve mouse cursor position.", GetLastWin32Exception() );
-#else
-				wheelValue = wheelDelta = 0;
-				motion = Point.Zero;
-				return MouseState.Empty;
-#endif
+				var lastException = GetLastWin32Exception();
+				if( lastException.HResult == (int)ErrorCode.NotConnected )
+				{
+					base.IsDisconnected = true;
+					wheelValue = wheelDelta = 0;
+					motionDelta = Point.Zero;
+					return MouseState.Empty;
+				}
+				throw new Win32Exception( "Failed to retrieve mouse cursor position.", lastException );
 			}
 			cursorState = cursorInfo.State;
 
@@ -386,9 +403,13 @@ namespace ManagedX.Input
 
 			wheelDelta /= 120;
 
-			var state = new MouseState( ref cursorInfo.ScreenPosition, ref motion, wheelDelta, (MouseButtons)buttons );
+			//state = new MouseState( ref cursorInfo.ScreenPosition, ref motion, wheelDelta, (MouseButtons)buttons );
+			state.position = cursorInfo.ScreenPosition;
+			state.motion = motionDelta;
+			state.wheel = wheelDelta;
+			state.buttons = (MouseButtons)buttons;
 
-			motion = Point.Zero;
+			motionDelta.X = motionDelta.Y = 0;
 			wheelValue += wheelDelta;
 			wheelDelta = 0;
 
@@ -401,7 +422,10 @@ namespace ManagedX.Input
 		/// <returns>Returns true if the specified <paramref name="button"/> is pressed in the current state and released in the previous state, otherwise returns false.</returns>
 		public sealed override bool HasJustBeenPressed( MouseButton button )
 		{
-			return this.CurrentState[ button ] && !this.PreviousState[ button ];
+			if( base.IsDisconnected )
+				return false;
+
+			return base.CurrentState[ button ] && !base.PreviousState[ button ];
 		}
 
 
@@ -410,7 +434,10 @@ namespace ManagedX.Input
 		/// <returns>Returns true if the specified <paramref name="button"/> is released in the current state and pressed in the previous state, otherwise returns false.</returns>
 		public sealed override bool HasJustBeenReleased( MouseButton button )
 		{
-			return !this.CurrentState[ button ] && this.PreviousState[ button ];
+			if( base.IsDisconnected )
+				return false;
+
+			return !base.CurrentState[ button ] && base.PreviousState[ button ];
 		}
 
 

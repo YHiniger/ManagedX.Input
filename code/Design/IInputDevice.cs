@@ -17,9 +17,13 @@ namespace ManagedX.Input.Design
 		/// <summary>Gets the type of the input device.</summary>
 		InputDeviceType DeviceType { get; }
 
-		
+
+		/// <summary>Raised when the input device is disconnected.</summary>
+		event EventHandler Disconnected;
+
+
 		/// <summary>Gets a value indicating whether the input device is disconnected.</summary>
-		bool Disconnected { get; }
+		bool IsDisconnected { get; }
 
 
 		/// <summary>Updates the input device state.</summary>

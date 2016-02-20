@@ -5,7 +5,6 @@ namespace ManagedX.Input
 {
 
 	/// <summary>A mouse state.</summary>
-	[Serializable]
 	public struct MouseState : IEquatable<MouseState>
 	{
 
@@ -15,24 +14,25 @@ namespace ManagedX.Input
 		}
 
 
-		private Point position;
-		private Point motion;
-		private int wheel;
-		private MouseButtons buttons;
+		internal Point position;
+		internal Point motion;
+		internal int wheel;
+		internal MouseButtons buttons;
 
 
-		/// <summary>Initializes a new <see cref="MouseState"/> structure.</summary>
-		/// <param name="position">The mouse cursor position.</param>
-		/// <param name="motion">The mouse motion, for high-precision DPI mouse support.</param>
-		/// <param name="wheel">The mouse wheel value.</param>
-		/// <param name="buttons">The mouse buttons state.</param>
-		internal MouseState( ref Point position, ref Point motion, int wheel, MouseButtons buttons )
-		{
-			this.position = position;
-			this.motion = motion;
-			this.wheel = wheel;
-			this.buttons = buttons;
-		}
+
+		///// <summary>Initializes a new <see cref="MouseState"/> structure.</summary>
+		///// <param name="position">The mouse cursor position.</param>
+		///// <param name="motion">The mouse motion, for high-precision DPI mouse support.</param>
+		///// <param name="wheel">The mouse wheel value.</param>
+		///// <param name="buttons">The mouse buttons state.</param>
+		//internal MouseState( ref Point position, ref Point motion, int wheel, MouseButtons buttons )
+		//{
+		//	this.position = position;
+		//	this.motion = motion;
+		//	this.wheel = wheel;
+		//	this.buttons = buttons;
+		//}
 
 		
 
@@ -95,7 +95,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>The empty <see cref="MouseState"/> structure.</summary>
-		public static readonly MouseState Empty = new MouseState();
+		public static readonly MouseState Empty;
 
 
 		#region Operators

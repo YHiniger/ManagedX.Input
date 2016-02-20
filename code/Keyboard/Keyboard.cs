@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -13,7 +15,8 @@ namespace ManagedX.Input
 	public sealed class Keyboard : RawInputDevice<KeyboardState, Key>
 	{
 
-		#region Static
+		private const int MaxSupportedKeyboards = 4;
+
 
 		[SuppressUnmanagedCodeSecurity]
 		private static class SafeNativeMethods
@@ -39,7 +42,19 @@ namespace ManagedX.Input
 		}
 
 
-		private static readonly Dictionary<IntPtr, Keyboard> keyboards = new Dictionary<IntPtr, Keyboard>( 1 );
+		#region Static
+
+		private static readonly List<Keyboard> keyboardList = new List<Keyboard>( 1 );
+
+
+		private static void OnKeyboardDisconnected( object sender, EventArgs e )
+		{
+			var keyboard = (Keyboard)sender;
+			
+			keyboard.Disconnected -= OnKeyboardDisconnected;
+
+			keyboardList.Remove( keyboard );
+		}
 
 
 		private static void Initialize()
@@ -52,9 +67,14 @@ namespace ManagedX.Input
 				if( descriptor.DeviceType == InputDeviceType.Keyboard )
 				{
 					var keyboard = new Keyboard( (GameControllerIndex)index, ref descriptor );
-					keyboards.Add( keyboard.DeviceHandle, keyboard );
-					if( ++index == 4 ) // "only" 4 keyboards are supported
-						break;
+					if( !keyboard.IsDisconnected )
+					{
+						keyboardList.Add( keyboard );
+						keyboard.Disconnected += OnKeyboardDisconnected;
+
+						if( ++index == MaxSupportedKeyboards )
+							break;
+					}
 				}
 			}
 		}
@@ -65,30 +85,19 @@ namespace ManagedX.Input
 		{
 			get
 			{
-				if( keyboards.Count == 0 )
+				if( keyboardList.Count == 0 )
 					Initialize();
 
-				foreach( var keyboard in keyboards.Values )
-					return keyboard;
-				
-				return null;
+				if( keyboardList.Count == 0 )
+					return null;
+
+				return keyboardList[ 0 ];
 			}
 		}
 
 
 		/// <summary>Gets a read-only collection containing all known (up to 4) keyboards.</summary>
-		public static System.Collections.ObjectModel.ReadOnlyCollection<Keyboard> All
-		{
-			get
-			{
-				if( keyboards.Count == 0 )
-					Initialize();
-
-				var array = new Keyboard[ keyboards.Count ];
-				keyboards.Values.CopyTo( array, 0 );
-				return new System.Collections.ObjectModel.ReadOnlyCollection<Keyboard>( array );
-			}
-		}
+		public static ReadOnlyCollection<Keyboard> All { get { return new ReadOnlyCollection<Keyboard>( keyboardList ); } }
 
 
 		///// <summary>Causes the target window to receive raw keyboard input messages.
@@ -143,11 +152,7 @@ namespace ManagedX.Input
 		#endregion Static
 
 
-		private bool disconnected;
-
-
-		#region Constructor, destructor
-
+		
 		/// <summary>Constructor.</summary>
 		/// <param name="controllerIndex">The keyboard index.</param>
 		/// <param name="descriptor">The keyboard descriptor.</param>
@@ -159,26 +164,16 @@ namespace ManagedX.Input
 		}
 
 		
-		/// <summary>Destructor.</summary>
-		~Keyboard()
-		{
-			if( keyboards.ContainsValue( this ) )
-				keyboards.Remove( this.DeviceHandle );
-		}
-
-		#endregion Constructor, destructor
-
-
-		/// <summary>Gets a value indicating whether the keyboard is disconnected.</summary>
-		public sealed override bool Disconnected { get { return disconnected; } }
-
 
 		/// <summary>Returns a value indicating whether a key is pressed in the current state and released in the previous state.</summary>
 		/// <param name="button">A keyboard key.</param>
 		/// <returns>Returns true if the key specified by <paramref name="button"/> is pressed in the current state and released in the previous state, otherwise returns false.</returns>
 		public sealed override bool HasJustBeenPressed( Key button )
 		{
-			return this.CurrentState[ button ] && !this.PreviousState[ button ];
+			if( base.IsDisconnected )
+				return false;
+
+			return base.CurrentState[ button ] && !base.PreviousState[ button ];
 		}
 
 
@@ -187,7 +182,10 @@ namespace ManagedX.Input
 		/// <returns>Returns true if the key specified by <paramref name="button"/> is released in the current state and pressed in the previous state, otherwise returns false.</returns>
 		public sealed override bool HasJustBeenReleased( Key button )
 		{
-			return !this.CurrentState[ button ] && this.PreviousState[ button ];
+			if( base.IsDisconnected )
+				return false;
+
+			return !base.CurrentState[ button ] && base.PreviousState[ button ];
 		}
 
 
@@ -195,19 +193,20 @@ namespace ManagedX.Input
 		/// <para>This method is called by Reset and Update.</para>
 		/// </summary>
 		/// <returns>Returns a <see cref="KeyboardState"/> structure representing the current state of the keyboard.</returns>
+		/// <exception cref="Win32Exception"/>
 		protected sealed override KeyboardState GetState()
 		{
 			KeyboardState state;
 			state.Data = new byte[ 256 ];
 
-			if( !( disconnected = !SafeNativeMethods.GetKeyboardState( state.Data ) ) )
+			if( !( base.IsDisconnected = !SafeNativeMethods.GetKeyboardState( state.Data ) ) )
 				return state;
 
 			var lastException = GetLastWin32Exception();
 			if( lastException.HResult == (int)ErrorCode.NotConnected )
 				return KeyboardState.Empty;
 
-			throw new System.ComponentModel.Win32Exception( "Failed to retrieve keyboard state.", lastException );
+			throw new Win32Exception( "Failed to retrieve keyboard state.", lastException );
 		}
 
 

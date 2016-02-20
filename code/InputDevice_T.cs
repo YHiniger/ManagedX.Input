@@ -20,6 +20,7 @@ namespace ManagedX.Input
 		private TimeSpan currentStateTime, previousStateTime;
 
 
+
 		/// <summary>Constructor.</summary>
 		/// <param name="controllerIndex">The index of this input device.</param>
 		internal InputDevice( GameControllerIndex controllerIndex )
@@ -73,11 +74,8 @@ namespace ManagedX.Input
 		/// <param name="time">The time elapsed since the application start.</param>
 		public sealed override void Update( TimeSpan time )
 		{
-			if( this.Disconnected )
-			{
-				this.Reset( ref time );
+			if( this.IsDisconnected )
 				return;
-			}
 			
 			previousState = currentState;
 			previousStateTime = currentStateTime;
