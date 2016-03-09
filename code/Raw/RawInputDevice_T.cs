@@ -45,7 +45,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>Gets the <see cref="DevicePath"/> of this raw input device.</summary>
-		public sealed override string Identifier { get { return this.DevicePath; } }
+		public sealed override string DeviceIdentifier { get { return this.DevicePath; } }
 
 
 		/// <summary>Gets the display name of this raw input device.</summary>

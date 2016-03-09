@@ -42,7 +42,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>Gets the identifier of this <see cref="InputDevice"/>.</summary>
-		public abstract string Identifier { get; }
+		public abstract string DeviceIdentifier { get; }
 
 
 		/// <summary>Gets the friendly name of this <see cref="InputDevice"/>.</summary>

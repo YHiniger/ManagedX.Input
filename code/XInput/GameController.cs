@@ -136,7 +136,7 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Gets the identifier of this <see cref="GameController"/>.</summary>
-		public sealed override string Identifier { get { return "XInput#" + (int)this.Index; } }
+		public sealed override string DeviceIdentifier { get { return "XInput#" + (int)this.Index; } }
 
 
 		/// <summary>Gets the friendly name of this <see cref="GameController"/>.</summary>
