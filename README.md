@@ -15,8 +15,8 @@ For Desktop applications only.
 
 ### Requirements:
 - Windows Vista* or greater
-- .NET Framework 4.5
-- ManagedX
+- .NET Framework 4.5 : https://www.microsoft.com/en-US/download/details.aspx?id=30653
+- ManagedX : https://github.com/YHiniger/ManagedX
 
 *Windows Vista and 7 users also need the DirectX End-User Runtime (June 2010), available here:
 https://www.microsoft.com/en-us/download/details.aspx?id=35&44F86079-8679-400C-BFF2-9CA5F2BCBDFC=1
