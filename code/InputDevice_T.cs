@@ -10,7 +10,7 @@ namespace ManagedX.Input
 	/// <para>Base class for input devices, including game controllers.</para>
 	/// </summary>
 	/// <typeparam name="TState">A structure representing the input device state.</typeparam>
-	/// <typeparam name="TButton">An enumeration representing the controller buttons (or key).</typeparam>
+	/// <typeparam name="TButton">An enumeration representing the input device buttons/keys.</typeparam>
 	public abstract class InputDevice<TState, TButton> : InputDevice, IInputDevice<TState, TButton>
 		where TState : struct
 		where TButton : struct
@@ -30,7 +30,7 @@ namespace ManagedX.Input
 
 
 
-		#region GetState, CurrentState*, PreviousState*
+		#region State
 
 		/// <summary>When overridden, reads and returns the input device state.
 		/// <para>This method is called by <see cref="Reset"/> and <see cref="Update"/> to retrieve the device state (<see cref="CurrentState"/>).</para>
@@ -43,24 +43,24 @@ namespace ManagedX.Input
 		/// <summary>Gets the current state.</summary>
 		public TState CurrentState { get { return currentState; } }
 
-		/// <summary>Gets the time associated with the <see cref="CurrentState">current state</see>.</summary>
+		/// <summary>Gets the time associated with the <see cref="CurrentState"/>.</summary>
 		public TimeSpan CurrentStateTime { get { return currentStateTime; } }
 
 
 		/// <summary>Gets the previous state.</summary>
 		public TState PreviousState { get { return previousState; } }
 
-		/// <summary>Gets the time associated with the <see cref="PreviousState">previous state</see>.</summary>
+		/// <summary>Gets the time associated with the <see cref="PreviousState"/>.</summary>
 		public TimeSpan PreviousStateTime { get { return previousStateTime; } }
 
-		#endregion // GetState, CurrentState*, PreviousState*
+		#endregion State
 
 
 		/// <summary>Reads the device state through <see cref="GetState"/>, and copies it to the <see cref="PreviousState"/> and the <see cref="CurrentState"/>.
 		/// <para>This method must be called in the constructor of the "final classes" for proper initialization.</para>
 		/// </summary>
 		/// <param name="time">The time elapsed since the application start.</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
 		protected virtual void Reset( ref TimeSpan time )
 		{
 			previousStateTime = currentStateTime = time;

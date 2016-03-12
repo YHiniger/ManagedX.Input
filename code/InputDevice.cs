@@ -59,7 +59,6 @@ namespace ManagedX.Input
 
 		/// <summary>Raised when the input device is disconnected.</summary>
 		public event EventHandler Disconnected;
-
 		
 		/// <summary>Raises the <see cref="Disconnected"/> event.</summary>
 		private void OnDisconnected()

@@ -5,8 +5,8 @@ namespace ManagedX.Input.Raw
 {
 
 	/// <summary>Base class for raw input devices, implemented as managed input devices.</summary>
-	/// <typeparam name="TState">The input device state type; must be a structure.</typeparam>
-	/// <typeparam name="TButton">The input device button type; must be an enumeration.</typeparam>
+	/// <typeparam name="TState">A structure representing the raw input device state.</typeparam>
+	/// <typeparam name="TButton">An enumeration of the raw input device buttons/keys.</typeparam>
 	public abstract class RawInputDevice<TState, TButton> : InputDevice<TState, TButton>, Design.IRawInputDevice
 		where TState : struct
 		where TButton : struct
