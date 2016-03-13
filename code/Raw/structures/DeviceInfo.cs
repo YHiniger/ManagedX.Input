@@ -5,12 +5,11 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.Raw
 {
 
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms645584(v=vs.85).aspx
-
-
 	/// <summary>Defines the raw input data coming from any device.
-	/// <para>The native name of this structure is RID_DEVICEINFO.</para>
+	/// <para>This structure is equivalent to the native <code>RID_DEVICE_INFO</code> structure.</para>
 	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645581%28v=vs.85%29.aspx</remarks>
+	[ManagedX.Design.Native( "WinUser.h", "RID_DEVICE_INFO" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 32 )]
 	internal struct DeviceInfo : IEquatable<DeviceInfo>
 	{
@@ -29,7 +28,7 @@ namespace ManagedX.Input.Raw
 			internal HumanInterfaceDeviceInfo HID;
 
 
-			internal static readonly Info Empty = new Info();
+			internal static readonly Info Empty;
 
 		}
 
@@ -39,12 +38,14 @@ namespace ManagedX.Input.Raw
 		private Info info;
 
 
+
 		private DeviceInfo( int structureSize )
 		{
 			structSize = structureSize;
 			type = InputDeviceType.Mouse;
 			info = Info.Empty;
 		}
+
 
 
 		internal int StructureSize { get { return structSize; } }

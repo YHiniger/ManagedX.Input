@@ -5,12 +5,11 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.Raw
 {
 
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms645571%28v=vs.85%29.aspx
-
-
 	/// <summary>Contains the header information that is part of the raw input data.
-	/// <para>The native name of this structure is RAWINPUTHEADER.</para>
+	/// <para>This structure is equivalent to the native <code>RAWINPUTHEADER</code> structure (defined in WinUser.h).</para>
 	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645571%28v=vs.85%29.aspx</remarks>
+	[ManagedX.Design.Native( "WinUser.h", "RAWINPUTHEADER" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4 )] // Size = 16/24 bytes (x86/x64)
 	internal struct RawInputHeader : IEquatable<RawInputHeader>
 	{

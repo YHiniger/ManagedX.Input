@@ -196,14 +196,13 @@ namespace ManagedX.Input
 		/// <exception cref="Win32Exception"/>
 		protected sealed override KeyboardState GetState()
 		{
-			KeyboardState state;
-			state.Data = new byte[ 256 ];
+			var state = KeyboardState.Empty;
 
 			if( !( base.IsDisconnected = !SafeNativeMethods.GetKeyboardState( state.Data ) ) )
 				return state;
 
 			var lastException = GetLastWin32Exception();
-			if( lastException.HResult == (int)ErrorCode.NotConnected )
+			if( lastException.HResult == (int)Win32.ErrorCode.NotConnected )
 				return KeyboardState.Empty;
 
 			throw new Win32Exception( "Failed to retrieve keyboard state.", lastException );

@@ -5,12 +5,11 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.Raw
 {
 
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms645575%28v=vs.85%29.aspx
-
-
 	/// <summary>Contains information about the state of the keyboard.
-	/// <para>The native name of this structure is RAWKEYBOARD.</para>
+	/// <para>This structure is equivalent to the native <code>RAWKEYBOARD</code> structure (defined in WinUser.h).</para>
 	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645575%28v=vs.85%29.aspx</remarks>
+	[ManagedX.Design.Native( "WinUser.h", "RAWKEYBOARD" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 16 )]
 	public struct RawKeyboard : IEquatable<RawKeyboard>
 	{
@@ -29,15 +28,19 @@ namespace ManagedX.Input.Raw
 		/// </summary>
 		public short MakeCode { get { return makeCode; } }
 		
+
 		/// <summary>Gets the flags for scan code information.</summary>
 		public short MakeCodeInformations { get { return flags; } }
 		
+
 		/// <summary>Gets the Windows message compatible virtual-key code.</summary>
 		public short VirtualKey { get { return vKey; } }
+
 
 		/// <summary>Gets the corresponding window message, for example WM_KEYDOWN, WM_SYSKEYDOWN, and so forth.</summary>
 		public int Message { get { return message; } }
 		
+
 		/// <summary>Gets the device-specific additional information for the event.</summary>
 		public int ExtraInformation { get { return extraInformation; } }
 
@@ -77,7 +80,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>The empty <see cref="RawKeyboard"/> structure.</summary>
-		public static readonly RawKeyboard Empty = new RawKeyboard();
+		public static readonly RawKeyboard Empty;
 
 
 		#region Operators
@@ -101,7 +104,7 @@ namespace ManagedX.Input.Raw
 			return !rawKeyboard.Equals( other );
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 

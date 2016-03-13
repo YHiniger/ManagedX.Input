@@ -6,13 +6,12 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.Raw
 {
 
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms645549%28v=vs.85%29.aspx
-
-
 	/// <summary>Describes the format of the raw input from a Human Interface Device (HID).
-	/// <para>The native name of this structure is RAWHID.</para>
+	/// <para>This structure is equivalent to the native <code>RAWHID</code> structure (defined in WinUser.h).</para>
 	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645549%28v=vs.85%29.aspx</remarks>
 	[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "HID" )]
+	[ManagedX.Design.Native( "WinUser.h", "RAWHID" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4 )] // 12 (x86) or 16 (x64) bytes
 	public struct RawHID : IEquatable<RawHID>
 	{

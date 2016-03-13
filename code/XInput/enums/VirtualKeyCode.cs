@@ -1,15 +1,17 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-using VKeyCode = ManagedX.Input.VirtualKeyCode;
-
 
 namespace ManagedX.Input.XInput
 {
+	using VKeyCode = ManagedX.Input.VirtualKeyCode;
+
 
 	// XInput.h
 
 	
-	/// <summary>Enumerates XInput virtual key codes, as defined in <see cref="ManagedX.Input.VirtualKeyCode"/>.</summary>
+	/// <summary>Enumerates XInput virtual key codes.
+	/// <para>This enumeration is a subset of the <see cref="ManagedX.Input.VirtualKeyCode"/> enumeration.</para>
+	/// </summary>
 	[SuppressMessage( "Microsoft.Design", "CA1028:EnumStorageShouldBeInt32", Justification = "Required by implementation." )]
 	public enum VirtualKeyCode : short
 	{

@@ -10,6 +10,7 @@
 namespace ManagedX.Input.XInput
 {
 	using Design;
+	using Win32;
 
 
 	/// <summary>An XInput controller, as a managed input device (see <see cref="IInputDevice"/>, <see cref="IXInputController"/>).</summary>

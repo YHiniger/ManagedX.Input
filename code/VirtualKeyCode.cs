@@ -30,9 +30,9 @@ namespace ManagedX.Input
 		/// <summary>The extended mouse button 2.</summary>
 		MouseX2 = 6,
 
-		#endregion
+		#endregion Mouse
 
-		
+
 		#region Keyboard
 
 		/// <summary>The CANCEL key.</summary>
@@ -220,60 +220,79 @@ namespace ManagedX.Input
 		/// <summary>The G key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "G" )]
 		G = 71,
+		
 		/// <summary>The H key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "H" )]
 		H = 72,
+		
 		/// <summary>The I key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "I" )]
 		I = 73,
+		
 		/// <summary>The J key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "J" )]
 		J = 74,
+		
 		/// <summary>The K key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "K" )]
 		K = 75,
+		
 		/// <summary>The L key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "L" )]
 		L = 76,
+		
 		/// <summary>The M key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "M" )]
 		M = 77,
+		
 		/// <summary>The N key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "N" )]
 		N = 78,
+		
 		/// <summary>The O key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "O" )]
 		O = 79,
+		
 		/// <summary>The P key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "P" )]
 		P = 80,
+		
 		/// <summary>The Q key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Q" )]
 		Q = 81,
+		
 		/// <summary>The R key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "R" )]
 		R = 82,
+		
 		/// <summary>The S key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "S" )]
 		S = 83,
+		
 		/// <summary>The T key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "T" )]
 		T = 84,
+		
 		/// <summary>The U key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "U" )]
 		U = 85,
+		
 		/// <summary>The V key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "V" )]
 		V = 86,
+		
 		/// <summary>The W key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "W" )]
 		W = 87,
+		
 		/// <summary>The X key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "X" )]
 		X = 88,
+		
 		/// <summary>The Y key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Y" )]
 		Y = 89,
+		
 		/// <summary>The Z key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Z" )]
 		Z = 90,
@@ -581,10 +600,10 @@ namespace ManagedX.Input
 		/// <summary>The ALT modifier key.</summary>
 		Alt = 262144,
 
-		#endregion
+		#endregion Keyboard
 
 
-		#region XInput controller (Gamepad*)
+		#region XInput
 
 		// XInput.h
 
@@ -691,7 +710,7 @@ namespace ManagedX.Input
 		/// <summary>The right stick down left direction.</summary>
 		GamepadRightThumbDownLeft = 0x5837
 
-		#endregion
+		#endregion XInput
 
 	}
 

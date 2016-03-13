@@ -5,16 +5,16 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.Raw
 {
 
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms645562(v=vs.85).aspx
-
 	// Important: "Pack = 4" causes the structure size to be rounded the nearest greater multiple of 4.
 	// Since it's applied to the private Data structure, its actual size is 24, instead of 22.
 	// Of course, this increases the size of the RawInput structure to 40 or 48 bytes (instead of 38 or 46 bytes), which can then safely use the same packing.
 
 	
 	/// <summary>Contains the raw input from a device.
-	/// <para>The native name of this structure is RAWINPUT.</para>
+	/// <para>This structure is equivalent to the native <code>RAWINPUT</code> structure (defined in WinUser.h).</para>
 	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645562(v=vs.85).aspx</remarks>
+	[ManagedX.Design.Native( "WinUser.h", "RAWINPUT" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4 )] // Size = 40 (x86) or 48 (x64) byte
 	internal struct RawInput : IEquatable<RawInput>
 	{
@@ -43,8 +43,10 @@ namespace ManagedX.Input.Raw
 		/// <summary>Gets the type of the raw input device.</summary>
 		public InputDeviceType DeviceType { get { return header.DeviceType; } }
 
+
 		/// <summary>Gets a handle to the device generating the raw input data.</summary>
 		public IntPtr DeviceHandle { get { return header.DeviceHandle; } }
+
 
 		/// <summary>The value passed in the WParam parameter of the WM_INPUT message.</summary>
 		public IntPtr WParam { get { return header.WParameter; } }
@@ -61,6 +63,7 @@ namespace ManagedX.Input.Raw
 			}
 		}
 
+
 		/// <summary>When <see cref="DeviceType"/> is <see cref="InputDeviceType.Keyboard"/>, gets ...</summary>
 		public RawKeyboard? Keyboard
 		{
@@ -71,6 +74,7 @@ namespace ManagedX.Input.Raw
 				return null;
 			}
 		}
+
 
 		/// <summary>When <see cref="DeviceType"/> is <see cref="InputDeviceType.HumanInterfaceDevice"/>, gets ...</summary>
 		public RawHID? HumanInterfaceDevice

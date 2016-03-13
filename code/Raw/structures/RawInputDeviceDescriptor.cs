@@ -5,12 +5,11 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.Raw
 {
 
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms645568(v=vs.85).aspx
-
-
 	/// <summary>Contains information about a raw input device.
-	/// <para>The native name of this structure is RAWINPUTDEVICELIST.</para>
+	/// <para>This structure is equivalent to the native <code>RAWINPUTDEVICELIST</code> structure (defined in WinUser.h).</para>
 	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645568(v=vs.85).aspx</remarks>
+	[ManagedX.Design.Native( "WinUser.h", "RAWINPUTDEVICELIST" )]
 	[StructLayout( LayoutKind.Sequential )] // Size = 8 (x86) or 12 (x64) bytes
 	public struct RawInputDeviceDescriptor : IEquatable<RawInputDeviceDescriptor>
 	{
@@ -56,7 +55,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>The empty <see cref="RawInputDeviceDescriptor"/> structure.</summary>
-		public static readonly RawInputDeviceDescriptor Empty = new RawInputDeviceDescriptor();
+		public static readonly RawInputDeviceDescriptor Empty;
 
 
 		#region Operators
@@ -79,9 +78,9 @@ namespace ManagedX.Input.Raw
 		{
 			return !descriptor.Equals( other );
 		}
-	
-		#endregion
-	
+
+		#endregion Operators
+
 	}
 
 }

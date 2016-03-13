@@ -5,12 +5,11 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.Raw
 {
 
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms645565%28v=vs.85%29.aspx
-
-
 	/// <summary>Defines information for the raw input devices.
-	/// <para>The native name of this structure is RAWINPUTDEVICE.</para>
+	/// <para>This structure is equivalent to the native <code>RAWINPUTDEVICE</code> structure (defined in WinUser.h).</para>
 	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645565%28v=vs.85%29.aspx</remarks>
+	[ManagedX.Design.Native( "WinUser.h", "RAWINPUTDEVICE" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4 )]
 	internal struct RawInputDevice : IEquatable<RawInputDevice>
 	{
@@ -18,6 +17,7 @@ namespace ManagedX.Input.Raw
 		private int topLevelCollection; // combines UsagePage and Usage.
 		internal RawInputDeviceRegistrationOptions flags;
 		internal IntPtr targetWindowHandle;
+
 
 
 		/// <summary>Private constructor.</summary>
@@ -32,6 +32,7 @@ namespace ManagedX.Input.Raw
 			this.flags = options;
 			this.targetWindowHandle = targetWindowHandle;
 		}
+
 
 
 		/// <summary>Gets the top-level collection (usage page and usage) for the raw input device.</summary>
@@ -79,7 +80,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>The empty <see cref="RawInputDevice"/> structure.</summary>
-		public static readonly RawInputDevice Empty = new RawInputDevice();
+		public static readonly RawInputDevice Empty;
 
 		/// <summary>The default <see cref="RawInputDevice"/> structure for mice.</summary>
 		internal static readonly RawInputDevice Mouse = new RawInputDevice( (int)Raw.TopLevelCollection.Mouse, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
@@ -115,7 +116,7 @@ namespace ManagedX.Input.Raw
 			return !rawInputDevice.Equals( other );
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 

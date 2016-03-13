@@ -5,12 +5,11 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.Raw
 {
 
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms645578%28v=vs.85%29.aspx
-
-
 	/// <summary>Contains information about the state of the mouse.
-	/// <para>The native name of this structure is RAWMOUSE.</para>
+	/// <para>This structure is equivalent to the native <code>RAWMOUSE</code> structure (defined in WinUser.h).</para>
 	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645578%28v=vs.85%29.aspx</remarks>
+	[ManagedX.Design.Native( "WinUser.h", "RAWMOUSE" )]
 	[StructLayout( LayoutKind.Sequential, Size = 22 )] // for some reason packing can't be set...
 	public struct RawMouse : IEquatable<RawMouse>
 	{
@@ -91,7 +90,7 @@ namespace ManagedX.Input.Raw
 
 		
 		/// <summary>The empty <see cref="RawMouse"/> structure.</summary>
-		public static readonly RawMouse Empty = new RawMouse();
+		public static readonly RawMouse Empty;
 
 
 		#region Operators
@@ -115,7 +114,7 @@ namespace ManagedX.Input.Raw
 			return !rawMouse.Equals( other );
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 

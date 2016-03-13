@@ -1,11 +1,10 @@
 ﻿namespace ManagedX.Input
 {
 
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms648381%28v=vs.85%29.aspx
-
-
 	/// <summary>Enumerates mouse cursor states.</summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms648381%28v=vs.85%29.aspx</remarks>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1008:EnumsShouldHaveZeroValue", Justification = "There is: Hidden." )]
+	[ManagedX.Design.Native( "WinUser.h" )]
 	[System.Flags]
 	public enum MouseCursorOptions : int
 	{

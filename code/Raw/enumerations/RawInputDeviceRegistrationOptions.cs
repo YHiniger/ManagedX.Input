@@ -5,8 +5,9 @@ namespace ManagedX.Input.Raw
 {
 	
 	/// <summary>Enumerates options used when registering a raw input device.
-	/// <para>This enumeration is equivalent to the native RIDEV_* constants.</para>
+	/// <para>This enumeration is equivalent to the native <code>RIDEV_*</code> constants (defined in WinUser.h).</para>
 	/// </summary>
+	[ManagedX.Design.Native( "WinUser.h", "RIDEV_*" )]
 	[Flags]
 	public enum RawInputDeviceRegistrationOptions : int
 	{

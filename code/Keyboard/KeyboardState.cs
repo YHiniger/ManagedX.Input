@@ -42,11 +42,14 @@ namespace ManagedX.Input
 			return ( Data[ (int)key ] & ToggleMask ) == ToggleMask;
 		}
 
+
 		/// <summary>Gets a value indicating whether the CapsLock toggle is active.</summary>
 		public bool CapsLock { get { return this.GetToggleableKeyState( Key.CapsLock ); } }
 
+
 		/// <summary>Gets a value indicating whether the NumLock toggle is active.</summary>
 		public bool NumLock { get { return this.GetToggleableKeyState( Key.NumLock ); } }
+
 
 		/// <summary>Gets a value indicating whether the ScrollLock toggle is active.</summary>
 		public bool ScrollLock { get { return this.GetToggleableKeyState( Key.ScrollLock ); } }
@@ -63,7 +66,7 @@ namespace ManagedX.Input
 		/// <summary>Returns a value indicating whether this <see cref="KeyboardState"/> structure equals another structure of the same type.</summary>
 		/// <param name="other">A <see cref="KeyboardState"/> structure.</param>
 		/// <returns>Returns true if this <see cref="KeyboardState"/> structure and the <paramref name="other"/> structure are equal, otherwise returns false.</returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062", MessageId = "0" )]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062" )]
 		public bool Equals( KeyboardState other )
 		{
 			if( other.Data == null )
@@ -87,10 +90,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>The empty <see cref="KeyboardState"/> structure.</summary>
-		public static readonly KeyboardState Empty = new KeyboardState()
-		{
-			Data = new byte[ 256 ]
-		};
+		public static readonly KeyboardState Empty = new KeyboardState() { Data = new byte[ 256 ] };
 
 
 		#region Operators

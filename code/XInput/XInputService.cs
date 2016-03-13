@@ -21,22 +21,36 @@ namespace ManagedX.Input.XInput
 
 		/// <summary>Returns the version of XInput to use.</summary>
 		/// <returns>Returns a value indicating which version of XInput to use.</returns>
-		internal static XInputVersion GetXInputVersion()
+		private static XInputVersion GetXInputVersion()
 		{
 #if XINPUT_13
 			return XInputVersion.XInput13;
 #elif XINPUT_14
 			return XInputVersion.XInput14;
 #else
-			var windowsVersion = Environment.OSVersion.Version;
-			// assumes OSVersion.Platform == PlatformID.Win32NT
+			try
+			{
+				var osVersion = Environment.OSVersion;
+				if( osVersion.Platform != PlatformID.Win32NT )
+					return XInputVersion.NotSupported;
 
-			// Windows 8 or greater
-			if( windowsVersion >= new Version( 6, 2 ) )
-				return XInputVersion.XInput14;
-			
-			// Windows Vista or 7 (with DirectX End-User Runtime June 2010)
-			return XInputVersion.XInput13;
+				var windowsVersion = osVersion.Version;
+
+				//// Windows 10
+				//if( windowsVersion >= new Version( 10, 0 ) )
+				//	return XInputVersion.XInput15;
+
+				// Windows 8 or greater
+				if( windowsVersion >= new Version( 6, 2 ) )
+					return XInputVersion.XInput14;
+
+				// Windows Vista or 7 (with DirectX End-User Runtime June 2010)
+				return XInputVersion.XInput13;
+			}
+			catch( Exception )
+			{
+				return XInputVersion.NotSupported;
+			}
 #endif
 		}
 

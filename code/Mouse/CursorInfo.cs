@@ -5,11 +5,9 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input
 {
 
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms648381%28v=vs.85%29.aspx
-	// WinUser.h
-
-
 	/// <summary>Contains global cursor information.</summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms648381%28v=vs.85%29.aspx</remarks>
+	[ManagedX.Design.Native( "WinUser.h", "CURSORINFO" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4 )]
 	internal struct CursorInfo : IEquatable<CursorInfo>
 	{
@@ -19,6 +17,7 @@ namespace ManagedX.Input
 		private IntPtr cursor;
 		/// <summary>The screen coordinates of the mouse cursor.</summary>
 		internal Point ScreenPosition;
+
 
 
 		private CursorInfo( int structSize )
@@ -70,7 +69,6 @@ namespace ManagedX.Input
 
 
 		#region Operators
-
 		
 		/// <summary>Equality comparer.</summary>
 		/// <param name="cursorInfo">A <see cref="CursorInfo"/> structure.</param>
@@ -91,8 +89,7 @@ namespace ManagedX.Input
 			return !cursorInfo.Equals( other );
 		}
 
-
-		#endregion
+		#endregion Operators
 
 	}
 

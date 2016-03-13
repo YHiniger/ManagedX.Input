@@ -47,12 +47,12 @@ namespace ManagedX.Input
 		}
 
 
+		[ManagedX.Design.Native( "WinUser.h" )]
 		[SuppressUnmanagedCodeSecurity]
 		private static class SafeNativeMethods
 		{
 
 			private const string LibraryName = "User32.dll";
-			// WinUser.h
 
 
 			/// <summary>Retrieves information about the global cursor.</summary>
@@ -385,7 +385,7 @@ namespace ManagedX.Input
 			if( !SafeNativeMethods.GetCursorInfo( ref cursorInfo ) )
 			{
 				var lastException = GetLastWin32Exception();
-				if( lastException.HResult == (int)ErrorCode.NotConnected )
+				if( lastException.HResult == (int)Win32.ErrorCode.NotConnected )
 				{
 					base.IsDisconnected = true;
 					wheelValue = wheelDelta = 0;

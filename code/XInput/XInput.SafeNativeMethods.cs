@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 
 namespace ManagedX.Input.XInput
 {
+	using Win32;
+
 
 	/// <summary>Provides access to the XInput API functions.</summary>
 	[System.Security.SuppressUnmanagedCodeSecurity]
