@@ -47,7 +47,7 @@ namespace ManagedX.Input
 		}
 
 
-		[ManagedX.Design.Native( "WinUser.h" )]
+		[Win32.Native( "WinUser.h" )]
 		[SuppressUnmanagedCodeSecurity]
 		private static class SafeNativeMethods
 		{

@@ -16,8 +16,8 @@ namespace ManagedX.Input.XInput
 		/// <summary>XInput 1.4, available on Windows 8 and later.</summary>
 		XInput14,
 
-		///// <summary>XInput 1.5, available on Windows 10 and later.</summary>
-		//XInput15
+		/// <summary>XInput 1.5, available on Windows 10 and later.</summary>
+		XInput15
 
 	}
 

@@ -7,7 +7,7 @@ namespace ManagedX.Input
 
 	/// <summary>Contains global cursor information.</summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms648381%28v=vs.85%29.aspx</remarks>
-	[ManagedX.Design.Native( "WinUser.h", "CURSORINFO" )]
+	[Win32.Native( "WinUser.h", "CURSORINFO" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4 )]
 	internal struct CursorInfo : IEquatable<CursorInfo>
 	{

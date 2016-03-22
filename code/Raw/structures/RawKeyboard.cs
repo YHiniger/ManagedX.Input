@@ -9,7 +9,7 @@ namespace ManagedX.Input.Raw
 	/// <para>This structure is equivalent to the native <code>RAWKEYBOARD</code> structure (defined in WinUser.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645575%28v=vs.85%29.aspx</remarks>
-	[ManagedX.Design.Native( "WinUser.h", "RAWKEYBOARD" )]
+	[Win32.Native( "WinUser.h", "RAWKEYBOARD" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 16 )]
 	public struct RawKeyboard : IEquatable<RawKeyboard>
 	{

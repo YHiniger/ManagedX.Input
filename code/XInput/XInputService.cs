@@ -23,10 +23,12 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a value indicating which version of XInput to use.</returns>
 		private static XInputVersion GetXInputVersion()
 		{
-#if XINPUT_13
-			return XInputVersion.XInput13;
+#if XINPUT_15
+			return XInputVersion.XInput15;
 #elif XINPUT_14
 			return XInputVersion.XInput14;
+#elif XINPUT_13
+			return XInputVersion.XInput13;
 #else
 			try
 			{
@@ -36,9 +38,9 @@ namespace ManagedX.Input.XInput
 
 				var windowsVersion = osVersion.Version;
 
-				//// Windows 10
-				//if( windowsVersion >= new Version( 10, 0 ) )
-				//	return XInputVersion.XInput15;
+				// Windows 10
+				if( windowsVersion >= new Version( 10, 0 ) )
+					return XInputVersion.XInput15;
 
 				// Windows 8 or greater
 				if( windowsVersion >= new Version( 6, 2 ) )
