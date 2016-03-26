@@ -10,7 +10,8 @@ namespace ManagedX.Input.XInput
 
 	
 	/// <summary>Enumerates XInput virtual key codes.
-	/// <para>This enumeration is a subset of the <see cref="ManagedX.Input.VirtualKeyCode"/> enumeration.</para>
+	/// <para>This enumeration is equivalent to the native <code>BATTERY_DEVTYPE_*</code> constants (defined in XInput.h).</para>
+	/// This enumeration is a subset of the <see cref="ManagedX.Input.VirtualKeyCode"/> enumeration.
 	/// </summary>
 	[SuppressMessage( "Microsoft.Design", "CA1028:EnumStorageShouldBeInt32", Justification = "Required by implementation." )]
 	public enum VirtualKeyCode : short

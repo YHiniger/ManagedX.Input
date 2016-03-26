@@ -5,7 +5,8 @@
 	public enum DeadZoneMode : int
 	{
 
-		/// <summary>No dead zone; this value is not recommended. (see https://msdn.microsoft.com/en-us/library/windows/desktop/ee417001%28v=vs.85%29.aspx#dead_zone ).</summary>
+		/// <summary>No dead zone; this value is not recommended.</summary>
+		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ee417001%28v=vs.85%29.aspx#dead_zone</remarks>
 		None,
 		
 		/// <summary>Axis-dependent dead zone.</summary>

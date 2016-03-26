@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.XInput
 {
 
-	// http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_vibration%28v=vs.85%29.aspx
-	// XInput.h
-
-
-	/// <summary>An XInput VIBRATION structure.</summary>
+	/// <summary>An XInput VIBRATION structure.
+	/// <para>This structure is equivalent to the native <code>XINPUT_VIBRATION</code> structure (defined in XInput.h).</para>
+	/// </summary>
+	/// <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_vibration%28v=vs.85%29.aspx</remarks>
+	[Win32.Native( "XInput.h", "XINPUT_VIBRATION" )]
 	[Serializable]
 	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 4 )]
 	public struct Vibration : IEquatable<Vibration>
@@ -101,7 +101,7 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>The zero <see cref="Vibration"/> structure.</summary>
-		public static readonly Vibration Zero = new Vibration();
+		public static readonly Vibration Zero;
 
 		/// <summary>Full throttle <see cref="Vibration"/>.</summary>
 		public static readonly Vibration FullThrottle = new Vibration( ushort.MaxValue, ushort.MaxValue );

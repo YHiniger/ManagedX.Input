@@ -15,7 +15,7 @@
 		Three,
 
 		/// <summary>The 4th input device / game controller.</summary>
-		Four
+		Four,
 
 	}
 

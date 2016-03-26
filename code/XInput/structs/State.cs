@@ -5,7 +5,11 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.XInput
 {
 
-	/// <summary>Contains the state of an XInput controller.</summary>
+	/// <summary>Contains the state of an XInput controller.
+	/// <para>This structure is equivalent to the native <code>XINPUT_STATE</code> structure (defined in XInput.h).</para>
+	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_state%28v=vs.85%29.aspx</remarks>
+	[Win32.Native( "XInput.h", "XINPUT_STATE" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
 	public struct State : IEquatable<State>
 	{

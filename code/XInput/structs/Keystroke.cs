@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.XInput
 {
 
-	// XInput.h
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_keystroke%28v=vs.85%29.aspx
-
-
-	/// <summary>Specifies keystroke data returned by XInputGetKeystroke.</summary>
+	/// <summary>Specifies keystroke data returned by XInputGetKeystroke.
+	/// <para>This structure is equivalent to the native <code>XINPUT_KEYSTROKE</code> structure (defined in XInput.h).</para>
+	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_keystroke%28v=vs.85%29.aspx</remarks>
+	[Win32.Native( "XInput.h", "XINPUT_KEYSTROKE" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 8 )]
 	public struct Keystroke : IEquatable<Keystroke>
 	{
@@ -22,6 +22,7 @@ namespace ManagedX.Input.XInput
 		private KeyStates flags;
 		private byte userIndex;
 		private byte hidCode;
+
 
 
 		/// <summary>Gets the virtual-key code of the key, button, or stick movement.</summary>

@@ -12,6 +12,7 @@ namespace ManagedX.Input.XInput
 	{
 
 		/// <summary>Defines the maximum number of controllers supported by XInput: 4.</summary>
+		[Win32.Native( "XInput.h", "XUSER_MAX_COUNT" )]
 		public const int MaxControllerCount = 4;
 
 		
@@ -23,9 +24,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a value indicating which version of XInput to use.</returns>
 		private static XInputVersion GetXInputVersion()
 		{
-#if XINPUT_15
-			return XInputVersion.XInput15;
-#elif XINPUT_14
+#if XINPUT_14
 			return XInputVersion.XInput14;
 #elif XINPUT_13
 			return XInputVersion.XInput13;
@@ -33,26 +32,22 @@ namespace ManagedX.Input.XInput
 			try
 			{
 				var osVersion = Environment.OSVersion;
-				if( osVersion.Platform != PlatformID.Win32NT )
-					return XInputVersion.NotSupported;
+				if( osVersion.Platform == PlatformID.Win32NT )
+				{
+					var windowsVersion = osVersion.Version;
 
-				var windowsVersion = osVersion.Version;
+					// Windows 8 or greater
+					if( windowsVersion >= new Version( 6, 2 ) )
+						return XInputVersion.XInput14;
 
-				// Windows 10
-				if( windowsVersion >= new Version( 10, 0 ) )
-					return XInputVersion.XInput15;
-
-				// Windows 8 or greater
-				if( windowsVersion >= new Version( 6, 2 ) )
-					return XInputVersion.XInput14;
-
-				// Windows Vista or 7 (with DirectX End-User Runtime June 2010)
-				return XInputVersion.XInput13;
+					// Windows Vista or 7 (with DirectX End-User Runtime June 2010)
+					return XInputVersion.XInput13;
+				}
 			}
-			catch( Exception )
+			catch( InvalidOperationException )
 			{
-				return XInputVersion.NotSupported;
 			}
+			return XInputVersion.NotSupported;
 #endif
 		}
 
@@ -64,31 +59,27 @@ namespace ManagedX.Input.XInput
 
 
 
-		#region Constructor, destructor
-
 		private XInputService()
 		{
 			xInputVersion = GetXInputVersion();
-			
-			if( xInputVersion == XInputVersion.XInput14 )
-				apiVersion = new Version( 1, 4 );
-			else												
-				apiVersion = new Version( 1, 3 );
+			if( xInputVersion == XInputVersion.NotSupported )
+				throw new NotSupportedException( "XInput is not supported on this system." );
 
 			controllers = new List<GameController>( MaxControllerCount );
-			for( var index = 0; index < MaxControllerCount; index++ )
-				controllers.Add( new GameController( (GameControllerIndex)index, xInputVersion ) );
+
+			if( xInputVersion == XInputVersion.XInput14 )
+			{
+				for( var index = 0; index < MaxControllerCount; index++ )
+					controllers.Add( new XInput14GameController( (GameControllerIndex)index ) );
+				apiVersion = new Version( 1, 4 );
+			}
+			else // XInput 1.3
+			{
+				for( var index = 0; index < MaxControllerCount; index++ )
+					controllers.Add( new XInput13GameController( (GameControllerIndex)index ) );
+				apiVersion = new Version( 1, 3 );
+			}
 		}
-
-
-		/// <summary>Destructor.</summary>
-		~XInputService()
-		{
-			if( controllers != null )
-				controllers.Clear();
-		}
-
-		#endregion
 
 
 
@@ -101,10 +92,13 @@ namespace ManagedX.Input.XInput
 		{
 			get
 			{
+				if( xInputVersion == XInputVersion.XInput14 )
+					return XInput14GameController.LibraryName;
+
 				if( xInputVersion == XInputVersion.XInput13 )
-					return SafeNativeMethods.LibraryName13;
+					return XInput13GameController.LibraryName;
 				
-				return SafeNativeMethods.LibraryName14;
+				return null;
 			}
 		}
 

@@ -5,12 +5,14 @@ using System.Runtime.InteropServices;
 
 namespace ManagedX.Input.XInput
 {
-
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_gamepad%28v=vs.85%29.aspx
-	// XInput.h
+	using Win32;
 
 
-	/// <summary>Describes the state of an XInput controller.</summary>
+	/// <summary>Describes the state of an XInput controller.
+	/// <para>This structure is equivalent to the native <code>XINPUT_GAMEPAD</code> structure (defined in XInput.h).</para>
+	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_gamepad%28v=vs.85%29.aspx</remarks>
+	[Native( "XInput.h", "XINPUT_GAMEPAD" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 12 )]
 	public struct GamePad : IEquatable<GamePad>
 	{
@@ -18,15 +20,18 @@ namespace ManagedX.Input.XInput
 		#region Constants
 
 		/// <summary>Defines the default dead zone for the left thumbstick: 7849.</summary>
+		[Native( "XInput.h", "XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE" )]
 		public const short DefaultLeftThumbDeadZone = 7849;
 
 		/// <summary>Defines the default dead zone for the right thumbstick: 8689.</summary>
+		[Native( "XInput.h", "XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE" )]
 		public const short DefaultRightThumbDeadZone = 8689;
 
 		/// <summary>Defines the default threshold value used for triggers: 30.</summary>
+		[Native( "XInput.h", "XINPUT_GAMEPAD_TRIGGER_THRESHOLD" )]
 		public const byte DefaultTriggerThreshold = 30;
-		
-		#endregion
+
+		#endregion Constants
 
 
 		#region Static functions
@@ -83,7 +88,7 @@ namespace ManagedX.Input.XInput
 			y = ToShort( v * scale );
 		}
 
-		#endregion
+		#endregion Static functions
 
 
 		private GamePadButtons buttons;

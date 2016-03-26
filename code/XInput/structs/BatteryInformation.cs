@@ -6,10 +6,11 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.XInput
 {
 
-	// http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_battery_information%28v=vs.85%29.aspx
-
-
-	/// <summary>Contains information on <see cref="BatteryType">battery type</see> and <see cref="BatteryLevel">charge state</see>.</summary>
+	/// <summary>Contains information on <see cref="BatteryType"/> and <see cref="BatteryLevel"/>.
+	/// <para>This structure is equivalent to the native <code>XINPUT_BATTERY_INFORMATION</code> structure (defined in XInput.h).</para>
+	/// </summary>
+	/// <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_battery_information%28v=vs.85%29.aspx</remarks>
+	[Win32.Native( "XInput.h", "XINPUT_BATTERY_INFORMATION" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 2 )]
 	public struct BatteryInformation : IEquatable<BatteryInformation>
 	{
@@ -18,11 +19,12 @@ namespace ManagedX.Input.XInput
 		private BatteryLevel level;
 
 
+
 		/// <summary>Gets the type of battery.</summary>
 		public BatteryType BatteryType { get { return type; } }
 
 
-		/// <summary>Gets the charge state of the battery; only valid for wireless devices with a known <see cref="BatteryType">battery type</see>.</summary>
+		/// <summary>Gets the charge state of the battery; only valid for wireless devices with a known <see cref="BatteryType"/>.</summary>
 		public BatteryLevel BatteryLevel { get { return level; } }
 
 
@@ -56,13 +58,13 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a string representing this <see cref="BatteryInformation"/> structure.</returns>
 		public override string ToString()
 		{
-			return '{' + string.Format( CultureInfo.InvariantCulture, "Type: {0}, Level: {1}", type, level ) + '}';
+			return string.Format( CultureInfo.InvariantCulture, "{{Type: {0}, Level: {1}}}", type, level );
 		}
 
 
 
 		/// <summary>The "disconnected" <see cref="BatteryInformation"/> structure.</summary>
-		public static readonly BatteryInformation Disconnected = new BatteryInformation();
+		public static readonly BatteryInformation Disconnected;
 
 
 		#region Operators
