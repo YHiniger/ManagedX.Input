@@ -12,7 +12,7 @@
 		Keyboard = 1,
 
 		/// <summary>Data comes from an HID that is not a keyboard or a mouse.</summary>
-		HumanInterfaceDevice = 2
+		HumanInterfaceDevice = 2,
 
 	}
 

@@ -11,11 +11,12 @@ namespace ManagedX.Input.XInput
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_state%28v=vs.85%29.aspx</remarks>
 	[Win32.Native( "XInput.h", "XINPUT_STATE" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
-	public struct State : IEquatable<State>
+	internal struct State : IEquatable<State>
 	{
 		
 		private int packetNumber;
 		private GamePad state;
+
 
 
 		/// <summary>Gets the state packet number. The packet number indicates whether there have been any changes in the state of the controller.
@@ -54,7 +55,7 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>The empty <see cref="State"/>.</summary>
-		public static readonly State Empty = new State();
+		public static readonly State Empty;
 
 
 		#region Operators

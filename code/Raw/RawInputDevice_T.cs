@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 
 namespace ManagedX.Input.Raw
@@ -7,10 +8,11 @@ namespace ManagedX.Input.Raw
 	/// <summary>Base class for raw input devices, implemented as managed input devices.</summary>
 	/// <typeparam name="TState">A structure representing the raw input device state.</typeparam>
 	/// <typeparam name="TButton">An enumeration of the raw input device buttons/keys.</typeparam>
-	public abstract class RawInputDevice<TState, TButton> : InputDevice<TState, TButton>, Design.IRawInputDevice
+	public abstract class RawInputDevice<TState, TButton> : InputDevice<TState, TButton>
 		where TState : struct
 		where TButton : struct
 	{
+
 
 		private IntPtr deviceHandle;
 		private DeviceInfo info;
@@ -44,10 +46,6 @@ namespace ManagedX.Input.Raw
 
 
 
-		/// <summary>Gets the <see cref="DevicePath"/> of this raw input device.</summary>
-		public sealed override string DeviceIdentifier { get { return this.DevicePath; } }
-
-
 		/// <summary>Gets the display name of this raw input device.</summary>
 		public sealed override string DisplayName { get { return string.Copy( displayName ?? string.Empty ); } }
 
@@ -66,14 +64,6 @@ namespace ManagedX.Input.Raw
 
 		/// <summary>Gets information about this raw input device.</summary>
 		internal DeviceInfo Info { get { return info; } }
-
-
-		/// <summary>Returns the <see cref="DisplayName"/> of the raw input device.</summary>
-		/// <returns>Returns the <see cref="DisplayName"/> of the raw input device.</returns>
-		public sealed override string ToString()
-		{
-			return string.Copy( displayName ?? string.Empty );
-		}
 
 	}
 

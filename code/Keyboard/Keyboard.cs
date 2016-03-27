@@ -201,7 +201,7 @@ namespace ManagedX.Input
 			if( !( base.IsDisconnected = !SafeNativeMethods.GetKeyboardState( state.Data ) ) )
 				return state;
 
-			var lastException = GetLastWin32Exception();
+			var lastException = NativeMethods.GetExceptionForLastWin32Error();
 			if( lastException.HResult == (int)Win32.ErrorCode.NotConnected )
 				return KeyboardState.Empty;
 

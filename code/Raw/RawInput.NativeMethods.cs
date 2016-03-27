@@ -21,7 +21,7 @@ namespace ManagedX.Input.Raw
 
 		/// <summary>Returns an exception corresponding to the last Win32 error.</summary>
 		/// <returns>Returns an exception corresponding to the last Win32 error.</returns>
-		private static Exception GetExceptionForLastWin32Error()
+		internal static Exception GetExceptionForLastWin32Error()
 		{
 			var errorCode = Marshal.GetLastWin32Error();
 			var ex = Marshal.GetExceptionForHR( errorCode );
@@ -83,7 +83,7 @@ namespace ManagedX.Input.Raw
 			throw new InvalidDataException( "Failed to retrieve raw input device count: device count mismatch." );
 		}
 
-		#endregion
+		#endregion GetRawInputDeviceList
 
 
 		#region GetRawInputDeviceInfo (+GetRawInputDeviceName)
@@ -208,7 +208,7 @@ namespace ManagedX.Input.Raw
 			throw new NotSupportedException( "Failed to retrieve raw input device name: string length mismatch (bad implementation)." );
 		}
 
-		#endregion
+		#endregion GetRawInputDeviceInfo (+GetRawInputDeviceName)
 
 
 		#region RegisterRawInputDevices
@@ -272,7 +272,7 @@ namespace ManagedX.Input.Raw
 				throw new Win32Exception( "Failed to register raw input device(s).", GetExceptionForLastWin32Error() );
 		}
 
-		#endregion
+		#endregion RegisterRawInputDevices
 
 
 		#region GetRegisteredRawInputDevices
@@ -323,7 +323,7 @@ namespace ManagedX.Input.Raw
 			return rawInputDevices;
 		}
 
-		#endregion
+		#endregion GetRegisteredRawInputDevices
 
 
 		#region GetRawInputData
@@ -374,7 +374,7 @@ namespace ManagedX.Input.Raw
 				throw new Win32Exception( "Failed to retrieve raw input data.", GetExceptionForLastWin32Error() );
 		}
 
-		#endregion
+		#endregion GetRawInputData
 
 
 		#region GetRawInputBuffer
@@ -416,7 +416,7 @@ namespace ManagedX.Input.Raw
 				throw new Win32Exception( "Failed to retrieve raw input buffer.", GetExceptionForLastWin32Error() );
 		}
 
-		#endregion
+		#endregion GetRawInputBuffer
 
 
 

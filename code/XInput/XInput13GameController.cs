@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace ManagedX.Input.XInput
@@ -132,28 +129,20 @@ namespace ManagedX.Input.XInput
 
 		private Capabilities capabilities;
 		private BatteryInformation batteryInfo;
+		private State rawState;
 
 
 
 		internal XInput13GameController( GameControllerIndex controllerIndex )
 			: base( controllerIndex )
 		{
+			var zero = TimeSpan.Zero;
+			this.Reset( ref zero );
 		}
 
 
 
-		public sealed override Capabilities Capabilities
-		{
-			get
-			{
-				var errorCode = SafeNativeMethods.XInputGetCapabilities( base.Index, 1, out capabilities );
-
-				if( errorCode == (int)ErrorCode.NotConnected )
-					base.IsDisconnected = true;
-
-				return capabilities;
-			}
-		}
+		public sealed override Capabilities Capabilities { get { return capabilities; } }
 
 
 		public sealed override BatteryInformation BatteryInfo
@@ -203,7 +192,9 @@ namespace ManagedX.Input.XInput
 		protected sealed override void Reset( ref TimeSpan time )
 		{
 			var errorCode = SafeNativeMethods.XInputGetCapabilities( base.Index, 1, out capabilities );
-			if( !( base.IsDisconnected = ( errorCode != 0 ) ) )
+			if( errorCode == (int)ErrorCode.NotConnected )
+				base.IsDisconnected = true;
+			else if( errorCode == 0 )
 				base.Reset( ref time );
 		}
 
@@ -212,20 +203,19 @@ namespace ManagedX.Input.XInput
 		{
 			if( !base.Disabled )
 			{
-				State state;
-				var errorCode = SafeNativeMethods.XInputGetState( base.Index, out state );
+				var errorCode = SafeNativeMethods.XInputGetState( base.Index, out rawState );
 
 				if( errorCode == (int)ErrorCode.NotConnected )
 					base.IsDisconnected = true;
 				else if( errorCode == 0 )
 				{
-					var state2 = state.GamePadState;
+					var state = rawState.GamePadState;
 					if( base.DeadZoneMode != DeadZoneMode.None )
 					{
-						state2.ApplyThumbSticksDeadZone( base.DeadZoneMode, GamePad.DefaultLeftThumbDeadZone, GamePad.DefaultRightThumbDeadZone );
-						state2.ApplyTriggersDeadZone();
+						state.ApplyThumbSticksDeadZone( base.DeadZoneMode, GamePad.DefaultLeftThumbDeadZone, GamePad.DefaultRightThumbDeadZone );
+						state.ApplyTriggersDeadZone();
 					}
-					return state2;
+					return state;
 				}
 			}
 

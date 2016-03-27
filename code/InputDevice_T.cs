@@ -1,17 +1,14 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 
 namespace ManagedX.Input
 {
-	using Design;
 
-
-	/// <summary>Default implementation of the <see cref="IInputDevice&lt;TState,TButton&gt;"/> interface.
-	/// <para>Base class for input devices, including game controllers.</para>
-	/// </summary>
+	/// <summary>Base class for input devices, including game controllers.</summary>
 	/// <typeparam name="TState">A structure representing the input device state.</typeparam>
 	/// <typeparam name="TButton">An enumeration representing the input device buttons/keys.</typeparam>
-	public abstract class InputDevice<TState, TButton> : InputDevice, IInputDevice<TState, TButton>
+	public abstract class InputDevice<TState, TButton> : InputDevice
 		where TState : struct
 		where TButton : struct
 	{
@@ -36,7 +33,7 @@ namespace ManagedX.Input
 		/// <para>This method is called by <see cref="Reset"/> and <see cref="Update"/> to retrieve the device state (<see cref="CurrentState"/>).</para>
 		/// </summary>
 		/// <returns>Returns the input device state.</returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Disambiguation: this method retrieves the device state." )]
+		[SuppressMessage( "Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Disambiguation: this method retrieves the device state." )]
 		protected abstract TState GetState();
 
 
@@ -56,32 +53,35 @@ namespace ManagedX.Input
 		#endregion State
 
 
-		/// <summary>Reads the device state through <see cref="GetState"/>, and copies it to the <see cref="PreviousState"/> and the <see cref="CurrentState"/>.
-		/// <para>This method must be called in the constructor of the "final classes" for proper initialization.</para>
-		/// </summary>
-		/// <param name="time">The time elapsed since the application start.</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
-		protected virtual void Reset( ref TimeSpan time )
-		{
-			previousStateTime = currentStateTime = time;
-			previousState = currentState = this.GetState();	// NOTE - GetState is in charge of setting Disconnected to the appropriate value.
-		}
-
-
 		/// <summary>Copies the <see cref="CurrentState"/> to the <see cref="PreviousState"/>, and calls <see cref="GetState"/> to update the former.
 		/// <para>If the device is not connected, calls <see cref="Reset"/> prior to the copy and state update.</para>
 		/// </summary>
 		/// <param name="time">The time elapsed since the application start.</param>
 		public sealed override void Update( TimeSpan time )
 		{
-			if( this.IsDisconnected )
-				return;
+			if( base.IsDisconnected )
+			{
+				if( ( time - currentStateTime ).TotalSeconds < 2.0 )
+					return;
+			}
 			
 			previousState = currentState;
 			previousStateTime = currentStateTime;
 			
 			currentStateTime = time;
 			currentState = this.GetState();
+		}
+
+
+		/// <summary>Reads the device state through <see cref="GetState"/>, and copies it to the <see cref="PreviousState"/> and the <see cref="CurrentState"/>.
+		/// <para>This method must be called in the constructor of the "final classes" for proper initialization.</para>
+		/// </summary>
+		/// <param name="time">The time elapsed since the application start.</param>
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
+		protected virtual void Reset( ref TimeSpan time )
+		{
+			previousStateTime = currentStateTime = time;
+			previousState = currentState = this.GetState();	// NOTE - GetState is in charge of setting Disconnected to the appropriate value.
 		}
 
 

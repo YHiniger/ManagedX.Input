@@ -243,7 +243,7 @@ namespace ManagedX.Input
 		public static void SetCursorPosition( Point position )
 		{
 			if( !SafeNativeMethods.SetCursorPos( position.X, position.Y ) )
-				throw new System.ComponentModel.Win32Exception( "Failed to set mouse cursor location.", GetLastWin32Exception() );
+				throw new System.ComponentModel.Win32Exception( "Failed to set mouse cursor location.", NativeMethods.GetExceptionForLastWin32Error() );
 		}
 
 
@@ -274,7 +274,7 @@ namespace ManagedX.Input
 
 		/// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
 		/// <param name="message">A Windows message.</param>
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Required by implementation." )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required by implementation." )]
 		public static void WndProc( ref Message message )
 		{
 			if( message.Msg == 255 ) // WindowMessage.Input
@@ -384,7 +384,7 @@ namespace ManagedX.Input
 			var cursorInfo = CursorInfo.Default;
 			if( !SafeNativeMethods.GetCursorInfo( ref cursorInfo ) )
 			{
-				var lastException = GetLastWin32Exception();
+				var lastException = NativeMethods.GetExceptionForLastWin32Error();
 				if( lastException.HResult == (int)Win32.ErrorCode.NotConnected )
 				{
 					base.IsDisconnected = true;

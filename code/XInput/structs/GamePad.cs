@@ -91,6 +91,7 @@ namespace ManagedX.Input.XInput
 		#endregion Static functions
 
 
+
 		private GamePadButtons buttons;
 		private byte leftTrigger;
 		private byte rightTrigger;
@@ -98,6 +99,7 @@ namespace ManagedX.Input.XInput
 		private short leftThumbY;
 		private short rightThumbX;
 		private short rightThumbY;
+
 
 
 		/// <summary>Gets a value indicating which buttons are pressed.</summary>
@@ -135,7 +137,6 @@ namespace ManagedX.Input.XInput
 
 
 		#region Dead zone handling
-
 
 		/// <summary>Applies a dead zone to the triggers.</summary>
 		/// <param name="threshold">The triggers threshold; must be lower than 255; defaults to <see cref="DefaultTriggerThreshold"/>.</param>
@@ -177,8 +178,7 @@ namespace ManagedX.Input.XInput
 			this.ApplyThumbSticksDeadZone( deadZoneMode, DefaultLeftThumbDeadZone, DefaultRightThumbDeadZone );
 		}
 
-
-		#endregion
+		#endregion Dead zone handling
 
 
 		/// <summary>Returns a hash code for this <see cref="GamePad"/> structure.</summary>
@@ -211,11 +211,10 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>The empty <see cref="GamePad"/> structure.</summary>
-		public static readonly GamePad Empty = new GamePad();
+		public static readonly GamePad Empty;
 
 
 		#region Operators
-
 
 		/// <summary>Equality comparer.</summary>
 		/// <param name="gamePad">A <see cref="GamePad"/> structure.</param>
@@ -236,9 +235,7 @@ namespace ManagedX.Input.XInput
 			return !gamePad.Equals( other );
 		}
 
-
-		#endregion
-
+		#endregion Operators
 
 	}
 

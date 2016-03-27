@@ -91,8 +91,6 @@ namespace ManagedX.Input.Raw
 		}
 
 
-
-
 		/// <summary>Returns a hash code for this <see cref="DeviceInfo"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="DeviceInfo"/> structure.</returns>
 		public override int GetHashCode()

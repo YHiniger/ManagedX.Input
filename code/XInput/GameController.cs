@@ -1,24 +1,19 @@
 ﻿using System;
 
 
-/*
- * IMPORTANT : legacy (XInput9_1_0) and older versions (1.2, 1.1 etc) aren't (and won't be) supported.
- * Xbox 360 and Xbox One are not supported.
- */
-
-
 namespace ManagedX.Input.XInput
 {
 	using Design;
-	using Win32;
 
 
-	/// <summary>An XInput controller, as a managed input device (see <see cref="IInputDevice"/>, <see cref="IXInputController"/>).</summary>
-	public abstract class GameController : InputDevice<GamePad, GamePadButtons>, IXInputController
+	/// <summary>Represents an XInput (1.3 or 1.4) controller, as a managed input device.</summary>
+	public abstract class GameController : InputDevice<GamePad, GamePadButtons>
 	{
 
-		/// <summary>Gets an interface to the managed XInput service.</summary>
-		public static IXInput Service { get { return XInputService.Instance; } }
+		/// <summary>Defines the maximum number of controllers supported by XInput: 4.</summary>
+		[Win32.Native( "XInput.h", "XUSER_MAX_COUNT" )]
+		public const int MaxControllerCount = 4;
+
 
 
 		private DeadZoneMode deadZoneMode;
@@ -32,17 +27,8 @@ namespace ManagedX.Input.XInput
 			: base( controllerIndex )
 		{
 			deadZoneMode = DeadZoneMode.Circular;
-
-			var zero = TimeSpan.Zero;
-			this.Reset( ref zero );
-
-			//isDisabled = base.IsDisconnected;
 		}
 
-
-
-		/// <summary>Gets the identifier of this <see cref="GameController"/>.</summary>
-		public sealed override string DeviceIdentifier { get { return "XInput#" + (int)this.Index; } }
 
 
 		/// <summary>Gets the friendly name of this <see cref="GameController"/>.</summary>
@@ -71,6 +57,24 @@ namespace ManagedX.Input.XInput
 		}
 
 
+		/// <summary>Raised when the game controller is connected.</summary>
+		public event EventHandler Connected;
+
+
+		/// <summary>Raises the <see cref="Connected"/> or Disconnected event.</summary>
+		protected sealed override void OnDisconnectedChanged()
+		{
+			if( base.IsDisconnected )
+				base.OnDisconnectedChanged();
+			else
+			{
+				var connectedEvent = this.Connected;
+				if( connectedEvent != null )
+					connectedEvent( this, EventArgs.Empty );
+			}
+		}
+
+
 		/// <summary>Gets or sets a value indicating the type of dead zone to apply.</summary>
 		public DeadZoneMode DeadZoneMode
 		{
@@ -87,11 +91,11 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Gets the <see cref="ManagedX.Input.XInput.Capabilities">capabilities</see> of this <see cref="GameController"/>.</summary>
+		/// <summary>Gets the capabilities of this <see cref="GameController"/>.</summary>
 		public abstract Capabilities Capabilities { get; }
 
 
-		/// <summary>Gets <see cref="BatteryInformation">information</see> about the battery type and charge level.</summary>
+		/// <summary>Gets information about the battery type and charge level.</summary>
 		public abstract BatteryInformation BatteryInfo { get; }
 
 
@@ -108,10 +112,13 @@ namespace ManagedX.Input.XInput
 
 
 		///// <summary>Initializes the game controller.
-		///// <para>This method is called by the constructor, and by Update when required (ie: checking whether the controller is connected).</para>
+		///// <para>This method is called by derived constructors, and by Update when required (ie: checking whether the controller is connected).</para>
 		///// </summary>
 		///// <param name="time">The time elapsed since the application start.</param>
-		//protected abstract override void Reset( ref TimeSpan time );
+		//protected override void Reset( ref TimeSpan time )
+		//{
+		//	base.Reset( ref time );
+		//}
 
 
 		/// <summary>Returns the state of the controller.
@@ -131,14 +138,6 @@ namespace ManagedX.Input.XInput
 		/// <para>Only supported through XInput 1.3, deprecated.</para>
 		/// </summary>
 		public abstract DSoundAudioDeviceGuids DSoundAudioDeviceGuids { get; }
-
-
-		/// <summary>Returns the <see cref="DisplayName"/> of this <see cref="GameController"/>.</summary>
-		/// <returns>Returns the <see cref="DisplayName"/> of this <see cref="GameController"/>.</returns>
-		public sealed override string ToString()
-		{
-			return this.DisplayName;
-		}
 
 	}
 
