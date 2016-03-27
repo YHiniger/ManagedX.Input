@@ -1,5 +1,6 @@
 # ManagedX.Input
-ManagedX.Input is a .NET 4.5 library (DLL) written in C#, providing access to the RawInput and XInput APIs on Windows Vista(SP2)/7/8/8.1/10.
+ManagedX.Input is a .NET 4.6 library (DLL) written in C#, providing access to the RawInput and XInput APIs on Windows Vista/7/8/8.1/10.
+
 For Desktop applications only.
 
 
@@ -14,7 +15,7 @@ For Desktop applications only.
 
 ### Requirements:
 - Windows Vista SP2 or greater
-- .NET Framework 4.5 : https://www.microsoft.com/en-US/download/details.aspx?id=30653
+- .NET Framework 4.6 : https://www.microsoft.com/en-us/download/details.aspx?id=48130
 - ManagedX : https://github.com/YHiniger/ManagedX
 
 (*) Windows Vista and 7 users also need the DirectX End-User Runtime (June 2010), available here:
