@@ -91,12 +91,28 @@ namespace ManagedX.Input.XInput
 		}
 
 
+		#region Device info
+
 		/// <summary>Gets the capabilities of this <see cref="GameController"/>.</summary>
 		public abstract Capabilities Capabilities { get; }
 
 
 		/// <summary>Gets information about the battery type and charge level.</summary>
 		public abstract BatteryInformation BatteryInfo { get; }
+
+
+		/// <summary>Gets the sound rendering and sound capture audio device IDs associated with the headset connected to this controller.
+		/// <para>Not supported through XInput 1.3: requires Windows 8 or newer.</para>
+		/// </summary>
+		public abstract AudioDeviceIds AudioDeviceIds { get; }
+
+
+		/// <summary>Gets the sound rendering and sound capture device GUIDs associated with the headset connected to this controller.
+		/// <para>Only supported through XInput 1.3, deprecated.</para>
+		/// </summary>
+		public abstract DSoundAudioDeviceGuids DSoundAudioDeviceGuids { get; }
+
+		#endregion Device info
 
 
 		/// <summary>Sends a vibration state to the controller.</summary>
@@ -126,18 +142,6 @@ namespace ManagedX.Input.XInput
 		/// </summary>
 		/// <returns>Returns the state of the controller.</returns>
 		protected abstract override GamePad GetState();
-
-
-		/// <summary>Gets the sound rendering and sound capture audio device IDs associated with the headset connected to this controller.
-		/// <para>Not supported through XInput 1.3 (Windows Vista/7).</para>
-		/// </summary>
-		public abstract AudioDeviceIds AudioDeviceIds { get; }
-
-
-		/// <summary>Gets the sound rendering and sound capture device GUIDs associated with the headset connected to this controller.
-		/// <para>Only supported through XInput 1.3, deprecated.</para>
-		/// </summary>
-		public abstract DSoundAudioDeviceGuids DSoundAudioDeviceGuids { get; }
 
 
 		/// <summary>Gets the index of this <see cref="InputDevice"/>.</summary>

@@ -1,53 +1,47 @@
 ﻿namespace ManagedX.Input.Raw
 {
 
-	/// <summary>Enumerates Usage values for UsagePage = 1.</summary>
-	internal enum TopLevelCollectionPage1Usage : ushort
-	{
-		None = 0,
-		Pointer = 1,
-		Mouse = 2,
-		// 3 ?
-		Joystick = 4,
-		Gamepad = 5,
-		Keyboard = 6,
-		Keypad = 7,
-		SystemControl = 0x80
-	}
-
-
 	/// <summary>Enumerates some top-level collection (TLC) UsagePage and Usage combinations.</summary>
-	internal enum TopLevelCollection : int
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/hardware/ff538842%28v=vs.85%29.aspx</remarks>
+	public enum TopLevelCollection : int
 	{
 		
 		/// <summary>Undefined.</summary>
 		None = 0,
 
 
-		#region UsagePage = 1
+		#region Usage page 1
 
 		/// <summary>Pointers.</summary>
-		Pointer = 1 | ( TopLevelCollectionPage1Usage.Pointer << 16 ),
+		Pointer = ( 1 << 16 ) | 1,
 
 		/// <summary>Mice.</summary>
-		Mouse = 1 | ( TopLevelCollectionPage1Usage.Mouse << 16 ),
+		Mouse = ( 2 << 16 ) | 1,
 
 		/// <summary>Joysticks.</summary>
-		Joystick = 1 | ( TopLevelCollectionPage1Usage.Joystick << 16 ),
+		Joystick = ( 4 << 16 ) | 1,
 
 		/// <summary>Gamepads.</summary>
-		Gamepad = 1 | ( TopLevelCollectionPage1Usage.Gamepad << 16 ),
+		Gamepad = ( 5 << 16 ) | 1,
 
 		/// <summary>Keyboards.</summary>
-		Keyboard = 1 | ( TopLevelCollectionPage1Usage.Keyboard << 16 ),
+		Keyboard = ( 6 << 16 ) | 1,
 
 		/// <summary>Keypads.</summary>
-		Keypad = 1 | ( TopLevelCollectionPage1Usage.Keypad << 16 ),
+		Keypad = ( 7 << 16 ) | 1,
 
 		/// <summary>System controls.</summary>
-		SystemControl = 1 | ( TopLevelCollectionPage1Usage.SystemControl << 16 ),
+		SystemControl = ( 0x80 << 16 ) | 1,
 
-		#endregion // UsagePage = 1
+		#endregion Usage page 1
+
+
+		#region Usage page 12
+
+		/// <summary></summary>
+		ConsumerAudioControl = ( 1 << 16 ) | 12,
+
+		#endregion Usage page 12
 
 	}
 

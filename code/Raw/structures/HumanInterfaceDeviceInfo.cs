@@ -14,30 +14,22 @@ namespace ManagedX.Input.Raw
 	internal struct HumanInterfaceDeviceInfo : IEquatable<HumanInterfaceDeviceInfo>
 	{
 
-		private int vendorId;
-		private int productId;
-		private int versionNumber;
-		private int topLevelCollection;
+		/// <summary>The vendor identifier for the HID.</summary>
+		internal int VendorId;
+		/// <summary>The product identifier for the HID.</summary>
+		internal int ProductId;
+		/// <summary>The version number for the HID.</summary>
+		internal int VersionNumber;
+		/// <summary>The top-level collection (TLC usage page and usage) for the device.</summary>
+		internal TopLevelCollection TopLevelCollection;
 
-
-		/// <summary>Gets the vendor identifier for the HID.</summary>
-		public int VendorId { get { return vendorId; } }
-
-		/// <summary>Gets the product identifier for the HID.</summary>
-		public int ProductId { get { return productId; } }
-
-		/// <summary>Gets the version number for the HID.</summary>
-		public int VersionNumber { get { return versionNumber; } }
-		
-		/// <summary>Gets the top-level collection (usage page and usage) for the device.</summary>
-		public int TopLevelCollection { get { return topLevelCollection; } }
 
 
 		/// <summary>Returns a hash code for this <see cref="HumanInterfaceDeviceInfo"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="HumanInterfaceDeviceInfo"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return vendorId ^ productId ^ versionNumber ^ topLevelCollection;
+			return VendorId ^ ProductId ^ VersionNumber ^ (int)TopLevelCollection;
 		}
 
 
@@ -47,10 +39,10 @@ namespace ManagedX.Input.Raw
 		public bool Equals( HumanInterfaceDeviceInfo other )
 		{
 			return
-				( vendorId == other.vendorId ) &&
-				( productId == other.productId ) &&
-				( versionNumber == other.versionNumber ) &&
-				( topLevelCollection == other.topLevelCollection );
+				( VendorId == other.VendorId ) &&
+				( ProductId == other.ProductId ) &&
+				( VersionNumber == other.VersionNumber ) &&
+				( TopLevelCollection == other.TopLevelCollection );
 		}
 
 

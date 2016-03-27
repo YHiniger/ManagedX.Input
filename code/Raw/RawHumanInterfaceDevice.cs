@@ -43,20 +43,24 @@ namespace ManagedX.Input.Raw
 
 
 
-		/// <summary></summary>
+		#region Device info
+
+		/// <summary>Gets the vendor identifier of the HID.</summary>
 		public int VendorId { get { return info.VendorId; } }
 
-		
-		/// <summary></summary>
+
+		/// <summary>Gets the product identifier of the HID.</summary>
 		public int ProductId { get { return info.ProductId; } }
 
 
-		/// <summary></summary>
+		/// <summary>Gets the version number for the HID.</summary>
 		public int Version { get { return info.VersionNumber; } }
 
 
-		/// <summary></summary>
-		public int TopLevelCollection { get { return info.TopLevelCollection; } }
+		/// <summary>Gets the top-level collection (TLC usage page and usage) for the HID.</summary>
+		public TopLevelCollection TopLevelCollection { get { return info.TopLevelCollection; } }
+
+		#endregion Device info
 
 
 		/// <summary></summary>

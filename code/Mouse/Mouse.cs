@@ -331,17 +331,24 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary></summary>
+		#region Device info
+
+		/// <summary>Gets the identifier of this <see cref="Mouse"/> device.</summary>
 		public int Id { get { return info.Id; } }
-		
-		/// <summary></summary>
+
+
+		/// <summary>Gets the number of buttons of this <see cref="Mouse"/>.</summary>
 		public int ButtonCount { get { return info.ButtonCount; } }
-		
-		/// <summary></summary>
+
+
+		/// <summary>Gets a value indicating whether this <see cref="Mouse"/> device has an horizontal scroll wheel.</summary>
 		public bool HasHorizontalWheel { get { return info.HasHorizontalWheel; } }
-		
-		/// <summary></summary>
+
+
+		/// <summary>Gets the number of data points per second; this information may not be applicable to every <see cref="Mouse"/> devices.</summary>
 		public int SampleRate { get { return info.SampleRate; } }
+
+		#endregion Device info
 
 
 		/// <summary>Gets the index of this <see cref="Mouse"/>.</summary>
