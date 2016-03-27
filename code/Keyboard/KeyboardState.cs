@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
 namespace ManagedX.Input
@@ -95,7 +95,6 @@ namespace ManagedX.Input
 
 		#region Operators
 
-
 		/// <summary>Equality comparer.</summary>
 		/// <param name="keyboardState">A <see cref="KeyboardState"/> structure.</param>
 		/// <param name="other">A <see cref="KeyboardState"/> structure.</param>
@@ -115,8 +114,7 @@ namespace ManagedX.Input
 			return !keyboardState.Equals( other );
 		}
 
-
-		#endregion
+		#endregion Operators
 
 	}
 

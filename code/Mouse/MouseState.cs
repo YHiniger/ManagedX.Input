@@ -19,21 +19,6 @@ namespace ManagedX.Input
 		internal int wheel;
 		internal MouseButtons buttons;
 
-
-
-		///// <summary>Initializes a new <see cref="MouseState"/> structure.</summary>
-		///// <param name="position">The mouse cursor position.</param>
-		///// <param name="motion">The mouse motion, for high-precision DPI mouse support.</param>
-		///// <param name="wheel">The mouse wheel value.</param>
-		///// <param name="buttons">The mouse buttons state.</param>
-		//internal MouseState( ref Point position, ref Point motion, int wheel, MouseButtons buttons )
-		//{
-		//	this.position = position;
-		//	this.motion = motion;
-		//	this.wheel = wheel;
-		//	this.buttons = buttons;
-		//}
-
 		
 
 		/// <summary>Gets the mouse cursor position.</summary>

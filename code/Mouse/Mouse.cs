@@ -17,7 +17,7 @@ namespace ManagedX.Input
 	public sealed class Mouse : RawInputDevice<MouseState, MouseButton>
 	{
 
-		private const int MaxSupportedMice = 4;			// FIXME - actually only the primary mouse is properly supported...
+		private const int MaxSupportedMice = XInput.GameController.MaxControllerCount;	// FIXME - actually only the primary mouse is properly supported... and this should be set to 2
 		private const int MaxSupportedButtonCount = 5;
 
 
@@ -349,9 +349,6 @@ namespace ManagedX.Input
 
 
 
-		/// <summary>Constructor.</summary>
-		/// <param name="controllerIndex">The index of the mouse.</param>
-		/// <param name="descriptor">The raw input device descriptor for the mouse.</param>
 		private Mouse( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
 			: base( controllerIndex, ref descriptor )
 		{

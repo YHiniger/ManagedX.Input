@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 
 namespace ManagedX.Input.Raw
@@ -21,9 +20,6 @@ namespace ManagedX.Input.Raw
 
 
 
-		/// <summary>Constructor.</summary>
-		/// <param name="controllerIndex">The index of the input device.</param>
-		/// <param name="descriptor">The raw input device descriptor.</param>
 		internal RawInputDevice( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
 			: base( controllerIndex )
 		{

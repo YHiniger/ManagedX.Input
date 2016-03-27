@@ -15,7 +15,7 @@ namespace ManagedX.Input
 	public sealed class Keyboard : RawInputDevice<KeyboardState, Key>
 	{
 
-		private const int MaxSupportedKeyboards = 4;
+		private const int MaxSupportedKeyboards = XInput.GameController.MaxControllerCount;	// FIXME - should be 1
 
 
 		[SuppressUnmanagedCodeSecurity]
@@ -153,9 +153,6 @@ namespace ManagedX.Input
 
 
 		
-		/// <summary>Constructor.</summary>
-		/// <param name="controllerIndex">The keyboard index.</param>
-		/// <param name="descriptor">The keyboard descriptor.</param>
 		private Keyboard( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
 			: base( controllerIndex, ref descriptor )
 		{
