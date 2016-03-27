@@ -14,7 +14,7 @@ For Desktop applications only.
 
 
 ### Requirements:
-- Windows Vista SP2 or greater
+- Windows Vista SP2 or newer
 - .NET Framework 4.6 : https://www.microsoft.com/en-us/download/details.aspx?id=48130
 - ManagedX : https://github.com/YHiniger/ManagedX
 
