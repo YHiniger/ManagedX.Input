@@ -24,7 +24,7 @@ namespace ManagedX.Input.XInput
 		/// <summary>Instantiates a new XInput <see cref="GameController"/>.</summary>
 		/// <param name="controllerIndex">The game controller index.</param>
 		internal GameController( GameControllerIndex controllerIndex )
-			: base( controllerIndex )
+			: base( (int)controllerIndex )
 		{
 			deadZoneMode = DeadZoneMode.Circular;
 		}
@@ -138,6 +138,10 @@ namespace ManagedX.Input.XInput
 		/// <para>Only supported through XInput 1.3, deprecated.</para>
 		/// </summary>
 		public abstract DSoundAudioDeviceGuids DSoundAudioDeviceGuids { get; }
+
+
+		/// <summary>Gets the index of this <see cref="InputDevice"/>.</summary>
+		new public GameControllerIndex Index { get { return (GameControllerIndex)base.Index; } }
 
 	}
 

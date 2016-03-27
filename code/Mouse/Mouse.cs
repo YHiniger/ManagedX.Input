@@ -211,7 +211,16 @@ namespace ManagedX.Input
 
 
 		/// <summary>Gets a read-only collection containing all known (up to 4) mice.</summary>
-		public static ReadOnlyCollection<Mouse> All { get { return new ReadOnlyCollection<Mouse>( mouseList ); } }
+		public static ReadOnlyCollection<Mouse> All
+		{
+			get
+			{
+				if( mouseList.Count == 0 )
+					Initialize();
+
+				return new ReadOnlyCollection<Mouse>( mouseList );
+			}
+		}
 
 
 		/// <summary>Gets or sets a value indicating the state of the mouse cursor.
@@ -350,7 +359,7 @@ namespace ManagedX.Input
 
 
 		private Mouse( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
-			: base( controllerIndex, ref descriptor )
+			: base( (int)controllerIndex, ref descriptor )
 		{
 			var zero = TimeSpan.Zero;
 			this.Reset( ref zero );
@@ -448,7 +457,11 @@ namespace ManagedX.Input
 
 		/// <summary>Gets information about the mouse.</summary>
 		public MouseDeviceInfo DeviceInfo { get { return base.Info.MouseInfo.Value; } }
-		
+
+
+		/// <summary>Gets the index of this <see cref="Mouse"/>.</summary>
+		new public GameControllerIndex Index { get { return (GameControllerIndex)base.Index; } }
+
 	}
 
 }

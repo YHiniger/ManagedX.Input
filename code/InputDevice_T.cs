@@ -20,7 +20,7 @@ namespace ManagedX.Input
 
 		/// <summary>Constructor.</summary>
 		/// <param name="controllerIndex">The index of this input device.</param>
-		internal InputDevice( GameControllerIndex controllerIndex )
+		internal InputDevice( int controllerIndex )
 			: base( controllerIndex )
 		{
 		}

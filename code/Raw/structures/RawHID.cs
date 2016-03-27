@@ -12,7 +12,7 @@ namespace ManagedX.Input.Raw
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645549%28v=vs.85%29.aspx</remarks>
 	[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "HID" )]
 	[Win32.Native( "WinUser.h", "RAWHID" )]
-	[StructLayout( LayoutKind.Sequential, Pack = 4 )] // 12 (x86) or 16 (x64) bytes
+	[StructLayout( LayoutKind.Sequential, Pack = 4 )] // Size = 12 (x86) or 16 (x64) bytes
 	public struct RawHID : IEquatable<RawHID>
 	{
 

@@ -8,26 +8,26 @@ namespace ManagedX.Input
 	public abstract class InputDevice
 	{
 
-		private GameControllerIndex index;
+		private int index;
 		private bool isDisconnected;
 
 
 
 		/// <summary>Constructor.</summary>
 		/// <param name="controllerIndex">The index of the device; must be unique per device type (<see cref="InputDeviceType"/>).</param>
-		internal InputDevice( GameControllerIndex controllerIndex )
+		internal InputDevice( int controllerIndex )
 		{
 			index = controllerIndex;
 		}
 
 
 
+		/// <summary>Gets the index of this <see cref="InputDevice"/>.</summary>
+		public int Index { get { return index; } }
+
+
 		/// <summary>Gets the friendly name of this <see cref="InputDevice"/>.</summary>
 		public abstract string DisplayName { get; }
-
-
-		/// <summary>Gets the index of this <see cref="InputDevice"/>.</summary>
-		public GameControllerIndex Index { get { return index; } }
 
 
 		/// <summary>When overridden, gets a value indicating the type of the <see cref="InputDevice"/>.</summary>

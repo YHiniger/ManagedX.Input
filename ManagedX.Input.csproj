@@ -84,7 +84,7 @@
     <Compile Include="code\Raw\enumerations\RawMouseButtonStateIndicators.cs" />
     <Compile Include="code\Raw\enumerations\RawMouseStateIndicators.cs" />
     <Compile Include="code\Raw\enumerations\TopLevelCollection.cs" />
-    <None Include="code\Raw\RawHumanInterfaceDevice.cs" />
+    <Compile Include="code\Raw\RawHumanInterfaceDevice.cs" />
     <Compile Include="code\Raw\RawInput.NativeMethods.cs" />
     <Compile Include="code\Raw\RawInputDevice_T.cs" />
     <Compile Include="code\Raw\structures\DeviceInfo.cs" />

@@ -20,7 +20,7 @@ namespace ManagedX.Input.Raw
 
 
 
-		internal RawInputDevice( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
+		internal RawInputDevice( int controllerIndex, ref RawInputDeviceDescriptor descriptor )
 			: base( controllerIndex )
 		{
 			deviceHandle = descriptor.DeviceHandle;
@@ -55,7 +55,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>Gets the device name of this raw input device.</summary>
-		public string DevicePath { get { return string.Copy( deviceName ?? string.Empty ); } }
+		public string DeviceName { get { return string.Copy( deviceName ?? string.Empty ); } }
 
 
 		/// <summary>Gets information about this raw input device.</summary>

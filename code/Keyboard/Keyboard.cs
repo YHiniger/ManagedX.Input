@@ -97,7 +97,16 @@ namespace ManagedX.Input
 
 
 		/// <summary>Gets a read-only collection containing all known (up to 4) keyboards.</summary>
-		public static ReadOnlyCollection<Keyboard> All { get { return new ReadOnlyCollection<Keyboard>( keyboardList ); } }
+		public static ReadOnlyCollection<Keyboard> All
+		{
+			get
+			{
+				if( keyboardList.Count == 0 )
+					Initialize();
+
+				return new ReadOnlyCollection<Keyboard>( keyboardList );
+			}
+		}
 
 
 		///// <summary>Causes the target window to receive raw keyboard input messages.
@@ -154,7 +163,7 @@ namespace ManagedX.Input
 
 		
 		private Keyboard( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
-			: base( controllerIndex, ref descriptor )
+			: base( (int)controllerIndex, ref descriptor )
 		{
 			var zero = TimeSpan.Zero;
 			this.Reset( ref zero );
@@ -208,6 +217,10 @@ namespace ManagedX.Input
 
 		/// <summary>Gets information about the keyboard device.</summary>
 		public KeyboardDeviceInfo DeviceInfo { get { return base.Info.KeyboardInfo.Value; } }
+
+
+		/// <summary>Gets the index of this <see cref="Keyboard"/>.</summary>
+		new public GameControllerIndex Index { get { return (GameControllerIndex)base.Index; } }
 
 	}
 
