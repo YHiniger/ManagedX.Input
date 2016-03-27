@@ -11,7 +11,7 @@ namespace ManagedX.Input.Raw
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645589%28v=vs.85%29.aspx</remarks>
 	[Win32.Native( "WinUser.h", "RID_DEVICE_INFO_MOUSE" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
-	public struct MouseDeviceInfo : IEquatable<MouseDeviceInfo>
+	internal struct MouseDeviceInfo : IEquatable<MouseDeviceInfo>
 	{
 
 		private int id;
@@ -69,7 +69,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>The empty <see cref="MouseDeviceInfo"/> structure.</summary>
-		public static readonly MouseDeviceInfo Empty = new MouseDeviceInfo();
+		public static readonly MouseDeviceInfo Empty;
 
 
 		#region Operators

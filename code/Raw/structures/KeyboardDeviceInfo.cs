@@ -11,7 +11,7 @@ namespace ManagedX.Input.Raw
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645587%28v=vs.85%29.aspx</remarks>
 	[Win32.Native( "WinUser.h", "RID_DEVICE_INFO_KEYBOARD" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 24 )]
-	public struct KeyboardDeviceInfo : IEquatable<KeyboardDeviceInfo>
+	internal struct KeyboardDeviceInfo : IEquatable<KeyboardDeviceInfo>
 	{
 
 		private int type;
@@ -74,7 +74,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>The empty <see cref="KeyboardDeviceInfo"/> structure.</summary>
-		public static readonly KeyboardDeviceInfo Empty = new KeyboardDeviceInfo();
+		public static readonly KeyboardDeviceInfo Empty;
 
 
 		#region Operators
@@ -98,7 +98,7 @@ namespace ManagedX.Input.Raw
 			return !keyboardInfo.Equals( other );
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 

@@ -12,73 +12,27 @@ namespace ManagedX.Input.Raw
 	{
 
 
-		/// <summary></summary>
-		/// <param name="window"></param>
-		/// <param name="options"></param>
-		public static void Register( IWin32Window window, RawInputDeviceRegistrationOptions options )
-		{
-			var rawInputDevice = RawInputDevice.Gamepad;
-			rawInputDevice.targetWindowHandle = ( window == null ) ? IntPtr.Zero : window.Handle;
-			rawInputDevice.flags = options;
-			NativeMethods.RegisterRawInputDevices( rawInputDevice );
+		///// <summary></summary>
+		///// <param name="window"></param>
+		///// <param name="options"></param>
+		//public static void Register( IWin32Window window, RawInputDeviceRegistrationOptions options )
+		//{
+		//	var rawInputDevice = RawInputDevice.Gamepad;
+		//	rawInputDevice.targetWindowHandle = ( window == null ) ? IntPtr.Zero : window.Handle;
+		//	rawInputDevice.flags = options;
+		//	NativeMethods.RegisterRawInputDevices( rawInputDevice );
 
-			//rawInputDevice = RawInputDevice.Joystick;
-			//rawInputDevice.targetWindowHandle = ( window == null ) ? IntPtr.Zero : window.Handle;
-			//rawInputDevice.flags = options;
-			//NativeMethods.RegisterRawInputDevices( rawInputDevice );
-		}
-
-
-		private static readonly List<RawHumanInterfaceDevice> devices = new List<RawHumanInterfaceDevice>();
+		//	//rawInputDevice = RawInputDevice.Joystick;
+		//	//rawInputDevice.targetWindowHandle = ( window == null ) ? IntPtr.Zero : window.Handle;
+		//	//rawInputDevice.flags = options;
+		//	//NativeMethods.RegisterRawInputDevices( rawInputDevice );
+		//}
 
 
-		private static void OnDeviceDisconnected( object sender, EventArgs e )
-		{
-			var device = (RawHumanInterfaceDevice)sender;
-			device.Disconnected -= OnDeviceDisconnected;
-			devices.Remove( device );
-		}
-
-
-		private static void Initialize()
-		{
-			var descriptors = NativeMethods.GetRawInputDeviceList();
-			var index = 0;
-			for( var d = 0; d < descriptors.Length; d++ )
-			{
-				var descriptor = descriptors[ d ];
-				if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
-				{
-					var device = new RawHumanInterfaceDevice( index, ref descriptor );
-					if( !device.IsDisconnected )
-					{
-						devices.Add( device );
-						device.Disconnected += OnDeviceDisconnected;
-					}
-				}
-			}
-		}
-
-		
-		/// <summary></summary>
-		public static ReadOnlyCollection<RawHumanInterfaceDevice> All
-		{
-			get
-			{
-				if( devices.Count == 0 )
-					Initialize();
-
-				return new ReadOnlyCollection<RawHumanInterfaceDevice>( devices );
-			}
-		}
+		private HumanInterfaceDeviceInfo info;
 
 
 
-
-
-		/// <summary></summary>
-		/// <param name="controllerIndex"></param>
-		/// <param name="descriptor"></param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
 		internal RawHumanInterfaceDevice( int controllerIndex, ref RawInputDeviceDescriptor descriptor )
 			: base( controllerIndex, ref descriptor )
@@ -89,8 +43,20 @@ namespace ManagedX.Input.Raw
 
 
 
-		/// <summary>Gets information about the HID.</summary>
-		public HumanInterfaceDeviceInfo DeviceInfo { get { return base.Info.HumanInterfaceDeviceInfo.Value; } }
+		/// <summary></summary>
+		public int VendorId { get { return info.VendorId; } }
+
+		
+		/// <summary></summary>
+		public int ProductId { get { return info.ProductId; } }
+
+
+		/// <summary></summary>
+		public int Version { get { return info.VersionNumber; } }
+
+
+		/// <summary></summary>
+		public int TopLevelCollection { get { return info.TopLevelCollection; } }
 
 
 		/// <summary></summary>
@@ -124,6 +90,12 @@ namespace ManagedX.Input.Raw
 		protected sealed override void Reset( ref TimeSpan time )
 		{
 			base.Reset( ref time );
+
+			var deviceInfo = base.Info.HumanInterfaceDeviceInfo;
+			if( deviceInfo != null && deviceInfo.HasValue )
+				info = deviceInfo.Value;
+			else
+				info = HumanInterfaceDeviceInfo.Empty;
 		}
 
 	}

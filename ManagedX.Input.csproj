@@ -86,6 +86,7 @@
     <Compile Include="code\Raw\enumerations\TopLevelCollection.cs" />
     <Compile Include="code\Raw\RawHumanInterfaceDevice.cs" />
     <Compile Include="code\Raw\RawInput.NativeMethods.cs" />
+    <Compile Include="code\Raw\RawInputDeviceManager.cs" />
     <Compile Include="code\Raw\RawInputDevice_T.cs" />
     <Compile Include="code\Raw\structures\DeviceInfo.cs" />
     <Compile Include="code\Raw\structures\HumanInterfaceDeviceInfo.cs" />

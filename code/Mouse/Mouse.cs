@@ -17,7 +17,7 @@ namespace ManagedX.Input
 	public sealed class Mouse : RawInputDevice<MouseState, MouseButton>
 	{
 
-		private const int MaxSupportedMice = XInput.GameController.MaxControllerCount;	// FIXME - actually only the primary mouse is properly supported... and this should be set to 2
+		private const int MaxSupportedMice = 4;	// FIXME - actually only the primary mouse is properly supported... and this should be set to 2
 		private const int MaxSupportedButtonCount = 5;
 
 
@@ -159,70 +159,9 @@ namespace ManagedX.Input
 		}
 
 
-		private static readonly List<Mouse> mouseList = new List<Mouse>( 1 );
 		private static MouseCursorOptions cursorState;
 
 		
-		private static void OnMouseDisconnected( object sender, EventArgs e )
-		{
-			var mouse = (Mouse)sender;
-			mouse.Disconnected -= OnMouseDisconnected;
-			mouseList.Remove( mouse );
-		}
-
-
-		private static void Initialize()
-		{
-			var allDevices = NativeMethods.GetRawInputDeviceList();
-			var index = 0;
-			for( var d = 0; d < allDevices.Length; d++ )
-			{
-				var descriptor = allDevices[ d ];
-				if( descriptor.DeviceType == InputDeviceType.Mouse )
-				{
-					var mouse = new Mouse( (GameControllerIndex)index, ref descriptor );
-					if( !mouse.IsDisconnected )
-					{
-						mouseList.Add( mouse );
-						mouse.Disconnected += OnMouseDisconnected;
-
-						if( ++index == MaxSupportedMice )
-							break;
-					}
-				}
-			}
-		}
-
-
-		/// <summary>Gets the default (primary) mouse.</summary>
-		public static Mouse Default
-		{
-			get
-			{
-				if( mouseList.Count == 0 )
-					Initialize();
-
-				if( mouseList.Count == 0 )
-					return null;
-
-				return mouseList[ 0 ];
-			}
-		}
-
-
-		/// <summary>Gets a read-only collection containing all known (up to 4) mice.</summary>
-		public static ReadOnlyCollection<Mouse> All
-		{
-			get
-			{
-				if( mouseList.Count == 0 )
-					Initialize();
-
-				return new ReadOnlyCollection<Mouse>( mouseList );
-			}
-		}
-
-
 		/// <summary>Gets or sets a value indicating the state of the mouse cursor.
 		/// <para>Note: <see cref="MouseCursorOptions.Suppressed"/> is handled as <see cref="MouseCursorOptions.Hidden"/>.</para>
 		/// </summary>
@@ -257,15 +196,12 @@ namespace ManagedX.Input
 
 
 		/// <summary>Causes the target window to receive raw mouse input messages.
-		/// <para>Important: that window must then override its WndProc method to call <see cref="WndProc"/> prior to its base method.</para>
+		/// <para>Important: that window must then override its WndProc method to call <see cref="RawInputDeviceManager.WndProc"/> prior to its base method.</para>
 		/// </summary>
 		/// <param name="targetWindow">The target window.</param>
 		/// <param name="options">One or more <see cref="RawInputDeviceRegistrationOptions"/>.</param>
 		public static void Register( IWin32Window targetWindow, RawInputDeviceRegistrationOptions options )
 		{
-			if( mouseList.Count == 0 )
-				Initialize();
-
 			var device = RawInputDevice.Mouse;
 			device.targetWindowHandle = ( targetWindow == null ) ? IntPtr.Zero : targetWindow.Handle;
 			device.flags = options;
@@ -280,85 +216,19 @@ namespace ManagedX.Input
 			}
 		}
 
-
-		/// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
-		/// <param name="message">A Windows message.</param>
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required by implementation." )]
-		public static void WndProc( ref Message message )
-		{
-			if( message.Msg == 255 ) // WindowMessage.Input
-			{
-				RawInput rawInput;
-				NativeMethods.GetRawInputData( message.LParam, out rawInput );
-				if( rawInput.DeviceType == InputDeviceType.Mouse )
-				{
-					Mouse targetMouse = null;
-					for( var m = 0; m < mouseList.Count; m++ )
-					{
-						if( mouseList[ m ].DeviceHandle == rawInput.DeviceHandle )
-						{
-							targetMouse = mouseList[ m ];
-							break;
-						}
-					}
-					
-					if( targetMouse == null )
-						return;
-
-					var mouseState = rawInput.Mouse.Value;
-					if( mouseState.State.HasFlag( RawMouseStateIndicators.MoveRelative ) )
-					{
-						targetMouse.motionDelta.X += mouseState.LastX;
-						targetMouse.motionDelta.Y += mouseState.LastY;
-					}
-
-					// FIXME - doesn't seem to work... may be about the horizontal wheel ?
-					if( mouseState.ButtonsState.HasFlag( RawMouseButtonStateIndicators.Wheel ) )
-						targetMouse.wheelValue += mouseState.WheelDelta;
-				}
-				return;
-			}
-			
-
-			if( message.Msg == 522 ) // WindowMessage.MouseWheel
-			{
-				var delta = message.WParam.ToInt32() >> 16;
-				// FIXME - find the mouse whose wheel has been scrolled, something in the form:
-				// miceByHandle[ message.LParam ].wheelDelta += delta;
-				var mice = All;
-				if( mice.Count > 0 )
-					mice[ 0 ].wheelDelta += delta;
-				return;
-			}
-
-
-			if( message.Msg == 254 ) // WindowMessage.InputDeviceChange
-			{
-				var wParam = message.WParam.ToInt32();
-				if( wParam == 1 )
-				{
-					// Device arrival
-				}
-				else if( wParam == 2 )
-				{
-					// Device removal
-				}
-				// TODO - mark the device as disconnected on removal, otherwise initialize a new RawInputDevice.
-			}
-		}
-
 		#endregion Static
 
 
 
 		private MouseState state;
-		private Point motionDelta;
-		private int wheelDelta;
+		internal Point motionDelta;
+		internal int wheelDelta;
 		private int wheelValue;
+		private MouseDeviceInfo info;
 
 
 
-		private Mouse( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
+		internal Mouse( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
 			: base( (int)controllerIndex, ref descriptor )
 		{
 			var zero = TimeSpan.Zero;
@@ -375,6 +245,12 @@ namespace ManagedX.Input
 			wheelDelta = 0;
 
 			base.Reset( ref time );
+
+			var deviceInfo = base.Info.MouseInfo;
+			if( deviceInfo !=null && deviceInfo.HasValue )
+				info = deviceInfo.Value;
+			else
+				info = MouseDeviceInfo.Empty;
 		}
 
 
@@ -455,8 +331,17 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Gets information about the mouse.</summary>
-		public MouseDeviceInfo DeviceInfo { get { return base.Info.MouseInfo.Value; } }
+		/// <summary></summary>
+		public int Id { get { return info.Id; } }
+		
+		/// <summary></summary>
+		public int ButtonCount { get { return info.ButtonCount; } }
+		
+		/// <summary></summary>
+		public bool HasHorizontalWheel { get { return info.HasHorizontalWheel; } }
+		
+		/// <summary></summary>
+		public int SampleRate { get { return info.SampleRate; } }
 
 
 		/// <summary>Gets the index of this <see cref="Mouse"/>.</summary>

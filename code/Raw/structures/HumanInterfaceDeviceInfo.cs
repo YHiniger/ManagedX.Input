@@ -11,7 +11,7 @@ namespace ManagedX.Input.Raw
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645584%28v=vs.85%29.aspx</remarks>
 	[Win32.Native( "WinUser.h", "RID_DEVICE_INFO_HID" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
-	public struct HumanInterfaceDeviceInfo : IEquatable<HumanInterfaceDeviceInfo>
+	internal struct HumanInterfaceDeviceInfo : IEquatable<HumanInterfaceDeviceInfo>
 	{
 
 		private int vendorId;
@@ -64,7 +64,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>The empty <see cref="HumanInterfaceDeviceInfo"/> structure.</summary>
-		public static readonly HumanInterfaceDeviceInfo Empty = new HumanInterfaceDeviceInfo();
+		public static readonly HumanInterfaceDeviceInfo Empty;
 
 
 		#region Operators

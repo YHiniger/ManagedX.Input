@@ -29,6 +29,7 @@ namespace ManagedX.Input.Raw
 		internal IntPtr WParameter;
 
 
+
 		internal RawInputHeader( InputDeviceType deviceType, int structSize, IntPtr device, IntPtr param )
 		{
 			DeviceType = deviceType;
@@ -36,6 +37,7 @@ namespace ManagedX.Input.Raw
 			DeviceHandle = device;
 			this.WParameter = param;
 		}
+
 
 
 		/// <summary>Returns a hash code for this <see cref="RawInputHeader"/> structure.</summary>

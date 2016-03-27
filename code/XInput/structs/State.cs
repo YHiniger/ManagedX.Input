@@ -19,8 +19,10 @@ namespace ManagedX.Input.XInput
 
 
 
-		/// <summary>Gets the state packet number. The packet number indicates whether there have been any changes in the state of the controller.
-		/// If the packet number [...] is the same in sequentially returned <see cref="State"/> structures, the controller state has not changed.</summary>
+		/// <summary>Gets the state packet number.
+		/// <para>The packet number indicates whether there have been any changes in the state of the controller.</para>
+		/// If the packet number [...] is the same in sequentially returned <see cref="State"/> structures, the controller state has not changed.
+		/// </summary>
 		public int PacketNumber { get { return packetNumber; } }
 
 
@@ -28,11 +30,11 @@ namespace ManagedX.Input.XInput
 		public GamePad GamePadState { get { return state; } }
 
 
-		/// <summary>Returns the hash code of the <see cref="GamePadState"/>.</summary>
-		/// <returns>Returns the hash code of the <see cref="GamePadState"/>.</returns>
+		/// <summary>Returns a hash code for this <see cref="State"/> structure.</summary>
+		/// <returns>Returns a hash code for this <see cref="State"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return state.GetHashCode();
+			return packetNumber ^ state.GetHashCode();
 		}
 
 

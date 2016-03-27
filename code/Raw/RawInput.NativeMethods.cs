@@ -380,7 +380,9 @@ namespace ManagedX.Input.Raw
 		#region GetRawInputBuffer
 
 		/// <summary>Performs a buffered read of the raw input data.</summary>
-		/// <param name="data">A pointer to a buffer of <see cref="RawInput"/> structures that contain the raw input data. If null, the minimum required buffer, in bytes, is returned in <paramref name="size"/>.</param>
+		/// <param name="data">A pointer to a buffer of <see cref="RawInput"/> structures that contain the raw input data.
+		/// If null, the minimum required buffer, in bytes, is returned in <paramref name="size"/>.
+		/// </param>
 		/// <param name="size">The size, in bytes, of a <see cref="RawInput"/> structure.</param>
 		/// <param name="headerSize">The size, in bytes, of the <see cref="RawInputHeader"/> structure.</param>
 		/// <returns>
@@ -390,16 +392,16 @@ namespace ManagedX.Input.Raw
 		/// </returns>
 		[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
 		private static extern int GetRawInputBuffer(
-			[Out, Optional] RawInput[] data,
+			[Out, MarshalAs( UnmanagedType.LPArray ), Optional] RawInput[] data,
 			[In, Out] ref int size,
 			[In] int headerSize
 		);
 
 
 		/// <summary>Performs a buffered read of the raw input data.</summary>
-		/// <param name="buffer"></param>
+		/// <returns></returns>
 		/// <exception cref="Win32Exception"/>
-		internal static void GetRawInputBuffer( out RawInput[] buffer )
+		internal static RawInput[] GetRawInputBuffer()
 		{
 			var headerSize = Marshal.SizeOf( typeof( RawInputHeader ) );
 			var size = 0;
@@ -409,11 +411,13 @@ namespace ManagedX.Input.Raw
 				throw new Win32Exception( "Failed to retrieve raw input buffer size.", GetExceptionForLastWin32Error() );
 
 			var count = size / Marshal.SizeOf( typeof( RawInput ) );
-			buffer = new RawInput[ count ];
+			var buffer = new RawInput[ count ];
 			
 			result = GetRawInputBuffer( buffer, ref size, headerSize );
 			if( result == -1 )
 				throw new Win32Exception( "Failed to retrieve raw input buffer.", GetExceptionForLastWin32Error() );
+
+			return buffer;
 		}
 
 		#endregion GetRawInputBuffer

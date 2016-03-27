@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -15,7 +13,7 @@ namespace ManagedX.Input
 	public sealed class Keyboard : RawInputDevice<KeyboardState, Key>
 	{
 
-		private const int MaxSupportedKeyboards = XInput.GameController.MaxControllerCount;	// FIXME - should be 1
+		private const int MaxSupportedKeyboards = 4;	// FIXME - should be 1
 
 
 		[SuppressUnmanagedCodeSecurity]
@@ -39,73 +37,6 @@ namespace ManagedX.Input
 			//	_Out_writes_(256) PBYTE lpKeyState
 			//);
 
-		}
-
-
-		#region Static
-
-		private static readonly List<Keyboard> keyboardList = new List<Keyboard>( 1 );
-
-
-		private static void OnKeyboardDisconnected( object sender, EventArgs e )
-		{
-			var keyboard = (Keyboard)sender;
-			
-			keyboard.Disconnected -= OnKeyboardDisconnected;
-
-			keyboardList.Remove( keyboard );
-		}
-
-
-		private static void Initialize()
-		{
-			var allDevices = NativeMethods.GetRawInputDeviceList();
-			var index = 0;
-			for( var d = 0; d < allDevices.Length; d++ )
-			{
-				var descriptor = allDevices[ d ];
-				if( descriptor.DeviceType == InputDeviceType.Keyboard )
-				{
-					var keyboard = new Keyboard( (GameControllerIndex)index, ref descriptor );
-					if( !keyboard.IsDisconnected )
-					{
-						keyboardList.Add( keyboard );
-						keyboard.Disconnected += OnKeyboardDisconnected;
-
-						if( ++index == MaxSupportedKeyboards )
-							break;
-					}
-				}
-			}
-		}
-
-		
-		/// <summary>Gets the default keyboard.</summary>
-		public static Keyboard Default
-		{
-			get
-			{
-				if( keyboardList.Count == 0 )
-					Initialize();
-
-				if( keyboardList.Count == 0 )
-					return null;
-
-				return keyboardList[ 0 ];
-			}
-		}
-
-
-		/// <summary>Gets a read-only collection containing all known (up to 4) keyboards.</summary>
-		public static ReadOnlyCollection<Keyboard> All
-		{
-			get
-			{
-				if( keyboardList.Count == 0 )
-					Initialize();
-
-				return new ReadOnlyCollection<Keyboard>( keyboardList );
-			}
 		}
 
 
@@ -158,11 +89,13 @@ namespace ManagedX.Input
 		//	}
 		//}
 
-		#endregion Static
+
+		
+		private KeyboardDeviceInfo info;
 
 
 		
-		private Keyboard( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
+		internal Keyboard( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
 			: base( (int)controllerIndex, ref descriptor )
 		{
 			var zero = TimeSpan.Zero;
@@ -215,8 +148,46 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Gets information about the keyboard device.</summary>
-		public KeyboardDeviceInfo DeviceInfo { get { return base.Info.KeyboardInfo.Value; } }
+		/// <summary></summary>
+		/// <param name="time"></param>
+		protected sealed override void Reset( ref TimeSpan time )
+		{
+			base.Reset( ref time );
+			
+			var deviceInfo = base.Info.KeyboardInfo;
+			if( deviceInfo != null && deviceInfo.HasValue )
+				info = deviceInfo.Value;
+			else
+				info = KeyboardDeviceInfo.Empty;
+		}
+
+
+		#region Device info
+
+		/// <summary>Gets the number of function keys present on this <see cref="Keyboard"/>.</summary>
+		public int FunctionKeyCount { get { return info.FunctionKeyCount; } }
+
+
+		/// <summary>Gets the number of LED indicators present on this <see cref="Keyboard"/>.</summary>
+		public int IndicatorCount { get { return info.IndicatorCount; } }
+
+
+		/// <summary>Gets the type of this <see cref="Keyboard"/>.</summary>
+		public int KeyboardType { get { return info.KeyboardType; } }
+		
+
+		/// <summary>Gets the sub-type of this <see cref="Keyboard"/>.</summary>
+		public int KeyboardSubType { get { return info.KeyboardSubType; } }
+		
+		
+		/// <summary>Gets the scan code mode of this <see cref="Keyboard"/>.</summary>
+		public int Mode { get { return info.Mode; } }
+
+		
+		/// <summary>Gets the total number of keys present of this <see cref="Keyboard"/>.</summary>
+		public int TotalKeyCount { get { return info.TotalKeyCount; } }
+
+		#endregion Device info
 
 
 		/// <summary>Gets the index of this <see cref="Keyboard"/>.</summary>
