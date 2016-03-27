@@ -10,7 +10,7 @@ namespace ManagedX.Input
 	{
 
 		/// <summary>No key/button.</summary>
-		None = 0x0000,
+		None = 0,
 
 
 		#region Mouse
@@ -708,7 +708,7 @@ namespace ManagedX.Input
 		GamepadRightThumbDownRight = 0x5836,
 		
 		/// <summary>The right stick down left direction.</summary>
-		GamepadRightThumbDownLeft = 0x5837
+		GamepadRightThumbDownLeft = 0x5837,
 
 		#endregion XInput
 
