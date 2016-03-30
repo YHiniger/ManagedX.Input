@@ -27,6 +27,9 @@ namespace ManagedX.Input.XInput
 			: base( (int)controllerIndex )
 		{
 			deadZoneMode = DeadZoneMode.Circular;
+			
+			var zero = TimeSpan.Zero;
+			this.Reset( ref zero );
 		}
 
 
@@ -137,11 +140,11 @@ namespace ManagedX.Input.XInput
 		//}
 
 
-		/// <summary>Returns the state of the controller.
-		/// <para>This method is called by Reset and Update.</para>
-		/// </summary>
-		/// <returns>Returns the state of the controller.</returns>
-		protected abstract override GamePad GetState();
+		///// <summary>Returns the state of the controller.
+		///// <para>This method is called by Reset and Update.</para>
+		///// </summary>
+		///// <returns>Returns the state of the controller.</returns>
+		//protected abstract override GamePad GetState();
 
 
 		/// <summary>Gets the index of this <see cref="InputDevice"/>.</summary>

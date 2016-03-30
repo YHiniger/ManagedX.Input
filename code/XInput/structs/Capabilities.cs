@@ -29,14 +29,31 @@ namespace ManagedX.Input.XInput
 		/// <summary>Gets the <see cref="DeviceSubType">subtype</see> of the associated controller.</summary>
 		public DeviceSubType ControllerSubType { get { return subType; } }
 
+		
+		#region Caps
 
-		/// <summary>Returns a value indicating whether a <see cref="Caps"/> is present.</summary>
-		/// <param name="capability">A <see cref="Caps"/>.</param>
-		/// <returns>Returns true if the specified <paramref name="capability"/> is set, otherwise returns false.</returns>
-		public bool IsSet( Caps capability )
-		{
-			return ( capability == Caps.None ) ? ( caps == Caps.None ) : caps.HasFlag( capability );
-		}
+		/// <summary>Gets a value indicating whether the XInput controller is a wireless device.
+		/// <para>Only available on Windows 8 or newer.</para>
+		/// </summary>
+		public bool IsWireless { get { return caps.HasFlag( Caps.Wireless ); } }
+
+
+		/// <summary>Gets a value indicating whether the XInput controller has an integrated voice device.</summary>
+		public bool SupportsVoice { get { return caps.HasFlag( Caps.VoiceSupported ); } }
+
+
+		/// <summary>Gets a value indicating whether the XInput controller supports PMDs.</summary>
+		public bool SupportsPlugInModuleDevice { get { return caps.HasFlag( Caps.PluginModuleDeviceSupported ); } }
+
+
+		/// <summary>Gets a value indicating whether the XInput controller supports force feedback.</summary>
+		public bool SupportsForceFeedback { get { return caps.HasFlag( Caps.ForceFeedbackSupported ); } }
+
+
+		/// <summary>Gets a value indicating whether the XInput controller lacks menu navigation buttons (START, BACK, DPAD).</summary>
+		public bool HasNoNavigation { get { return caps.HasFlag( Caps.NoNavigation ); } }
+
+		#endregion Caps
 
 
 		/// <summary>Indicates whether the game controller has the specified button (or an equivalent).</summary>
@@ -104,11 +121,10 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>The empty <see cref="Capabilities"/> structure.</summary>
-		public static readonly Capabilities Empty = new Capabilities();
+		public static readonly Capabilities Empty;
 
 
 		#region Operators
-
 
 		/// <summary>Equality comparer.</summary>
 		/// <param name="caps">A <see cref="Capabilities"/> structure.</param>
@@ -119,6 +135,7 @@ namespace ManagedX.Input.XInput
 			return caps.Equals( other );
 		}
 
+
 		/// <summary>Inequality comparer.</summary>
 		/// <param name="caps">A <see cref="Capabilities"/> structure.</param>
 		/// <param name="other">A <see cref="Capabilities"/> structure.</param>
@@ -128,9 +145,7 @@ namespace ManagedX.Input.XInput
 			return !caps.Equals( other );
 		}
 
-
-		#endregion
-
+		#endregion Operators
 
 	}
 

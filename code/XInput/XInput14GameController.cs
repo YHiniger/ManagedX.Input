@@ -7,11 +7,11 @@ namespace ManagedX.Input.XInput
 	using Win32;
 
 
-	// An XInput 1.4 device.
+	// An XInput 1.4 device; requires Windows 8 or newer
 	internal sealed class XInput14GameController : GameController
 	{
 
-		internal const string LibraryName = "XInput1_4.dll";	// Windows 8, 8.1
+		internal const string LibraryName = "XInput1_4.dll";
 
 
 		// Provides access to the XInput 1.4 API functions.
@@ -140,8 +140,6 @@ namespace ManagedX.Input.XInput
 		internal XInput14GameController( GameControllerIndex controllerIndex )
 			: base( controllerIndex )
 		{
-			var zero = TimeSpan.Zero;
-			this.Reset( ref zero );
 		}
 
 
@@ -182,7 +180,7 @@ namespace ManagedX.Input.XInput
 			get
 			{
 				var output = Keystroke.Empty;
-				if( !base.IsDisconnected && capabilities.IsSet( Caps.PluginModuleDeviceSupported ) )
+				if( !base.IsDisconnected && capabilities.SupportsPlugInModuleDevice )
 				{
 					var errorCode = SafeNativeMethods.XInputGetKeystroke( base.Index, 0, out output );
 					if( errorCode != 0 )
@@ -214,6 +212,7 @@ namespace ManagedX.Input.XInput
 					base.IsDisconnected = true;
 				else if( errorCode == 0 )
 				{
+					base.IsDisconnected = false;
 					var state = rawState.GamePadState;
 					if( base.DeadZoneMode != DeadZoneMode.None )
 					{

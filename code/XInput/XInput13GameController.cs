@@ -7,11 +7,11 @@ namespace ManagedX.Input.XInput
 	using Win32;
 
 
-	// An XInput 1.3 device.
+	// An XInput 1.3 device, for Windows Vista or newer; Windows Vista and 7 require the DirectX End-User Runtime (June 2010).
 	internal sealed class XInput13GameController : GameController
 	{
 
-		internal const string LibraryName = "XInput1_3.dll";	// Windows Vista, 7: requires the DirectX End-User Runtime (June 2010)
+		internal const string LibraryName = "XInput1_3.dll";	// 
 
 
 		// Provides access to the XInput 1.3 API functions.
@@ -136,8 +136,6 @@ namespace ManagedX.Input.XInput
 		internal XInput13GameController( GameControllerIndex controllerIndex )
 			: base( controllerIndex )
 		{
-			var zero = TimeSpan.Zero;
-			this.Reset( ref zero );
 		}
 
 
@@ -178,7 +176,7 @@ namespace ManagedX.Input.XInput
 			get
 			{
 				var output = Keystroke.Empty;
-				if( !base.IsDisconnected && capabilities.IsSet( Caps.PluginModuleDeviceSupported ) )
+				if( !base.IsDisconnected && capabilities.SupportsPlugInModuleDevice )
 				{
 					var errorCode = SafeNativeMethods.XInputGetKeystroke( base.Index, 0, out output );
 					if( errorCode != 0 )
@@ -209,6 +207,7 @@ namespace ManagedX.Input.XInput
 					base.IsDisconnected = true;
 				else if( errorCode == 0 )
 				{
+					base.IsDisconnected = false;
 					var state = rawState.GamePadState;
 					if( base.DeadZoneMode != DeadZoneMode.None )
 					{

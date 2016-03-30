@@ -114,7 +114,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="time">The time elapsed since the application start.</param>
 		public static void Update( TimeSpan time )
 		{
-			for( var c = 0; c < GameController.MaxControllerCount; c++ )
+			for( var c = 0; c < gameControllers.Count; c++ )
 				gameControllers[ c ].Update( time );
 		}
 

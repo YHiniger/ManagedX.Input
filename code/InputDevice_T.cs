@@ -59,11 +59,11 @@ namespace ManagedX.Input
 		/// <param name="time">The time elapsed since the application start.</param>
 		public sealed override void Update( TimeSpan time )
 		{
-			if( base.IsDisconnected )
-			{
-				if( ( time - currentStateTime ).TotalSeconds < 2.0 )
-					return;
-			}
+			//if( base.IsDisconnected )
+			//{
+			//	if( ( time - currentStateTime ).TotalSeconds < 2.0 )
+			//		return;
+			//}
 			
 			previousState = currentState;
 			previousStateTime = currentStateTime;
