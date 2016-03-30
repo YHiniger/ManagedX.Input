@@ -22,11 +22,11 @@ namespace ManagedX.Input.XInput
 
 
 
-		/// <summary>Gets the <see cref="DeviceType">type</see> of the associated controller.</summary>
+		/// <summary>Gets the type of the XInput controller.</summary>
 		public DeviceType ControllerType { get { return type; } }
 
 
-		/// <summary>Gets the <see cref="DeviceSubType">subtype</see> of the associated controller.</summary>
+		/// <summary>Gets the sub-type of the XInput controller.</summary>
 		public DeviceSubType ControllerSubType { get { return subType; } }
 
 		
@@ -56,40 +56,40 @@ namespace ManagedX.Input.XInput
 		#endregion Caps
 
 
-		/// <summary>Indicates whether the game controller has the specified button (or an equivalent).</summary>
+		/// <summary>Indicates whether the XInput controller has the specified button (or an equivalent).</summary>
 		/// <param name="button">A <see cref="GamePadButtons">gamepad button</see>.</param>
-		/// <returns>Returns true if the specified <paramref name="button"/> is present on the game controller, otherwise returns false.</returns>
+		/// <returns>Returns true if the specified <paramref name="button"/> is present on the XInput controller, otherwise returns false.</returns>
 		public bool HasButton( GamePadButtons button )
 		{
 			return gamePad.IsPressed( button );
 		}
 
 
-		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has support for the horizontal axis of the left stick.</summary>
-		public bool HasLeftThumbStickX { get { return gamePad.LeftThumbX != 0.0f; } }
+		/// <summary>Gets a value indicating whether the XInput controller has support for the horizontal axis of the left stick.</summary>
+		public bool HasLeftThumbStickX { get { return gamePad.LeftThumb.X != 0.0f; } }
 
-		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has support for the vertical axis of the left stick.</summary>
-		public bool HasLeftThumbStickY { get { return gamePad.LeftThumbY != 0.0f; } }
-
-
-		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has support for the horizontal axis of the right stick.</summary>
-		public bool HasRightThumbStickX { get { return gamePad.RightThumbX != 0.0f; } }
-
-		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has support for the vertical axis of the right stick.</summary>
-		public bool HasRightThumbStickY { get { return gamePad.RightThumbY != 0.0f; } }
+		/// <summary>Gets a value indicating whether the XInput controller has support for the vertical axis of the left stick.</summary>
+		public bool HasLeftThumbStickY { get { return gamePad.LeftThumb.Y != 0.0f; } }
 
 
-		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has a left-side (analogic) trigger.</summary>
+		/// <summary>Gets a value indicating whether the XInput controller has support for the horizontal axis of the right stick.</summary>
+		public bool HasRightThumbStickX { get { return gamePad.RightThumb.X != 0.0f; } }
+
+		/// <summary>Gets a value indicating whether the XInput controller has support for the vertical axis of the right stick.</summary>
+		public bool HasRightThumbStickY { get { return gamePad.RightThumb.Y != 0.0f; } }
+
+
+		/// <summary>Gets a value indicating whether the XInput controller has a left-side (analogic) trigger.</summary>
 		public bool HasLeftTrigger { get { return gamePad.LeftTrigger != 0.0f; } }
 
-		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has a right-side (analogic) trigger.</summary>
+		/// <summary>Gets a value indicating whether the XInput controller has a right-side (analogic) trigger.</summary>
 		public bool HasRightTrigger { get { return gamePad.RightTrigger != 0.0f; } }
 
 
-		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has a left motor (for vibration).</summary>
+		/// <summary>Gets a value indicating whether the XInput controller has a left motor (for vibration).</summary>
 		public bool HasLeftMotor { get { return vibration.LeftMotorSpeed != 0.0f; } }
 
-		/// <summary>Gets a value indicating whether the game controller associated with this <see cref="Capabilities"/> structure has a right motor (for vibration).</summary>
+		/// <summary>Gets a value indicating whether the XInput controller has a right motor (for vibration).</summary>
 		public bool HasRightMotor { get { return vibration.RightMotorSpeed != 0.0f; } }
 
 

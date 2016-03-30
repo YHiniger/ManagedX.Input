@@ -115,7 +115,7 @@
     <Compile Include="code\XInput\DSoundAudioDeviceGuids.cs" />
     <Compile Include="code\VirtualKeyCode.cs" />
     <Compile Include="code\XInput\XInput13GameController.cs" />
-    <Compile Include="code\XInput\XInputVersion.cs" />
+    <Compile Include="code\XInput\enums\XInputVersion.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

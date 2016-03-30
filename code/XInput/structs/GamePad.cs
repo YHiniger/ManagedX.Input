@@ -39,7 +39,7 @@ namespace ManagedX.Input.XInput
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		private static float ToSingle( short value )
 		{
-			return value / ( value < 0 ? 32768.0f : 32767.0f );
+			return (float)value / ( value < 0 ? 32768.0f : 32767.0f );
 		}
 
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
@@ -115,25 +115,20 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Gets a value in the range [0,1] representing the state of the left trigger.</summary>
+		/// <summary>Gets a value, within the range [0,1], representing the state of the left trigger.</summary>
 		public float LeftTrigger { get { return (float)leftTrigger / 255.0f; } }
 
-		/// <summary>Gets a value in the range [0,1] representing the state of the right trigger.</summary>
+
+		/// <summary>Gets a value, within the range [0,1], representing the state of the right trigger.</summary>
 		public float RightTrigger { get { return (float)rightTrigger / 255.0f; } }
 
 
-		/// <summary>Gets a value in the range [-1,+1] representing the horizontal position of the left stick.</summary>
-		public float LeftThumbX { get { return ToSingle( leftThumbX ); } }
-
-		/// <summary>Gets a value in the range [-1,+1] representing the vertical position of the left stick.</summary>
-		public float LeftThumbY { get { return ToSingle( leftThumbY ); } }
+		/// <summary>Gets a <see cref="Vector2"/> representing the position, within the range [-1,+1], of the left stick.</summary>
+		public Vector2 LeftThumb { get { return new Vector2( ToSingle( leftThumbX ), ToSingle( leftThumbY ) ); } }
 
 
-		/// <summary>Gets a value in the range [-1,+1] representing the horizontal position of the right stick.</summary>
-		public float RightThumbX { get { return ToSingle( rightThumbX  ); } }
-
-		/// <summary>Gets a value in the range [-1,+1] representing the vertical position of the right stick.</summary>
-		public float RightThumbY { get { return ToSingle( rightThumbY ); } }
+		/// <summary>Gets a <see cref="Vector2"/> representing the position, within the range [-1,+1], of the right stick.</summary>
+		public Vector2 RightThumb { get { return new Vector2( ToSingle( rightThumbX ), ToSingle( rightThumbY ) ); } }
 
 
 		#region Dead zone handling
