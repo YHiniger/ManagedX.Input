@@ -31,61 +31,41 @@ namespace ManagedX.Input.XInput
 		[Native( "XInput.h", "XINPUT_GAMEPAD_TRIGGER_THRESHOLD" )]
 		public const byte DefaultTriggerThreshold = 30;
 
+
+		//private const short MaxThumbStickPosition = short.MaxValue;
+		//private const short MinThumbStickPosition = -MaxThumbStickPosition;
+
 		#endregion Constants
 
 
 		#region Static functions
 
-		[MethodImpl( MethodImplOptions.AggressiveInlining )]
-		private static float ToSingle( short value )
-		{
-			return (float)value / ( value < 0 ? 32768.0f : 32767.0f );
-		}
-
-		[MethodImpl( MethodImplOptions.AggressiveInlining )]
-		private static short ToShort( float value )
-		{
-			if( value < 0.0f )
-				return (short)( Math.Max( -32768.0f, value ) );
-			else
-				return (short)( Math.Min( 32767.0f, value ) );
-		}
-
-
 		private static void ApplyLinearThumbStickDeadZone( ref short component, short deadZone )
 		{
 			// assumes deadZone is zero or greater
 			if( component < -deadZone )
-				component = (short)( (float)( component + deadZone ) / ( 32768.0f - (float)deadZone ) * 32768.0f );
+				component = (short)( (float)( component + deadZone ) / ( 32767.0f - (float)deadZone ) * 32767.0f );
 			else if( component > deadZone )
 				component = (short)( (float)( component - deadZone ) / ( 32767.0f - (float)deadZone ) * 32767.0f );
 			else
 				component = 0;
 		}
 
-		private static void ApplyThumbStickDeadZone( ref short x, ref short y, short deadZone, DeadZoneMode deadZoneMode )
+		private static void ApplyCircularThumbStickDeadZone( ref short x, ref short y, short deadZone )
 		{
-			if( deadZoneMode == DeadZoneMode.Linear )
-			{
-				deadZone = Math.Abs( deadZone );
-				ApplyLinearThumbStickDeadZone( ref x, deadZone );
-				ApplyLinearThumbStickDeadZone( ref y, deadZone );
-				return;
-			}
-
-			float h = (float)x;
-			float v = (float)y;
-			float dZ = (float)deadZone;
+			var h = (float)x;
+			var v = (float)y;
+			var dZ = (float)deadZone;
 			
-			float length = (float)Math.Sqrt( h * h + v * v );
+			var length = (float)Math.Sqrt( h * h + v * v );
 			float scale;
 			if( length <= dZ )
 				scale = 0.0f;
 			else
 				scale = ( (float)( length - dZ ) / ( 32767.0f - dZ ) * 32767.0f ) / length;
 
-			x = ToShort( h * scale );
-			y = ToShort( v * scale );
+			x = (short)( h * scale ).Clamp( -32767.0f, 32767.0f );
+			y = (short)( v * scale ).Clamp( -32767.0f, 32767.0f );
 		}
 
 		#endregion Static functions
@@ -124,11 +104,11 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Gets a <see cref="Vector2"/> representing the position, within the range [-1,+1], of the left stick.</summary>
-		public Vector2 LeftThumb { get { return new Vector2( ToSingle( leftThumbX ), ToSingle( leftThumbY ) ); } }
+		public Vector2 LeftThumb { get { return new Vector2( (float)leftThumbX / 32767.0f, (float)leftThumbY / 32767.0f ); } }
 
 
 		/// <summary>Gets a <see cref="Vector2"/> representing the position, within the range [-1,+1], of the right stick.</summary>
-		public Vector2 RightThumb { get { return new Vector2( ToSingle( rightThumbX ), ToSingle( rightThumbY ) ); } }
+		public Vector2 RightThumb { get { return new Vector2( (float)rightThumbX / 32767.0f, (float)rightThumbY / 32767.0f ); } }
 
 
 		#region Dead zone handling
@@ -159,10 +139,20 @@ namespace ManagedX.Input.XInput
 		/// <param name="rightStickDeadZone">The dead zone for the right stick; defaults to <see cref="DefaultRightThumbDeadZone"/>.</param>
 		public void ApplyThumbSticksDeadZone( DeadZoneMode deadZoneMode, short leftStickDeadZone, short rightStickDeadZone )
 		{
-			if( deadZoneMode != DeadZoneMode.None )
+			leftStickDeadZone = Math.Abs( leftStickDeadZone );
+			rightStickDeadZone = Math.Abs( rightStickDeadZone );
+			if( deadZoneMode == DeadZoneMode.Linear )
 			{
-				ApplyThumbStickDeadZone( ref leftThumbX, ref leftThumbY, leftStickDeadZone, deadZoneMode );
-				ApplyThumbStickDeadZone( ref rightThumbX, ref rightThumbY, rightStickDeadZone, deadZoneMode );
+				ApplyLinearThumbStickDeadZone( ref leftThumbX, leftStickDeadZone );
+				ApplyLinearThumbStickDeadZone( ref leftThumbY, leftStickDeadZone );
+				
+				ApplyLinearThumbStickDeadZone( ref rightThumbX, rightStickDeadZone );
+				ApplyLinearThumbStickDeadZone( ref rightThumbY, rightStickDeadZone );
+			}
+			else if( deadZoneMode == DeadZoneMode.Circular )
+			{
+				ApplyCircularThumbStickDeadZone( ref leftThumbX, ref leftThumbY, leftStickDeadZone );
+				ApplyCircularThumbStickDeadZone( ref rightThumbX, ref rightThumbY, rightStickDeadZone );
 			}
 		}
 
@@ -170,6 +160,9 @@ namespace ManagedX.Input.XInput
 		/// <param name="deadZoneMode">The kind of dead zone mode to apply.</param>
 		public void ApplyThumbSticksDeadZone( DeadZoneMode deadZoneMode )
 		{
+			if( deadZoneMode == DeadZoneMode.None )
+				return;
+			
 			this.ApplyThumbSticksDeadZone( deadZoneMode, DefaultLeftThumbDeadZone, DefaultRightThumbDeadZone );
 		}
 
