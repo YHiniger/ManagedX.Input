@@ -35,7 +35,7 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Gets the friendly name of this <see cref="GameController"/>.</summary>
-		public sealed override string DisplayName { get { return Properties.Resources.GameController + " " + (int)this.Index; } }
+		public sealed override string DisplayName { get { return Properties.Resources.GameController + " " + ( 1 + (int)this.Index ); } }
 
 
 		/// <summary>Gets a value indicating the type of this input device.</summary>
