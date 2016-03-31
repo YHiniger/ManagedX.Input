@@ -11,7 +11,7 @@
 	/// http://msdn.microsoft.com/en-us/library/windows/desktop/hh405050%28v=vs.85%29.aspx
 	/// </remarks>
 	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1028:EnumStorageShouldBeInt32", Justification = "Required by implementation." )]
-	public enum DeviceSubType : byte
+	public enum DeviceSubtype : byte
 	{
 
 		/// <summary>The controller type is unknown.</summary>
@@ -20,9 +20,9 @@
 
 		/// <summary>Gamepad controller.
 		/// Includes Left and Right Sticks, Left and Right Triggers, Directional Pad, and all standard buttons (A, B, X, Y, START, BACK, LB, RB, LSB, RSB).</summary>
-		/// <remarks>The legacy version of XINPUT on Windows Vista (XInput 9.1.0) will always return a fixed subtype of <see cref="GamePad"/> regardless of attached device.</remarks>
+		/// <remarks>The legacy version of XINPUT on Windows Vista (XInput 9.1.0) will always return a fixed subtype of <see cref="Gamepad"/> regardless of attached device.</remarks>
 		[Native( "XInput.h", "XINPUT_DEVSUBTYPE_GAMEPAD" )]
-		GamePad,
+		Gamepad,
 
 		/// <summary>Racing wheel controller.
 		/// Left Stick X reports the wheel rotation, Right Trigger is the acceleration pedal, and Left Trigger is the brake pedal. Includes Directional Pad and most standard buttons (A, B, X, Y, START, BACK, LB, RB).

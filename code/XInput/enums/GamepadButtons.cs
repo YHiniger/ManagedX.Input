@@ -14,7 +14,7 @@ namespace ManagedX.Input.XInput
 	[SuppressMessage( "Microsoft.Design", "CA1028:EnumStorageShouldBeInt32", Justification = "Required by implementation." )]
 	[SuppressMessage( "Microsoft.Usage", "CA2217:DoNotMarkEnumsWithFlags" )]
 	[Flags]
-	public enum GamePadButtons : short
+	public enum GamepadButtons : short
 	{
 		
 		/// <summary>No button.</summary>
