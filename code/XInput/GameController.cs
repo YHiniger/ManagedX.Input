@@ -7,7 +7,7 @@ namespace ManagedX.Input.XInput
 
 
 	/// <summary>Represents an XInput (1.3 or 1.4) controller, as a managed input device.</summary>
-	public abstract class GameController : InputDevice<GamePad, GamePadButtons>
+	public abstract class GameController : InputDevice<Gamepad, GamepadButtons>
 	{
 
 		/// <summary>Defines the maximum number of controllers supported by XInput: 4.</summary>
@@ -45,7 +45,7 @@ namespace ManagedX.Input.XInput
 		/// <summary>Returns a value indicating whether a button is pressed in the current state, but was released in the previous state.</summary>
 		/// <param name="button">A gamepad button.</param>
 		/// <returns>Returns true if the specified <paramref name="button"/> is pressed in the current state and was released in the previous state; otherwise returns false.</returns>
-		public sealed override bool HasJustBeenPressed( GamePadButtons button )
+		public sealed override bool HasJustBeenPressed( GamepadButtons button )
 		{
 			return !base.PreviousState.Buttons.HasFlag( button ) && base.CurrentState.Buttons.HasFlag( button );
 		}
@@ -54,7 +54,7 @@ namespace ManagedX.Input.XInput
 		/// <summary>Returns a value indicating whether a button is released in the current state, but was pressed in the previous state.</summary>
 		/// <param name="button">A gamepad button.</param>
 		/// <returns>Returns true if the specified <paramref name="button"/> is released in the current state and was pressed in the previous state; otherwise returns false.</returns>
-		public sealed override bool HasJustBeenReleased( GamePadButtons button )
+		public sealed override bool HasJustBeenReleased( GamepadButtons button )
 		{
 			return base.PreviousState.Buttons.HasFlag( button ) && !base.CurrentState.Buttons.HasFlag( button );
 		}

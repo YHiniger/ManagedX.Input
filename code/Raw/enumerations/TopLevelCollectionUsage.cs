@@ -3,7 +3,7 @@
 
 	/// <summary>Enumerates some top-level collection (TLC) UsagePage and Usage combinations.</summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/hardware/ff538842%28v=vs.85%29.aspx</remarks>
-	public enum TopLevelCollection : int
+	public enum TopLevelCollectionUsage : int
 	{
 		
 		/// <summary>Undefined.</summary>

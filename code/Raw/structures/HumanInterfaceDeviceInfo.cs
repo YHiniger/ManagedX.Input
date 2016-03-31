@@ -21,7 +21,7 @@ namespace ManagedX.Input.Raw
 		/// <summary>The version number for the HID.</summary>
 		internal int VersionNumber;
 		/// <summary>The top-level collection (TLC usage page and usage) for the device.</summary>
-		internal TopLevelCollection TopLevelCollection;
+		internal TopLevelCollectionUsage TopLevelCollection;
 
 
 

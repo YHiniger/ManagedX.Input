@@ -47,8 +47,9 @@ namespace ManagedX.Input
 		public bool CapsLock { get { return this.GetToggleableKeyState( Key.CapsLock ); } }
 
 
-		/// <summary>Gets a value indicating whether the NumLock toggle is active.</summary>
-		public bool NumLock { get { return this.GetToggleableKeyState( Key.NumLock ); } }
+        /// <summary>Gets a value indicating whether the NumLock toggle is active.</summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        public bool NumLock { get { return this.GetToggleableKeyState( Key.NumLock ); } }
 
 
 		/// <summary>Gets a value indicating whether the ScrollLock toggle is active.</summary>

@@ -15,9 +15,9 @@ namespace ManagedX.Input.XInput
 	{
 	
 		private DeviceType type;
-		private DeviceSubType subType;
+		private DeviceSubtype subType;
 		private Caps caps;				// capability flags
-		private GamePad gamePad;		// describes available controller features and control resolutions
+		private Gamepad gamePad;		// describes available controller features and control resolutions
 		private Vibration vibration;	// describes available vibration functionality and resolutions
 
 
@@ -27,7 +27,7 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Gets the sub-type of the XInput controller.</summary>
-		public DeviceSubType ControllerSubType { get { return subType; } }
+		public DeviceSubtype ControllerSubtype { get { return subType; } }
 
 		
 		#region Caps
@@ -43,7 +43,7 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Gets a value indicating whether the XInput controller supports PMDs.</summary>
-		public bool SupportsPlugInModuleDevice { get { return caps.HasFlag( Caps.PluginModuleDeviceSupported ); } }
+		public bool SupportsPluginModuleDevice { get { return caps.HasFlag( Caps.PluginModuleDeviceSupported ); } }
 
 
 		/// <summary>Gets a value indicating whether the XInput controller supports force feedback.</summary>
@@ -57,9 +57,9 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Indicates whether the XInput controller has the specified button (or an equivalent).</summary>
-		/// <param name="button">A <see cref="GamePadButtons">gamepad button</see>.</param>
+		/// <param name="button">A <see cref="GamepadButtons">gamepad button</see>.</param>
 		/// <returns>Returns true if the specified <paramref name="button"/> is present on the XInput controller, otherwise returns false.</returns>
-		public bool HasButton( GamePadButtons button )
+		public bool HasButton( GamepadButtons button )
 		{
 			return gamePad.IsPressed( button );
 		}

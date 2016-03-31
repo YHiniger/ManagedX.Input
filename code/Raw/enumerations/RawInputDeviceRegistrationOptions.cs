@@ -49,7 +49,7 @@ namespace ManagedX.Input.Raw
 		/// <para>However, the system hotkeys (for example, ALT+TAB and CTRL+ALT+DEL) are still handled. By default, all keyboard hotkeys are handled.</para>
 		/// NoHotKeys can be specified even if <see cref="RawInputDeviceRegistrationOptions.NoLegacy"/> is not specified and TargetWindowHandle is NULL.
 		/// </summary>
-		NoHotKeys = CaptureMouse,
+		NoHotkeys = CaptureMouse,
 
 		/// <summary>If set, the application command keys are handled.
 		/// AppKeys can be specified only if <see cref="RawInputDeviceRegistrationOptions.NoLegacy"/> is specified for a keyboard device.</summary>

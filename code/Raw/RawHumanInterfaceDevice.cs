@@ -58,7 +58,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>Gets the top-level collection (TLC usage page and usage) for the HID.</summary>
-		public TopLevelCollection TopLevelCollection { get { return info.TopLevelCollection; } }
+		public TopLevelCollectionUsage TopLevelCollection { get { return info.TopLevelCollection; } }
 
 		#endregion Device info
 

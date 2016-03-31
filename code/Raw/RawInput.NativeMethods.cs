@@ -122,16 +122,17 @@ namespace ManagedX.Input.Raw
 		);
 
 
-		/// <summary>Returns a <see cref="DeviceInfo"/> structure containing information about a raw input device.</summary>
-		/// <param name="deviceHandle">A handle to the raw input device.
-		/// <para>This comes from the LParam of the WM_INPUT message, from the <see cref="RawInputHeader.DeviceHandle"/> member, or from GetRawInputDeviceList.</para>
-		/// It can also be null if an application inserts input data, for example, by using SendInput.
-		/// </param>
-		/// <param name="preParsed">Set to true to use pre-parsed data, false otherwise; defaults to false.</param>
-		/// <returns>Returns a <see cref="DeviceInfo"/> structure containing information about a raw input device.</returns>
-		/// <exception cref="NotSupportedException"/>
-		/// <exception cref="Win32Exception"/>
-		internal static DeviceInfo GetRawInputDeviceInfo( IntPtr deviceHandle, bool preParsed )
+        /// <summary>Returns a <see cref="DeviceInfo"/> structure containing information about a raw input device.</summary>
+        /// <param name="deviceHandle">A handle to the raw input device.
+        /// <para>This comes from the LParam of the WM_INPUT message, from the <see cref="RawInputHeader.DeviceHandle"/> member, or from GetRawInputDeviceList.</para>
+        /// It can also be null if an application inserts input data, for example, by using SendInput.
+        /// </param>
+        /// <param name="preParsed">Set to true to use pre-parsed data, false otherwise; defaults to false.</param>
+        /// <returns>Returns a <see cref="DeviceInfo"/> structure containing information about a raw input device.</returns>
+        /// <exception cref="NotSupportedException"/>
+        /// <exception cref="Win32Exception"/>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "DeviceInfo")]
+        internal static DeviceInfo GetRawInputDeviceInfo( IntPtr deviceHandle, bool preParsed )
 		{
 			var deviceInfo = DeviceInfo.Default;
 			var deviceInfoStructSize = deviceInfo.StructureSize;

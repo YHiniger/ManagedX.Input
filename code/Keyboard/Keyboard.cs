@@ -177,7 +177,7 @@ namespace ManagedX.Input
 		
 
 		/// <summary>Gets the sub-type of this <see cref="Keyboard"/>.</summary>
-		public int KeyboardSubType { get { return info.KeyboardSubType; } }
+		public int KeyboardSubtype { get { return info.KeyboardSubtype; } }
 		
 		
 		/// <summary>Gets the scan code mode of this <see cref="Keyboard"/>.</summary>

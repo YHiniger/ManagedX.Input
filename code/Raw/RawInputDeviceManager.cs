@@ -322,9 +322,11 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		/// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
-		/// <param name="message">A Windows message.</param>
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required by implementation." )]
+        /// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
+        /// <param name="message">A Windows message.</param>
+        [SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Wnd" )]
+        [SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Proc" )]
+        [SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required by implementation." )]
 		public static void WndProc( ref Message message )
 		{
 			if( message.Msg == 255 ) // WindowMessage.Input

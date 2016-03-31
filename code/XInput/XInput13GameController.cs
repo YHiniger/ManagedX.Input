@@ -176,7 +176,7 @@ namespace ManagedX.Input.XInput
 			get
 			{
 				var output = Keystroke.Empty;
-				if( !base.IsDisconnected && capabilities.SupportsPlugInModuleDevice )
+				if( !base.IsDisconnected && capabilities.SupportsPluginModuleDevice )
 				{
 					var errorCode = SafeNativeMethods.XInputGetKeystroke( base.Index, 0, out output );
 					if( errorCode != 0 )
@@ -197,7 +197,7 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		protected sealed override GamePad GetState()
+		protected sealed override Gamepad GetState()
 		{
 			if( !base.Disabled )
 			{
@@ -211,14 +211,14 @@ namespace ManagedX.Input.XInput
 					var state = rawState.GamePadState;
 					if( base.DeadZoneMode != DeadZoneMode.None )
 					{
-						state.ApplyThumbSticksDeadZone( base.DeadZoneMode, GamePad.DefaultLeftThumbDeadZone, GamePad.DefaultRightThumbDeadZone );
+						state.ApplyThumbSticksDeadZone( base.DeadZoneMode, Gamepad.DefaultLeftThumbDeadZone, Gamepad.DefaultRightThumbDeadZone );
 						state.ApplyTriggersDeadZone();
 					}
 					return state;
 				}
 			}
 
-			return GamePad.Empty;
+			return Gamepad.Empty;
 		}
 
 

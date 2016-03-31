@@ -15,7 +15,7 @@ namespace ManagedX.Input.XInput
 	{
 		
 		private int packetNumber;
-		private GamePad state;
+		private Gamepad state;
 
 
 
@@ -26,8 +26,8 @@ namespace ManagedX.Input.XInput
 		public int PacketNumber { get { return packetNumber; } }
 
 
-		/// <summary>Gets an <see cref="GamePad"/> structure containing the state of an XInput Controller.</summary>
-		public GamePad GamePadState { get { return state; } }
+		/// <summary>Gets an <see cref="Gamepad"/> structure containing the state of an XInput Controller.</summary>
+		public Gamepad GamePadState { get { return state; } }
 
 
 		/// <summary>Returns a hash code for this <see cref="State"/> structure.</summary>

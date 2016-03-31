@@ -26,7 +26,7 @@ namespace ManagedX.Input.Raw
 		public int KeyboardType { get { return type; } }
 		
 		/// <summary>Gets the subtype of the keyboard.</summary>
-		public int KeyboardSubType { get { return subType; } }
+		public int KeyboardSubtype { get { return subType; } }
 		
 		/// <summary>Gets the scan code mode.</summary>
 		public int Mode { get { return mode; } }

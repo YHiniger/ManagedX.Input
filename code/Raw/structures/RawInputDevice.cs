@@ -83,16 +83,16 @@ namespace ManagedX.Input.Raw
 		public static readonly RawInputDevice Empty;
 
 		/// <summary>The default <see cref="RawInputDevice"/> structure for mice.</summary>
-		internal static readonly RawInputDevice Mouse = new RawInputDevice( (int)Raw.TopLevelCollection.Mouse, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
+		internal static readonly RawInputDevice Mouse = new RawInputDevice( (int)Raw.TopLevelCollectionUsage.Mouse, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
 
 		/// <summary>The default <see cref="RawInputDevice"/> structure for joysticks.</summary>
-		internal static readonly RawInputDevice Joystick = new RawInputDevice( (int)Raw.TopLevelCollection.Joystick, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
+		internal static readonly RawInputDevice Joystick = new RawInputDevice( (int)Raw.TopLevelCollectionUsage.Joystick, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
 
 		/// <summary>The default <see cref="RawInputDevice"/> structure for gamepads.</summary>
-		internal static readonly RawInputDevice Gamepad = new RawInputDevice( (int)Raw.TopLevelCollection.Gamepad, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
+		internal static readonly RawInputDevice Gamepad = new RawInputDevice( (int)Raw.TopLevelCollectionUsage.Gamepad, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
 
 		/// <summary>The default <see cref="RawInputDevice"/> structure for keyboards.</summary>
-		internal static readonly RawInputDevice Keyboard = new RawInputDevice( (int)Raw.TopLevelCollection.Keyboard, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
+		internal static readonly RawInputDevice Keyboard = new RawInputDevice( (int)Raw.TopLevelCollectionUsage.Keyboard, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
 
 
 		#region Operators

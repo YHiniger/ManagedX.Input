@@ -84,7 +84,7 @@
     <Compile Include="code\Raw\enumerations\RawInputDeviceRegistrationOptions.cs" />
     <Compile Include="code\Raw\enumerations\RawMouseButtonStateIndicators.cs" />
     <Compile Include="code\Raw\enumerations\RawMouseStateIndicators.cs" />
-    <Compile Include="code\Raw\enumerations\TopLevelCollection.cs" />
+    <Compile Include="code\Raw\enumerations\TopLevelCollectionUsage.cs" />
     <Compile Include="code\Raw\RawHumanInterfaceDevice.cs" />
     <Compile Include="code\Raw\RawInput.NativeMethods.cs" />
     <Compile Include="code\Raw\RawInputDeviceManager.cs" />
@@ -132,10 +132,7 @@
     <Compile Include="code\XInput\enums\BatteryLevel.cs" />
     <Compile Include="code\XInput\enums\BatteryType.cs" />
     <Compile Include="code\XInput\structs\Capabilities.cs" />
-    <Compile Include="code\XInput\enums\DeviceSubType.cs" />
     <Compile Include="code\XInput\enums\DeviceType.cs" />
-    <Compile Include="code\XInput\structs\GamePad.cs" />
-    <Compile Include="code\XInput\enums\GamePadButtons.cs" />
     <Compile Include="code\XInput\structs\State.cs" />
     <Compile Include="code\XInput\structs\Vibration.cs" />
     <Compile Include="code\XInput\structs\Keystroke.cs" />

@@ -112,13 +112,15 @@ namespace ManagedX.Input.XInput
 		/// <summary>The left stick up left direction.</summary>
 		[Native( "XInput.h", "VK_PAD_LTHUMB_UPLEFT" )]
 		LeftThumbUpLeft = VKeyCode.GamepadLeftThumbUpLeft,
-		
-		/// <summary>The left stick up right direction.</summary>
-		[Native( "XInput.h", "VK_PAD_LTHUMB_UPRIGHT" )]
+
+        /// <summary>The left stick up right direction.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "UpRight")]
+        [Native( "XInput.h", "VK_PAD_LTHUMB_UPRIGHT" )]
 		LeftThumbUpRight = VKeyCode.GamepadLeftThumbUpRight,
-		
-		/// <summary>The left stick down right direction.</summary>
-		[Native( "XInput.h", "VK_PAD_LTHUMB_DOWNRIGHT" )]
+
+        /// <summary>The left stick down right direction.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "DownRight")]
+        [Native( "XInput.h", "VK_PAD_LTHUMB_DOWNRIGHT" )]
 		LeftThumbDownRight = VKeyCode.GamepadLeftThumbDownRight,
 		
 		/// <summary>The left stick down left direction.</summary>
@@ -145,13 +147,15 @@ namespace ManagedX.Input.XInput
 		/// <summary>The right stick up left direction.</summary>
 		[Native( "XInput.h", "VK_PAD_RTHUMB_UPLEFT" )]
 		RightThumbUpLeft = VKeyCode.GamepadRightThumbUpLeft,
-		
-		/// <summary>The right stick up right direction.</summary>
-		[Native( "XInput.h", "VK_PAD_RTHUMB_UPRIGHT" )]
+
+        /// <summary>The right stick up right direction.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "UpRight")]
+        [Native( "XInput.h", "VK_PAD_RTHUMB_UPRIGHT" )]
 		RightThumbUpRight = VKeyCode.GamepadRightThumbUpRight,
-		
-		/// <summary>The right stick down right direction.</summary>
-		[Native( "XInput.h", "VK_PAD_RTHUMB_DOWNRIGHT" )]
+
+        /// <summary>The right stick down right direction.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "DownRight")]
+        [Native( "XInput.h", "VK_PAD_RTHUMB_DOWNRIGHT" )]
 		RightThumbDownRight = VKeyCode.GamepadRightThumbDownRight,
 		
 		/// <summary>The right stick down left direction.</summary>

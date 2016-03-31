@@ -30,7 +30,7 @@ namespace ManagedX.Input.Raw
 		
 
 		/// <summary>Gets the flags for scan code information.</summary>
-		public short MakeCodeInformations { get { return flags; } }
+		public short MakeCodeInfo { get { return flags; } }
 		
 
 		/// <summary>Gets the Windows message compatible virtual-key code.</summary>

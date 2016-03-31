@@ -14,7 +14,7 @@
 
 		/// <summary>Game controller.</summary>
 		[Win32.Native( "XInput.h", "XINPUT_DEVTYPE_GAMEPAD" )]
-		GamePad = 1,
+		Gamepad = 1,
 
 		// ? = 2,
 

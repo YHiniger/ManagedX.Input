@@ -46,7 +46,7 @@ namespace ManagedX.Input
 		Tab = 9,
 
 		/// <summary>The LINE FEED key.</summary>
-		LineFeed = 10,
+		Linefeed = 10,
 
 		/// <summary>The CLEAR key.</summary>
 		Clear = 12,
@@ -77,8 +77,9 @@ namespace ManagedX.Input
 		/// <summary>The IME Hangul mode key.</summary>
 		HangulMode = 21,
 
-		/// <summary>The IME Junja mode key.</summary>
-		JunjaMode = 23,
+        /// <summary>The IME Junja mode key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Junja")]
+        JunjaMode = 23,
 
 		/// <summary>The IME final mode key.</summary>
 		FinalMode = 24,
@@ -99,8 +100,9 @@ namespace ManagedX.Input
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IME" )]
 		IMEConvert = 28,
 
-		/// <summary>The IME Nonconvert key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IME" )]
+        /// <summary>The IME Nonconvert key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Nonconvert")]
+        [SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "IME" )]
 		IMENonconvert = 29,
 
 		/// <summary>The IME Accept key.</summary>
@@ -311,35 +313,45 @@ namespace ManagedX.Input
 		Sleep = 95,
 
 
-		/// <summary>The 0 key on the numeric keypad.</summary>
-		NumPad0 = 96,
+        /// <summary>The 0 key on the numeric keypad.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumPad0 = 96,
 
-		/// <summary>The 1 key on the numeric keypad.</summary>
-		NumPad1 = 97,
+        /// <summary>The 1 key on the numeric keypad.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumPad1 = 97,
 
-		/// <summary>The 2 key on the numeric keypad.</summary>
-		NumPad2 = 98,
+        /// <summary>The 2 key on the numeric keypad.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumPad2 = 98,
 
-		/// <summary>The 3 key on the numeric keypad.</summary>
-		NumPad3 = 99,
+        /// <summary>The 3 key on the numeric keypad.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumPad3 = 99,
 
-		/// <summary>The 4 key on the numeric keypad.</summary>
-		NumPad4 = 100,
+        /// <summary>The 4 key on the numeric keypad.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumPad4 = 100,
 
-		/// <summary>The 5 key on the numeric keypad.</summary>
-		NumPad5 = 101,
+        /// <summary>The 5 key on the numeric keypad.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumPad5 = 101,
 
-		/// <summary>The 6 key on the numeric keypad.</summary>
-		NumPad6 = 102,
+        /// <summary>The 6 key on the numeric keypad.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumPad6 = 102,
 
-		/// <summary>The 7 key on the numeric keypad.</summary>
-		NumPad7 = 103,
+        /// <summary>The 7 key on the numeric keypad.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumPad7 = 103,
 
-		/// <summary>The 8 key on the numeric keypad.</summary>
-		NumPad8 = 104,
+        /// <summary>The 8 key on the numeric keypad.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumPad8 = 104,
 
-		/// <summary>The 9 key on the numeric keypad.</summary>
-		NumPad9 = 105,
+        /// <summary>The 9 key on the numeric keypad.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumPad9 = 105,
 
 		/// <summary>The MULTIPLY key.</summary>
 		Multiply = 106,
@@ -433,8 +445,9 @@ namespace ManagedX.Input
 		F24 = 135,
 
 
-		/// <summary>The NUM LOCK key.</summary>
-		NumLock = 144,
+        /// <summary>The NUM LOCK key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num")]
+        NumLock = 144,
 
 		/// <summary>The SCROLL LOCK key.</summary>
 		ScrollLock = 145,
@@ -512,47 +525,61 @@ namespace ManagedX.Input
 		/// <summary>The LAUNCH APPLICATION #2 key.</summary>
 		LaunchApplication2 = 183,
 
-		/// <summary>The OEM SEMICOLON key.</summary>
-		OemSemicolon = 186,
+        /// <summary>The OEM SEMICOLON key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        OemSemicolon = 186,
 
-		/// <summary>The OEM 1 key.</summary>
-		Oem1 = 186,
+        /// <summary>The OEM 1 key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        Oem1 = 186,
 
-		/// <summary>The OEM PLUS key.</summary>
-		OemPlus = 187,
+        /// <summary>The OEM PLUS key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        OemPlus = 187,
 
-		/// <summary>The OEM COMMA key.</summary>
-		OemComma = 188,
+        /// <summary>The OEM COMMA key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        OemComma = 188,
 
-		/// <summary>The OEM MINUS key.</summary>
-		OemMinus = 189,
+        /// <summary>The OEM MINUS key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        OemMinus = 189,
 
-		/// <summary>The OEM PERIOD key.</summary>
-		OemPeriod = 190,
+        /// <summary>The OEM PERIOD key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        OemPeriod = 190,
 
-		/// <summary>The OEM 2 key.</summary>
-		Oem2 = 191,
+        /// <summary>The OEM 2 key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        Oem2 = 191,
 
-		/// <summary>The OEM 3 key.</summary>
-		Oem3 = 192,
+        /// <summary>The OEM 3 key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        Oem3 = 192,
 
-		/// <summary>The OEM 4 key.</summary>
-		Oem4 = 219,
+        /// <summary>The OEM 4 key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        Oem4 = 219,
 
-		/// <summary>The OEM 5 key.</summary>
-		Oem5 = 220,
+        /// <summary>The OEM 5 key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        Oem5 = 220,
 
-		/// <summary>The OEM 6 key.</summary>
-		Oem6 = 221,
+        /// <summary>The OEM 6 key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        Oem6 = 221,
 
-		/// <summary>The OEM 7 key.</summary>
-		Oem7 = 222,
+        /// <summary>The OEM 7 key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        Oem7 = 222,
 
-		/// <summary>The OEM 8 key.</summary>
-		Oem8 = 223,
+        /// <summary>The OEM 8 key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        Oem8 = 223,
 
-		/// <summary>The OEM 102 key.</summary>
-		Oem102 = 226,
+        /// <summary>The OEM 102 key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        Oem102 = 226,
 
 		/// <summary>The PROCESS key.</summary>
 		ProcessKey = 229,
@@ -562,17 +589,21 @@ namespace ManagedX.Input
 		/// </summary>
 		Packet = 231,
 
-		/// <summary>The ATTN key.</summary>
-		Attn = 246,
+        /// <summary>The ATTN key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Attn")]
+        Attn = 246,
 
-		/// <summary>The CRSEL key.</summary>
-		Crsel = 247,
+        /// <summary>The CRSEL key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Crsel")]
+        Crsel = 247,
 
-		/// <summary>The EXSEL key.</summary>
-		Exsel = 248,
+        /// <summary>The EXSEL key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Exsel")]
+        Exsel = 248,
 
-		/// <summary>The ERASE EOF key.</summary>
-		EraseEof = 249,
+        /// <summary>The ERASE EOF key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Eof")]
+        EraseEof = 249,
 
 		/// <summary>The PLAY key.</summary>
 		Play = 250,
@@ -587,8 +618,9 @@ namespace ManagedX.Input
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Pa" )]
 		Pa1 = 253,
 
-		/// <summary>The CLEAR key.</summary>
-		OemClear = 254,
+        /// <summary>The CLEAR key.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem")]
+        OemClear = 254,
 
 
 		/// <summary>The SHIFT modifier key.</summary>
@@ -675,12 +707,14 @@ namespace ManagedX.Input
 		
 		/// <summary>The left stick up left direction.</summary>
 		GamepadLeftThumbUpLeft = 0x5824,
-		
-		/// <summary>The left stick up right direction.</summary>
-		GamepadLeftThumbUpRight = 0x5825,
-		
-		/// <summary>The left stick down right direction.</summary>
-		GamepadLeftThumbDownRight = 0x5826,
+
+        /// <summary>The left stick up right direction.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "UpRight")]
+        GamepadLeftThumbUpRight = 0x5825,
+
+        /// <summary>The left stick down right direction.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "DownRight")]
+        GamepadLeftThumbDownRight = 0x5826,
 		
 		/// <summary>The left stick down left direction.</summary>
 		GamepadLeftThumbDownLeft = 0x5827,
@@ -700,12 +734,14 @@ namespace ManagedX.Input
 		
 		/// <summary>The right stick up left direction.</summary>
 		GamepadRightThumbUpLeft = 0x5834,
-		
-		/// <summary>The right stick up right direction.</summary>
-		GamepadRightThumbUpRight = 0x5835,
-		
-		/// <summary>The right stick down right direction.</summary>
-		GamepadRightThumbDownRight = 0x5836,
+
+        /// <summary>The right stick up right direction.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "UpRight")]
+        GamepadRightThumbUpRight = 0x5835,
+
+        /// <summary>The right stick down right direction.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "DownRight")]
+        GamepadRightThumbDownRight = 0x5836,
 		
 		/// <summary>The right stick down left direction.</summary>
 		GamepadRightThumbDownLeft = 0x5837,
