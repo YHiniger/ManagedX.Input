@@ -13,7 +13,7 @@ namespace ManagedX.Input
 	public sealed class Keyboard : RawInputDevice<KeyboardState, Key>
 	{
 
-		private const int MaxSupportedKeyboards = 4;	// FIXME - should be 1
+		private const int MaxSupportedKeyboards = 4;	// FIXME - should be 2
 
 
 		[SuppressUnmanagedCodeSecurity]
@@ -135,10 +135,9 @@ namespace ManagedX.Input
 		/// <exception cref="Win32Exception"/>
 		protected sealed override KeyboardState GetState()
 		{
-			var state = KeyboardState.Empty;
-
-			if( !( base.IsDisconnected = !SafeNativeMethods.GetKeyboardState( state.Data ) ) )
-				return state;
+			var buffer = new byte[ 256 ];
+			if( !( base.IsDisconnected = !SafeNativeMethods.GetKeyboardState( buffer ) ) )
+				return new KeyboardState() { Data = buffer };
 
 			var lastException = NativeMethods.GetExceptionForLastWin32Error();
 			if( lastException.HResult == (int)Win32.ErrorCode.NotConnected )
