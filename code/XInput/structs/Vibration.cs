@@ -23,8 +23,7 @@ namespace ManagedX.Input.XInput
 
 		#region Constructors
 
-
-		/// <summary>Instantiates a new <see cref="Vibration"/> structure.</summary>
+		/// <summary>Initializes a new <see cref="Vibration"/> structure.</summary>
 		/// <param name="leftMotorSpeed">The speed of the left motor.</param>
 		/// <param name="rightMotorSpeed">The speed of the right motor.</param>
 		[CLSCompliant( false )]
@@ -35,19 +34,18 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Instantiates a new <see cref="Vibration"/> structure.</summary>
-		/// <param name="leftMotorSpeed">The speed of the left motor, in the range [0,1].</param>
-		/// <param name="rightMotorSpeed">The speed of the right motor, in the range [0,1].</param>
+		/// <summary>Initializes a new <see cref="Vibration"/> structure.</summary>
+		/// <param name="leftMotorSpeed">The speed of the left motor, within the range [0,1].</param>
+		/// <param name="rightMotorSpeed">The speed of the right motor, within the range [0,1].</param>
 		public Vibration( float leftMotorSpeed, float rightMotorSpeed )
 			: this( ToUShort( leftMotorSpeed ), ToUShort( rightMotorSpeed ) )
 		{
 		}
 
+		#endregion Constructors
 
-		#endregion
 
-
-		/// <summary>Gets or sets the left motor speed, in the range [0,1].</summary>
+		/// <summary>Gets or sets the left motor speed, normalized within the range [0,1].</summary>
 		public float LeftMotorSpeed
 		{
 			get { return ToFloat( leftMotorSpeed ); }
@@ -55,7 +53,7 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Gets or sets the right motor speed, in the range [0,1].</summary>
+		/// <summary>Gets or sets the right motor speed, normalized within the range [0,1].</summary>
 		public float RightMotorSpeed
 		{
 			get { return ToFloat( rightMotorSpeed ); }
@@ -72,9 +70,9 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Returns a value indicating whether this <see cref="Vibration"/> structure is equivalent to another structure of the same type.</summary>
+		/// <summary>Returns a value indicating whether this <see cref="Vibration"/> structure is equivalent to another <see cref="Vibration"/> structure.</summary>
 		/// <param name="other">A vibration structure.</param>
-		/// <returns>Returns true if the <paramref name="other"/> Vibration structure has the same motor speeds as this structure, otherwise returns false.</returns>
+		/// <returns>Returns true if the <paramref name="other"/> <see cref="Vibration"/> structure has the same motor speeds as this structure, otherwise returns false.</returns>
 		public bool Equals( Vibration other )
 		{
 			return ( leftMotorSpeed == other.leftMotorSpeed ) && ( rightMotorSpeed == other.rightMotorSpeed );
@@ -94,22 +92,16 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a string representing this <see cref="Vibration"/> structure.</returns>
 		public override string ToString()
 		{
-			return string.Format( System.Globalization.CultureInfo.InvariantCulture, "XInput.Vibration ({0:X4}/{1:X4})", this.leftMotorSpeed, this.rightMotorSpeed );
+			return string.Format( System.Globalization.CultureInfo.InvariantCulture, "{{Left: {0}, Right: {1}}}", this.LeftMotorSpeed, this.RightMotorSpeed );
 		}
-
 
 
 
 		/// <summary>The zero <see cref="Vibration"/> structure.</summary>
 		public static readonly Vibration Zero;
 
-		/// <summary>Full throttle <see cref="Vibration"/>.</summary>
-		public static readonly Vibration FullThrottle = new Vibration( ushort.MaxValue, ushort.MaxValue );
 
-
-
-		#region Static methods (Add, Multiply, Lerp)
-
+		#region Static methods
 
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		private static float ToFloat( ushort value )
@@ -134,9 +126,8 @@ namespace ManagedX.Input.XInput
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <param name="result">Receives a <see cref="Vibration"/> structure initialized with the sum (clamped to the valid range) of the two specified values.</param>
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
-		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Performance matters." )]
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Add( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
@@ -161,9 +152,8 @@ namespace ManagedX.Input.XInput
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <param name="result">Receives a <see cref="Vibration"/> structure initialized with the difference (clamped to the valid range) of the two specified vibrations.</param>
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
-		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Performance matters." )]
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Subtract( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
@@ -188,9 +178,8 @@ namespace ManagedX.Input.XInput
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <param name="result">Receives a <see cref="Vibration"/> initialized with the product of the two specified values.</param>
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
-		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Performance matters." )]
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Multiply( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
@@ -217,8 +206,8 @@ namespace ManagedX.Input.XInput
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="value">A finite, positive single-precision floating-point value.</param>
 		/// <param name="result">Returns the scaled <see cref="Vibration"/>.</param>
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
-		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Performance matters." )]
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Multiply( ref Vibration vibration, float value, out Vibration result )
 		{
@@ -245,9 +234,8 @@ namespace ManagedX.Input.XInput
 		/// <param name="target">A <see cref="Vibration"/> structure.</param>
 		/// <param name="amount">The weight factor.</param>
 		/// <param name="result">Receives the interpolated <see cref="Vibration"/>.</param>
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#", Justification = "Performance matters." )]
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "Performance matters." )]
-		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "3#", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Performance matters." )]
+		[SuppressMessage( "Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "Performance matters." )]
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Lerp( ref Vibration source, ref Vibration target, float amount, out Vibration result )
 		{
@@ -268,7 +256,7 @@ namespace ManagedX.Input.XInput
 			return result;
 		}
 
-		#endregion
+		#endregion Static methods
 
 
 		#region Operators
@@ -349,7 +337,7 @@ namespace ManagedX.Input.XInput
 			return result;
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 

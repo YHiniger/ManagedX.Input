@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Forms;
 
 
 namespace ManagedX.Input.Raw
 {
-	
+
 	/// <summary>A raw HID.</summary>
 	public sealed class RawHumanInterfaceDevice : RawInputDevice<RawHID, int>
 	{

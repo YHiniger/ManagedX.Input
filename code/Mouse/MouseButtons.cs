@@ -1,11 +1,8 @@
-﻿using System;
-
-
-namespace ManagedX.Input
+﻿namespace ManagedX.Input
 {
 
 	/// <summary>Enumerates flags indicating the state of a mouse button.</summary>
-	[Flags]
+	[System.Flags]
 	internal enum MouseButtons : int
 	{
 		

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Runtime.InteropServices;
 
 
@@ -58,7 +57,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a string representing this <see cref="BatteryInformation"/> structure.</returns>
 		public override string ToString()
 		{
-			return string.Format( CultureInfo.InvariantCulture, "{{Type: {0}, Level: {1}}}", type, level );
+			return string.Format( System.Globalization.CultureInfo.InvariantCulture, "{{Type: {0}, Level: {1}}}", type, level );
 		}
 
 

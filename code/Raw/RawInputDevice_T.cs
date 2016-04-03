@@ -6,7 +6,7 @@ namespace ManagedX.Input.Raw
 
 	/// <summary>Base class for raw input devices, implemented as managed input devices.</summary>
 	/// <typeparam name="TState">A structure representing the raw input device state.</typeparam>
-	/// <typeparam name="TButton">An enumeration of the raw input device buttons/keys.</typeparam>
+	/// <typeparam name="TButton">An enumeration of the raw input device buttons/keys, or a value type.</typeparam>
 	public abstract class RawInputDevice<TState, TButton> : InputDevice<TState, TButton>
 		where TState : struct
 		where TButton : struct
@@ -29,7 +29,7 @@ namespace ManagedX.Input.Raw
 			deviceName = NativeMethods.GetRawInputDeviceName( deviceHandle );
 			
 			if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
-				displayName = NativeMethods.GetHIDProductString( deviceName ); // obviously, only works for HIDs ...
+				displayName = NativeMethods.GetHIDProductString( deviceName );
 
 			if( displayName == null )
 			{

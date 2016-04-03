@@ -4,11 +4,11 @@
 namespace ManagedX.Input.XInput
 {
 	using Win32;
-	using VKeyCode = ManagedX.Input.VirtualKeyCode;
+	using VKeyCode = Input.VirtualKeyCode;
 
 
 	/// <summary>Enumerates XInput virtual key codes.
-	/// <para>This enumeration is a subset of the <see cref="ManagedX.Input.VirtualKeyCode"/> enumeration,
+	/// <para>This enumeration is a subset of the <see cref="Input.VirtualKeyCode"/> enumeration,
 	/// and is equivalent to the native <code>VK_PAD_*</code> constants (defined in XInput.h).</para>
 	/// </summary>
 	[SuppressMessage( "Microsoft.Design", "CA1028:EnumStorageShouldBeInt32", Justification = "Required by implementation." )]

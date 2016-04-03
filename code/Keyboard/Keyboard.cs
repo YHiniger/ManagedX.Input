@@ -8,7 +8,7 @@ namespace ManagedX.Input
 {
 	using Raw;
 
-	
+
 	/// <summary>A keyboard.</summary>
 	public sealed class Keyboard : RawInputDevice<KeyboardState, Key>
 	{

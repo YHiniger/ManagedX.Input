@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows.Forms;
@@ -12,7 +9,7 @@ namespace ManagedX.Input
 {
 	using Raw;
 
-	
+
 	/// <summary>A mouse.</summary>
 	public sealed class Mouse : RawInputDevice<MouseState, MouseButton>
 	{

@@ -22,7 +22,7 @@ namespace ManagedX.Input.Raw
 		VirtualDesktop = 0x0002,
 
 		/// <summary>Mouse attributes changed; application needs to query the mouse attributes.</summary>
-		AttributesChanged = 0x0004
+		AttributesChanged = 0x0004,
 	
 	}
 

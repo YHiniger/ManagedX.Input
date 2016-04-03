@@ -1,9 +1,6 @@
-﻿using System;
-
-
-namespace ManagedX.Input.Raw
+﻿namespace ManagedX.Input.Raw
 {
-	
+
 	/// <summary>Enumerates commands used by the GetRawInputData function.</summary>
 	internal enum GetDataCommand : int
 	{
