@@ -118,11 +118,20 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		/// <summary></summary>
-		/// <param name="deviceName"></param>
-		/// <returns></returns>
+		/// <summary>Returns a keyboard given its device name.</summary>
+		/// <param name="deviceName">The device name of the requested keyboard.</param>
+		/// <returns>Returns the requested keyboard, or null.</returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ArgumentException"/>
 		public static Keyboard GetKeyboardByDeviceName( string deviceName )
 		{
+			if( string.IsNullOrWhiteSpace( deviceName ) )
+			{
+				if( deviceName == null )
+					throw new ArgumentNullException( "deviceName" );
+				throw new ArgumentException( "Invalid device name." );
+			}
+
 			if( !isInitialized )
 				Initialize();
 
@@ -134,9 +143,9 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		/// <summary></summary>
-		/// <param name="deviceHandle"></param>
-		/// <returns></returns>
+		/// <summary>Returns a keyboard given its handle.</summary>
+		/// <param name="deviceHandle">The handle of the requested keyboard.</param>
+		/// <returns>Returns the requested keyboard, or null.</returns>
 		public static Keyboard GetKeyboardByDeviceHandle( IntPtr deviceHandle )
 		{
 			if( !isInitialized )
@@ -183,11 +192,20 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		/// <summary></summary>
-		/// <param name="deviceName"></param>
-		/// <returns></returns>
+		/// <summary>Returns a mouse given its device name.</summary>
+		/// <param name="deviceName">The device name of the requested mouse.</param>
+		/// <returns>Returns the requested mouse, or null.</returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ArgumentException"/>
 		public static Mouse GetMouseByDeviceName( string deviceName )
 		{
+			if( string.IsNullOrWhiteSpace( deviceName ) )
+			{
+				if( deviceName == null )
+					throw new ArgumentNullException( "deviceName" );
+				throw new ArgumentException( "Invalid device name." );
+			}
+
 			if( !isInitialized )
 				Initialize();
 
@@ -199,9 +217,9 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		/// <summary></summary>
-		/// <param name="deviceHandle"></param>
-		/// <returns></returns>
+		/// <summary>Returns a mouse given its handle.</summary>
+		/// <param name="deviceHandle">The handle of the requested mouse.</param>
+		/// <returns>Returns the requested mouse, or null.</returns>
 		public static Mouse GetMouseByDeviceHandle( IntPtr deviceHandle )
 		{
 			if( !isInitialized )
@@ -232,11 +250,20 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		/// <summary></summary>
-		/// <param name="deviceName"></param>
-		/// <returns></returns>
+		/// <summary>Returns a HID given its device name.</summary>
+		/// <param name="deviceName">The device name of the requested HID.</param>
+		/// <returns>Returns the requested HID, or null.</returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ArgumentException"/>
 		public static RawHumanInterfaceDevice GetHidByDeviceName( string deviceName )
 		{
+			if( string.IsNullOrWhiteSpace( deviceName ) )
+			{
+				if( deviceName == null )
+					throw new ArgumentNullException( "deviceName" );
+				throw new ArgumentException( "Invalid device name." );
+			}
+
 			if( !isInitialized )
 				Initialize();
 
@@ -248,9 +275,9 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		/// <summary></summary>
-		/// <param name="deviceHandle"></param>
-		/// <returns></returns>
+		/// <summary>Returns a HID given its handle.</summary>
+		/// <param name="deviceHandle">The handle of the requested HID.</param>
+		/// <returns>Returns the requested HID, or null.</returns>
 		public static RawHumanInterfaceDevice GetHidByDeviceHandle( IntPtr deviceHandle )
 		{
 			if( !isInitialized )
@@ -266,30 +293,39 @@ namespace ManagedX.Input.Raw
 		#endregion HID
 
 
-		/// <summary></summary>
-		/// <param name="deviceName"></param>
-		/// <returns></returns>
+		/// <summary>Returns an input device given its device name.</summary>
+		/// <param name="deviceName">The name of the requested input device.</param>
+		/// <returns>Returns the requested input device, or null.</returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ArgumentException"/>
 		public static InputDevice GetDeviceByName( string deviceName )
 		{
-			var mouse = GetMouseByDeviceName( deviceName );
-			if( mouse != null )
-				return mouse;
+			try
+			{
+				var mouse = GetMouseByDeviceName( deviceName );
+				if( mouse != null )
+					return mouse;
 
-			var keyboard = GetKeyboardByDeviceName( deviceName );
-			if( keyboard != null )
-				return keyboard;
+				var keyboard = GetKeyboardByDeviceName( deviceName );
+				if( keyboard != null )
+					return keyboard;
 
-			var hid = GetHidByDeviceName( deviceName );
-			if( hid != null )
-				return hid;
-			
+				var hid = GetHidByDeviceName( deviceName );
+				if( hid != null )
+					return hid;
+			}
+			catch( ArgumentException )
+			{
+				throw;
+			}
+
 			return null;
 		}
 
 
-		/// <summary></summary>
-		/// <param name="deviceHandle"></param>
-		/// <returns></returns>
+		/// <summary>Returns an input device given its handle.</summary>
+		/// <param name="deviceHandle">The handle of the requested input device.</param>
+		/// <returns>Returns the requested input device, or null.</returns>
 		public static InputDevice GetDeviceByHandle( IntPtr deviceHandle )
 		{
 			var mouse = GetMouseByDeviceHandle( deviceHandle );
@@ -324,9 +360,8 @@ namespace ManagedX.Input.Raw
 
         /// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
         /// <param name="message">A Windows message.</param>
-        [SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Wnd" )]
-        [SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Proc" )]
-        [SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference", Justification = "Required by implementation." )]
+        [SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly" )]
+        [SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
 		public static void WndProc( ref Message message )
 		{
 			if( message.Msg == 255 ) // WindowMessage.Input
