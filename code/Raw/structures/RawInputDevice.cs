@@ -14,35 +14,37 @@ namespace ManagedX.Input.Raw
 	internal struct RawInputDevice : IEquatable<RawInputDevice>
 	{
 
-		private int topLevelCollection; // combines UsagePage and Usage.
-		internal RawInputDeviceRegistrationOptions flags;
+		private TopLevelCollectionUsage topLevelCollection; // combines UsagePage and Usage.
+		internal RawInputDeviceRegistrationOptions options;
 		internal IntPtr targetWindowHandle;
 
 
 
-		/// <summary>Private constructor.</summary>
-		/// <param name="topLevelCollection">Top level collection Usage page and usage for the raw input device.</param>
-		/// <param name="options">Mode flag that specifies how to interpret the information provided by <paramref name="topLevelCollection"/>. It can be zero (the default).
-		/// <para>By default, the operating system sends raw input from devices with the specified top level collection (TLC) to the registered application as long as it has the window focus.</para>
-		/// </param>
-		/// <param name="targetWindowHandle">A handle to the target window. If <see cref="IntPtr.Zero"/> it follows the keyboard focus.</param>
-		private RawInputDevice( int topLevelCollection, RawInputDeviceRegistrationOptions options, IntPtr targetWindowHandle )
+		private RawInputDevice( TopLevelCollectionUsage topLevelCollection )
 		{
 			this.topLevelCollection = topLevelCollection;
-			this.flags = options;
+			options = RawInputDeviceRegistrationOptions.None;
+			targetWindowHandle = IntPtr.Zero;
+		}
+
+
+		internal RawInputDevice( TopLevelCollectionUsage topLevelCollection, RawInputDeviceRegistrationOptions options, IntPtr targetWindowHandle )
+		{
+			this.topLevelCollection = topLevelCollection;
+			this.options = options;
 			this.targetWindowHandle = targetWindowHandle;
 		}
 
 
 
 		/// <summary>Gets the top-level collection (usage page and usage) for the raw input device.</summary>
-		public int TopLevelCollection { get { return topLevelCollection; } }
+		public TopLevelCollectionUsage TopLevelCollection { get { return topLevelCollection; } }
 
 
 		/// <summary>Gets a value specifying how to interpret the information provided by <see cref="TopLevelCollection"/>. It can be zero (the default).
 		/// <para>By default, the operating system sends raw input from devices with the specified top level collection (TLC) to the registered application as long as it has the window focus.</para>
 		/// </summary>
-		public RawInputDeviceRegistrationOptions RegistrationOptions { get { return flags; } }
+		public RawInputDeviceRegistrationOptions RegistrationOptions { get { return options; } }
 		
 
 		/// <summary>Gets a handle to the target window. If <see cref="IntPtr.Zero"/> it follows the keyboard focus.</summary>
@@ -53,7 +55,7 @@ namespace ManagedX.Input.Raw
 		/// <returns>Returns a hash code for this <see cref="RawInputDevice"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return topLevelCollection ^ (int)flags ^ targetWindowHandle.GetHashCode();
+			return topLevelCollection.GetHashCode() ^ options.GetHashCode() ^ targetWindowHandle.GetHashCode();
 		}
 
 
@@ -64,7 +66,7 @@ namespace ManagedX.Input.Raw
 		{
 			return
 				( topLevelCollection == other.topLevelCollection ) &&
-				( flags == other.flags ) && 
+				( options == other.options ) && 
 				( targetWindowHandle == other.targetWindowHandle );
 		}
 
@@ -82,17 +84,6 @@ namespace ManagedX.Input.Raw
 		/// <summary>The empty <see cref="RawInputDevice"/> structure.</summary>
 		public static readonly RawInputDevice Empty;
 
-		/// <summary>The default <see cref="RawInputDevice"/> structure for mice.</summary>
-		internal static readonly RawInputDevice Mouse = new RawInputDevice( (int)Raw.TopLevelCollectionUsage.Mouse, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
-
-		/// <summary>The default <see cref="RawInputDevice"/> structure for joysticks.</summary>
-		internal static readonly RawInputDevice Joystick = new RawInputDevice( (int)Raw.TopLevelCollectionUsage.Joystick, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
-
-		/// <summary>The default <see cref="RawInputDevice"/> structure for gamepads.</summary>
-		internal static readonly RawInputDevice Gamepad = new RawInputDevice( (int)Raw.TopLevelCollectionUsage.Gamepad, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
-
-		/// <summary>The default <see cref="RawInputDevice"/> structure for keyboards.</summary>
-		internal static readonly RawInputDevice Keyboard = new RawInputDevice( (int)Raw.TopLevelCollectionUsage.Keyboard, RawInputDeviceRegistrationOptions.None, IntPtr.Zero );
 
 
 		#region Operators

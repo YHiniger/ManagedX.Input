@@ -14,12 +14,13 @@ namespace ManagedX.Input
 	public sealed class Mouse : RawInputDevice<MouseState, MouseButton>
 	{
 
-		private const int MaxSupportedMice = 4;	// FIXME - actually only the primary mouse is properly supported... and this should be set to 2
-		private const int MaxSupportedButtonCount = 5;
+		private const int MaxSupportedMice = 4; // FIXME - actually only the primary mouse is properly supported... and this should be set to 2
+
+		/// <summary>Defines the maximum number of supported mouse buttons: 5.</summary>
+		public const int MaxSupportedButtonCount = 5;
 
 
 		/// <summary>Enumerates mouse buttons, using their <see cref="VirtualKeyCode"/>.</summary>
-		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731%28v=vs.85%29.aspx</remarks>
 		private enum ButtonVirtualKeyCode : int
 		{
 
@@ -158,7 +159,7 @@ namespace ManagedX.Input
 
 		private static MouseCursorOptions cursorState;
 
-		
+
 		/// <summary>Gets or sets a value indicating the state of the mouse cursor.
 		/// <para>Note: <see cref="MouseCursorOptions.Suppressed"/> is handled as <see cref="MouseCursorOptions.Hidden"/>.</para>
 		/// </summary>
@@ -184,33 +185,11 @@ namespace ManagedX.Input
 		/// <para>A window should move the cursor only when the cursor is in the window's client area.</para>
 		/// </summary>
 		/// <param name="position">The new mouse cursor position, relative to the desktop.</param>
-		/// <exception cref="System.ComponentModel.Win32Exception"/>
+		/// <exception cref="Win32Exception"/>
 		public static void SetCursorPosition( Point position )
 		{
 			if( !SafeNativeMethods.SetCursorPos( position.X, position.Y ) )
-				throw new System.ComponentModel.Win32Exception( "Failed to set mouse cursor location.", NativeMethods.GetExceptionForLastWin32Error() );
-		}
-
-
-		/// <summary>Causes the target window to receive raw mouse input messages.
-		/// <para>Important: that window must then override its WndProc method to call <see cref="RawInputDeviceManager.WndProc"/> prior to its base method.</para>
-		/// </summary>
-		/// <param name="targetWindow">The target window.</param>
-		/// <param name="options">One or more <see cref="RawInputDeviceRegistrationOptions"/>.</param>
-		public static void Register( IWin32Window targetWindow, RawInputDeviceRegistrationOptions options )
-		{
-			var device = RawInputDevice.Mouse;
-			device.targetWindowHandle = ( targetWindow == null ) ? IntPtr.Zero : targetWindow.Handle;
-			device.flags = options;
-
-			try
-			{
-				NativeMethods.RegisterRawInputDevices( device );
-			}
-			catch( Exception )
-			{
-				throw;
-			}
+				throw new Win32Exception( "Failed to set mouse cursor location.", NativeMethods.GetExceptionForLastWin32Error() );
 		}
 
 		#endregion Static
@@ -232,19 +211,19 @@ namespace ManagedX.Input
 			this.Reset( ref zero );
 		}
 
-		
+
 
 		/// <summary>Resets the mouse device.</summary>
 		/// <param name="time">The time elapsed since the application start.</param>
 		protected sealed override void Reset( ref TimeSpan time )
 		{
 			motionDelta = Point.Zero;
-			wheelDelta = 0;
+			wheelValue = wheelDelta = 0;
 
 			base.Reset( ref time );
 
 			var deviceInfo = base.Info.MouseInfo;
-			if( deviceInfo !=null && deviceInfo.HasValue )
+			if( deviceInfo != null && deviceInfo.HasValue )
 				info = deviceInfo.Value;
 			else
 				info = MouseDeviceInfo.Empty;

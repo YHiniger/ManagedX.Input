@@ -4,8 +4,9 @@
 namespace ManagedX.Input
 {
 
-	
+
 	/// <summary>Enumerates virtual key codes (including XInput ones).</summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731%28v=vs.85%29.aspx</remarks>
 	public enum VirtualKeyCode : int
 	{
 

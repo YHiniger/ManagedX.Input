@@ -12,9 +12,9 @@ namespace ManagedX.Input.Raw
 	public static class RawInputDeviceManager
 	{
 
-		private static readonly List<Mouse> mice = new List<Mouse>( 1 );
-		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );
-		private static readonly List<RawHumanInterfaceDevice> otherDevices = new List<RawHumanInterfaceDevice>();
+		private static readonly List<Mouse> mice = new List<Mouse>( 1 );			// Most systems have only one mouse
+		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );	// and only one keyboard,
+		private static readonly List<RawHumanInterfaceDevice> otherDevices = new List<RawHumanInterfaceDevice>( 2 );	// but for some reason the mouse and keyboard have (most of the time) a corresponding HID.
 		private static bool isInitialized;
 
 
@@ -129,7 +129,7 @@ namespace ManagedX.Input.Raw
 			{
 				if( deviceName == null )
 					throw new ArgumentNullException( "deviceName" );
-				throw new ArgumentException( "Invalid device name." );
+				throw new ArgumentException( "Invalid device name.", "deviceName" );
 			}
 
 			if( !isInitialized )
@@ -203,7 +203,7 @@ namespace ManagedX.Input.Raw
 			{
 				if( deviceName == null )
 					throw new ArgumentNullException( "deviceName" );
-				throw new ArgumentException( "Invalid device name." );
+				throw new ArgumentException( "Invalid device name.", "deviceName" );
 			}
 
 			if( !isInitialized )
@@ -261,7 +261,7 @@ namespace ManagedX.Input.Raw
 			{
 				if( deviceName == null )
 					throw new ArgumentNullException( "deviceName" );
-				throw new ArgumentException( "Invalid device name." );
+				throw new ArgumentException( "Invalid device name.", "deviceName" );
 			}
 
 			if( !isInitialized )
@@ -370,22 +370,15 @@ namespace ManagedX.Input.Raw
 				NativeMethods.GetRawInputData( message.LParam, out rawInput );
 				if( rawInput.DeviceType == InputDeviceType.Mouse )
 				{
-					Mouse targetMouse = null;
-					for( var m = 0; m < mice.Count; m++ )
-					{
-						if( mice[ m ].DeviceHandle == rawInput.DeviceHandle )
-						{
-							targetMouse = mice[ m ];
-							break;
-						}
-					}
-
+					var targetMouse = GetMouseByDeviceHandle( rawInput.DeviceHandle );
 					if( targetMouse == null )
 						return;
 
 					var mouseState = rawInput.Mouse.Value;
 					if( mouseState.State.HasFlag( RawMouseStateIndicators.MoveRelative ) )
 						targetMouse.motionDelta += new Point( mouseState.LastX, mouseState.LastY );
+					else
+						targetMouse.motionDelta = new Point( mouseState.LastX, mouseState.LastY );
 
 					// FIXME - doesn't seem to work... may be about the horizontal wheel ?
 					if( mouseState.ButtonsState.HasFlag( RawMouseButtonStateIndicators.Wheel ) )
@@ -393,9 +386,19 @@ namespace ManagedX.Input.Raw
 				}
 				//else if( rawInput.DeviceType == InputDeviceType.Keyboard )
 				//{
+				//	var targetKeyboard = GetKeyboardByDeviceHandle( rawInput.DeviceHandle );
+				//	if( targetKeyboard == null )
+				//		return;
+
+				//	// ...
 				//}
 				//else if( rawInput.DeviceType == InputDeviceType.HumanInterfaceDevice )
 				//{
+				//	var targetHid = GetHidByDeviceHandle( rawInput.DeviceHandle );
+				//	if( targetHid == null )
+				//		return;
+
+				//	// ...
 				//}
 				return;
 			}
@@ -403,9 +406,11 @@ namespace ManagedX.Input.Raw
 
 			if( message.Msg == 522 ) // WindowMessage.MouseWheel
 			{
-				var delta = message.WParam.ToInt32() >> 16;
-				// FIXME - find the mouse whose wheel has been scrolled, something in the form:
-				// miceByHandle[ message.LParam ].wheelDelta += delta;
+				// FIXME - how do we know which mouse had its wheel scrolled ?
+				var w = message.WParam.ToInt32();
+				var delta = w >> 16; // the high-order short int indicates the wheel rotation distance, expressed in multiples or divisions of 120;
+									 // the low-order short int indicates the virtual key code of buttons and various modifiers (Ctrl, Shift) which are currently down (pressed).
+									 // message.LParam indicates the x (low-order) and y (high-order) coordinate of the cursor; we don't need this here.
 				if( mice.Count > 0 )
 					mice[ 0 ].wheelDelta += delta;
 				return;
@@ -425,6 +430,31 @@ namespace ManagedX.Input.Raw
 				}
 				// TODO - mark the device as disconnected on removal, otherwise initialize a new RawInputDevice.
 			}
+		}
+
+
+		/// <summary>Causes the target window to receive raw input messages.
+		/// <para>Important: that window must then override its WndProc method to call <see cref="WndProc"/> prior to its base method.</para>
+		/// </summary>
+		/// <param name="targetWindow">The target window.</param>
+		/// <param name="options">One or more <see cref="RawInputDeviceRegistrationOptions"/>.</param>
+		/// <param name="usages">At least one TLC usage.</param>
+		public static void Register( IWin32Window targetWindow, RawInputDeviceRegistrationOptions options, params TopLevelCollectionUsage[] usages )
+		{
+			if( usages == null )
+				throw new ArgumentNullException( "tlc" );
+
+			if( usages.Length == 0 )
+				throw new ArgumentException( "No TLC specified." );
+
+
+			var windowHandle = ( targetWindow == null ) ? IntPtr.Zero : targetWindow.Handle;
+
+			var devices = new RawInputDevice[ usages.Length ];
+			for( var d = 0; d < usages.Length; d++ )
+				devices[ d ] = new RawInputDevice( usages[ d ], options, windowHandle );
+
+			NativeMethods.RegisterRawInputDevices( devices );
 		}
 
 	}

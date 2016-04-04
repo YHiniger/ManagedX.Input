@@ -4,26 +4,11 @@
 namespace ManagedX.Input.Raw
 {
 
-	/// <summary>A raw HID.</summary>
+	/// <summary>A raw HID.
+	/// <para>This class does not currently work properly.</para>
+	/// </summary>
 	public sealed class RawHumanInterfaceDevice : RawInputDevice<RawHID, int>
 	{
-
-
-		///// <summary></summary>
-		///// <param name="window"></param>
-		///// <param name="options"></param>
-		//public static void Register( IWin32Window window, RawInputDeviceRegistrationOptions options )
-		//{
-		//	var rawInputDevice = RawInputDevice.Gamepad;
-		//	rawInputDevice.targetWindowHandle = ( window == null ) ? IntPtr.Zero : window.Handle;
-		//	rawInputDevice.flags = options;
-		//	NativeMethods.RegisterRawInputDevices( rawInputDevice );
-
-		//	//rawInputDevice = RawInputDevice.Joystick;
-		//	//rawInputDevice.targetWindowHandle = ( window == null ) ? IntPtr.Zero : window.Handle;
-		//	//rawInputDevice.flags = options;
-		//	//NativeMethods.RegisterRawInputDevices( rawInputDevice );
-		//}
 
 
 		private HumanInterfaceDeviceInfo info;
@@ -60,26 +45,28 @@ namespace ManagedX.Input.Raw
 		#endregion Device info
 
 
-		/// <summary></summary>
-		/// <returns></returns>
+		/// <summary>Retrieves the device state and returns it.
+		/// <para>This method is called by Reset and Update.</para>
+		/// </summary>
+		/// <returns>Returns a <see cref="RawHID"/> structure representing the current state of the device.</returns>
 		protected sealed override RawHID GetState()
 		{
 			return RawHID.Empty;
 		}
 
 
-		/// <summary></summary>
-		/// <param name="button"></param>
-		/// <returns></returns>
+		/// <summary>Returns a value indicating whether a button is pressed in the current state and released in the previous state.</summary>
+		/// <param name="button">A button.</param>
+		/// <returns>Returns true if the specified <paramref name="button"/> is pressed in the current state and released in the previous state, otherwise returns false.</returns>
 		public sealed override bool HasJustBeenPressed( int button )
 		{
 			return false;
 		}
 
 
-		/// <summary></summary>
-		/// <param name="button"></param>
-		/// <returns></returns>
+		/// <summary>Returns a value indicating whether a button is released in the current state and pressed in the previous state.</summary>
+		/// <param name="button">A button.</param>
+		/// <returns>Returns true if the specified <paramref name="button"/> is released in the current state and pressed in the previous state, otherwise returns false.</returns>
 		public sealed override bool HasJustBeenReleased( int button )
 		{
 			return false;

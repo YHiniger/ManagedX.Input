@@ -13,9 +13,10 @@ namespace ManagedX.Input
 	public sealed class Keyboard : RawInputDevice<KeyboardState, Key>
 	{
 
-		private const int MaxSupportedKeyboards = 4;	// FIXME - should be 2
+		private const int MaxSupportedKeyboards = 4;    // FIXME - should be 2
 
 
+		[Win32.Native( "WinUser.h" )]
 		[SuppressUnmanagedCodeSecurity]
 		private static class SafeNativeMethods
 		{
@@ -38,31 +39,6 @@ namespace ManagedX.Input
 			//);
 
 		}
-
-
-		///// <summary>Causes the target window to receive raw keyboard input messages.
-		///// <para>Important: that window must then override its WndProc method to call <see cref="WndProc"/> prior to its base method.</para>
-		///// </summary>
-		///// <param name="targetWindow">The target window.</param>
-		///// <param name="options">One or more <see cref="RawInputDeviceRegistrationOptions"/>.</param>
-		//public static void Register( System.Windows.Forms.IWin32Window targetWindow, RawInputDeviceRegistrationOptions options )
-		//{
-		//	var device = RawInputDevice.KeyboardDefault;
-		//	device.targetWindowHandle = ( targetWindow == null ) ? IntPtr.Zero : targetWindow.Handle;
-		//	device.flags = options;
-
-		//	if( keyboards.Count == 0 )
-		//		Initialize();
-
-		//	try
-		//	{
-		//		NativeMethods.RegisterRawInputDevices( device );
-		//	}
-		//	catch( Exception )
-		//	{
-		//		throw;
-		//	}
-		//}
 
 
 		///// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
@@ -90,7 +66,7 @@ namespace ManagedX.Input
 		//}
 
 
-		
+
 		private KeyboardDeviceInfo info;
 
 
