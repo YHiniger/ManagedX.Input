@@ -130,23 +130,6 @@ namespace ManagedX.Input.XInput
 		public abstract Keystroke Keystroke { get; }
 
 
-		///// <summary>Initializes the game controller.
-		///// <para>This method is called by derived constructors, and by Update when required (ie: checking whether the controller is connected).</para>
-		///// </summary>
-		///// <param name="time">The time elapsed since the application start.</param>
-		//protected override void Reset( ref TimeSpan time )
-		//{
-		//	base.Reset( ref time );
-		//}
-
-
-		///// <summary>Returns the state of the controller.
-		///// <para>This method is called by Reset and Update.</para>
-		///// </summary>
-		///// <returns>Returns the state of the controller.</returns>
-		//protected abstract override GamePad GetState();
-
-
 		/// <summary>Gets the index of this <see cref="InputDevice"/>.</summary>
 		new public GameControllerIndex Index { get { return (GameControllerIndex)base.Index; } }
 

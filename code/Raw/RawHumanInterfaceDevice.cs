@@ -73,8 +73,8 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		/// <summary></summary>
-		/// <param name="time"></param>
+		/// <summary>Resets the state and information about this <see cref="RawHumanInterfaceDevice"/>.</summary>
+		/// <param name="time">The time elapsed since the start of the application.</param>
 		protected sealed override void Reset( ref TimeSpan time )
 		{
 			base.Reset( ref time );

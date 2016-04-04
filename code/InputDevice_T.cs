@@ -76,7 +76,7 @@ namespace ManagedX.Input
 		/// <summary>Reads the device state through <see cref="GetState"/>, and copies it to the <see cref="PreviousState"/> and the <see cref="CurrentState"/>.
 		/// <para>This method must be called in the constructor of the "final classes" for proper initialization.</para>
 		/// </summary>
-		/// <param name="time">The time elapsed since the application start.</param>
+		/// <param name="time">The time elapsed since the start of the application.</param>
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
 		protected virtual void Reset( ref TimeSpan time )
 		{

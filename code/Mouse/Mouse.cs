@@ -213,8 +213,8 @@ namespace ManagedX.Input
 
 
 
-		/// <summary>Resets the mouse device.</summary>
-		/// <param name="time">The time elapsed since the application start.</param>
+		/// <summary>Resets the state and information about this <see cref="Mouse"/>.</summary>
+		/// <param name="time">The time elapsed since the start of the application.</param>
 		protected sealed override void Reset( ref TimeSpan time )
 		{
 			motionDelta = Point.Zero;

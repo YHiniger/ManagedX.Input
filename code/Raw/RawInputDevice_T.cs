@@ -50,7 +50,7 @@ namespace ManagedX.Input.Raw
 		public sealed override InputDeviceType DeviceType { get { return info.Type; } }
 
 
-		/// <summary>Gets a handle to this raw input device.</summary>
+		/// <summary>Gets the handle of this raw input device.</summary>
 		public IntPtr DeviceHandle { get { return deviceHandle; } }
 
 

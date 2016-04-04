@@ -362,7 +362,7 @@ namespace ManagedX.Input.Raw
         /// <param name="message">A Windows message.</param>
         [SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly" )]
         [SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
-		public static void WndProc( ref Message message )
+		public static bool WndProc( ref Message message )
 		{
 			if( message.Msg == 255 ) // WindowMessage.Input
 			{
@@ -372,7 +372,7 @@ namespace ManagedX.Input.Raw
 				{
 					var targetMouse = GetMouseByDeviceHandle( rawInput.DeviceHandle );
 					if( targetMouse == null )
-						return;
+						return false;
 
 					var mouseState = rawInput.Mouse.Value;
 					if( mouseState.State.HasFlag( RawMouseStateIndicators.MoveRelative ) )
@@ -388,7 +388,7 @@ namespace ManagedX.Input.Raw
 				//{
 				//	var targetKeyboard = GetKeyboardByDeviceHandle( rawInput.DeviceHandle );
 				//	if( targetKeyboard == null )
-				//		return;
+				//		return false;
 
 				//	// ...
 				//}
@@ -396,11 +396,11 @@ namespace ManagedX.Input.Raw
 				//{
 				//	var targetHid = GetHidByDeviceHandle( rawInput.DeviceHandle );
 				//	if( targetHid == null )
-				//		return;
+				//		return false;
 
 				//	// ...
 				//}
-				return;
+				return true;
 			}
 
 
@@ -413,7 +413,7 @@ namespace ManagedX.Input.Raw
 									 // message.LParam indicates the x (low-order) and y (high-order) coordinate of the cursor; we don't need this here.
 				if( mice.Count > 0 )
 					mice[ 0 ].wheelDelta += delta;
-				return;
+				return true;
 			}
 
 
@@ -429,7 +429,10 @@ namespace ManagedX.Input.Raw
 					// Device removal
 				}
 				// TODO - mark the device as disconnected on removal, otherwise initialize a new RawInputDevice.
+				return true;
 			}
+
+			return false;
 		}
 
 
@@ -439,13 +442,15 @@ namespace ManagedX.Input.Raw
 		/// <param name="targetWindow">The target window.</param>
 		/// <param name="options">One or more <see cref="RawInputDeviceRegistrationOptions"/>.</param>
 		/// <param name="usages">At least one TLC usage.</param>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ArgumentException"/>
 		public static void Register( IWin32Window targetWindow, RawInputDeviceRegistrationOptions options, params TopLevelCollectionUsage[] usages )
 		{
 			if( usages == null )
-				throw new ArgumentNullException( "tlc" );
+				throw new ArgumentNullException( "usages" );
 
 			if( usages.Length == 0 )
-				throw new ArgumentException( "No TLC specified." );
+				throw new ArgumentException( "No TLC specified.", "usages" );
 
 
 			var windowHandle = ( targetWindow == null ) ? IntPtr.Zero : targetWindow.Handle;
