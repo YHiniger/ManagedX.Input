@@ -424,6 +424,31 @@ namespace ManagedX.Input.Raw
 		#endregion GetRawInputBuffer
 
 
+		/// <summary></summary>
+		/// <param name="windowHandle"></param>
+		/// <param name="notificationFilter"></param>
+		/// <param name="flags"></param>
+		/// <returns></returns>
+		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/aa363431%28v=vs.85%29.aspx</remarks>
+		[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+		internal static extern IntPtr RegisterDeviceNotificationW(
+			[In] IntPtr windowHandle,
+			[In] object notificationFilter,	// FIXME - DeviceNotificationBase
+			[In] int flags
+		);
+
+
+		/// <summary></summary>
+		/// <param name="deviceNotificationHandle"></param>
+		/// <returns></returns>
+		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/aa363475%28v=vs.85%29.aspx</remarks>
+		[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+		[return: MarshalAs( UnmanagedType.Bool )]
+		internal static extern bool UnregisterDeviceNotificationW(
+			[In] IntPtr deviceNotificationHandle
+		);
+
+
 
 		/// <summary>Returns the embedded string of a top-level collection that identifies the manufacturer's product.</summary>
 		/// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
@@ -478,7 +503,7 @@ namespace ManagedX.Input.Raw
 		/// <summary>Returns the embedded string of a top-level collection that identifies the manufacturer's product.</summary>
 		/// <param name="deviceName"></param>
 		/// <returns>Returns the embedded string of a top-level collection that identifies the manufacturer's product, or null.</returns>
-		internal static string GetHIDProductString( string deviceName )
+		internal static string GetHidProductString( string deviceName )
 		{
 			const int CharCount = 256;				// must be at least 128 chars (126 + 2)
 			const int ByteCount = CharCount * 2;	// 2 bytes per (unicode) char

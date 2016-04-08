@@ -29,7 +29,7 @@ namespace ManagedX.Input.Raw
 			deviceName = NativeMethods.GetRawInputDeviceName( deviceHandle );
 			
 			if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
-				displayName = NativeMethods.GetHIDProductString( deviceName );
+				displayName = NativeMethods.GetHidProductString( deviceName );
 
 			if( displayName == null )
 			{
