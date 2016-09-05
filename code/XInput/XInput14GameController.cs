@@ -7,7 +7,7 @@ namespace ManagedX.Input.XInput
 	using Win32;
 
 
-	// An XInput 1.4 device; requires Windows 8 or newer
+	// Represents an XInput 1.4 device; requires Windows 8 or newer.
 	internal sealed class XInput14GameController : GameController
 	{
 

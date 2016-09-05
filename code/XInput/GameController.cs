@@ -3,8 +3,6 @@
 
 namespace ManagedX.Input.XInput
 {
-	using Design;
-
 
 	/// <summary>Represents an XInput (1.3 or 1.4) controller, as a managed input device.</summary>
 	public abstract class GameController : InputDevice<Gamepad, GamepadButtons>
@@ -73,7 +71,7 @@ namespace ManagedX.Input.XInput
 			{
 				var connectedEvent = this.Connected;
 				if( connectedEvent != null )
-					connectedEvent( this, EventArgs.Empty );
+					connectedEvent.Invoke( this, EventArgs.Empty );
 			}
 		}
 
@@ -130,7 +128,7 @@ namespace ManagedX.Input.XInput
 		public abstract Keystroke Keystroke { get; }
 
 
-		/// <summary>Gets the index of this <see cref="InputDevice"/>.</summary>
+		/// <summary>Gets the index of this <see cref="GameController"/>.</summary>
 		new public GameControllerIndex Index { get { return (GameControllerIndex)base.Index; } }
 
 	}

@@ -7,7 +7,7 @@ namespace ManagedX.Input.XInput
 	using Win32;
 
 
-	// An XInput 1.3 device, for Windows Vista or newer; Windows Vista and 7 require the DirectX End-User Runtime (June 2010).
+	// Represents an XInput 1.3 device, for Windows Vista or newer; Windows Vista and 7 require the DirectX End-User Runtime (June 2010).
 	internal sealed class XInput13GameController : GameController
 	{
 

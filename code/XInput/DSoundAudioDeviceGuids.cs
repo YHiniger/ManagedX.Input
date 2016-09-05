@@ -9,11 +9,15 @@ namespace ManagedX.Input.XInput
 	public struct DSoundAudioDeviceGuids : IEquatable<DSoundAudioDeviceGuids>
 	{
 
-		/// <summary>The <see cref="Guid"/> of the headset sound rendering device; on Windows 8 and greater, this is always an empty GUID.</summary>
+		/// <summary>The <see cref="Guid"/> of the headset sound rendering device.
+		/// <para>On Windows 8 and greater, this is always an empty GUID.</para>
+		/// </summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public Guid RenderDeviceGuid;
 
-		/// <summary>The <see cref="Guid"/> of the headset sound capture device; on Windows 8 and greater, this is always an empty GUID.</summary>
+		/// <summary>The <see cref="Guid"/> of the headset sound capture device.
+		/// <para>On Windows 8 and greater, this is always an empty GUID.</para>
+		/// </summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public Guid CaptureDeviceGuid;
 
@@ -71,7 +75,7 @@ namespace ManagedX.Input.XInput
 			return !guids.Equals( other );
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 

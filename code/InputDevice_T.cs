@@ -13,8 +13,10 @@ namespace ManagedX.Input
 		where TButton : struct
 	{
 
-		private TState currentState, previousState;
-		private TimeSpan currentStateTime, previousStateTime;
+		private TState currentState;
+		private TimeSpan currentStateTime;
+		private TState previousState;
+		private TimeSpan previousStateTime;
 
 
 
@@ -31,6 +33,7 @@ namespace ManagedX.Input
 
 		/// <summary>When overridden, reads and returns the input device state.
 		/// <para>This method is called by <see cref="Reset"/> and <see cref="Update"/> to retrieve the device state (<see cref="CurrentState"/>).</para>
+		/// It's also responsible of keeping the Disconnected property synchronized.
 		/// </summary>
 		/// <returns>Returns the input device state.</returns>
 		[SuppressMessage( "Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Disambiguation: this method retrieves the device state." )]

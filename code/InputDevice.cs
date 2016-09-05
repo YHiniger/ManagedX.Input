@@ -46,7 +46,7 @@ namespace ManagedX.Input
 			{
 				var disconnectedEvent = this.Disconnected;
 				if( disconnectedEvent != null )
-					disconnectedEvent( this, EventArgs.Empty );
+					disconnectedEvent.Invoke( this, EventArgs.Empty );
 			}
 		}
 
