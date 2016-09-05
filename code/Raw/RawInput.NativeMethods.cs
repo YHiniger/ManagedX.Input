@@ -444,7 +444,7 @@ namespace ManagedX.Input.Raw
 		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/aa363475%28v=vs.85%29.aspx</remarks>
 		[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
 		[return: MarshalAs( UnmanagedType.Bool )]
-		internal static extern bool UnregisterDeviceNotificationW(
+		internal static extern bool UnregisterDeviceNotification(
 			[In] IntPtr deviceNotificationHandle
 		);
 
