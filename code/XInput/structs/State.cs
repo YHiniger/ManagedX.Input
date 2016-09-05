@@ -43,7 +43,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the <paramref name="other"/> structure equals this <see cref="State"/> structure, otherwise returns false.</returns>
 		public bool Equals( State other )
 		{
-			return ( packetNumber == other.packetNumber ) && state.Equals( other.state );
+			return ( packetNumber == other.packetNumber ) || state.Equals( other.state );
 		}
 
 
@@ -61,7 +61,6 @@ namespace ManagedX.Input.XInput
 
 
 		#region Operators
-
 
 		/// <summary>Equality comparer.</summary>
 		/// <param name="state">A <see cref="State"/> structure.</param>
@@ -82,9 +81,7 @@ namespace ManagedX.Input.XInput
 			return !state.Equals( other );
 		}
 
-
-		#endregion
-
+		#endregion Operators
 
 	}
 
