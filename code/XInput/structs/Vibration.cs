@@ -17,8 +17,8 @@ namespace ManagedX.Input.XInput
 	public struct Vibration : IEquatable<Vibration>
 	{
 
-		private ushort leftMotorSpeed;
-		private ushort rightMotorSpeed;
+		internal ushort leftMotorSpeed;
+		internal ushort rightMotorSpeed;
 
 
 		#region Constructors

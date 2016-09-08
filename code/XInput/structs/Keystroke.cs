@@ -8,7 +8,7 @@ namespace ManagedX.Input.XInput
 {
 
 	/// <summary>Specifies keystroke data returned by XInputGetKeystroke.
-	/// <para>This structure is equivalent to the native <code>XINPUT_KEYSTROKE</code> structure (defined in XInput.h).</para>
+	/// <para>This structure is equivalent to the <code>XINPUT_KEYSTROKE</code> structure (defined in XInput.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_keystroke%28v=vs.85%29.aspx</remarks>
 	[Win32.Native( "XInput.h", "XINPUT_KEYSTROKE" )]
@@ -28,6 +28,7 @@ namespace ManagedX.Input.XInput
 		/// <summary>Gets the virtual-key code of the key, button, or stick movement.</summary>
 		public VirtualKeyCode VirtualKey { get { return virtualKey; } }
 
+
 		/// <summary>Gets a value indicating the keyboard state at the time of the input event.</summary>
 		public KeyStates State { get { return flags; } }
 
@@ -41,16 +42,15 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Gets the index of the signed-in gamer associated with the device.
-		/// <para>Can be a value in the range [0,3] ([0,7] on Windows 10).</para>
-		/// </summary>
-		public byte UserIndex { get { return userIndex; } }
+		/// <summary>Gets the index of the signed-in gamer associated with the device.</summary>
+		public GameControllerIndex UserIndex { get { return (GameControllerIndex)userIndex; } }
+
 
 		/// <summary>Gets the HID code corresponding to the input. If there is no corresponding HID code, this value is zero.</summary>
 		public byte HidCode { get { return hidCode; } }
 
 		
-		// TODO - add a Char property
+		// TODO - add a Char property ?
 
 		
 		/// <summary>Returns a hash code for this <see cref="Keystroke"/> structure.</summary>
@@ -80,11 +80,10 @@ namespace ManagedX.Input.XInput
 		
 
 		/// <summary>The empty <see cref="Keystroke"/> structure.</summary>
-		public static readonly Keystroke Empty = new Keystroke();
+		public static readonly Keystroke Empty;
 
 
 		#region Operators
-
 
 		/// <summary>Equality comparer.</summary>
 		/// <param name="keystroke">A <see cref="Keystroke"/> structure.</param>
@@ -105,8 +104,7 @@ namespace ManagedX.Input.XInput
 			return !keystroke.Equals( other );
 		}
 
-
-		#endregion
+		#endregion Operators
 
 	}
 
