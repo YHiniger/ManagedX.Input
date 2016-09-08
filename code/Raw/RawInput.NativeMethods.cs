@@ -500,7 +500,7 @@ namespace ManagedX.Input.Raw
 		//);
 
 
-		/// <summary>Returns the embedded string of a top-level collection that identifies the manufacturer's product.</summary>
+		/// <summary>Returns the embedded string of a top-level collection that identifies the manufacturer's product, or null.</summary>
 		/// <param name="deviceName"></param>
 		/// <returns>Returns the embedded string of a top-level collection that identifies the manufacturer's product, or null.</returns>
 		internal static string GetHidProductString( string deviceName )
