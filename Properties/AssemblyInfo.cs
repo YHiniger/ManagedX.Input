@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 
 [assembly: AssemblyTitle( "ManagedX.Input.dll" )]
@@ -21,6 +22,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion( "1.4.0.4" )]
 [assembly: AssemblyFileVersion( "1.4.0.4" )]
-[assembly: NeutralResourcesLanguageAttribute( "en" )]
+[assembly: NeutralResourcesLanguage( "en" )]
 
 [assembly: CLSCompliant( true )]
+[assembly: DefaultDependency( LoadHint.Always )]
