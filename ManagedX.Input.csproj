@@ -104,7 +104,6 @@
     <Compile Include="code\Raw\structures\RawMouse.cs" />
     <Compile Include="code\InputDeviceType.cs" />
     <Compile Include="code\InputDevice_T.cs" />
-    <None Include="code\XInput\VibrationSequence.cs" />
     <Compile Include="code\Keyboard\Key.cs" />
     <Compile Include="code\Keyboard\KeyboardState.cs" />
     <Compile Include="code\Mouse\CursorInfo.cs" />
@@ -116,6 +115,7 @@
     <Compile Include="code\XInput\enums\GamepadButtons.cs" />
     <Compile Include="code\XInput\GameControllerManager.cs" />
     <Compile Include="code\XInput\structs\Gamepad.cs" />
+    <Compile Include="code\XInput\VibrationSequence.cs" />
     <Compile Include="code\XInput\XInput14GameController.cs" />
     <Compile Include="code\XInput\DSoundAudioDeviceGuids.cs" />
     <Compile Include="code\VirtualKeyCode.cs" />
