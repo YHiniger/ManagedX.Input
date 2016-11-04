@@ -13,12 +13,21 @@ namespace ManagedX.Input.XInput
 	/// <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_vibration%28v=vs.85%29.aspx</remarks>
 	[Win32.Native( "XInput.h", "XINPUT_VIBRATION" )]
 	[Serializable]
-	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 4 )]
+	[StructLayout( LayoutKind.Explicit, Pack = 4, Size = 4 )]
 	public struct Vibration : IEquatable<Vibration>
 	{
 
+		[FieldOffset( 0 )]
+		private int raw;
+
+		[NonSerialized]
+		[FieldOffset( 0 )]
 		internal ushort leftMotorSpeed;
+
+		[NonSerialized]
+		[FieldOffset( 2 )]
 		internal ushort rightMotorSpeed;
+
 
 
 		#region Constructors
@@ -29,6 +38,7 @@ namespace ManagedX.Input.XInput
 		[CLSCompliant( false )]
 		public Vibration( ushort leftMotorSpeed, ushort rightMotorSpeed )
 		{
+			raw = 0;
 			this.leftMotorSpeed = leftMotorSpeed;
 			this.rightMotorSpeed = rightMotorSpeed;
 		}
@@ -43,6 +53,7 @@ namespace ManagedX.Input.XInput
 		}
 
 		#endregion Constructors
+
 
 
 		/// <summary>Gets or sets the left motor speed, normalized within the range [0,1].</summary>
@@ -66,7 +77,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a hash code for this <see cref="Vibration"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return ( ( (uint)leftMotorSpeed ) | ( ( (uint)rightMotorSpeed ) << 16 ) ).GetHashCode();
+			return raw;
 		}
 
 
@@ -131,6 +142,7 @@ namespace ManagedX.Input.XInput
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Add( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
+			result.raw = 0;
 			result.leftMotorSpeed = (ushort)Math.Min( (uint)vibration.leftMotorSpeed + (uint)other.leftMotorSpeed, (uint)ushort.MaxValue );
 			result.rightMotorSpeed = (ushort)Math.Min( (uint)vibration.rightMotorSpeed + (uint)other.rightMotorSpeed, (uint)ushort.MaxValue );
 		}
@@ -142,6 +154,7 @@ namespace ManagedX.Input.XInput
 		public static Vibration Add( Vibration vibration, Vibration other )
 		{
 			Vibration result;
+			result.raw = 0;
 			result.leftMotorSpeed = (ushort)Math.Min( (uint)vibration.leftMotorSpeed + (uint)other.leftMotorSpeed, (uint)ushort.MaxValue );
 			result.rightMotorSpeed = (ushort)Math.Min( (uint)vibration.rightMotorSpeed + (uint)other.rightMotorSpeed, (uint)ushort.MaxValue );
 			return result;
@@ -157,6 +170,7 @@ namespace ManagedX.Input.XInput
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Subtract( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
+			result.raw = 0;
 			result.leftMotorSpeed = (ushort)XMath.Clamp( (int)vibration.leftMotorSpeed - (int)other.leftMotorSpeed, 0, (int)ushort.MaxValue );
 			result.rightMotorSpeed = (ushort)XMath.Clamp( (int)vibration.rightMotorSpeed - (int)other.rightMotorSpeed, 0, (int)ushort.MaxValue );
 		}
@@ -168,6 +182,7 @@ namespace ManagedX.Input.XInput
 		public static Vibration Subtract( Vibration vibration, Vibration other )
 		{
 			Vibration result;
+			result.raw = 0;
 			result.leftMotorSpeed = (ushort)XMath.Clamp( (int)vibration.leftMotorSpeed - (int)other.leftMotorSpeed, 0, (int)ushort.MaxValue );
 			result.rightMotorSpeed = (ushort)XMath.Clamp( (int)vibration.rightMotorSpeed - (int)other.rightMotorSpeed, 0, (int)ushort.MaxValue );
 			return result;
@@ -184,6 +199,7 @@ namespace ManagedX.Input.XInput
 		public static void Multiply( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
 			const uint Max = 65535u * 65535u;
+			result.raw = 0;
 			result.leftMotorSpeed = (ushort)( (uint)vibration.leftMotorSpeed * (uint)other.leftMotorSpeed / Max );
 			result.rightMotorSpeed = (ushort)( (uint)vibration.rightMotorSpeed * (uint)other.rightMotorSpeed / Max );
 		}
@@ -196,6 +212,7 @@ namespace ManagedX.Input.XInput
 		{
 			const uint Max = 65535u * 65535u;
 			Vibration result;
+			result.raw = 0;
 			result.leftMotorSpeed = (ushort)( (uint)vibration.leftMotorSpeed * (uint)other.leftMotorSpeed / Max );
 			result.rightMotorSpeed = (ushort)( (uint)vibration.rightMotorSpeed * (uint)other.rightMotorSpeed / Max );
 			return result;
@@ -211,6 +228,7 @@ namespace ManagedX.Input.XInput
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Multiply( ref Vibration vibration, float value, out Vibration result )
 		{
+			result.raw = 0;
 			result.leftMotorSpeed = (ushort)XMath.Clamp( (float)vibration.leftMotorSpeed * value, 0.0f, 65535.0f );
 			result.rightMotorSpeed  = (ushort)XMath.Clamp( (float)vibration.rightMotorSpeed * value, 0.0f, 65535.0f );
 		}
@@ -222,6 +240,7 @@ namespace ManagedX.Input.XInput
 		public static Vibration Multiply( Vibration vibration, float value )
 		{
 			Vibration result;
+			result.raw = 0;
 			result.leftMotorSpeed = (ushort)XMath.Clamp( (float)vibration.leftMotorSpeed * value, 0.0f, 65535.0f );
 			result.rightMotorSpeed = (ushort)XMath.Clamp( (float)vibration.rightMotorSpeed * value, 0.0f, 65535.0f );
 			return result;
@@ -239,6 +258,7 @@ namespace ManagedX.Input.XInput
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Lerp( ref Vibration source, ref Vibration target, float amount, out Vibration result )
 		{
+			result.raw = 0;
 			result.leftMotorSpeed = (ushort)XMath.Lerp( (float)source.leftMotorSpeed, (float)target.leftMotorSpeed, amount );
 			result.rightMotorSpeed = (ushort)XMath.Lerp( (float)source.rightMotorSpeed, (float)target.rightMotorSpeed, amount );
 		}
@@ -251,6 +271,7 @@ namespace ManagedX.Input.XInput
 		public static Vibration Lerp( Vibration source, Vibration target, float amount )
 		{
 			Vibration result;
+			result.raw = 0;
 			result.leftMotorSpeed = (ushort)XMath.Lerp( (float)source.leftMotorSpeed, (float)target.leftMotorSpeed, amount );
 			result.rightMotorSpeed = (ushort)XMath.Lerp( (float)source.rightMotorSpeed, (float)target.rightMotorSpeed, amount );
 			return result;

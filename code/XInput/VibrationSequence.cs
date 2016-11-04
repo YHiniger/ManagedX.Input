@@ -60,17 +60,9 @@ namespace ManagedX.Input.XInput
 
 
 
-		private static int KeyframeComparer( Keyframe frame, Keyframe other )
-		{
-			return frame.time.CompareTo( other.time );
-		}
-
-
-
 		private readonly List<Keyframe> keyframes;
 		private int lastFrameTime;
 		private bool loop;
-		private bool sorted;
 
 
 
@@ -104,9 +96,9 @@ namespace ManagedX.Input.XInput
 				throw new ArgumentOutOfRangeException( "time" );
 
 			var keyframe = new Keyframe( time, vibration );
-			var set = false;
 
-			var prev = 0;
+			var prevFrameIndex = -1;
+			var prevTime = -1;
 
 			for( var k = 0; k < keyframes.Count; ++k )
 			{
@@ -114,25 +106,24 @@ namespace ManagedX.Input.XInput
 				if( current.time == time )
 				{
 					keyframes[ k ] = keyframe;
-					set = true;
-					break;
+					return;
 				}
 
-				if( current.time < time && current.time > prev )
-					prev = current.time;
-			}
-
-			if( !set )
-			{
-				if( prev == keyframes.Count - 1 )
+				if( current.time < time && current.time > prevTime )
 				{
-					keyframes.Add( keyframe );
-					if( time > lastFrameTime )
-						lastFrameTime = time;
+					prevTime = current.time;
+					prevFrameIndex = k;
 				}
-				else
-					keyframes.Insert( prev + 1, keyframe );
 			}
+
+			if( keyframes.Count == 0 || prevFrameIndex == keyframes.Count - 1 )
+			{
+				keyframes.Add( keyframe );
+				if( time > lastFrameTime )
+					lastFrameTime = time;
+			}
+			else
+				keyframes.Insert( prevFrameIndex + 1, keyframe );
 		}
 
 
@@ -162,14 +153,9 @@ namespace ManagedX.Input.XInput
 
 		/// <summary>Returns an array containing the time of all defined keyframes.</summary>
 		/// <returns>Returns an array containing the time of all defined keyframes.</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Keyframe" )]
 		public int[] GetKeyframeTimes()
 		{
-			if( !sorted )
-			{
-				keyframes.Sort( KeyframeComparer );
-				sorted = true;
-			}
-
 			var times = new int[ keyframes.Count ];
 			for( var k = 0; k < times.Length; ++k )
 				times[ k ] = keyframes[ k ].time;
@@ -181,6 +167,7 @@ namespace ManagedX.Input.XInput
 		public void Clear()
 		{
 			keyframes.Clear();
+			lastFrameTime = 0;
 		}
 
 
@@ -200,14 +187,14 @@ namespace ManagedX.Input.XInput
 				{
 					if( !loop )
 						return Vibration.Zero;
-					time %= lastFrameTime;
+					time %= lastFrameTime + 1;
 				}
 
 				Vibration prev, next;
 				int prevTime, nextTime;
 
 				prev = next = Vibration.Zero;
-				prevTime = 0;
+				prevTime = -1;
 				nextTime = int.MaxValue;
 
 				for( var k = 0; k < keyframes.Count; ++k )

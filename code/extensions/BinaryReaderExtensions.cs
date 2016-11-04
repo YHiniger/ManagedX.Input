@@ -17,10 +17,7 @@ namespace ManagedX.Input.XInput
 			if( reader == null )
 				throw new ArgumentNullException( "reader" );
 
-			Vibration vibration;
-			vibration.leftMotorSpeed = reader.ReadUInt16();
-			vibration.rightMotorSpeed = reader.ReadUInt16();
-			return vibration;
+			return new Vibration( reader.ReadUInt16(), reader.ReadUInt16() );
 		}
 
 	}
