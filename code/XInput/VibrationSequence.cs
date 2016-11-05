@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 
 namespace ManagedX.Input.XInput
 {
 
-	/// <summary>A time-based sequence of <see cref="Vibration"/> structures.</summary>
+	/// <summary>A time-based sequence of <see cref="Vibration"/> keyframes.</summary>
 	[Serializable]
-	public sealed class VibrationSequence
+	public sealed class VibrationSequence : VibrationEffect
 	{
 
 		[Serializable]
@@ -78,11 +79,61 @@ namespace ManagedX.Input.XInput
 		public int LastFrameTime { get { return lastFrameTime; } }
 
 
-		/// <summary>Gets or sets a value indicating whether this <see cref="VibrationSequence"/> is looping.</summary>
+		/// <summary>Gets or sets a value indicating whether this <see cref="VibrationSequence"/> loops.</summary>
 		public bool Loops
 		{
 			get { return loop; }
 			set { loop = value; }
+		}
+
+
+		/// <summary>Gets a <see cref="Vibration"/> for a given time.
+		/// <para>The returned structure is interpolated from keyframes.</para>
+		/// </summary>
+		/// <param name="time">The time, in milliseconds, of the requested <see cref="Vibration"/> structure.</param>
+		/// <returns>Returns the requested <see cref="Vibration"/> structure.</returns>
+		public sealed override Vibration this[ int time ]
+		{
+			get
+			{
+				if( time < 0 )
+					return Vibration.Zero;
+
+				if( time > lastFrameTime )
+				{
+					if( !loop )
+						return Vibration.Zero;
+					time %= lastFrameTime + 1;
+				}
+
+				Vibration prev, next;
+				int prevTime, nextTime;
+
+				prev = next = Vibration.Zero;
+				prevTime = -1;
+				nextTime = int.MaxValue;
+
+				for( var k = 0; k < keyframes.Count; ++k )
+				{
+					var current = keyframes[ k ];
+					if( current.time == time )
+						return current.vibration;
+
+					if( current.time < time && current.time > prevTime )
+					{
+						prevTime = current.time;
+						prev = current.vibration;
+					}
+
+					if( current.time > time && current.time < nextTime )
+					{
+						nextTime = current.time;
+						next = current.vibration;
+					}
+				}
+
+				return Vibration.Lerp( prev, next, (float)( time - prevTime ) / (float)( nextTime - prevTime ) );
+			}
 		}
 
 
@@ -153,7 +204,7 @@ namespace ManagedX.Input.XInput
 
 		/// <summary>Returns an array containing the time of all defined keyframes.</summary>
 		/// <returns>Returns an array containing the time of all defined keyframes.</returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Keyframe" )]
+		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Keyframe" )]
 		public int[] GetKeyframeTimes()
 		{
 			var times = new int[ keyframes.Count ];
@@ -171,53 +222,21 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Gets a <see cref="Vibration"/> for a given time.
-		/// <para>The returned structure is interpolated from keyframes.</para>
-		/// </summary>
-		/// <param name="time">The time, in milliseconds, of the requested <see cref="Vibration"/> structure.</param>
-		/// <returns>Returns the requested <see cref="Vibration"/> structure.</returns>
-		public Vibration this[ int time ]
+		/// <summary>Returns a value indicating whether a keyframe has been defined for the specified time.</summary>
+		/// <param name="time">Time, in milliseconds; must be greater than or equal to 0.</param>
+		/// <returns>Returns true if a keyframe has been defined for the specified <paramref name="time"/>, otherwise returns false.</returns>
+		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Keyframe" )]
+		public bool IsKeyframe( int time )
 		{
-			get
+			if( time < 0 )
+				throw new ArgumentOutOfRangeException( "time" );
+
+			for( var k = 0; k < keyframes.Count; ++k )
 			{
-				if( time < 0 )
-					return Vibration.Zero;
-
-				if( time > lastFrameTime )
-				{
-					if( !loop )
-						return Vibration.Zero;
-					time %= lastFrameTime + 1;
-				}
-
-				Vibration prev, next;
-				int prevTime, nextTime;
-
-				prev = next = Vibration.Zero;
-				prevTime = -1;
-				nextTime = int.MaxValue;
-
-				for( var k = 0; k < keyframes.Count; ++k )
-				{
-					var current = keyframes[ k ];
-					if( current.time == time )
-						return current.vibration;
-
-					if( current.time < time && current.time > prevTime )
-					{
-						prevTime = current.time;
-						prev = current.vibration;
-					}
-
-					if( current.time > time && current.time < nextTime )
-					{
-						nextTime = current.time;
-						next = current.vibration;
-					}
-				}
-
-				return Vibration.Lerp( prev, next, (float)( time - prevTime ) / (float)( nextTime - prevTime ) );
+				if( keyframes[ k ].time == time )
+					return true;
 			}
+			return false;
 		}
 
 	}

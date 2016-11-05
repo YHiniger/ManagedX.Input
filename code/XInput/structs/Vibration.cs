@@ -86,7 +86,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the <paramref name="other"/> <see cref="Vibration"/> structure has the same motor speeds as this structure, otherwise returns false.</returns>
 		public bool Equals( Vibration other )
 		{
-			return ( leftMotorSpeed == other.leftMotorSpeed ) && ( rightMotorSpeed == other.rightMotorSpeed );
+			return raw == other.raw;
 		}
 
 
