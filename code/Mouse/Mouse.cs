@@ -156,23 +156,24 @@ namespace ManagedX.Input
 		}
 
 
-		private static MouseCursorOptions cursorState;
+		private static MouseCursorStateIndicators cursorState;
 
 
 		/// <summary>Gets or sets a value indicating the state of the mouse cursor.
-		/// <para>Note: <see cref="MouseCursorOptions.Suppressed"/> is handled as <see cref="MouseCursorOptions.Hidden"/>.</para>
+		/// <para>Note: <see cref="MouseCursorStateIndicators.Suppressed"/> is handled as <see cref="MouseCursorStateIndicators.Hidden"/>.</para>
 		/// </summary>
-		public static MouseCursorOptions CursorState
+		public static MouseCursorStateIndicators CursorState
 		{
 			get { return cursorState; }
 			set
 			{
-				if( value.HasFlag( MouseCursorOptions.Suppressed ) )
-					value = MouseCursorOptions.Hidden;
+				if( value.HasFlag( MouseCursorStateIndicators.Suppressed ) )
+					value = MouseCursorStateIndicators.Hidden;
+				// FIXME ? this should only be used on pre-Windows 8 !
 
 				cursorState = value;
 
-				if( cursorState == MouseCursorOptions.Showing )
+				if( cursorState == MouseCursorStateIndicators.Showing )
 					while( SafeNativeMethods.ShowCursor( true ) < 0 ) ;
 				else
 					while( SafeNativeMethods.ShowCursor( false ) >= 0 ) ;
@@ -206,20 +207,19 @@ namespace ManagedX.Input
 		internal Mouse( GameControllerIndex controllerIndex, ref RawInputDeviceDescriptor descriptor )
 			: base( (int)controllerIndex, ref descriptor )
 		{
-			var zero = TimeSpan.Zero;
-			this.Reset( ref zero );
+			this.Reset( TimeSpan.Zero );
 		}
 
 
 
 		/// <summary>Resets the state and information about this <see cref="Mouse"/>.</summary>
 		/// <param name="time">The time elapsed since the start of the application.</param>
-		protected sealed override void Reset( ref TimeSpan time )
+		protected sealed override void Reset( TimeSpan time )
 		{
 			motionDelta = Point.Zero;
 			wheelValue = wheelDelta = 0;
 
-			base.Reset( ref time );
+			base.Reset( time );
 
 			var deviceInfo = base.Info.MouseInfo;
 			if( deviceInfo != null && deviceInfo.HasValue )

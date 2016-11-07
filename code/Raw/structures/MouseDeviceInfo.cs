@@ -21,16 +21,20 @@ namespace ManagedX.Input.Raw
 		private bool hasHorizontalWheel;
 
 
+
 		/// <summary>Gets the identifier of the mouse device.</summary>
 		public int Id { get { return id; } }
+
 
 		/// <summary>Gets the number of buttons for the mouse.</summary>
 		public int ButtonCount { get { return buttonCount; } }
 		
+
 		/// <summary>Gets the number of data points per second.
 		/// <para>This information may not be applicable for every mouse device.</para>
 		/// </summary>
 		public int SampleRate { get { return sampleRate; } }
+
 
 		/// <summary>Gets a value indicating whether the mouse has a wheel for horizontal scrolling.
 		/// <para>This member is only supported starting with Windows Vista.</para>
@@ -68,6 +72,7 @@ namespace ManagedX.Input.Raw
 		}
 
 
+
 		/// <summary>The empty <see cref="MouseDeviceInfo"/> structure.</summary>
 		public static readonly MouseDeviceInfo Empty;
 
@@ -93,7 +98,7 @@ namespace ManagedX.Input.Raw
 			return !mouseInfo.Equals( other );
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 

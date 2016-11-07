@@ -26,8 +26,7 @@ namespace ManagedX.Input.XInput
 		{
 			deadZoneMode = DeadZoneMode.Circular;
 			
-			var zero = TimeSpan.Zero;
-			this.Reset( ref zero );
+			this.Reset( TimeSpan.Zero );
 		}
 
 

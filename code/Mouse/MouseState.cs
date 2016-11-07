@@ -104,7 +104,7 @@ namespace ManagedX.Input
 			return !mouseState.Equals( other );
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 

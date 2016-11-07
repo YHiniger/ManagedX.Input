@@ -19,8 +19,7 @@ namespace ManagedX.Input.Raw
 		internal RawHumanInterfaceDevice( int controllerIndex, ref RawInputDeviceDescriptor descriptor )
 			: base( controllerIndex, ref descriptor )
 		{
-			var time = TimeSpan.Zero;
-			this.Reset( ref time );
+			this.Reset( TimeSpan.Zero );
 		}
 
 
@@ -75,9 +74,9 @@ namespace ManagedX.Input.Raw
 
 		/// <summary>Resets the state and information about this <see cref="RawHumanInterfaceDevice"/>.</summary>
 		/// <param name="time">The time elapsed since the start of the application.</param>
-		protected sealed override void Reset( ref TimeSpan time )
+		protected sealed override void Reset( TimeSpan time )
 		{
-			base.Reset( ref time );
+			base.Reset( time );
 
 			var deviceInfo = base.Info.HumanInterfaceDeviceInfo;
 			if( deviceInfo != null && deviceInfo.HasValue )

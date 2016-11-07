@@ -110,12 +110,13 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Updates the state of all supported XInput game controllers.</summary>
+		/// <summary>Updates the state of all enabled XInput game controllers.</summary>
 		/// <param name="time">The time elapsed since the application start.</param>
 		public static void Update( TimeSpan time )
 		{
-			for( var c = 0; c < gameControllers.Count; c++ )
-				gameControllers[ c ].Update( time );
+			for( var c = 0; c < gameControllers.Count; ++c )
+				if( !gameControllers[ c ].Disabled )
+					gameControllers[ c ].Update( time );
 		}
 
 	}

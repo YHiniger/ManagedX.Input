@@ -187,13 +187,13 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		protected sealed override void Reset( ref TimeSpan time )
+		protected sealed override void Reset( TimeSpan time )
 		{
 			var errorCode = SafeNativeMethods.XInputGetCapabilities( base.Index, 1, out capabilities );
 			if( errorCode == (int)ErrorCode.NotConnected )
 				base.IsDisconnected = true;
 			else if( errorCode == 0 )
-				base.Reset( ref time );
+				base.Reset( time );
 		}
 
 

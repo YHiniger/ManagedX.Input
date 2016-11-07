@@ -80,8 +80,7 @@ namespace ManagedX.Input
 		/// <para>This method must be called in the constructor of the "final classes" for proper initialization.</para>
 		/// </summary>
 		/// <param name="time">The time elapsed since the start of the application.</param>
-		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
-		protected virtual void Reset( ref TimeSpan time )
+		protected virtual void Reset( TimeSpan time )
 		{
 			previousStateTime = currentStateTime = time;
 			previousState = currentState = this.GetState();	// NOTE - GetState is in charge of setting Disconnected to the appropriate value.

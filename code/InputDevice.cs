@@ -8,7 +8,7 @@ namespace ManagedX.Input
 	public abstract class InputDevice
 	{
 
-		private int index;
+		private readonly int index;
 		private bool isDisconnected;
 
 

@@ -107,7 +107,7 @@
     <Compile Include="code\Keyboard\Key.cs" />
     <Compile Include="code\Keyboard\KeyboardState.cs" />
     <Compile Include="code\Mouse\CursorInfo.cs" />
-    <Compile Include="code\Mouse\MouseCursorOptions.cs" />
+    <Compile Include="code\Mouse\MouseCursorStateIndicators.cs" />
     <Compile Include="code\Mouse\MouseButton.cs" />
     <Compile Include="code\Mouse\MouseState.cs" />
     <Compile Include="code\XInput\AudioDeviceIds.cs" />

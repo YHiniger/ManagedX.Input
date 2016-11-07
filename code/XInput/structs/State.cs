@@ -13,17 +13,14 @@ namespace ManagedX.Input.XInput
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
 	internal struct State : IEquatable<State>
 	{
-		
-		private int packetNumber;
-		private Gamepad state;
 
-
-
-		/// <summary>Gets the state packet number.
+		/// <summary>The state packet number.
 		/// <para>The packet number indicates whether there have been any changes in the state of the controller.</para>
 		/// If the packet number [...] is the same in sequentially returned <see cref="State"/> structures, the controller state has not changed.
 		/// </summary>
-		public int PacketNumber { get { return packetNumber; } }
+		public int PacketNumber;
+		private Gamepad state;
+
 
 
 		/// <summary>Gets an <see cref="Gamepad"/> structure containing the state of an XInput Controller.</summary>
@@ -34,7 +31,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a hash code for this <see cref="State"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return packetNumber ^ state.GetHashCode();
+			return PacketNumber ^ state.GetHashCode();
 		}
 
 
@@ -43,7 +40,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the <paramref name="other"/> structure equals this <see cref="State"/> structure, otherwise returns false.</returns>
 		public bool Equals( State other )
 		{
-			return ( packetNumber == other.packetNumber ) || state.Equals( other.state );
+			return ( PacketNumber == other.PacketNumber ) || state.Equals( other.state );
 		}
 
 
