@@ -9,7 +9,7 @@ namespace ManagedX.Input.Raw
 	/// <para>This structure is equivalent to the native <code>RAWINPUTDEVICELIST</code> structure (defined in WinUser.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645568(v=vs.85).aspx</remarks>
-	[Win32.Native( "WinUser.h", "RAWINPUTDEVICELIST" )]
+	[Win32.Source( "WinUser.h", "RAWINPUTDEVICELIST" )]
 	[StructLayout( LayoutKind.Sequential )] // Size = 8 (x86) or 12 (x64) bytes
 	public struct RawInputDeviceDescriptor : IEquatable<RawInputDeviceDescriptor>
 	{

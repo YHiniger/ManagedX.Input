@@ -15,24 +15,24 @@ namespace ManagedX.Input.XInput
 	{
 
 		/// <summary>The game controller is not connected.</summary>
-		[Native( "XInput.h", "BATTERY_TYPE_DISCONNECTED" )]
+		[Source( "XInput.h", "BATTERY_TYPE_DISCONNECTED" )]
 		Disconnected,
 
 		/// <summary>The game controller is a wired device and does not have a battery.</summary>
-		[Native( "XInput.h", "BATTERY_TYPE_WIRED" )]
+		[Source( "XInput.h", "BATTERY_TYPE_WIRED" )]
 		Wired,
 
 		/// <summary>The game controller has an alkaline battery.</summary>
-		[Native( "XInput.h", "BATTERY_TYPE_ALKALINE" )]
+		[Source( "XInput.h", "BATTERY_TYPE_ALKALINE" )]
 		Alkaline,
 
 		/// <summary>The game controller has a nickel metal hydride battery.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Ni" )]
-		[Native( "XInput.h", "BATTERY_TYPE_NIMH" )]
+		[Source( "XInput.h", "BATTERY_TYPE_NIMH" )]
 		NiMH,
 
 		/// <summary>The game controller has an unknown battery type.</summary>
-		[Native( "XInput.h", "BATTERY_TYPE_UNKNOWN" )]
+		[Source( "XInput.h", "BATTERY_TYPE_UNKNOWN" )]
 		Unknown = 255
 
 	}

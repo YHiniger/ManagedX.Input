@@ -17,27 +17,27 @@
 		/// <summary>The device supports force feedback functionality.
 		/// <para>Note that these force-feedback features beyond rumble are not currently supported through XInput on Windows.</para>
 		/// </summary>
-		[Native( "XInput.h", "XINPUT_CAPS_FFB_SUPPORTED" )]
+		[Source( "XInput.h", "XINPUT_CAPS_FFB_SUPPORTED" )]
 		ForceFeedbackSupported = 0x0001,
 
 		/// <summary>The device is wireless.
 		/// <para>Only supported on Windows 8.</para>
 		/// </summary>
-		[Native( "XInput.h", "XINPUT_CAPS_WIRELESS" )]
+		[Source( "XInput.h", "XINPUT_CAPS_WIRELESS" )]
 		Wireless = 0x0002,
 
 		/// <summary>The device has an integrated voice device.</summary>
-		[Native( "XInput.h", "XINPUT_CAPS_VOICE_SUPPORTED" )]
+		[Source( "XInput.h", "XINPUT_CAPS_VOICE_SUPPORTED" )]
 		VoiceSupported = 0x0004,
 
 		/// <summary>The device supports plug-in modules.
 		/// <para>Note that plug-in modules like the text input device (TID) are not supported currently through XInput on Windows.</para>
 		/// </summary>
-		[Native( "XInput.h", "XINPUT_CAPS_PMD_SUPPORTED" )]
+		[Source( "XInput.h", "XINPUT_CAPS_PMD_SUPPORTED" )]
 		PluginModuleDeviceSupported = 0x0008,
 
 		/// <summary>The device lacks menu navigation buttons (START, BACK, DPAD).</summary>
-		[Native( "XInput.h", "XINPUT_CAPS_NO_NAVIGATION" )]
+		[Source( "XInput.h", "XINPUT_CAPS_NO_NAVIGATION" )]
 		NoNavigation = 0x0010,
 
 	}

@@ -9,7 +9,7 @@ namespace ManagedX.Input.Raw
 	/// <para>This structure is equivalent to the native <code>RID_DEVICE_INFO_MOUSE</code> structure (defined in WinUser.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645589%28v=vs.85%29.aspx</remarks>
-	[Win32.Native( "WinUser.h", "RID_DEVICE_INFO_MOUSE" )]
+	[Win32.Source( "WinUser.h", "RID_DEVICE_INFO_MOUSE" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
 	internal struct MouseDeviceInfo : IEquatable<MouseDeviceInfo>
 	{

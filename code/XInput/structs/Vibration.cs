@@ -11,7 +11,7 @@ namespace ManagedX.Input.XInput
 	/// <para>This structure is equivalent to the native <code>XINPUT_VIBRATION</code> structure (defined in XInput.h).</para>
 	/// </summary>
 	/// <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_vibration%28v=vs.85%29.aspx</remarks>
-	[Win32.Native( "XInput.h", "XINPUT_VIBRATION" )]
+	[Win32.Source( "XInput.h", "XINPUT_VIBRATION" )]
 	[Serializable]
 	[StructLayout( LayoutKind.Explicit, Pack = 4, Size = 4 )]
 	public struct Vibration : IEquatable<Vibration>

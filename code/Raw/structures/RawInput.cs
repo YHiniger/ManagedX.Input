@@ -14,7 +14,7 @@ namespace ManagedX.Input.Raw
 	/// <para>This structure is equivalent to the native <code>RAWINPUT</code> structure (defined in WinUser.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645562(v=vs.85).aspx</remarks>
-	[Win32.Native( "WinUser.h", "RAWINPUT" )]
+	[Win32.Source( "WinUser.h", "RAWINPUT" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4 )] // Size = 40 (x86) or 48 (x64) byte
 	internal struct RawInput : IEquatable<RawInput>
 	{

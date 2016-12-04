@@ -12,8 +12,8 @@ namespace ManagedX.Input.Raw
 	public static class RawInputDeviceManager
 	{
 
-		private static readonly List<Mouse> mice = new List<Mouse>( 1 );			// Most systems have only one mouse
-		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );	// and only one keyboard,
+		private static readonly List<Mouse> mice = new List<Mouse>( 1 );												// Most systems have only one mouse,
+		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );										// and only one keyboard,
 		private static readonly List<RawHumanInterfaceDevice> otherDevices = new List<RawHumanInterfaceDevice>( 2 );	// but for some reason the mouse and keyboard have (most of the time) a corresponding HID.
 		private static bool isInitialized;
 

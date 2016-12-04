@@ -13,7 +13,7 @@
 		Undefined = 0,
 
 		/// <summary>Game controller.</summary>
-		[Win32.Native( "XInput.h", "XINPUT_DEVTYPE_GAMEPAD" )]
+		[Win32.Source( "XInput.h", "XINPUT_DEVTYPE_GAMEPAD" )]
 		Gamepad = 1,
 
 		// ? = 2,

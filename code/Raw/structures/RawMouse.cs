@@ -9,7 +9,7 @@ namespace ManagedX.Input.Raw
 	/// <para>This structure is equivalent to the native <code>RAWMOUSE</code> structure (defined in WinUser.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645578%28v=vs.85%29.aspx</remarks>
-	[Win32.Native( "WinUser.h", "RAWMOUSE" )]
+	[Win32.Source( "WinUser.h", "RAWMOUSE" )]
 	[StructLayout( LayoutKind.Sequential, Size = 22 )] // for some reason packing can't be set...
 	public struct RawMouse : IEquatable<RawMouse>
 	{

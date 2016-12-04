@@ -9,7 +9,7 @@ namespace ManagedX.Input.Raw
 	/// <para>This structure is equivalent to the native <code>RID_DEVICE_INFO_KEYBOARD</code> structure (defined in WinUser.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645587%28v=vs.85%29.aspx</remarks>
-	[Win32.Native( "WinUser.h", "RID_DEVICE_INFO_KEYBOARD" )]
+	[Win32.Source( "WinUser.h", "RID_DEVICE_INFO_KEYBOARD" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 24 )]
 	internal struct KeyboardDeviceInfo : IEquatable<KeyboardDeviceInfo>
 	{

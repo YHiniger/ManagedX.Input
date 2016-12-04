@@ -9,7 +9,7 @@ namespace ManagedX.Input.XInput
 	/// <para>This structure is equivalent to the native <code>XINPUT_CAPABILITIES</code> structure (defined in XInput.h).</para>
 	/// </summary>
 	/// <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_capabilities(v=vs.85).aspx</remarks>
-	[Win32.Native( "XInput.h", "XINPUT_CAPABILITIES" )]
+	[Win32.Source( "XInput.h", "XINPUT_CAPABILITIES" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 20 )]
 	public struct Capabilities : IEquatable<Capabilities>
 	{

@@ -9,7 +9,7 @@ namespace ManagedX.Input.XInput
 	/// <para>This structure is equivalent to the native <code>XINPUT_BATTERY_INFORMATION</code> structure (defined in XInput.h).</para>
 	/// </summary>
 	/// <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_battery_information%28v=vs.85%29.aspx</remarks>
-	[Win32.Native( "XInput.h", "XINPUT_BATTERY_INFORMATION" )]
+	[Win32.Source( "XInput.h", "XINPUT_BATTERY_INFORMATION" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 2 )]
 	public struct BatteryInformation : IEquatable<BatteryInformation>
 	{

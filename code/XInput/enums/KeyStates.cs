@@ -21,15 +21,15 @@ namespace ManagedX.Input.XInput
 		Undefined = 0x0000,
 
 		/// <summary>The key was pressed.</summary>
-		[Native( "XInput.h", "XINPUT_KEYSTROKE_KEYDOWN" )]
+		[Source( "XInput.h", "XINPUT_KEYSTROKE_KEYDOWN" )]
 		Down = 0x0001,
 
 		/// <summary>The key was released.</summary>
-		[Native( "XInput.h", "XINPUT_KEYSTROKE_KEYUP" )]
+		[Source( "XInput.h", "XINPUT_KEYSTROKE_KEYUP" )]
 		Up = 0x0002,
 
 		/// <summary>A repeat of a held key.</summary>
-		[Native( "XInput.h", "XINPUT_KEYSTROKE_REPEAT" )]
+		[Source( "XInput.h", "XINPUT_KEYSTROKE_REPEAT" )]
 		Repeat = 0x0004
 
 	}

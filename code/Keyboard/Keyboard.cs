@@ -16,7 +16,7 @@ namespace ManagedX.Input
 		private const int MaxSupportedKeyboards = 4;    // FIXME - should be 2
 
 
-		[Win32.Native( "WinUser.h" )]
+		[Win32.Source( "WinUser.h" )]
 		[SuppressUnmanagedCodeSecurity]
 		private static class SafeNativeMethods
 		{

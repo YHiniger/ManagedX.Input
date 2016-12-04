@@ -15,7 +15,7 @@ namespace ManagedX.Input.XInput
 
 
 		// Provides access to the XInput 1.3 API functions.
-		[Native( "XInput.h" )]
+		[Source( "XInput.h" )]
 		[System.Security.SuppressUnmanagedCodeSecurity]
 		private static class SafeNativeMethods
 		{

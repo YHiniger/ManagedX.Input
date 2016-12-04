@@ -11,7 +11,7 @@ namespace ManagedX.Input.XInput
 	/// <para>This structure is equivalent to the <code>XINPUT_KEYSTROKE</code> structure (defined in XInput.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_keystroke%28v=vs.85%29.aspx</remarks>
-	[Win32.Native( "XInput.h", "XINPUT_KEYSTROKE" )]
+	[Win32.Source( "XInput.h", "XINPUT_KEYSTROKE" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 8 )]
 	public struct Keystroke : IEquatable<Keystroke>
 	{

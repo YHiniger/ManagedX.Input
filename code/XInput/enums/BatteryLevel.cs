@@ -12,19 +12,19 @@
 	{
 
 		/// <summary>The battery is empty.</summary>
-		[Native( "XInput.h", "BATTERY_LEVEL_EMPTY" )]
+		[Source( "XInput.h", "BATTERY_LEVEL_EMPTY" )]
 		Empty,
 
 		/// <summary>The battery level is low.</summary>
-		[Native( "XInput.h", "BATTERY_LEVEL_LOW" )]
+		[Source( "XInput.h", "BATTERY_LEVEL_LOW" )]
 		Low,
 
 		/// <summary>The battery level is medium.</summary>
-		[Native( "XInput.h", "BATTERY_LEVEL_MEDIUM" )]
+		[Source( "XInput.h", "BATTERY_LEVEL_MEDIUM" )]
 		Medium,
 
 		/// <summary>The battery level is high.</summary>
-		[Native( "XInput.h", "BATTERY_LEVEL_FULL" )]
+		[Source( "XInput.h", "BATTERY_LEVEL_FULL" )]
 		Full
 
 	}

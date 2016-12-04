@@ -9,7 +9,7 @@ namespace ManagedX.Input.XInput
 	/// <para>This structure is equivalent to the native <code>XINPUT_STATE</code> structure (defined in XInput.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_state%28v=vs.85%29.aspx</remarks>
-	[Win32.Native( "XInput.h", "XINPUT_STATE" )]
+	[Win32.Source( "XInput.h", "XINPUT_STATE" )]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
 	internal struct State : IEquatable<State>
 	{

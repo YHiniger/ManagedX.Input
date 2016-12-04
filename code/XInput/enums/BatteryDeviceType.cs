@@ -11,11 +11,11 @@
 	{
 
 		/// <summary>An XInput controller.</summary>
-		[Native( "XInput.h", "BATTERY_DEVTYPE_GAMEPAD" )]
+		[Source( "XInput.h", "BATTERY_DEVTYPE_GAMEPAD" )]
 		Gamepad,
 
 		/// <summary>An XInput headset.</summary>
-		[Native( "XInput.h", "BATTERY_DEVTYPE_HEADSET" )]
+		[Source( "XInput.h", "BATTERY_DEVTYPE_HEADSET" )]
 		Headset
 
 	}
