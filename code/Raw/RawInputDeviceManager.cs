@@ -7,14 +7,14 @@ using System.Windows.Forms;
 
 namespace ManagedX.Input.Raw
 {
-	
+
 	/// <summary>A RawInput device manager.</summary>
 	public static class RawInputDeviceManager
 	{
 
-		private static readonly List<Mouse> mice = new List<Mouse>( 1 );												// Most systems have only one mouse,
-		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );										// and only one keyboard,
-		private static readonly List<RawHumanInterfaceDevice> otherDevices = new List<RawHumanInterfaceDevice>( 2 );	// but for some reason the mouse and keyboard have (most of the time) a corresponding HID.
+		private static readonly List<Mouse> mice = new List<Mouse>( 1 );                                                // Most systems have only one mouse,
+		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );                                     // and only one keyboard,
+		private static readonly List<RawHumanInterfaceDevice> otherDevices = new List<RawHumanInterfaceDevice>( 2 );    // but for some reason the mouse and keyboard have (most of the time) a corresponding HID.
 		private static bool isInitialized;
 
 
@@ -45,7 +45,7 @@ namespace ManagedX.Input.Raw
 			var keyboardIndex = 0;
 			var mouseIndex = 0;
 			var hidIndex = 0;
-			
+
 			var descriptors = NativeMethods.GetRawInputDeviceList();
 			for( var d = 0; d < descriptors.Length; d++ )
 			{
@@ -112,7 +112,7 @@ namespace ManagedX.Input.Raw
 			{
 				if( !isInitialized )
 					Initialize();
-				
+
 				return new ReadOnlyCollection<Keyboard>( keyboards );
 			}
 		}
@@ -160,7 +160,7 @@ namespace ManagedX.Input.Raw
 
 		#endregion Keyboard
 
-		
+
 		#region Mouse
 
 		/// <summary>Gets the primary mouse.</summary>
@@ -225,7 +225,7 @@ namespace ManagedX.Input.Raw
 			if( !isInitialized )
 				Initialize();
 
-			for( var m = 0; m < mice.Count; m++ )
+			for( var m = 0; m < mice.Count; ++m )
 				if( mice[ m ].DeviceHandle == deviceHandle )
 					return mice[ m ];
 
@@ -358,10 +358,10 @@ namespace ManagedX.Input.Raw
 		}
 
 
-        /// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
-        /// <param name="message">A Windows message.</param>
-        [SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly" )]
-        [SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
+		/// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
+		/// <param name="message">A Windows message.</param>
+		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly" )]
+		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
 		public static bool WndProc( ref Message message )
 		{
 			if( message.Msg == 255 ) // WindowMessage.Input
@@ -406,13 +406,15 @@ namespace ManagedX.Input.Raw
 
 			if( message.Msg == 522 ) // WindowMessage.MouseWheel
 			{
+				// the high-order short int [of WParam] indicates the wheel rotation distance, expressed in multiples or divisions of 120;
+				// the low-order short int indicates the virtual key code of buttons and various modifiers (Ctrl, Shift) which are currently down (pressed).
+				// LParam indicates the x (low-order) and y (high-order) coordinate of the cursor; we don't need this here.
+
+				var delta = (int)( message.WParam.ToInt64() & 0xFFFF0000 ) >> 16;
+				// works both on x64 and x86 platforms, unlike "message.WParam.ToInt32()" which causes an OverflowException.
+
+				mice[ 0 ].wheelDelta += delta;
 				// FIXME - how do we know which mouse had its wheel scrolled ?
-				var w = message.WParam.ToInt32();
-				var delta = w >> 16; // the high-order short int indicates the wheel rotation distance, expressed in multiples or divisions of 120;
-									 // the low-order short int indicates the virtual key code of buttons and various modifiers (Ctrl, Shift) which are currently down (pressed).
-									 // message.LParam indicates the x (low-order) and y (high-order) coordinate of the cursor; we don't need this here.
-				if( mice.Count > 0 )
-					mice[ 0 ].wheelDelta += delta;
 				return true;
 			}
 
