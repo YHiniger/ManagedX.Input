@@ -27,7 +27,7 @@
     <OutputPath>..\..\..\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DocumentationFile>..\..\..\ManagedX.Input.xml</DocumentationFile>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,9 +51,9 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'XInput 1.3|AnyCPU'">
-    <OutputPath>..\..\..\Windows Vista, Windows 7\</OutputPath>
+    <OutputPath>..\..\..\Windows 7\</OutputPath>
     <DefineConstants>TRACE;XINPUT_13</DefineConstants>
-    <DocumentationFile>..\..\..\Windows Vista, Windows 7\ManagedX.Input.xml</DocumentationFile>
+    <DocumentationFile>..\..\..\Windows 7\ManagedX.Input.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
@@ -63,9 +63,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'XInput 1.4|AnyCPU'">
-    <OutputPath>..\..\..\Windows 8, Windows 8.1\</OutputPath>
+    <OutputPath>..\..\..\Windows 8.1\</OutputPath>
     <DefineConstants>TRACE;XINPUT_14</DefineConstants>
-    <DocumentationFile>..\..\..\Windows 8, Windows 8.1\ManagedX.Input.xml</DocumentationFile>
+    <DocumentationFile>..\..\..\Windows 8.1\ManagedX.Input.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>pdbonly</DebugType>
