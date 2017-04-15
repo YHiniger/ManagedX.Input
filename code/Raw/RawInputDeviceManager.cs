@@ -410,7 +410,7 @@ namespace ManagedX.Input.Raw
 				// the low-order short int indicates the virtual key code of buttons and various modifiers (Ctrl, Shift) which are currently down (pressed).
 				// LParam indicates the x (low-order) and y (high-order) coordinate of the cursor; we don't need this here.
 
-				var delta = (int)( message.WParam.ToInt64() & 0xFFFF0000 ) >> 16;
+				var delta = (int)( message.WParam.ToInt64() & 0xFFFF0000L ) >> 16;
 				// works both on x64 and x86 platforms, unlike "message.WParam.ToInt32()" which causes an OverflowException.
 
 				mice[ 0 ].wheelDelta += delta;
