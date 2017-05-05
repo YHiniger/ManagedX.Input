@@ -33,26 +33,21 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		private int structSize;
-		private InputDeviceType type;
-		private Info info;
+
+		internal readonly int StructSize;
+		/// <summary>The device type.</summary>
+		internal readonly InputDeviceType DeviceType;
+		private readonly Info info;
 
 
 
 		private DeviceInfo( int structureSize )
 		{
-			structSize = structureSize;
-			type = InputDeviceType.Mouse;
+			StructSize = structureSize;
+			DeviceType = InputDeviceType.Mouse;
 			info = Info.Empty;
 		}
 
-
-
-		internal int StructureSize { get { return structSize; } }
-
-
-		/// <summary>Gets the device type.</summary>
-		public InputDeviceType Type { get { return type; } }
 
 
 		/// <summary>When <see cref="InputDeviceType"/> is <see cref="InputDeviceType.Mouse"/>, gets information about the mouse.</summary>
@@ -60,7 +55,7 @@ namespace ManagedX.Input.Raw
 		{
 			get
 			{
-				if( type == InputDeviceType.Mouse )
+				if( DeviceType == InputDeviceType.Mouse )
 					return info.Mouse;
 				return null;
 			}
@@ -72,7 +67,7 @@ namespace ManagedX.Input.Raw
 		{
 			get
 			{
-				if( type == InputDeviceType.Keyboard )
+				if( DeviceType == InputDeviceType.Keyboard )
 					return info.Keyboard;
 				return null;
 			}
@@ -84,7 +79,7 @@ namespace ManagedX.Input.Raw
 		{
 			get
 			{
-				if( type == InputDeviceType.HumanInterfaceDevice )
+				if( DeviceType == InputDeviceType.HumanInterfaceDevice )
 					return info.HID;
 				return null;
 			}
@@ -95,12 +90,12 @@ namespace ManagedX.Input.Raw
 		/// <returns>Returns a hash code for this <see cref="DeviceInfo"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			var hashCode = structSize ^ (int)type;
+			var hashCode = StructSize ^ (int)DeviceType;
 			
-			if( type == InputDeviceType.Keyboard )
+			if( DeviceType == InputDeviceType.Keyboard )
 				return hashCode ^ info.Keyboard.GetHashCode();
 
-			if( type == InputDeviceType.Mouse )
+			if( DeviceType == InputDeviceType.Mouse )
 				return hashCode ^ info.Mouse.GetHashCode();
 
 			return hashCode ^ info.HID.GetHashCode();
@@ -112,13 +107,13 @@ namespace ManagedX.Input.Raw
 		/// <returns>Returns true if this <see cref="DeviceInfo"/> structure and the <paramref name="other"/> structure are equal, otherwise returns false.</returns>
 		public bool Equals( DeviceInfo other )
 		{
-			if( structSize != other.structSize || type != other.type )
+			if( StructSize != other.StructSize || DeviceType != other.DeviceType )
 				return false;
 
-			if( type == InputDeviceType.Keyboard )
+			if( DeviceType == InputDeviceType.Keyboard )
 				return info.Keyboard.Equals( other.info.Keyboard );
 
-			if( type == InputDeviceType.Mouse )
+			if( DeviceType == InputDeviceType.Mouse )
 				return info.Mouse.Equals( other.info.Mouse );
 
 			return info.HID.Equals( other.info.HID );
@@ -133,6 +128,7 @@ namespace ManagedX.Input.Raw
 			return ( obj is DeviceInfo ) && this.Equals( (DeviceInfo)obj );
 		}
 		
+
 
 		/// <summary>The default <see cref="DeviceInfo"/> structure.</summary>
 		public static readonly DeviceInfo Default = new DeviceInfo( Marshal.SizeOf( typeof( DeviceInfo ) ) );
@@ -158,8 +154,8 @@ namespace ManagedX.Input.Raw
 		{
 			return !deviceInfo.Equals( other );
 		}
-		
-		#endregion
+
+		#endregion Operators
 
 	}
 

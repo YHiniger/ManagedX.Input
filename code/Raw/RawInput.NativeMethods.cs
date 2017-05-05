@@ -135,7 +135,7 @@ namespace ManagedX.Input.Raw
         internal static DeviceInfo GetRawInputDeviceInfo( IntPtr deviceHandle, bool preParsed )
 		{
 			var deviceInfo = DeviceInfo.Default;
-			var deviceInfoStructSize = deviceInfo.StructureSize;
+			var deviceInfoStructSize = deviceInfo.StructSize;
 
 			var result = GetRawInputDeviceInfoW( deviceHandle, preParsed ? GetInfoCommand.PreParsedData : GetInfoCommand.DeviceInfo, ref deviceInfo, ref deviceInfoStructSize );
 			if( result == deviceInfoStructSize )

@@ -47,7 +47,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>Gets a value indicating the type of this raw input device.</summary>
-		public sealed override InputDeviceType DeviceType { get { return info.Type; } }
+		public sealed override InputDeviceType DeviceType { get { return info.DeviceType; } }
 
 
 		/// <summary>Gets the handle of this raw input device.</summary>

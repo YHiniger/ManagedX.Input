@@ -14,38 +14,26 @@ namespace ManagedX.Input.Raw
 	internal struct KeyboardDeviceInfo : IEquatable<KeyboardDeviceInfo>
 	{
 
-		private int type;
-		private int subType;
-		private int mode;
-		private int functionKeyCount;
-		private int indicatorCount;
-		private int totalKeyCount;
+		/// <summary>The type of the keyboard.</summary>
+		internal readonly int KeyboardType;
+		/// <summary>The subtype of the keyboard.</summary>
+		internal readonly int KeyboardSubtype;
+		/// <summary>The scan code mode.</summary>
+		internal readonly int Mode;
+		/// <summary>The number of function keys on the keyboard.</summary>
+		internal readonly int FunctionKeyCount;
+		/// <summary>The number of LED indicators on the keyboard.</summary>
+		internal readonly int IndicatorCount;
+		/// <summary>The total number of keys on the keyboard.</summary>
+		internal readonly int TotalKeyCount;
 
-
-		/// <summary>Gets the type of the keyboard.</summary>
-		public int KeyboardType { get { return type; } }
-		
-		/// <summary>Gets the subtype of the keyboard.</summary>
-		public int KeyboardSubtype { get { return subType; } }
-		
-		/// <summary>Gets the scan code mode.</summary>
-		public int Mode { get { return mode; } }
-		
-		/// <summary>Gets the number of function keys on the keyboard.</summary>
-		public int FunctionKeyCount { get { return functionKeyCount; } }
-		
-		/// <summary>Gets the number of LED indicators on the keyboard.</summary>
-		public int IndicatorCount { get { return indicatorCount; } }
-
-		/// <summary>Gets the total number of keys on the keyboard.</summary>
-		public int TotalKeyCount { get { return totalKeyCount; } }
 
 		
 		/// <summary>Returns a hash code for this <see cref="KeyboardDeviceInfo"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="KeyboardDeviceInfo"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return type ^ subType ^ mode ^ functionKeyCount ^ indicatorCount ^ totalKeyCount;
+			return KeyboardType ^ KeyboardSubtype ^ Mode ^ FunctionKeyCount ^ IndicatorCount ^ TotalKeyCount;
 		}
 
 
@@ -55,12 +43,12 @@ namespace ManagedX.Input.Raw
 		public bool Equals( KeyboardDeviceInfo other )
 		{
 			return
-				( type == other.type ) &&
-				( subType == other.subType ) &&
-				( mode == other.mode ) &&
-				( functionKeyCount == other.functionKeyCount ) &&
-				( indicatorCount == other.indicatorCount ) &&
-				( totalKeyCount == other.totalKeyCount );
+				( KeyboardType == other.KeyboardType ) &&
+				( KeyboardSubtype == other.KeyboardSubtype ) &&
+				( Mode == other.Mode ) &&
+				( FunctionKeyCount == other.FunctionKeyCount ) &&
+				( IndicatorCount == other.IndicatorCount ) &&
+				( TotalKeyCount == other.TotalKeyCount );
 		}
 
 

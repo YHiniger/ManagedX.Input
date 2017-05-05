@@ -14,48 +14,40 @@ namespace ManagedX.Input.Raw
 	internal struct RawInputDevice : IEquatable<RawInputDevice>
 	{
 
-		private TopLevelCollectionUsage topLevelCollection; // combines UsagePage and Usage.
-		internal RawInputDeviceRegistrationOptions options;
-		internal IntPtr targetWindowHandle;
+		/// <summary>The top-level collection (usage page and usage) for the raw input device.</summary>
+		internal readonly TopLevelCollectionUsage TopLevelCollection;
+		// combines UsagePage and Usage.
+		/// <summary>Specifies how to interpret the information provided by <see cref="TopLevelCollection"/>. It can be zero (the default).
+		/// <para>By default, the operating system sends raw input from devices with the specified top level collection (TLC) to the registered application as long as it has the window focus.</para>
+		/// </summary>
+		internal readonly RawInputDeviceRegistrationOptions RegistrationOptions;
+		/// <summary>A handle to the target window. If <see cref="IntPtr.Zero"/> it follows the keyboard focus.</summary>
+		internal readonly IntPtr TargetWindowHandle;
 
 
 
 		private RawInputDevice( TopLevelCollectionUsage topLevelCollection )
 		{
-			this.topLevelCollection = topLevelCollection;
-			options = RawInputDeviceRegistrationOptions.None;
-			targetWindowHandle = IntPtr.Zero;
+			this.TopLevelCollection = topLevelCollection;
+			RegistrationOptions = RawInputDeviceRegistrationOptions.None;
+			TargetWindowHandle = IntPtr.Zero;
 		}
 
 
 		internal RawInputDevice( TopLevelCollectionUsage topLevelCollection, RawInputDeviceRegistrationOptions options, IntPtr targetWindowHandle )
 		{
-			this.topLevelCollection = topLevelCollection;
-			this.options = options;
-			this.targetWindowHandle = targetWindowHandle;
+			this.TopLevelCollection = topLevelCollection;
+			this.RegistrationOptions = options;
+			this.TargetWindowHandle = targetWindowHandle;
 		}
 
-
-
-		/// <summary>Gets the top-level collection (usage page and usage) for the raw input device.</summary>
-		public TopLevelCollectionUsage TopLevelCollection { get { return topLevelCollection; } }
-
-
-		/// <summary>Gets a value specifying how to interpret the information provided by <see cref="TopLevelCollection"/>. It can be zero (the default).
-		/// <para>By default, the operating system sends raw input from devices with the specified top level collection (TLC) to the registered application as long as it has the window focus.</para>
-		/// </summary>
-		public RawInputDeviceRegistrationOptions RegistrationOptions { get { return options; } }
-		
-
-		/// <summary>Gets a handle to the target window. If <see cref="IntPtr.Zero"/> it follows the keyboard focus.</summary>
-		public IntPtr TargetWindowHandle { get { return targetWindowHandle; } }
 
 
 		/// <summary>Returns a hash code for this <see cref="RawInputDevice"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="RawInputDevice"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return topLevelCollection.GetHashCode() ^ options.GetHashCode() ^ targetWindowHandle.GetHashCode();
+			return TopLevelCollection.GetHashCode() ^ RegistrationOptions.GetHashCode() ^ TargetWindowHandle.GetHashCode();
 		}
 
 
@@ -65,9 +57,9 @@ namespace ManagedX.Input.Raw
 		public bool Equals( RawInputDevice other )
 		{
 			return
-				( topLevelCollection == other.topLevelCollection ) &&
-				( options == other.options ) && 
-				( targetWindowHandle == other.targetWindowHandle );
+				( TopLevelCollection == other.TopLevelCollection ) &&
+				( RegistrationOptions == other.RegistrationOptions ) && 
+				( TargetWindowHandle == other.TargetWindowHandle );
 		}
 
 

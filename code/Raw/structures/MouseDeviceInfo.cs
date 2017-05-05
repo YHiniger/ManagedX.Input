@@ -14,39 +14,26 @@ namespace ManagedX.Input.Raw
 	internal struct MouseDeviceInfo : IEquatable<MouseDeviceInfo>
 	{
 
-		private int id;
-		private int buttonCount;
-		private int sampleRate;
-		[MarshalAs( UnmanagedType.Bool )]
-		private bool hasHorizontalWheel;
-
-
-
-		/// <summary>Gets the identifier of the mouse device.</summary>
-		public int Id { get { return id; } }
-
-
-		/// <summary>Gets the number of buttons for the mouse.</summary>
-		public int ButtonCount { get { return buttonCount; } }
-		
-
-		/// <summary>Gets the number of data points per second.
+		/// <summary>The identifier of the mouse device.</summary>
+		internal readonly int Id;
+		/// <summary>The number of buttons for the mouse.</summary>
+		internal readonly int ButtonCount;
+		/// <summary>The number of data points per second.
 		/// <para>This information may not be applicable for every mouse device.</para>
 		/// </summary>
-		public int SampleRate { get { return sampleRate; } }
+		internal readonly int SampleRate;
+		/// <summary>Indicates whether the mouse has a wheel for horizontal scrolling.</summary>
+		[MarshalAs( UnmanagedType.Bool )]
+		internal readonly bool HasHorizontalWheel;
 
 
-		/// <summary>Gets a value indicating whether the mouse has a wheel for horizontal scrolling.
-		/// <para>This member is only supported starting with Windows Vista.</para>
-		/// </summary>
-		public bool HasHorizontalWheel { get { return hasHorizontalWheel; } }
 
 
 		/// <summary>Returns a hash code for this <see cref="MouseDeviceInfo"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="MouseDeviceInfo"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return id ^ buttonCount ^ sampleRate ^ ( hasHorizontalWheel ? -1 : 0 );
+			return Id ^ ButtonCount ^ SampleRate ^ ( HasHorizontalWheel ? -1 : 0 );
 		}
 
 
@@ -56,10 +43,10 @@ namespace ManagedX.Input.Raw
 		public bool Equals( MouseDeviceInfo other )
 		{
 			return
-				( id == other.id ) &&
-				( buttonCount == other.buttonCount ) &&
-				( sampleRate == other.sampleRate ) &&
-				( hasHorizontalWheel == other.hasHorizontalWheel );
+				( Id == other.Id ) &&
+				( ButtonCount == other.ButtonCount ) &&
+				( SampleRate == other.SampleRate ) &&
+				( HasHorizontalWheel == other.HasHorizontalWheel );
 		}
 
 

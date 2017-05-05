@@ -13,8 +13,10 @@ namespace ManagedX.Input
 	{
 
 		private int structureSize;
-		public MouseCursorStateIndicators CursorState;
-		private IntPtr cursor;
+		/// <summary>Indicates the state of the mouse cursor.</summary>
+		public MouseCursorStateIndicators State;
+		/// <summary>A handle to the mouse cursor.</summary>
+		internal IntPtr Cursor;
 		/// <summary>The screen coordinates of the mouse cursor.</summary>
 		internal Point ScreenPosition;
 
@@ -23,30 +25,19 @@ namespace ManagedX.Input
 		private CursorInfo( int structSize )
 		{
 			structureSize = structSize;
-			CursorState = MouseCursorStateIndicators.Hidden;
-			cursor = IntPtr.Zero;
+			State = MouseCursorStateIndicators.Hidden;
+			Cursor = IntPtr.Zero;
 			ScreenPosition = Point.Zero;
 		}
 
 
-
-		/// <summary>Gets a value indicating the state of the mouse cursor.</summary>
-		public MouseCursorStateIndicators State { get { return CursorState; } }
-
-		
-		/// <summary>Gets a handle to the mouse cursor.</summary>
-		public IntPtr Cursor { get { return cursor; } }
-
-
-		/// <summary>The default <see cref="CursorInfo"/> structure.</summary>
-		public static readonly CursorInfo Default = new CursorInfo( Marshal.SizeOf( typeof( CursorInfo ) ) );
 
 
 		/// <summary>Returns a hash code for this <see cref="CursorInfo"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="CursorInfo"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return structureSize ^ (int)CursorState ^ cursor.GetHashCode() ^ ScreenPosition.GetHashCode();
+			return structureSize ^ (int)State ^ Cursor.GetHashCode() ^ ScreenPosition.GetHashCode();
 		}
 
 
@@ -55,7 +46,7 @@ namespace ManagedX.Input
 		/// <returns>Returns true if this <see cref="CursorInfo"/> structure and the <paramref name="other"/> structure are equal, otherwise returns false.</returns>
 		public bool Equals( CursorInfo other )
 		{
-			return ( structureSize == other.structureSize ) && ( CursorState == other.CursorState ) && ( cursor == other.cursor ) && ScreenPosition.Equals( other.ScreenPosition );
+			return ( structureSize == other.structureSize ) && ( State == other.State ) && ( Cursor == other.Cursor ) && ScreenPosition.Equals( other.ScreenPosition );
 		}
 
 
@@ -68,8 +59,13 @@ namespace ManagedX.Input
 		}
 
 
+
+		/// <summary>The default <see cref="CursorInfo"/> structure.</summary>
+		public static readonly CursorInfo Default = new CursorInfo( Marshal.SizeOf( typeof( CursorInfo ) ) );
+
+
 		#region Operators
-		
+
 		/// <summary>Equality comparer.</summary>
 		/// <param name="cursorInfo">A <see cref="CursorInfo"/> structure.</param>
 		/// <param name="other">A <see cref="CursorInfo"/> structure.</param>

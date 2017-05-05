@@ -15,18 +15,18 @@ namespace ManagedX.Input.Raw
 	{
 
 		/// <summary>The type of raw input.</summary>
-		internal InputDeviceType DeviceType;
+		internal readonly InputDeviceType DeviceType;
 
 		/// <summary>The size, in bytes, of the entire input packet of data.
 		/// <para>This includes RAWINPUT plus possible extra input reports in the RAWHID variable length array.</para>
 		/// </summary>
-		internal int Size;
+		internal readonly int Size;
 
 		/// <summary>A handle to the device generating the raw input data.</summary>
-		internal IntPtr DeviceHandle;
+		internal readonly IntPtr DeviceHandle;
 
 		/// <summary>The value passed in the WParam parameter of the WM_INPUT message.</summary>
-		internal IntPtr WParameter;
+		internal readonly IntPtr WParameter;
 
 
 

@@ -10,7 +10,7 @@ namespace ManagedX.Input.Raw
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645578%28v=vs.85%29.aspx</remarks>
 	[Win32.Source( "WinUser.h", "RAWMOUSE" )]
-	[StructLayout( LayoutKind.Sequential, Size = 22 )] // for some reason packing can't be set...
+	[StructLayout( LayoutKind.Sequential, Size = 22 )] // for some reason packing can't be set... (should be 2)
 	public struct RawMouse : IEquatable<RawMouse>
 	{
 

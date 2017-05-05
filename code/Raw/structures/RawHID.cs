@@ -21,12 +21,15 @@ namespace ManagedX.Input.Raw
 		private IntPtr rawData;
 
 
+
 		/// <summary>Gets the size, in bytes, of each HID input in <see cref="rawData"/>.</summary>
 		public int Size { get { return size; } }
 		
+
 		/// <summary>Gets the number of HID inputs in <see cref="rawData"/>.</summary>
 		public int Count { get { return count; } }
 		
+
 		/// <summary>Returns the raw input data, as an array of bytes.</summary>
 		public byte[] GetData()
 		{
@@ -65,8 +68,9 @@ namespace ManagedX.Input.Raw
 		}
 
 
+
 		/// <summary>The empty <see cref="RawHID"/> structure.</summary>
-		public static readonly RawHID Empty = new RawHID();
+		public static readonly RawHID Empty;
 
 
 		#region Operators
@@ -92,7 +96,7 @@ namespace ManagedX.Input.Raw
 			return !rawHID.Equals( other );
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 

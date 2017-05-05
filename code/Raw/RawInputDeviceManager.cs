@@ -366,11 +366,10 @@ namespace ManagedX.Input.Raw
 		{
 			if( message.Msg == 255 ) // WindowMessage.Input
 			{
-				RawInput rawInput;
-				NativeMethods.GetRawInputData( message.LParam, out rawInput );
-				if( rawInput.DeviceType == InputDeviceType.Mouse )
+				NativeMethods.GetRawInputData( message.LParam, out RawInput rawInput );
+				if( rawInput.Header.DeviceType == InputDeviceType.Mouse )
 				{
-					var targetMouse = GetMouseByDeviceHandle( rawInput.DeviceHandle );
+					var targetMouse = GetMouseByDeviceHandle( rawInput.Header.DeviceHandle );
 					if( targetMouse == null )
 						return false;
 

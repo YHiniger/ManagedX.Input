@@ -18,6 +18,7 @@ namespace ManagedX.Input.Raw
 		private InputDeviceType deviceType;
 
 
+
 		/// <summary>Gets a handle to the raw input device.</summary>
 		public IntPtr DeviceHandle { get { return deviceHandle; } }
 

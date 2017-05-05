@@ -24,64 +24,53 @@ namespace ManagedX.Input.Raw
 		{
 
 			[FieldOffset( 0 )]
-			internal RawMouse Mouse;
+			internal readonly RawMouse Mouse;
 
 			[FieldOffset( 0 )]
-			internal RawKeyboard Keyboard;
+			internal readonly RawKeyboard Keyboard;
 
 			[FieldOffset( 0 )]
-			internal RawHID HID;
+			internal readonly RawHID HID;
 
 		}
 
 
-		private RawInputHeader header; // 16/24 bytes (x86/x64)
-		private Data data;
+
+		internal readonly RawInputHeader Header; // 16/24 bytes (x86/x64)
+		private readonly Data data;
 
 
 
-		/// <summary>Gets the type of the raw input device.</summary>
-		public InputDeviceType DeviceType { get { return header.DeviceType; } }
-
-
-		/// <summary>Gets a handle to the device generating the raw input data.</summary>
-		public IntPtr DeviceHandle { get { return header.DeviceHandle; } }
-
-
-		/// <summary>The value passed in the WParam parameter of the WM_INPUT message.</summary>
-		public IntPtr WParam { get { return header.WParameter; } }
-
-
-		/// <summary>When <see cref="DeviceType"/> is <see cref="InputDeviceType.Mouse"/>, gets ...</summary>
+		/// <summary>When the DeviceType of the <see cref="Header"/> is <see cref="InputDeviceType.Mouse"/>, gets ...</summary>
 		public RawMouse? Mouse
 		{
 			get
 			{
-				if( header.DeviceType == InputDeviceType.Mouse )
+				if( Header.DeviceType == InputDeviceType.Mouse )
 					return data.Mouse;
 				return null;
 			}
 		}
 
 
-		/// <summary>When <see cref="DeviceType"/> is <see cref="InputDeviceType.Keyboard"/>, gets ...</summary>
+		/// <summary>When the DeviceType of the <see cref="Header"/> is <see cref="InputDeviceType.Keyboard"/>, gets ...</summary>
 		public RawKeyboard? Keyboard
 		{
 			get
 			{
-				if( header.DeviceType == InputDeviceType.Keyboard )
+				if( Header.DeviceType == InputDeviceType.Keyboard )
 					return data.Keyboard;
 				return null;
 			}
 		}
 
 
-		/// <summary>When <see cref="DeviceType"/> is <see cref="InputDeviceType.HumanInterfaceDevice"/>, gets ...</summary>
+		/// <summary>When the DeviceType of the <see cref="Header"/> is <see cref="InputDeviceType.HumanInterfaceDevice"/>, gets ...</summary>
 		public RawHID? HumanInterfaceDevice
 		{
 			get
 			{
-				if( header.DeviceType == InputDeviceType.HumanInterfaceDevice )
+				if( Header.DeviceType == InputDeviceType.HumanInterfaceDevice )
 					return data.HID;
 				return null;
 			}
@@ -92,12 +81,12 @@ namespace ManagedX.Input.Raw
 		/// <returns>Returns a hash code for this <see cref="RawInput"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			var hashCode = header.GetHashCode();
+			var hashCode = Header.GetHashCode();
 			
-			if( header.DeviceType == InputDeviceType.Mouse )
+			if( Header.DeviceType == InputDeviceType.Mouse )
 				return hashCode ^ data.Mouse.GetHashCode();
 
-			if( header.DeviceType == InputDeviceType.Keyboard )
+			if( Header.DeviceType == InputDeviceType.Keyboard )
 				return hashCode ^ data.Keyboard.GetHashCode();
 
 			return hashCode ^ data.HID.GetHashCode();
@@ -109,13 +98,13 @@ namespace ManagedX.Input.Raw
 		/// <returns>Returns true if this <see cref="RawInput"/> structure equals the <paramref name="other"/> structure, otherwise returns false.</returns>
 		public bool Equals( RawInput other )
 		{
-			if( !header.Equals( other.header ) )
+			if( !Header.Equals( other.Header ) )
 				return false;
 
-			if( header.DeviceType == InputDeviceType.Mouse )
+			if( Header.DeviceType == InputDeviceType.Mouse )
 				return data.Mouse.Equals( other.data.Mouse );
 
-			if( header.DeviceType == InputDeviceType.Keyboard )
+			if( Header.DeviceType == InputDeviceType.Keyboard )
 				return data.Keyboard.Equals( other.data.Keyboard );
 
 			return data.HID.Equals( other.data.HID );
@@ -131,8 +120,9 @@ namespace ManagedX.Input.Raw
 		}
 
 
+
 		/// <summary>The empty <see cref="RawInput"/> structure.</summary>
-		public static readonly RawInput Empty = new RawInput();
+		public static readonly RawInput Empty;
 
 
 		#region Operators
@@ -156,7 +146,7 @@ namespace ManagedX.Input.Raw
 			return !rawInput.Equals( other );
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 
