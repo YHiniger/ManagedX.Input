@@ -57,12 +57,12 @@ namespace ManagedX.Input
 			/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false.
 			/// <para>To get extended error information, call GetLastError.</para>
 			/// </returns>
+			/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms648389%28v=vs.85%29.aspx</remarks>
 			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
 			[return: MarshalAs( UnmanagedType.Bool )]
 			internal static extern bool GetCursorInfo(
 				[In, Out] ref CursorInfo cursorInfo
 			);
-			// https://msdn.microsoft.com/en-us/library/windows/desktop/ms648389%28v=vs.85%29.aspx
 
 
 			/// <summary>Moves the cursor to the specified screen coordinates.
@@ -97,7 +97,7 @@ namespace ManagedX.Input
 			/// If a mouse is installed, the initial display count is 0.
 			/// If no mouse is installed, the display count is –1.
 			/// </remarks>
-			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true )]
 			internal static extern int ShowCursor(
 				[In, MarshalAs( UnmanagedType.Bool )] bool show
 			);

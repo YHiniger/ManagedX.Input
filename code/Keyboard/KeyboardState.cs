@@ -29,7 +29,7 @@ namespace ManagedX.Input
 			const byte DownMask = 0x80;
 
 			if( key == Key.None )
-				throw new System.ComponentModel.InvalidEnumArgumentException( "key", (int)key, typeof( Key ) );
+				throw new InvalidEnumArgumentException( "key", (int)key, typeof( Key ) );
 
 			return ( Data[ (int)key ] & DownMask ) == DownMask;
 		}
@@ -60,7 +60,7 @@ namespace ManagedX.Input
 		/// <returns>Returns a hash code for this <see cref="KeyboardState"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return Data.GetHashCode();
+			return Data == null ? 0 : Data.GetHashCode();
 		}
 
 
@@ -73,7 +73,7 @@ namespace ManagedX.Input
 			if( other.Data == null )
 				return Data == null;
 
-			for( int i = 0; i < 256; i++ )
+			for( var i = 0; i < 256; ++i )
 				if( Data[ i ] != other.Data[ i ] )
 					return false;
 
@@ -86,7 +86,7 @@ namespace ManagedX.Input
 		/// <returns>Returns true if the specified object is a <see cref="KeyboardState"/> structure which equals this <see cref="KeyboardState"/> structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return ( obj is KeyboardState ) && this.Equals( (KeyboardState)obj );
+			return ( obj is KeyboardState ks ) && this.Equals( ks );
 		}
 
 

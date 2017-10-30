@@ -4,13 +4,14 @@
 namespace ManagedX.Input.XInput
 {
 
-	/// <summary>Represents an XInput (1.3 or 1.4) controller, as a managed input device.</summary>
+	/// <summary>Represents an XInput (1.3 or greater) controller, as a managed input device.</summary>
 	public abstract class GameController : InputDevice<Gamepad, GamepadButtons>
 	{
 
 		/// <summary>Defines the maximum number of controllers supported by XInput: 4.</summary>
 		[Win32.Source( "XInput.h", "XUSER_MAX_COUNT" )]
 		public const int MaxControllerCount = 4;
+		// FIXME - Up to 8 controllers on Windows 10 (and XBOX One).
 
 
 
@@ -32,11 +33,11 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Gets the friendly name of this <see cref="GameController"/>.</summary>
-		public sealed override string DisplayName { get { return Properties.Resources.GameController + " " + ( 1 + (int)this.Index ); } }
+		public sealed override string DisplayName => Properties.Resources.GameController + " " + ( (int)this.Index + 1 );
 
 
 		/// <summary>Gets a value indicating the type of this input device.</summary>
-		public sealed override InputDeviceType DeviceType { get { return InputDeviceType.HumanInterfaceDevice; } }
+		public sealed override InputDeviceType DeviceType => InputDeviceType.HumanInterfaceDevice;
 
 
 		/// <summary>Returns a value indicating whether a button is pressed in the current state, but was released in the previous state.</summary>
@@ -67,11 +68,7 @@ namespace ManagedX.Input.XInput
 			if( base.IsDisconnected )
 				base.OnDisconnectedChanged();
 			else
-			{
-				var connectedEvent = this.Connected;
-				if( connectedEvent != null )
-					connectedEvent.Invoke( this, EventArgs.Empty );
-			}
+				this.Connected?.Invoke( this, EventArgs.Empty );
 		}
 
 
@@ -122,13 +119,13 @@ namespace ManagedX.Input.XInput
 		
 
 		/// <summary>Gets information about keystrokes.
-		/// <para>Only available on Windows 8 and newer (and Xbox 360/One).</para>
+		/// <para>Only available on Windows 8 and newer (and XBOX 360 and newer).</para>
 		/// </summary>
 		public abstract Keystroke Keystroke { get; }
 
 
 		/// <summary>Gets the index of this <see cref="GameController"/>.</summary>
-		new public GameControllerIndex Index { get { return (GameControllerIndex)base.Index; } }
+		new public GameControllerIndex Index => (GameControllerIndex)base.Index;
 
 	}
 

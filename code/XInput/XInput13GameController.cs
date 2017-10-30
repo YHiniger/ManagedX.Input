@@ -11,7 +11,7 @@ namespace ManagedX.Input.XInput
 	internal sealed class XInput13GameController : GameController
 	{
 
-		internal const string LibraryName = "XInput1_3.dll";	// 
+		internal const string LibraryName = "XInput1_3.dll";
 
 
 		// Provides access to the XInput 1.3 API functions.
@@ -33,7 +33,7 @@ namespace ManagedX.Input.XInput
 			/// <para>If the function fails, the return value is an <seealso cref="ErrorCode">error code</seealso> (defined in WinError.h).</para>
 			/// </returns>
 			/// <remarks>The legacy XINPUT 9.1.0 version (included in Windows Vista and later) always returned a fixed set of capabilities regardless of attached device.</remarks>
-			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true )]
 			internal static extern int XInputGetCapabilities(
 				[In] GameControllerIndex userIndex,
 				[In] int flags,
@@ -47,7 +47,7 @@ namespace ManagedX.Input.XInput
 			/// <param name="deviceType">Specifies which device associated with this user index should be queried.</param>
 			/// <param name="batteryInformation">A <see cref="BatteryInformation"/> structure that receives the battery information.</param>
 			/// <returns>If the function succeeds, the return value is <see cref="ErrorCode.None"/>.</returns>
-			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true )]
 			internal static extern int XInputGetBatteryInformation(
 				[In] GameControllerIndex userIndex,
 				[In] BatteryDeviceType deviceType,
@@ -68,7 +68,7 @@ namespace ManagedX.Input.XInput
 			/// For legacy reasons, when DirectInput retrieves controller data, the two triggers share the same axis.
 			/// The legacy behavior is noticeable in the current Game Device Control Panel, which uses DirectInput for controller state.
 			/// </remarks>
-			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true )]
 			internal static extern int XInputGetState(
 				[In] GameControllerIndex userIndex,
 				[Out] out State state
@@ -84,7 +84,7 @@ namespace ManagedX.Input.XInput
 			/// <para>If the controller is not connected, the return value is <see cref="ErrorCode.NotConnected"/>.</para>
 			/// <para>If the function fails, the return value is an <see cref="ErrorCode">error code defined in Winerror.h</see>.</para>
 			/// </returns>
-			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true )]
 			internal static extern int XInputSetState(
 				[In] GameControllerIndex userIndex,
 				[In] ref Vibration vibration
@@ -100,7 +100,7 @@ namespace ManagedX.Input.XInput
 			/// If the controller is not connected or the user has not activated it, the return value is <see cref="ErrorCode.NotConnected"/>.
 			/// If the function fails, the return value is an error code defined in Winerror.h.
 			/// </returns>
-			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true )]
 			internal static extern int XInputGetKeystroke(
 				[In] GameControllerIndex userIndex,
 				[In] int reserved,
@@ -116,7 +116,7 @@ namespace ManagedX.Input.XInput
 			/// If there is no headset connected to the controller, the function also retrieves <see cref="ErrorCode.None"/> with <see cref="Guid.Empty"/> as the values for <paramref name="dSoundRenderGuid"/> and <paramref name="dSoundCaptureGuid"/>.
 			/// If the controller port device is not physically connected, the function returns <see cref="ErrorCode.NotConnected"/>.
 			/// If the function fails, it returns a valid Win32 error code.</returns>
-			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true )]
 			internal static extern int XInputGetDSoundAudioDeviceGuids(
 				[In] GameControllerIndex userIndex,
 				[Out] out Guid dSoundRenderGuid,
@@ -136,11 +136,13 @@ namespace ManagedX.Input.XInput
 		internal XInput13GameController( GameControllerIndex controllerIndex )
 			: base( controllerIndex )
 		{
+			//if( controllerIndex > GameControllerIndex.Four )
+			//	throw new NotSupportedException( "XInput 1.3 doesn't support more than 4 game controllers." );
 		}
 
 
 
-		public sealed override Capabilities Capabilities { get { return capabilities; } }
+		public sealed override Capabilities Capabilities => this.capabilities;
 
 
 		public sealed override BatteryInformation BatteryInfo
@@ -234,7 +236,7 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		public sealed override AudioDeviceIds AudioDeviceIds { get { return AudioDeviceIds.Empty; } }
+		public sealed override AudioDeviceIds AudioDeviceIds => AudioDeviceIds.Empty;
 
 	}
 

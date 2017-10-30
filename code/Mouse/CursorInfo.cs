@@ -55,7 +55,7 @@ namespace ManagedX.Input
 		/// <returns>Returns true if the specified object is a <see cref="CursorInfo"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return ( obj is CursorInfo ) && this.Equals( (CursorInfo)obj );
+			return ( obj is CursorInfo ci ) && this.Equals( ci );
 		}
 
 

@@ -144,7 +144,7 @@ namespace ManagedX.Input.XInput
 
 
 		
-		public sealed override Capabilities Capabilities { get { return capabilities; } }
+		public sealed override Capabilities Capabilities => this.capabilities;
 
 
 		public sealed override BatteryInformation BatteryInfo
@@ -241,7 +241,7 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		public sealed override DSoundAudioDeviceGuids DSoundAudioDeviceGuids { get { return DSoundAudioDeviceGuids.Empty; } }
+		public sealed override DSoundAudioDeviceGuids DSoundAudioDeviceGuids => DSoundAudioDeviceGuids.Empty;
 
 	}
 

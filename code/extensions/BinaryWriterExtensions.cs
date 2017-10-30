@@ -16,6 +16,7 @@ namespace ManagedX.Input.XInput
 		{
 			if( writer == null )
 				throw new ArgumentNullException( "writer" );
+
 			writer.Write( vibration.leftMotorSpeed );
 			writer.Write( vibration.rightMotorSpeed );
 		}

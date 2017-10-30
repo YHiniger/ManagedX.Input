@@ -82,7 +82,7 @@ namespace ManagedX.Input.XInput
 			return !deviceIds.Equals( other );
 		}
 
-		#endregion
+		#endregion Operators
 
 	}
 

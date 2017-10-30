@@ -43,11 +43,7 @@ namespace ManagedX.Input
 		protected virtual void OnDisconnectedChanged()
 		{
 			if( isDisconnected )
-			{
-				var disconnectedEvent = this.Disconnected;
-				if( disconnectedEvent != null )
-					disconnectedEvent.Invoke( this, EventArgs.Empty );
-			}
+				this.Disconnected?.Invoke( this, EventArgs.Empty );
 		}
 
 

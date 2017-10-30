@@ -42,7 +42,7 @@ namespace ManagedX.Input.XInput
 
 			public override bool Equals( object obj )
 			{
-				return obj is Keyframe && this.Equals( (Keyframe)obj );
+				return obj is Keyframe kf && this.Equals( kf );
 			}
 
 
@@ -62,29 +62,16 @@ namespace ManagedX.Input.XInput
 
 
 		private readonly List<Keyframe> keyframes;
-		private int lastFrameTime;
-		private bool loop;
 
 
 
 		/// <summary>Initializes a new <see cref="VibrationSequence"/>.</summary>
 		public VibrationSequence()
+			: base()
 		{
 			keyframes = new List<Keyframe>();
 		}
 
-
-
-		/// <summary>Gets the time of the last vibration keyframe.</summary>
-		public int LastFrameTime { get { return lastFrameTime; } }
-
-
-		/// <summary>Gets or sets a value indicating whether this <see cref="VibrationSequence"/> loops.</summary>
-		public bool Loops
-		{
-			get { return loop; }
-			set { loop = value; }
-		}
 
 
 		/// <summary>Gets a <see cref="Vibration"/> for a given time.
@@ -99,19 +86,15 @@ namespace ManagedX.Input.XInput
 				if( time < 0 )
 					return Vibration.Zero;
 
-				if( time > lastFrameTime )
+				if( time > base.Duration )
 				{
-					if( !loop )
+					if( !base.IsRepeating )
 						return Vibration.Zero;
-					time %= lastFrameTime + 1;
+					time %= base.Duration + 1;
 				}
 
-				Vibration prev, next;
-				int prevTime, nextTime;
-
-				prev = next = Vibration.Zero;
-				prevTime = -1;
-				nextTime = int.MaxValue;
+				var pre = new Keyframe( -1, Vibration.Zero );
+				var post = new Keyframe( int.MaxValue, Vibration.Zero );
 
 				for( var k = 0; k < keyframes.Count; ++k )
 				{
@@ -119,20 +102,14 @@ namespace ManagedX.Input.XInput
 					if( current.time == time )
 						return current.vibration;
 
-					if( current.time < time && current.time > prevTime )
-					{
-						prevTime = current.time;
-						prev = current.vibration;
-					}
+					if( current.time < time && current.time > pre.time )
+						pre = current;
 
-					if( current.time > time && current.time < nextTime )
-					{
-						nextTime = current.time;
-						next = current.vibration;
-					}
+					if( current.time > time && current.time < post.time )
+						post = current;
 				}
 
-				return Vibration.Lerp( prev, next, (float)( time - prevTime ) / (float)( nextTime - prevTime ) );
+				return Vibration.Lerp( pre.vibration, post.vibration, (float)( time - pre.time ) / (float)( post.time - pre.time ) );
 			}
 		}
 
@@ -170,8 +147,8 @@ namespace ManagedX.Input.XInput
 			if( keyframes.Count == 0 || prevFrameIndex == keyframes.Count - 1 )
 			{
 				keyframes.Add( keyframe );
-				if( time > lastFrameTime )
-					lastFrameTime = time;
+				if( time > base.Duration )
+					base.Duration = time;
 			}
 			else
 				keyframes.Insert( prevFrameIndex + 1, keyframe );
@@ -193,12 +170,20 @@ namespace ManagedX.Input.XInput
 				{
 					keyframes.RemoveAt( k );
 					if( k > 0 && k == keyframes.Count )
-						lastFrameTime = keyframes[ k - 1 ].time;
+						base.Duration = keyframes[ k - 1 ].time;
 					return true;
 				}
 			}
 
 			return false;
+		}
+
+
+		/// <summary>Removes all keyframes from this <see cref="VibrationSequence"/>.</summary>
+		public void Clear()
+		{
+			keyframes.Clear();
+			base.Duration = 0;
 		}
 
 
@@ -211,14 +196,6 @@ namespace ManagedX.Input.XInput
 			for( var k = 0; k < times.Length; ++k )
 				times[ k ] = keyframes[ k ].time;
 			return times;
-		}
-
-
-		/// <summary>Removes all keyframes from this <see cref="VibrationSequence"/>.</summary>
-		public void Clear()
-		{
-			keyframes.Clear();
-			lastFrameTime = 0;
 		}
 
 

@@ -74,7 +74,7 @@ namespace ManagedX.Input
 		/// <returns>Returns true if the specified object is a <see cref="MouseState"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return ( obj is MouseState ) && this.Equals( (MouseState)obj );
+			return ( obj is MouseState ms ) && this.Equals( ms );
 		}
 
 

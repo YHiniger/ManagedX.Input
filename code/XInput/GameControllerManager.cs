@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace ManagedX.Input.XInput
 {
 
-	/// <summary>Provides access to XInput (1.3 or 1.4) game controllers.</summary>
+	/// <summary>Provides access to XInput game controllers.</summary>
 	public static class GameControllerManager
 	{
 
@@ -85,7 +85,7 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		/// <summary>Gets the file name of the underlying XInput library (ie: XInput1_4.dll).</summary>
+		/// <summary>Gets the file name of the underlying XInput library (ie: XInput1_4.dll); can be null if XInput is not supported.</summary>
 		public static string LibraryFileName
 		{
 			get
@@ -114,9 +114,13 @@ namespace ManagedX.Input.XInput
 		/// <param name="time">The time elapsed since the application start.</param>
 		public static void Update( TimeSpan time )
 		{
-			for( var c = 0; c < gameControllers.Count; ++c )
-				if( !gameControllers[ c ].Disabled )
-					gameControllers[ c ].Update( time );
+			var cMax = gameControllers.Count;
+			for( var c = 0; c < cMax; ++c )
+			{
+				var gameController = gameControllers[ c ];
+				if( !gameController.Disabled )
+					gameController.Update( time );
+			}
 		}
 
 	}
