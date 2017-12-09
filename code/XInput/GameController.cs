@@ -11,8 +11,6 @@ namespace ManagedX.Input.XInput
 		/// <summary>Defines the maximum number of controllers supported by XInput: 4.</summary>
 		[Win32.Source( "XInput.h", "XUSER_MAX_COUNT" )]
 		public const int MaxControllerCount = 4;
-		// FIXME - Up to 8 controllers on Windows 10 (and XBOX One).
-
 
 
 		private DeadZoneMode deadZoneMode;

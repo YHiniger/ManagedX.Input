@@ -13,19 +13,11 @@ namespace ManagedX.Input.XInput
 	/// <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_vibration%28v=vs.85%29.aspx</remarks>
 	[Win32.Source( "XInput.h", "XINPUT_VIBRATION" )]
 	[Serializable]
-	[StructLayout( LayoutKind.Explicit, Pack = 4, Size = 4 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 4 )]
 	public struct Vibration : IEquatable<Vibration>
 	{
 
-		[FieldOffset( 0 )]
-		private int raw;
-
-		[NonSerialized]
-		[FieldOffset( 0 )]
 		internal ushort leftMotorSpeed;
-
-		[NonSerialized]
-		[FieldOffset( 2 )]
 		internal ushort rightMotorSpeed;
 
 
@@ -38,7 +30,6 @@ namespace ManagedX.Input.XInput
 		[CLSCompliant( false )]
 		public Vibration( ushort leftMotorSpeed, ushort rightMotorSpeed )
 		{
-			raw = 0;
 			this.leftMotorSpeed = leftMotorSpeed;
 			this.rightMotorSpeed = rightMotorSpeed;
 		}
@@ -59,16 +50,16 @@ namespace ManagedX.Input.XInput
 		/// <summary>Gets or sets the left motor speed, normalized within the range [0,1].</summary>
 		public float LeftMotorSpeed
 		{
-			get { return ToFloat( leftMotorSpeed ); }
-			set { leftMotorSpeed = ToUShort( value ); }
+			get => ToFloat( leftMotorSpeed );
+			set => leftMotorSpeed = ToUShort( value );
 		}
 
 
 		/// <summary>Gets or sets the right motor speed, normalized within the range [0,1].</summary>
 		public float RightMotorSpeed
 		{
-			get { return ToFloat( rightMotorSpeed ); }
-			set { rightMotorSpeed = ToUShort( value ); }
+			get => ToFloat( rightMotorSpeed );
+			set => rightMotorSpeed = ToUShort( value );
 		}
 
 
@@ -77,7 +68,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a hash code for this <see cref="Vibration"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return raw;
+			return unchecked( (int)leftMotorSpeed | (int)rightMotorSpeed << 16 );
 		}
 
 
@@ -86,7 +77,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the <paramref name="other"/> <see cref="Vibration"/> structure has the same motor speeds as this structure, otherwise returns false.</returns>
 		public bool Equals( Vibration other )
 		{
-			return raw == other.raw;
+			return this.GetHashCode() == other.GetHashCode();
 		}
 
 
@@ -95,7 +86,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified object is a <see cref="Vibration"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return ( obj is Vibration ) && this.Equals( (Vibration)obj );
+			return obj is Vibration vib && this.Equals( vib );
 		}
 
 
@@ -120,6 +111,7 @@ namespace ManagedX.Input.XInput
 			return (float)value / 65535.0f;
 		}
 
+
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		private static ushort ToUShort( float value )
 		{
@@ -142,22 +134,23 @@ namespace ManagedX.Input.XInput
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Add( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
-			result.raw = 0;
-			result.leftMotorSpeed = (ushort)Math.Min( (uint)vibration.leftMotorSpeed + (uint)other.leftMotorSpeed, (uint)ushort.MaxValue );
-			result.rightMotorSpeed = (ushort)Math.Min( (uint)vibration.rightMotorSpeed + (uint)other.rightMotorSpeed, (uint)ushort.MaxValue );
+			result = new Vibration(
+				(ushort)Math.Min( (uint)vibration.leftMotorSpeed + (uint)other.leftMotorSpeed, (uint)ushort.MaxValue ),
+				(ushort)Math.Min( (uint)vibration.rightMotorSpeed + (uint)other.rightMotorSpeed, (uint)ushort.MaxValue )
+			);
 		}
 
 		/// <summary>Returns the sum of two <see cref="Vibration"/> structures.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <returns>Returns a <see cref="Vibration"/> initialized with the sum of the two specified <see cref="Vibration"/> values.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static Vibration Add( Vibration vibration, Vibration other )
 		{
-			Vibration result;
-			result.raw = 0;
-			result.leftMotorSpeed = (ushort)Math.Min( (uint)vibration.leftMotorSpeed + (uint)other.leftMotorSpeed, (uint)ushort.MaxValue );
-			result.rightMotorSpeed = (ushort)Math.Min( (uint)vibration.rightMotorSpeed + (uint)other.rightMotorSpeed, (uint)ushort.MaxValue );
-			return result;
+			return new Vibration(
+				(ushort)Math.Min( (uint)vibration.leftMotorSpeed + (uint)other.leftMotorSpeed, (uint)ushort.MaxValue ),
+				(ushort)Math.Min( (uint)vibration.rightMotorSpeed + (uint)other.rightMotorSpeed, (uint)ushort.MaxValue )
+			);
 		}
 
 
@@ -170,22 +163,23 @@ namespace ManagedX.Input.XInput
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Subtract( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
-			result.raw = 0;
-			result.leftMotorSpeed = (ushort)XMath.Clamp( (int)vibration.leftMotorSpeed - (int)other.leftMotorSpeed, 0, (int)ushort.MaxValue );
-			result.rightMotorSpeed = (ushort)XMath.Clamp( (int)vibration.rightMotorSpeed - (int)other.rightMotorSpeed, 0, (int)ushort.MaxValue );
+			result = new Vibration(
+				(ushort)XMath.Clamp( (int)vibration.leftMotorSpeed - (int)other.leftMotorSpeed, 0, (int)ushort.MaxValue ),
+				(ushort)XMath.Clamp( (int)vibration.rightMotorSpeed - (int)other.rightMotorSpeed, 0, (int)ushort.MaxValue )
+			);
 		}
 
 		/// <summary>Calculates the difference between two <see cref="Vibration"/>s.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <returns>Returns a <see cref="Vibration"/> structure initialized with the difference (clamped to the valid range) of the two specified vibrations.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static Vibration Subtract( Vibration vibration, Vibration other )
 		{
-			Vibration result;
-			result.raw = 0;
-			result.leftMotorSpeed = (ushort)XMath.Clamp( (int)vibration.leftMotorSpeed - (int)other.leftMotorSpeed, 0, (int)ushort.MaxValue );
-			result.rightMotorSpeed = (ushort)XMath.Clamp( (int)vibration.rightMotorSpeed - (int)other.rightMotorSpeed, 0, (int)ushort.MaxValue );
-			return result;
+			return new Vibration(
+				(ushort)XMath.Clamp( (int)vibration.leftMotorSpeed - (int)other.leftMotorSpeed, 0, (int)ushort.MaxValue ),
+				(ushort)XMath.Clamp( (int)vibration.rightMotorSpeed - (int)other.rightMotorSpeed, 0, (int)ushort.MaxValue )
+			);
 		}
 
 
@@ -198,24 +192,23 @@ namespace ManagedX.Input.XInput
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Multiply( ref Vibration vibration, ref Vibration other, out Vibration result )
 		{
-			const uint Max = 65535u * 65535u;
-			result.raw = 0;
-			result.leftMotorSpeed = (ushort)( (uint)vibration.leftMotorSpeed * (uint)other.leftMotorSpeed / Max );
-			result.rightMotorSpeed = (ushort)( (uint)vibration.rightMotorSpeed * (uint)other.rightMotorSpeed / Max );
+			result = new Vibration(
+				(ushort)( (uint)vibration.leftMotorSpeed * (uint)other.leftMotorSpeed / uint.MaxValue ),
+				(ushort)( (uint)vibration.rightMotorSpeed * (uint)other.rightMotorSpeed / uint.MaxValue )
+			);
 		}
 
 		/// <summary>Multiplies two <see cref="Vibration"/> values.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <returns>Returns the scaled <see cref="Vibration"/>.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static Vibration Multiply( Vibration vibration, Vibration other )
 		{
-			const uint Max = 65535u * 65535u;
-			Vibration result;
-			result.raw = 0;
-			result.leftMotorSpeed = (ushort)( (uint)vibration.leftMotorSpeed * (uint)other.leftMotorSpeed / Max );
-			result.rightMotorSpeed = (ushort)( (uint)vibration.rightMotorSpeed * (uint)other.rightMotorSpeed / Max );
-			return result;
+			return new Vibration(
+				(ushort)( (uint)vibration.leftMotorSpeed * (uint)other.leftMotorSpeed / uint.MaxValue ),
+				(ushort)( (uint)vibration.rightMotorSpeed * (uint)other.rightMotorSpeed / uint.MaxValue )
+			);
 		}
 
 
@@ -228,22 +221,23 @@ namespace ManagedX.Input.XInput
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Multiply( ref Vibration vibration, float value, out Vibration result )
 		{
-			result.raw = 0;
-			result.leftMotorSpeed = (ushort)XMath.Clamp( (float)vibration.leftMotorSpeed * value, 0.0f, 65535.0f );
-			result.rightMotorSpeed  = (ushort)XMath.Clamp( (float)vibration.rightMotorSpeed * value, 0.0f, 65535.0f );
+			result = new Vibration(
+				(ushort)XMath.Clamp( (float)vibration.leftMotorSpeed * value, 0.0f, 65535.0f ),
+				(ushort)XMath.Clamp( (float)vibration.rightMotorSpeed * value, 0.0f, 65535.0f )
+			);
 		}
 
 		/// <summary>Multiplies a <see cref="Vibration"/> with a value.</summary>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="value">A finite, positive single-precision floating-point value.</param>
 		/// <returns>Returns the scaled <see cref="Vibration"/>.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static Vibration Multiply( Vibration vibration, float value )
 		{
-			Vibration result;
-			result.raw = 0;
-			result.leftMotorSpeed = (ushort)XMath.Clamp( (float)vibration.leftMotorSpeed * value, 0.0f, 65535.0f );
-			result.rightMotorSpeed = (ushort)XMath.Clamp( (float)vibration.rightMotorSpeed * value, 0.0f, 65535.0f );
-			return result;
+			return new Vibration(
+				(ushort)XMath.Clamp( (float)vibration.leftMotorSpeed * value, 0.0f, 65535.0f ),
+				(ushort)XMath.Clamp( (float)vibration.rightMotorSpeed * value, 0.0f, 65535.0f )
+			);
 		}
 
 
@@ -258,9 +252,10 @@ namespace ManagedX.Input.XInput
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static void Lerp( ref Vibration source, ref Vibration target, float amount, out Vibration result )
 		{
-			result.raw = 0;
-			result.leftMotorSpeed = (ushort)XMath.Lerp( (float)source.leftMotorSpeed, (float)target.leftMotorSpeed, amount );
-			result.rightMotorSpeed = (ushort)XMath.Lerp( (float)source.rightMotorSpeed, (float)target.rightMotorSpeed, amount );
+			result = new Vibration(
+				(ushort)XMath.Lerp( (float)source.leftMotorSpeed, (float)target.leftMotorSpeed, amount ),
+				(ushort)XMath.Lerp( (float)source.rightMotorSpeed, (float)target.rightMotorSpeed, amount )
+			);
 		}
 
 		/// <summary>Performs a linear interpolation between two <see cref="Vibration"/> structures.</summary>
@@ -268,13 +263,13 @@ namespace ManagedX.Input.XInput
 		/// <param name="target">A <see cref="Vibration"/> structure.</param>
 		/// <param name="amount">The weight factor.</param>
 		/// <returns>Returns the interpolated <see cref="Vibration"/>.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static Vibration Lerp( Vibration source, Vibration target, float amount )
 		{
-			Vibration result;
-			result.raw = 0;
-			result.leftMotorSpeed = (ushort)XMath.Lerp( (float)source.leftMotorSpeed, (float)target.leftMotorSpeed, amount );
-			result.rightMotorSpeed = (ushort)XMath.Lerp( (float)source.rightMotorSpeed, (float)target.rightMotorSpeed, amount );
-			return result;
+			return new Vibration(
+				(ushort)XMath.Lerp( (float)source.leftMotorSpeed, (float)target.leftMotorSpeed, amount ),
+				(ushort)XMath.Lerp( (float)source.rightMotorSpeed, (float)target.rightMotorSpeed, amount )
+			);
 		}
 
 		#endregion Static methods
@@ -286,6 +281,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator ==( Vibration vibration, Vibration other )
 		{
 			return vibration.Equals( other );
@@ -295,6 +291,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator !=( Vibration vibration, Vibration other )
 		{
 			return !vibration.Equals( other );
@@ -307,8 +304,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the sum of the specified values.</returns>
 		public static Vibration operator +( Vibration vibration, Vibration other )
 		{
-			Vibration sum;
-			Add( ref vibration, ref other, out sum );
+			Add( ref vibration, ref other, out Vibration sum );
 			return sum;
 		}
 
@@ -319,8 +315,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the difference between the two specified vibrations.</returns>
 		public static Vibration operator -( Vibration vibration, Vibration other )
 		{
-			Vibration result;
-			Subtract( ref vibration, ref other, out result );
+			Subtract( ref vibration, ref other, out Vibration result );
 			return result;
 		}
 
@@ -331,8 +326,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the product of the specified values.</returns>
 		public static Vibration operator *( Vibration vibration, Vibration other )
 		{
-			Vibration result;
-			Multiply( ref vibration, ref other, out result );
+			Multiply( ref vibration, ref other, out Vibration result );
 			return result;
 		}
 
@@ -342,8 +336,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the product of the specified values.</returns>
 		public static Vibration operator *( Vibration vibration, float value )
 		{
-			Vibration result;
-			Multiply( ref vibration, value, out result );
+			Multiply( ref vibration, value, out Vibration result );
 			return result;
 		}
 
@@ -353,8 +346,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the product of the specified values.</returns>
 		public static Vibration operator *( float value, Vibration vibration )
 		{
-			Vibration result;
-			Multiply( ref vibration, value, out result );
+			Multiply( ref vibration, value, out Vibration result );
 			return result;
 		}
 

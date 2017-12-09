@@ -16,12 +16,15 @@ namespace ManagedX.Input.Raw
 
 		/// <summary>The identifier of the mouse device.</summary>
 		internal readonly int Id;
+
 		/// <summary>The number of buttons for the mouse.</summary>
 		internal readonly int ButtonCount;
+
 		/// <summary>The number of data points per second.
 		/// <para>This information may not be applicable for every mouse device.</para>
 		/// </summary>
 		internal readonly int SampleRate;
+
 		/// <summary>Indicates whether the mouse has a wheel for horizontal scrolling.</summary>
 		[MarshalAs( UnmanagedType.Bool )]
 		internal readonly bool HasHorizontalWheel;

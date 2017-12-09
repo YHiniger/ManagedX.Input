@@ -9,11 +9,11 @@ namespace ManagedX.Input.XInput
 	public struct AudioDeviceIds : IEquatable<AudioDeviceIds>
 	{
 
-		/// <summary>The Windows Core Audio device ID string for render (speakers); on Windows Vista and 7 (XInput 1.3), this is always null.</summary>
+		/// <summary>The Windows Core Audio device ID string for render (speakers); on Windows 7 (XInput 1.3), this is always null.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public string RenderDeviceId;
 
-		/// <summary>The Windows Core Audio device ID string for capture (microphone); on Windows Vista and 7 (XInput 1.3), this is always null.</summary>
+		/// <summary>The Windows Core Audio device ID string for capture (microphone); on Windows 7 (XInput 1.3), this is always null.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public string CaptureDeviceId;
 
@@ -52,7 +52,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified object is an <see cref="AudioDeviceIds"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return ( obj is AudioDeviceIds ) && this.Equals( (AudioDeviceIds)obj );
+			return obj is AudioDeviceIds ids && this.Equals( ids );
 		}
 
 

@@ -16,14 +16,19 @@ namespace ManagedX.Input.Raw
 
 		/// <summary>The type of the keyboard.</summary>
 		internal readonly int KeyboardType;
+
 		/// <summary>The subtype of the keyboard.</summary>
 		internal readonly int KeyboardSubtype;
+
 		/// <summary>The scan code mode.</summary>
 		internal readonly int Mode;
+
 		/// <summary>The number of function keys on the keyboard.</summary>
 		internal readonly int FunctionKeyCount;
+
 		/// <summary>The number of LED indicators on the keyboard.</summary>
 		internal readonly int IndicatorCount;
+
 		/// <summary>The total number of keys on the keyboard.</summary>
 		internal readonly int TotalKeyCount;
 

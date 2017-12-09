@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 
@@ -18,20 +20,20 @@ namespace ManagedX.Input.XInput
 		/// <para>The packet number indicates whether there have been any changes in the state of the controller.</para>
 		/// If the packet number [...] is the same in sequentially returned <see cref="State"/> structures, the controller state has not changed.
 		/// </summary>
-		public int PacketNumber;
-		private Gamepad state;
+		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
+		public readonly int PacketNumber;
 
+		/// <summary>An <see cref="Gamepad"/> structure containing the state of an XInput Controller.</summary>
+		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
+		public readonly Gamepad GamePadState;
 
-
-		/// <summary>Gets an <see cref="Gamepad"/> structure containing the state of an XInput Controller.</summary>
-		public Gamepad GamePadState { get { return state; } }
 
 
 		/// <summary>Returns a hash code for this <see cref="State"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="State"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return PacketNumber ^ state.GetHashCode();
+			return PacketNumber ^ GamePadState.GetHashCode();
 		}
 
 
@@ -40,7 +42,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the <paramref name="other"/> structure equals this <see cref="State"/> structure, otherwise returns false.</returns>
 		public bool Equals( State other )
 		{
-			return ( PacketNumber == other.PacketNumber ) || state.Equals( other.state );
+			return ( PacketNumber == other.PacketNumber ) || GamePadState.Equals( other.GamePadState );
 		}
 
 
@@ -49,7 +51,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified object is a <see cref="State"/> structure equal to this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return ( obj is State ) && this.Equals( (State)obj );
+			return obj is State state && this.Equals( state );
 		}
 
 
@@ -63,6 +65,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="state">A <see cref="State"/> structure.</param>
 		/// <param name="other">A <see cref="State"/> structure.</param>
 		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator ==( State state, State other )
 		{
 			return state.Equals( other );
@@ -73,6 +76,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="state">A <see cref="State"/> structure.</param>
 		/// <param name="other">A <see cref="State"/> structure.</param>
 		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator !=( State state, State other )
 		{
 			return !state.Equals( other );

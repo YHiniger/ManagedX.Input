@@ -16,11 +16,13 @@ namespace ManagedX.Input.Raw
 
 		/// <summary>The top-level collection (usage page and usage) for the raw input device.</summary>
 		internal readonly TopLevelCollectionUsage TopLevelCollection;
+
 		// combines UsagePage and Usage.
 		/// <summary>Specifies how to interpret the information provided by <see cref="TopLevelCollection"/>. It can be zero (the default).
 		/// <para>By default, the operating system sends raw input from devices with the specified top level collection (TLC) to the registered application as long as it has the window focus.</para>
 		/// </summary>
 		internal readonly RawInputDeviceRegistrationOptions RegistrationOptions;
+
 		/// <summary>A handle to the target window. If <see cref="IntPtr.Zero"/> it follows the keyboard focus.</summary>
 		internal readonly IntPtr TargetWindowHandle;
 
@@ -68,7 +70,7 @@ namespace ManagedX.Input.Raw
 		/// <returns>Returns true if the specified object is a <see cref="RawInputDevice"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return ( obj is RawInputDevice ) && this.Equals( (RawInputDevice)obj );
+			return ( obj is RawInputDevice rid ) && this.Equals( rid );
 		}
 
 

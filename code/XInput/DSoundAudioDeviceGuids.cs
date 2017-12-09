@@ -45,7 +45,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified object is a <see cref="DSoundAudioDeviceGuids"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return ( obj is DSoundAudioDeviceGuids ) && this.Equals( (DSoundAudioDeviceGuids)obj );
+			return obj is DSoundAudioDeviceGuids guids && this.Equals( guids );
 		}
 
 

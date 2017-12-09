@@ -139,33 +139,33 @@ namespace ManagedX.Input
 		#region Device info
 
 		/// <summary>Gets the number of function keys present on this <see cref="Keyboard"/>.</summary>
-		public int FunctionKeyCount { get { return info.FunctionKeyCount; } }
+		public int FunctionKeyCount => info.FunctionKeyCount;
 
 
 		/// <summary>Gets the number of LED indicators present on this <see cref="Keyboard"/>.</summary>
-		public int IndicatorCount { get { return info.IndicatorCount; } }
+		public int IndicatorCount => info.IndicatorCount;
 
 
 		/// <summary>Gets the type of this <see cref="Keyboard"/>.</summary>
-		public int KeyboardType { get { return info.KeyboardType; } }
+		public int KeyboardType => info.KeyboardType;
 		
 
 		/// <summary>Gets the sub-type of this <see cref="Keyboard"/>.</summary>
-		public int KeyboardSubtype { get { return info.KeyboardSubtype; } }
+		public int KeyboardSubtype => info.KeyboardSubtype;
 		
 		
 		/// <summary>Gets the scan code mode of this <see cref="Keyboard"/>.</summary>
-		public int Mode { get { return info.Mode; } }
+		public int Mode => info.Mode;
 
 		
 		/// <summary>Gets the total number of keys present of this <see cref="Keyboard"/>.</summary>
-		public int TotalKeyCount { get { return info.TotalKeyCount; } }
+		public int TotalKeyCount => info.TotalKeyCount;
 
 		#endregion Device info
 
 
 		/// <summary>Gets the index of this <see cref="Keyboard"/>.</summary>
-		new public GameControllerIndex Index { get { return (GameControllerIndex)base.Index; } }
+		new public GameControllerIndex Index => (GameControllerIndex)base.Index;
 
 	}
 

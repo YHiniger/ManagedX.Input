@@ -17,7 +17,7 @@ namespace ManagedX.Input
 		/// <summary>Gets a value indicating whether a key is down(=pressed).</summary>
 		/// <param name="key">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
 		/// <exception cref="InvalidEnumArgumentException"/>
-		public bool this[ Key key ] { get { return this.IsDown( key ); } }
+		public bool this[ Key key ] => this.IsDown( key );
 
 		
 		/// <summary>Returns a value indicating whether a key is down(=pressed).</summary>
@@ -44,16 +44,16 @@ namespace ManagedX.Input
 
 
 		/// <summary>Gets a value indicating whether the CapsLock toggle is active.</summary>
-		public bool CapsLock { get { return this.GetToggleableKeyState( Key.CapsLock ); } }
+		public bool CapsLock => this.GetToggleableKeyState( Key.CapsLock );
 
 
 		/// <summary>Gets a value indicating whether the NumLock toggle is active.</summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		public bool NumLock { get { return this.GetToggleableKeyState( Key.NumLock ); } }
+		public bool NumLock => this.GetToggleableKeyState( Key.NumLock );
 
 
 		/// <summary>Gets a value indicating whether the ScrollLock toggle is active.</summary>
-		public bool ScrollLock { get { return this.GetToggleableKeyState( Key.ScrollLock ); } }
+		public bool ScrollLock => this.GetToggleableKeyState( Key.ScrollLock );
 
 
 		/// <summary>Returns a hash code for this <see cref="KeyboardState"/> structure.</summary>
@@ -70,8 +70,8 @@ namespace ManagedX.Input
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1062" )]
 		public bool Equals( KeyboardState other )
 		{
-			if( other.Data == null )
-				return Data == null;
+			if( Data == null )
+				return other.Data == null;
 
 			for( var i = 0; i < 256; ++i )
 				if( Data[ i ] != other.Data[ i ] )
@@ -100,16 +100,18 @@ namespace ManagedX.Input
 		/// <param name="keyboardState">A <see cref="KeyboardState"/> structure.</param>
 		/// <param name="other">A <see cref="KeyboardState"/> structure.</param>
 		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator ==( KeyboardState keyboardState, KeyboardState other )
 		{
 			return keyboardState.Equals( other );
 		}
 
-		
+
 		/// <summary>Inequality comparer.</summary>
 		/// <param name="keyboardState">A <see cref="KeyboardState"/> structure.</param>
 		/// <param name="other">A <see cref="KeyboardState"/> structure.</param>
 		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator !=( KeyboardState keyboardState, KeyboardState other )
 		{
 			return !keyboardState.Equals( other );

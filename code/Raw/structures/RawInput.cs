@@ -42,39 +42,15 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>When the DeviceType of the <see cref="Header"/> is <see cref="InputDeviceType.Mouse"/>, gets ...</summary>
-		public RawMouse? Mouse
-		{
-			get
-			{
-				if( Header.DeviceType == InputDeviceType.Mouse )
-					return data.Mouse;
-				return null;
-			}
-		}
+		public RawMouse? Mouse => Header.DeviceType == InputDeviceType.Mouse ? new RawMouse?( data.Mouse ) : null;
 
 
 		/// <summary>When the DeviceType of the <see cref="Header"/> is <see cref="InputDeviceType.Keyboard"/>, gets ...</summary>
-		public RawKeyboard? Keyboard
-		{
-			get
-			{
-				if( Header.DeviceType == InputDeviceType.Keyboard )
-					return data.Keyboard;
-				return null;
-			}
-		}
+		public RawKeyboard? Keyboard => Header.DeviceType == InputDeviceType.Keyboard ? new RawKeyboard?( data.Keyboard ) : null;
 
 
 		/// <summary>When the DeviceType of the <see cref="Header"/> is <see cref="InputDeviceType.HumanInterfaceDevice"/>, gets ...</summary>
-		public RawHID? HumanInterfaceDevice
-		{
-			get
-			{
-				if( Header.DeviceType == InputDeviceType.HumanInterfaceDevice )
-					return data.HID;
-				return null;
-			}
-		}
+		public RawHID? HumanInterfaceDevice => Header.DeviceType == InputDeviceType.HumanInterfaceDevice ? new RawHID?( data.HID ) : null;
 
 
 		/// <summary>Returns a hash code for this <see cref="RawInput"/> structure.</summary>
@@ -116,7 +92,7 @@ namespace ManagedX.Input.Raw
 		/// <returns>Returns true if the specified object is a <see cref="RawInput"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return ( obj is RawInput ) && this.Equals( (RawInput)obj );
+			return ( obj is RawInput ri ) && this.Equals( ri );
 		}
 
 

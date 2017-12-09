@@ -16,10 +16,13 @@ namespace ManagedX.Input.Raw
 
 		/// <summary>The vendor identifier for the HID.</summary>
 		internal readonly int VendorId;
+
 		/// <summary>The product identifier for the HID.</summary>
 		internal readonly int ProductId;
+
 		/// <summary>The version number for the HID.</summary>
 		internal readonly int VersionNumber;
+
 		/// <summary>The top-level collection (TLC usage page and usage) for the device.</summary>
 		internal readonly TopLevelCollectionUsage TopLevelCollection;
 

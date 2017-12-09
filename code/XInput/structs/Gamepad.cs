@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 
@@ -12,7 +13,7 @@ namespace ManagedX.Input.XInput
     /// </summary>
     /// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_gamepad%28v=vs.85%29.aspx</remarks>
     [Source( "XInput.h", "XINPUT_GAMEPAD" )]
-	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 12 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 12 )]
 	public struct Gamepad : IEquatable<Gamepad>
 	{
 
@@ -54,14 +55,14 @@ namespace ManagedX.Input.XInput
 		{
 			var h = (float)x;
 			var v = (float)y;
-			var dZ = (float)deadZone;
+			var dz = (float)deadZone;
 			
 			var length = (float)Math.Sqrt( h * h + v * v );
 			float scale;
-			if( length <= dZ )
+			if( length <= dz )
 				scale = 0.0f;
 			else
-				scale = ( (float)( length - dZ ) / ( 32767.0f - dZ ) * 32767.0f ) / length;
+				scale = ( (float)( length - dz ) / ( 32767.0f - dz ) * 32767.0f ) / length;
 
 			x = (short)( h * scale ).Clamp( -32767.0f, 32767.0f );
 			y = (short)( v * scale ).Clamp( -32767.0f, 32767.0f );
@@ -71,7 +72,9 @@ namespace ManagedX.Input.XInput
 
 
 
-		private GamepadButtons buttons;
+		/// <summary>A value indicating which buttons are pressed.</summary>
+		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
+		public readonly GamepadButtons Buttons;
 		private byte leftTrigger;
 		private byte rightTrigger;
 		private short leftThumbX;
@@ -81,33 +84,29 @@ namespace ManagedX.Input.XInput
 
 
 
-		/// <summary>Gets a value indicating which buttons are pressed.</summary>
-		public GamepadButtons Buttons { get { return buttons; } }
-
-
 		/// <summary>Returns a value indicating whether a button is pressed.</summary>
 		/// <param name="button">A <see cref="GamepadButtons">button</see>.</param>
 		/// <returns>Returns true if the specified <paramref name="button"/> is pressed, otherwise returns false.</returns>
 		public bool IsPressed( GamepadButtons button )
 		{
-			return ( button == GamepadButtons.None ) ? ( buttons == GamepadButtons.None ) : buttons.HasFlag( button );
+			return ( button == GamepadButtons.None ) ? ( Buttons == GamepadButtons.None ) : Buttons.HasFlag( button );
 		}
 
 
 		/// <summary>Gets a value, within the range [0,1], representing the state of the left trigger.</summary>
-		public float LeftTrigger { get { return (float)leftTrigger / 255.0f; } }
+		public float LeftTrigger => (float)leftTrigger / 255.0f;
 
 
 		/// <summary>Gets a value, within the range [0,1], representing the state of the right trigger.</summary>
-		public float RightTrigger { get { return (float)rightTrigger / 255.0f; } }
+		public float RightTrigger => (float)rightTrigger / 255.0f;
 
 
 		/// <summary>Gets a <see cref="Vector2"/> representing the position, within the range [-1,+1], of the left stick.</summary>
-		public Vector2 LeftThumb { get { return new Vector2( (float)leftThumbX / 32767.0f, (float)leftThumbY / 32767.0f ); } }
+		public Vector2 LeftThumb => new Vector2( (float)leftThumbX / 32767.0f, (float)leftThumbY / 32767.0f );
 
 
 		/// <summary>Gets a <see cref="Vector2"/> representing the position, within the range [-1,+1], of the right stick.</summary>
-		public Vector2 RightThumb { get { return new Vector2( (float)rightThumbX / 32767.0f, (float)rightThumbY / 32767.0f ); } }
+		public Vector2 RightThumb => new Vector2( (float)rightThumbX / 32767.0f, (float)rightThumbY / 32767.0f );
 
 
 		#region Dead zone handling
@@ -120,7 +119,7 @@ namespace ManagedX.Input.XInput
 			if( threshold == 255 )
 				throw new ArgumentOutOfRangeException( "threshold" );
 
-			float range = 255.0f / ( 255.0f - (float)threshold );
+			var range = 255.0f / ( 255.0f - (float)threshold );
 			leftTrigger = (byte)( leftTrigger <= threshold ? 0.0f : (float)( leftTrigger - threshold ) * range );
 			rightTrigger = (byte)( rightTrigger <= threshold ? 0.0f : (float)( rightTrigger - threshold ) * range );
 		}
@@ -172,7 +171,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a hash code for this <see cref="Gamepad"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return buttons.GetHashCode() ^ leftTrigger.GetHashCode() ^ rightTrigger.GetHashCode() ^ leftThumbX.GetHashCode() ^ leftThumbY.GetHashCode() ^ rightThumbX.GetHashCode() ^ rightThumbY.GetHashCode();
+			return Buttons.GetHashCode() ^ leftTrigger.GetHashCode() ^ rightTrigger.GetHashCode() ^ leftThumbX.GetHashCode() ^ leftThumbY.GetHashCode() ^ rightThumbX.GetHashCode() ^ rightThumbY.GetHashCode();
 		}
 
 
@@ -181,7 +180,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if this structure equals the <paramref name="other"/> structure, otherwise returns false.</returns>
 		public bool Equals( Gamepad other )
 		{
-			return ( other.buttons == buttons ) &&
+			return ( other.Buttons == Buttons ) &&
 				( other.leftTrigger == leftTrigger ) && ( other.rightTrigger == rightTrigger ) && 
 				( other.leftThumbX == leftThumbX ) && ( other.leftThumbY == leftThumbY ) &&
 				( other.rightThumbX == rightThumbX ) && ( other.rightThumbY == rightThumbY );
@@ -193,7 +192,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if the specified object is a <see cref="Gamepad"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return ( obj is Gamepad ) && this.Equals( (Gamepad)obj );
+			return obj is Gamepad pad && this.Equals( pad );
 		}
 
 

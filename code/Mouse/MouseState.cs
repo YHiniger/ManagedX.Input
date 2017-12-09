@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 
 namespace ManagedX.Input
@@ -22,21 +23,21 @@ namespace ManagedX.Input
 		
 
 		/// <summary>Gets the mouse cursor position.</summary>
-		public Point Position { get { return position; } }
+		public Point Position => position;
 
 		
 		/// <summary>Gets the mouse motion.</summary>
-		public Point Motion { get { return motion; } }
+		public Point Motion => motion;
 
 
 		/// <summary>Gets the wheel delta.</summary>
-		public int Wheel { get { return wheel; } }
+		public int Wheel => wheel;
 
 
 		/// <summary>Gets a value indicating whether a button is down.</summary>
 		/// <param name="button">A mouse button.</param>
 		/// <returns>Returns true if the button is down, otherwise returns false.</returns>
-		public bool this[ MouseButton button ] { get { return buttons.HasFlag( ToMouseButtons( button ) ); } }
+		public bool this[ MouseButton button ] => buttons.HasFlag( ToMouseButtons( button ) );
 
 
 		/// <summary>Returns a value indicating whether a button is down.</summary>
@@ -89,6 +90,7 @@ namespace ManagedX.Input
 		/// <param name="mouseState">A <see cref="MouseState"/> structure.</param>
 		/// <param name="other">A <see cref="MouseState"/> structure.</param>
 		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator ==( MouseState mouseState, MouseState other )
 		{
 			return mouseState.Equals( other );
@@ -99,6 +101,7 @@ namespace ManagedX.Input
 		/// <param name="mouseState">A <see cref="MouseState"/> structure.</param>
 		/// <param name="other">A <see cref="MouseState"/> structure.</param>
 		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator !=( MouseState mouseState, MouseState other )
 		{
 			return !mouseState.Equals( other );
