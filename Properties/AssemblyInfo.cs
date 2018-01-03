@@ -13,15 +13,15 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "Release" )]
 #endif
 [assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "ManagedX" )]
-[assembly: AssemblyCopyright( "Copyright © Yvan J.W. HINIGER 2014-2017" )]
+[assembly: AssemblyProduct( "ManagedX Framework" )]
+[assembly: AssemblyCopyright( "Copyright © Yvan J.W. HINIGER 2014-2018" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
 [assembly: ComVisible( false )]
 
-[assembly: AssemblyVersion( "1.4.0.8" )]
-[assembly: AssemblyFileVersion( "1.4.0.8" )]
+[assembly: AssemblyVersion( "1.4.0.9" )]
+[assembly: AssemblyFileVersion( "1.4.0.9" )]
 [assembly: NeutralResourcesLanguage( "en" )]
 
 [assembly: CLSCompliant( true )]
