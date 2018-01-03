@@ -5,11 +5,11 @@ using System.Diagnostics.CodeAnalysis;
 namespace ManagedX.Input
 {
 
-	/// <summary>Base class for input devices, including game controllers.</summary>
-	/// <typeparam name="TState">A structure representing the input device state.</typeparam>
-	/// <typeparam name="TButton">An enumeration representing the input device buttons/keys.</typeparam>
+	/// <summary>Base class for all managed input devices.</summary>
+	/// <typeparam name="TState">A structure representing the device state.</typeparam>
+	/// <typeparam name="TButton">An enumeration of the device buttons/keys.</typeparam>
 	public abstract class InputDevice<TState, TButton> : InputDevice
-		where TState : struct
+		where TState : struct, IEquatable<TState>
 		where TButton : struct
 	{
 
@@ -21,7 +21,8 @@ namespace ManagedX.Input
 
 
 		/// <summary>Constructor.</summary>
-		/// <param name="controllerIndex">The index of this input device.</param>
+		/// <param name="controllerIndex">The index of the device; must be unique per device type (<see cref="InputDeviceType"/>), and at least equal to 0.</param>
+		/// <exception cref="ArgumentOutOfRangeException"/>
 		internal InputDevice( int controllerIndex )
 			: base( controllerIndex )
 		{
@@ -41,17 +42,17 @@ namespace ManagedX.Input
 
 
 		/// <summary>Gets the current state.</summary>
-		public TState CurrentState { get { return currentState; } }
+		public TState CurrentState => currentState;
 
 		/// <summary>Gets the time associated with the <see cref="CurrentState"/>.</summary>
-		public TimeSpan CurrentStateTime { get { return currentStateTime; } }
+		public TimeSpan CurrentStateTime => currentStateTime;
 
 
 		/// <summary>Gets the previous state.</summary>
-		public TState PreviousState { get { return previousState; } }
+		public TState PreviousState => previousState;
 
 		/// <summary>Gets the time associated with the <see cref="PreviousState"/>.</summary>
-		public TimeSpan PreviousStateTime { get { return previousStateTime; } }
+		public TimeSpan PreviousStateTime => previousStateTime;
 
 		#endregion State
 
