@@ -11,10 +11,10 @@
 		/// <summary>The 2nd input device / game controller.</summary>
 		Two,
 
-		/// <summary>The 3rd input device / game controller.</summary>
+		/// <summary>The 3rd game controller.</summary>
 		Three,
 
-		/// <summary>The 4th input device / game controller.</summary>
+		/// <summary>The 4th game controller.</summary>
 		Four,
 
 	}
