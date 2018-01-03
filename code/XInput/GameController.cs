@@ -30,12 +30,12 @@ namespace ManagedX.Input.XInput
 
 
 
-		/// <summary>Gets the friendly name of this <see cref="GameController"/>.</summary>
-		public sealed override string DisplayName => Properties.Resources.GameController + " " + ( (int)this.Index + 1 );
-
-
 		/// <summary>Gets a value indicating the type of this input device.</summary>
 		public sealed override InputDeviceType DeviceType => InputDeviceType.HumanInterfaceDevice;
+
+
+		/// <summary>Gets the friendly name of this <see cref="GameController"/>.</summary>
+		public sealed override string DisplayName => Properties.Resources.GameController + " " + ( base.Index + 1 );
 
 
 		/// <summary>Returns a value indicating whether a button is pressed in the current state, but was released in the previous state.</summary>
@@ -56,6 +56,10 @@ namespace ManagedX.Input.XInput
 		}
 
 
+		/// <summary>Gets the index of this <see cref="GameController"/>.</summary>
+		new public GameControllerIndex Index => (GameControllerIndex)base.Index;
+
+
 		/// <summary>Raised when the game controller is connected.</summary>
 		public event EventHandler Connected;
 
@@ -73,16 +77,16 @@ namespace ManagedX.Input.XInput
 		/// <summary>Gets or sets a value indicating the type of dead zone to apply.</summary>
 		public DeadZoneMode DeadZoneMode
 		{
-			get { return deadZoneMode; }
-			set { deadZoneMode = value; }
+			get => deadZoneMode;
+			set => deadZoneMode = value;
 		}
 
 
 		/// <summary>Gets or sets a value indicating whether the game controller is disabled.</summary>
 		public bool Disabled
 		{
-			get { return isDisabled; }
-			set { isDisabled = value; }
+			get => isDisabled;
+			set => isDisabled = value;
 		}
 
 
@@ -120,10 +124,6 @@ namespace ManagedX.Input.XInput
 		/// <para>Only available on Windows 8 and newer (and XBOX 360 and newer).</para>
 		/// </summary>
 		public abstract Keystroke Keystroke { get; }
-
-
-		/// <summary>Gets the index of this <see cref="GameController"/>.</summary>
-		new public GameControllerIndex Index => (GameControllerIndex)base.Index;
 
 	}
 

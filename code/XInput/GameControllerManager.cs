@@ -9,35 +9,24 @@ namespace ManagedX.Input.XInput
 	public static class GameControllerManager
 	{
 
-		private static XInputVersion version = GetXInputVersion();
-		private static readonly List<GameController> gameControllers = Initialize();
-
-	
 		private static XInputVersion GetXInputVersion()
 		{
 #if XINPUT_14
+			if( !XInput14GameController.IsAvailable )
+				return XInputVersion.NotSupported;
 			return XInputVersion.XInput14;
 #elif XINPUT_13
+			if( !XInput13GameController.IsAvailable )
+				return XInputVersion.NotSupported;
 			return XInputVersion.XInput13;
 #else
-			try
-			{
-				var osVersion = Environment.OSVersion;
-				if( osVersion.Platform == PlatformID.Win32NT )
-				{
-					var windowsVersion = osVersion.Version;
 
-					// Windows 8 or greater
-					if( windowsVersion >= new Version( 6, 2 ) )
-						return XInputVersion.XInput14;
+			if( XInput14GameController.IsAvailable )
+				return XInputVersion.XInput14;
 
-					// Windows Vista or 7 (with DirectX End-User Runtime June 2010)
-					return XInputVersion.XInput13;
-				}
-			}
-			catch( InvalidOperationException )
-			{
-			}
+			if( XInput13GameController.IsAvailable )
+				return XInputVersion.XInput13;
+
 			return XInputVersion.NotSupported;
 #endif
 		}
@@ -46,28 +35,26 @@ namespace ManagedX.Input.XInput
 		private static List<GameController> Initialize()
 		{
 			var list = new List<GameController>( GameController.MaxControllerCount );
-			try
+
+			if( version == XInputVersion.XInput14 )
 			{
-				if( version == XInputVersion.XInput14 )
-				{
-					for( var c = 0; c < GameController.MaxControllerCount; c++ )
-						list.Add( new XInput14GameController( (GameControllerIndex)c ) );
-				}
-				else if( version == XInputVersion.XInput13 )
-				{
-					for( var c = 0; c < GameController.MaxControllerCount; c++ )
-						list.Add( new XInput13GameController( (GameControllerIndex)c ) );
-				}
+				for( var c = 0; c < XInput14GameController.MaxControllerCount; ++c )
+					list.Add( new XInput14GameController( (GameControllerIndex)c ) );
 			}
-			catch( NotSupportedException )
+			else if( version == XInputVersion.XInput13 )
 			{
-				list.Clear();
-				version = XInputVersion.NotSupported;
+				for( var c = 0; c < XInput13GameController.MaxControllerCount; ++c )
+					list.Add( new XInput13GameController( (GameControllerIndex)c ) );
 			}
+
 			return list;
 		}
 
 
+		private static readonly XInputVersion version = GetXInputVersion();
+		private static readonly List<GameController> gameControllers = Initialize();
+
+	
 
 		/// <summary>Gets the version of the underlying XInput API.</summary>
 		public static Version Version

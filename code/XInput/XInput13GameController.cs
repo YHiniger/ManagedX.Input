@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 
@@ -123,6 +124,25 @@ namespace ManagedX.Input.XInput
 				[Out] out Guid dSoundCaptureGuid
 			);
 
+		}
+
+
+		[SuppressMessage( "Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "ManagedX.Input.XInput.XInput13GameController+SafeNativeMethods.XInputGetState(ManagedX.Input.GameControllerIndex,ManagedX.Input.XInput.State@)" )]
+		[SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]
+		internal static bool IsAvailable
+		{
+			get
+			{
+				try
+				{
+					SafeNativeMethods.XInputGetState( GameControllerIndex.One, out State state );
+					return true;
+				}
+				catch( Exception )
+				{
+					return false;
+				}
+			}
 		}
 
 

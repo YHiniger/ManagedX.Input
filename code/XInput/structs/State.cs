@@ -12,6 +12,7 @@ namespace ManagedX.Input.XInput
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_state%28v=vs.85%29.aspx</remarks>
 	[Win32.Source( "XInput.h", "XINPUT_STATE" )]
+	[System.Diagnostics.DebuggerStepThrough]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
 	internal struct State : IEquatable<State>
 	{

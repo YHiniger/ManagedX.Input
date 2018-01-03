@@ -12,6 +12,7 @@ namespace ManagedX.Input.XInput
 	/// </summary>
 	/// <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_battery_information%28v=vs.85%29.aspx</remarks>
 	[Win32.Source( "XInput.h", "XINPUT_BATTERY_INFORMATION" )]
+	[System.Diagnostics.DebuggerStepThrough]
 	[StructLayout( LayoutKind.Sequential, Pack = 1, Size = 2 )]
 	public struct BatteryInformation : IEquatable<BatteryInformation>
 	{

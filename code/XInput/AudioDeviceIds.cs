@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 
 
 namespace ManagedX.Input.XInput
 {
-	
+
 	/// <summary>Contains the Windows Core Audio device IDs of the headset rendering and capture devices.</summary>
+	[System.Diagnostics.DebuggerStepThrough]
 	public struct AudioDeviceIds : IEquatable<AudioDeviceIds>
 	{
 
@@ -67,6 +69,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="deviceIds">An <see cref="AudioDeviceIds"/> structure.</param>
 		/// <param name="other">An <see cref="AudioDeviceIds"/> structure.</param>
 		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator ==( AudioDeviceIds deviceIds, AudioDeviceIds other )
 		{
 			return deviceIds.Equals( other );
@@ -77,6 +80,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="deviceIds">An <see cref="AudioDeviceIds"/> structure.</param>
 		/// <param name="other">An <see cref="AudioDeviceIds"/> structure.</param>
 		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator !=( AudioDeviceIds deviceIds, AudioDeviceIds other )
 		{
 			return !deviceIds.Equals( other );

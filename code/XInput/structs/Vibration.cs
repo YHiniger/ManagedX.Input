@@ -12,6 +12,7 @@ namespace ManagedX.Input.XInput
 	/// </summary>
 	/// <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_vibration%28v=vs.85%29.aspx</remarks>
 	[Win32.Source( "XInput.h", "XINPUT_VIBRATION" )]
+	[System.Diagnostics.DebuggerStepThrough]
 	[Serializable]
 	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 4 )]
 	public struct Vibration : IEquatable<Vibration>
@@ -302,6 +303,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the sum of the specified values.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static Vibration operator +( Vibration vibration, Vibration other )
 		{
 			Add( ref vibration, ref other, out Vibration sum );
@@ -313,6 +315,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the difference between the two specified vibrations.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static Vibration operator -( Vibration vibration, Vibration other )
 		{
 			Subtract( ref vibration, ref other, out Vibration result );
@@ -324,6 +327,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="other">A <see cref="Vibration"/> structure.</param>
 		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the product of the specified values.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static Vibration operator *( Vibration vibration, Vibration other )
 		{
 			Multiply( ref vibration, ref other, out Vibration result );
@@ -334,6 +338,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <param name="value">A finite single-precision floating-point value.</param>
 		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the product of the specified values.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static Vibration operator *( Vibration vibration, float value )
 		{
 			Multiply( ref vibration, value, out Vibration result );
@@ -344,6 +349,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="value">A finite single-precision floating-point value.</param>
 		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
 		/// <returns>Returns a <see cref="Vibration"/> structure initializes with the product of the specified values.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static Vibration operator *( float value, Vibration vibration )
 		{
 			Multiply( ref vibration, value, out Vibration result );

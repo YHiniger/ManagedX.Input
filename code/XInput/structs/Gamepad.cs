@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 
 namespace ManagedX.Input.XInput
 {
-    using Win32;
+	using Win32;
 
 
-    /// <summary>Describes the state of an XInput controller.
-    /// <para>This structure is equivalent to the native <code>XINPUT_GAMEPAD</code> structure (defined in XInput.h).</para>
-    /// </summary>
-    /// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_gamepad%28v=vs.85%29.aspx</remarks>
-    [Source( "XInput.h", "XINPUT_GAMEPAD" )]
+	/// <summary>Describes the state of an XInput controller.
+	/// <para>This structure is equivalent to the native <code>XINPUT_GAMEPAD</code> structure (defined in XInput.h).</para>
+	/// </summary>
+	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_gamepad%28v=vs.85%29.aspx</remarks>
+	[Source( "XInput.h", "XINPUT_GAMEPAD" )]
+	[System.Diagnostics.DebuggerStepThrough]
 	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 12 )]
 	public struct Gamepad : IEquatable<Gamepad>
 	{
@@ -51,12 +53,13 @@ namespace ManagedX.Input.XInput
 				component = 0;
 		}
 
+
 		private static void ApplyCircularThumbStickDeadZone( ref short x, ref short y, short deadZone )
 		{
 			var h = (float)x;
 			var v = (float)y;
 			var dz = (float)deadZone;
-			
+
 			var length = (float)Math.Sqrt( h * h + v * v );
 			float scale;
 			if( length <= dz )
@@ -75,8 +78,7 @@ namespace ManagedX.Input.XInput
 		/// <summary>A value indicating which buttons are pressed.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public readonly GamepadButtons Buttons;
-		private byte leftTrigger;
-		private byte rightTrigger;
+		private ushort triggers;
 		private short leftThumbX;
 		private short leftThumbY;
 		private short rightThumbX;
@@ -94,19 +96,19 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Gets a value, within the range [0,1], representing the state of the left trigger.</summary>
-		public float LeftTrigger => (float)leftTrigger / 255.0f;
+		public float LeftTrigger => ( triggers & 0xFF ) / 255.0f;
 
 
 		/// <summary>Gets a value, within the range [0,1], representing the state of the right trigger.</summary>
-		public float RightTrigger => (float)rightTrigger / 255.0f;
+		public float RightTrigger => ( triggers >> 8 ) / 255.0f;
 
 
 		/// <summary>Gets a <see cref="Vector2"/> representing the position, within the range [-1,+1], of the left stick.</summary>
-		public Vector2 LeftThumb => new Vector2( (float)leftThumbX / 32767.0f, (float)leftThumbY / 32767.0f );
+		public Vector2 LeftThumb => new Vector2( leftThumbX / 32767.0f, leftThumbY / 32767.0f );
 
 
 		/// <summary>Gets a <see cref="Vector2"/> representing the position, within the range [-1,+1], of the right stick.</summary>
-		public Vector2 RightThumb => new Vector2( (float)rightThumbX / 32767.0f, (float)rightThumbY / 32767.0f );
+		public Vector2 RightThumb => new Vector2( rightThumbX / 32767.0f, rightThumbY / 32767.0f );
 
 
 		#region Dead zone handling
@@ -119,10 +121,14 @@ namespace ManagedX.Input.XInput
 			if( threshold == 255 )
 				throw new ArgumentOutOfRangeException( "threshold" );
 
-			var range = 255.0f / ( 255.0f - (float)threshold );
-			leftTrigger = (byte)( leftTrigger <= threshold ? 0.0f : (float)( leftTrigger - threshold ) * range );
-			rightTrigger = (byte)( rightTrigger <= threshold ? 0.0f : (float)( rightTrigger - threshold ) * range );
+			var range = 255.0f / ( 255.0f - threshold );
+			var lTrigger = (byte)( triggers & 0xFF );
+			var rTrigger = (byte)( triggers >> 8 );
+			lTrigger = (byte)( lTrigger <= threshold ? 0.0f : (float)( lTrigger - threshold ) * range );
+			rTrigger = (byte)( rTrigger <= threshold ? 0.0f : (float)( rTrigger - threshold ) * range );
+			triggers = (ushort)( ( rTrigger << 8 ) + lTrigger );
 		}
+
 
 		/// <summary>Applies the default triggers dead zone.</summary>
 		public void ApplyTriggersDeadZone()
@@ -143,7 +149,7 @@ namespace ManagedX.Input.XInput
 			{
 				ApplyLinearThumbStickDeadZone( ref leftThumbX, leftStickDeadZone );
 				ApplyLinearThumbStickDeadZone( ref leftThumbY, leftStickDeadZone );
-				
+
 				ApplyLinearThumbStickDeadZone( ref rightThumbX, rightStickDeadZone );
 				ApplyLinearThumbStickDeadZone( ref rightThumbY, rightStickDeadZone );
 			}
@@ -154,13 +160,14 @@ namespace ManagedX.Input.XInput
 			}
 		}
 
+
 		/// <summary>Applies the default thumbsticks dead zones.</summary>
 		/// <param name="deadZoneMode">The kind of dead zone mode to apply.</param>
 		public void ApplyThumbSticksDeadZone( DeadZoneMode deadZoneMode )
 		{
 			if( deadZoneMode == DeadZoneMode.None )
 				return;
-			
+
 			this.ApplyThumbSticksDeadZone( deadZoneMode, DefaultLeftThumbDeadZone, DefaultRightThumbDeadZone );
 		}
 
@@ -171,7 +178,7 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns a hash code for this <see cref="Gamepad"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return Buttons.GetHashCode() ^ leftTrigger.GetHashCode() ^ rightTrigger.GetHashCode() ^ leftThumbX.GetHashCode() ^ leftThumbY.GetHashCode() ^ rightThumbX.GetHashCode() ^ rightThumbY.GetHashCode();
+			return Buttons.GetHashCode() ^ triggers.GetHashCode() ^ leftThumbX.GetHashCode() ^ leftThumbY.GetHashCode() ^ rightThumbX.GetHashCode() ^ rightThumbY.GetHashCode();
 		}
 
 
@@ -180,10 +187,10 @@ namespace ManagedX.Input.XInput
 		/// <returns>Returns true if this structure equals the <paramref name="other"/> structure, otherwise returns false.</returns>
 		public bool Equals( Gamepad other )
 		{
-			return ( other.Buttons == Buttons ) &&
-				( other.leftTrigger == leftTrigger ) && ( other.rightTrigger == rightTrigger ) && 
-				( other.leftThumbX == leftThumbX ) && ( other.leftThumbY == leftThumbY ) &&
-				( other.rightThumbX == rightThumbX ) && ( other.rightThumbY == rightThumbY );
+			return
+				( Buttons == other.Buttons ) && ( triggers == other.triggers ) &&
+				( leftThumbX == other.leftThumbX ) && ( leftThumbY == other.leftThumbY ) &&
+				( rightThumbX == other.rightThumbX ) && ( rightThumbY == other.rightThumbY );
 		}
 
 
@@ -196,6 +203,7 @@ namespace ManagedX.Input.XInput
 		}
 
 
+
 		/// <summary>The empty <see cref="Gamepad"/> structure.</summary>
 		public static readonly Gamepad Empty;
 
@@ -206,6 +214,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="gamepad">A <see cref="Gamepad"/> structure.</param>
 		/// <param name="other">A <see cref="Gamepad"/> structure.</param>
 		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator ==( Gamepad gamepad, Gamepad other )
 		{
 			return gamepad.Equals( other );
@@ -216,6 +225,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="gamepad">A <see cref="Gamepad"/> structure.</param>
 		/// <param name="other">A <see cref="Gamepad"/> structure.</param>
 		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator !=( Gamepad gamepad, Gamepad other )
 		{
 			return !gamepad.Equals( other );

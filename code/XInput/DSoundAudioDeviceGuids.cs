@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 
 namespace ManagedX.Input.XInput
 {
-	
+
 	/// <summary>Contains the GUID of the headset sound rendering and capture devices.</summary>
+	[System.Diagnostics.DebuggerStepThrough]
 	public struct DSoundAudioDeviceGuids : IEquatable<DSoundAudioDeviceGuids>
 	{
 
 		/// <summary>The <see cref="Guid"/> of the headset sound rendering device.
-		/// <para>On Windows 8 and greater, this is always an empty GUID.</para>
+		/// <para>On Windows 8 and greater, this is always <see cref="Guid.Empty"/>.</para>
 		/// </summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public Guid RenderDeviceGuid;
 
 		/// <summary>The <see cref="Guid"/> of the headset sound capture device.
-		/// <para>On Windows 8 and greater, this is always an empty GUID.</para>
+		/// <para>On Windows 8 and greater, this is always <see cref="Guid.Empty"/>.</para>
 		/// </summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public Guid CaptureDeviceGuid;
@@ -60,6 +62,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="guids">A <see cref="DSoundAudioDeviceGuids"/> structure.</param>
 		/// <param name="other">A <see cref="DSoundAudioDeviceGuids"/> structure.</param>
 		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator ==( DSoundAudioDeviceGuids guids, DSoundAudioDeviceGuids other )
 		{
 			return guids.Equals( other );
@@ -70,6 +73,7 @@ namespace ManagedX.Input.XInput
 		/// <param name="guids">A <see cref="DSoundAudioDeviceGuids"/> structure.</param>
 		/// <param name="other">A <see cref="DSoundAudioDeviceGuids"/> structure.</param>
 		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		public static bool operator !=( DSoundAudioDeviceGuids guids, DSoundAudioDeviceGuids other )
 		{
 			return !guids.Equals( other );
