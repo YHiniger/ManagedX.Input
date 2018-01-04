@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 
 namespace ManagedX.Input
@@ -7,6 +9,13 @@ namespace ManagedX.Input
 	/// <summary>Base class for all managed input devices.</summary>
 	public abstract class InputDevice
 	{
+
+		internal static Exception GetException( int errorCode )
+		{
+			return Marshal.GetExceptionForHR( errorCode ) ?? new Win32Exception( errorCode );
+		}
+
+
 
 		private readonly int index;
 		private bool isDisconnected;

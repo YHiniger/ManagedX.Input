@@ -11,17 +11,17 @@ namespace ManagedX.Input
 	public struct MouseState : IEquatable<MouseState>
 	{
 
-		/// <summary>The mouse cursor position.</summary>
-		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
-		public Point Position;
-
-		/// <summary>The mouse motion.</summary>
+		/// <summary>The raw mouse motion.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public Point Motion;
 
 		/// <summary>The wheel delta.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public int Wheel;
+
+		/// <summary>The horizontal wheel delta.</summary>
+		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
+		public int HorizontalWheel;
 
 		internal MouseButtons Buttons;
 
@@ -46,7 +46,7 @@ namespace ManagedX.Input
 		/// <returns>Returns a hash code for this <see cref="MouseState"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return Position.GetHashCode() ^ Motion.GetHashCode() ^ Wheel ^ (int)Buttons;
+			return Motion.GetHashCode() ^ Wheel ^ HorizontalWheel ^ (int)Buttons;
 		}
 
 
@@ -56,9 +56,8 @@ namespace ManagedX.Input
 		public bool Equals( MouseState other )
 		{
 			return 
-				Position.Equals( other.Position ) && 
 				Motion.Equals( other.Motion ) && 
-				( Wheel == other.Wheel ) && 
+				( Wheel == other.Wheel ) && ( HorizontalWheel == other.HorizontalWheel ) &&
 				( Buttons == other.Buttons );
 		}
 
@@ -68,7 +67,7 @@ namespace ManagedX.Input
 		/// <returns>Returns true if the specified object is a <see cref="MouseState"/> structure which equals this structure, otherwise returns false.</returns>
 		public override bool Equals( object obj )
 		{
-			return obj is MouseState ms && this.Equals( ms );
+			return obj is MouseState state && this.Equals( state );
 		}
 
 

@@ -10,23 +10,23 @@ namespace ManagedX.Input.Raw
 	// Since it's applied to the private Data structure, its actual size is 24, instead of 22.
 	// Of course, this increases the size of the RawInput structure to 40 or 48 bytes (instead of 38 or 46 bytes), which can then safely use the same packing.
 
-	
+
 	/// <summary>Contains the raw input from a device.
 	/// <para>This structure is equivalent to the native <code>RAWINPUT</code> structure (defined in WinUser.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645562(v=vs.85).aspx</remarks>
 	[Win32.Source( "WinUser.h", "RAWINPUT" )]
 	[System.Diagnostics.DebuggerStepThrough]
-	[StructLayout( LayoutKind.Sequential, Pack = 4 )] // Size = 40 (x86) or 48 (x64) byte
+	[StructLayout( LayoutKind.Sequential, Pack = 2 )] // Size = 40 (x86) or 48 (x64) byte
 	internal struct RawInput : IEquatable<RawInput>
 	{
 
-		[StructLayout( LayoutKind.Explicit, Size = 24, Pack = 2 )] // Size = 24 bytes (22 rounded to the nearest greater multiple of 4, due to the packing)
+		[StructLayout( LayoutKind.Explicit, Pack = 4, Size = 24 )]
 		private struct Data
 		{
 
 			[FieldOffset( 0 )]
-			internal readonly RawMouse Mouse;		// Size = 24 (should be 22?), Pack = 2
+			internal readonly RawMouse Mouse;		// Size = 24, Pack = 4
 
 			[FieldOffset( 0 )]
 			internal readonly RawKeyboard Keyboard;	// Size = 16, Pack = 2

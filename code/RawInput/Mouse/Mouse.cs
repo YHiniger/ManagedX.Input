@@ -13,7 +13,7 @@ namespace ManagedX.Input
 	public sealed class Mouse : RawInputDevice<MouseState, MouseButton>
 	{
 
-		private const int MaxSupportedMice = 4; // FIXME - actually only the primary mouse is properly supported... and this should be set to 2
+		private const int MaxSupportedMice = 4; // FIXME - actually this should be set to 2
 
 		/// <summary>Defines the maximum number of supported mouse buttons: 5.</summary>
 		public const int MaxSupportedButtonCount = 5;
@@ -156,24 +156,36 @@ namespace ManagedX.Input
 		}
 
 
-		private static MouseCursorStateIndicators cursorState;
+		/// <summary>Gets information about the global cursor.</summary>
+		public static CursorInfo Cursor
+		{
+			get
+			{
+				var cursorInfo = CursorInfo.Default;
+				if( !SafeNativeMethods.GetCursorInfo( ref cursorInfo ) )
+				{
+					var errorCode = Marshal.GetLastWin32Error();
+					if( errorCode == (int)Win32.ErrorCode.NotConnected )
+						cursorInfo = CursorInfo.Default;
+					else
+						throw new ManagedXException( "Failed to retrieve mouse cursor position.", GetException( errorCode ) );
+				}
+				return cursorInfo;
+			}
+		}
 
 
-		/// <summary>Gets or sets a value indicating the state of the mouse cursor.
-		/// <para>Note: <see cref="MouseCursorStateIndicators.Suppressed"/> is handled as <see cref="MouseCursorStateIndicators.Hidden"/>.</para>
-		/// </summary>
+		/// <summary>Gets or sets a value indicating the state of the mouse cursor.</summary>
 		public static MouseCursorStateIndicators CursorState
 		{
-			get { return cursorState; }
+			get => Cursor.State;
 			set
 			{
-				if( value.HasFlag( MouseCursorStateIndicators.Suppressed ) )
-					value = MouseCursorStateIndicators.Hidden;
-				// FIXME ? this should only be used on pre-Windows 8 !
+				//if( value.HasFlag( MouseCursorStateIndicators.Suppressed ) )
+				//	value = MouseCursorStateIndicators.Hidden;
+				//// FIXME ? this should only be used on Windows 7 !
 
-				cursorState = value;
-
-				if( cursorState == MouseCursorStateIndicators.Showing )
+				if( value == MouseCursorStateIndicators.Showing )
 					while( SafeNativeMethods.ShowCursor( true ) < 0 ) ;
 				else
 					while( SafeNativeMethods.ShowCursor( false ) >= 0 ) ;
@@ -189,16 +201,29 @@ namespace ManagedX.Input
 		public static void SetCursorPosition( Point position )
 		{
 			if( !SafeNativeMethods.SetCursorPos( position.X, position.Y ) )
-				throw new Win32Exception( "Failed to set mouse cursor location.", NativeMethods.GetExceptionForLastWin32Error() );
+			{
+				var errorCode = Marshal.GetLastWin32Error();
+				throw new Win32Exception( "Failed to set mouse cursor location.", GetException( errorCode ) );
+			}
+		}
+
+
+		internal static MouseButtons GetMouseButtons()
+		{
+			const short Mask = -32768;
+
+			var mouseButtons = 0;
+			for( var b = 0; b < MaxSupportedButtonCount; ++b )
+				if( ( SafeNativeMethods.GetAsyncKeyState( ToVirtualKeyCode( (MouseButton)b ) ) & Mask ) == Mask )
+					mouseButtons |= 1 << b;
+			return (MouseButtons)mouseButtons;
 		}
 
 		#endregion Static
 
 
 
-		private MouseState state;
-		internal Point motionDelta;
-		internal int wheelDelta;
+		internal MouseState State;		// TODO - make this internal and get rid of: motionDelta, wheelDelta and buttons (all other internal fields).
 		private int wheelValue;
 		private MouseDeviceInfo info;
 
@@ -219,8 +244,8 @@ namespace ManagedX.Input
 		/// <param name="time">The time elapsed since the start of the application.</param>
 		protected sealed override void Reset( TimeSpan time )
 		{
-			motionDelta = Point.Zero;
-			wheelValue = wheelDelta = 0;
+			State.Motion = Point.Zero;
+			wheelValue = 0;
 
 			base.Reset( time );
 
@@ -235,41 +260,18 @@ namespace ManagedX.Input
 		/// <exception cref="Win32Exception"/>
 		protected sealed override MouseState GetState()
 		{
-			const short Mask = -32768;
+			wheelValue += State.Wheel / 120;
 
-			var cursorInfo = CursorInfo.Default;
-			if( !SafeNativeMethods.GetCursorInfo( ref cursorInfo ) )
+			var output = new MouseState()
 			{
-				var lastException = NativeMethods.GetExceptionForLastWin32Error();
-				if( lastException.HResult == (int)Win32.ErrorCode.NotConnected )
-				{
-					base.IsDisconnected = true;
-					wheelValue = wheelDelta = 0;
-					motionDelta = Point.Zero;
-					return MouseState.Empty;
-				}
-				throw new Win32Exception( "Failed to retrieve mouse cursor position.", lastException );
-			}
-			cursorState = cursorInfo.State;
+				Motion = State.Motion,
+				Wheel = State.Wheel,
+				HorizontalWheel = State.HorizontalWheel,
+				Buttons = State.Buttons
+			};
 
-			var buttons = 0;
-			for( var b = 0; b < MaxSupportedButtonCount; ++b )
-				if( ( SafeNativeMethods.GetAsyncKeyState( ToVirtualKeyCode( (MouseButton)b ) ) & Mask ) == Mask )
-					buttons |= 1 << b;
-
-			wheelDelta /= 120;
-
-			//state = new MouseState( ref cursorInfo.ScreenPosition, ref motion, wheelDelta, (MouseButtons)buttons );
-			state.Position = cursorInfo.ScreenPosition;
-			state.Motion = motionDelta;
-			state.Wheel = wheelDelta;
-			state.Buttons = (MouseButtons)buttons;
-
-			wheelValue += wheelDelta;
-
-			wheelDelta = motionDelta.X = motionDelta.Y = 0;
-
-			return state;
+			State.Motion.Y = State.Motion.X = State.Wheel = 0;
+			return output;
 		}
 
 

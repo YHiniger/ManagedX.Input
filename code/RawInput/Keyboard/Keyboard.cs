@@ -114,14 +114,16 @@ namespace ManagedX.Input
 		protected sealed override KeyboardState GetState()
 		{
 			var buffer = new byte[ 256 ];
-			if( !( base.IsDisconnected = !SafeNativeMethods.GetKeyboardState( buffer ) ) )
-				return new KeyboardState( buffer );
+			if( !SafeNativeMethods.GetKeyboardState( buffer ) )
+			{
+				var errorCode = Marshal.GetLastWin32Error();
+				base.IsDisconnected = true;
+				if( errorCode == (int)Win32.ErrorCode.NotConnected )
+					return KeyboardState.Empty;
+				throw new Win32Exception( "Failed to retrieve keyboard state.", GetException( errorCode ) );
+			}
 
-			var lastException = NativeMethods.GetExceptionForLastWin32Error();
-			if( lastException.HResult == (int)Win32.ErrorCode.NotConnected )
-				return KeyboardState.Empty;
-
-			throw new Win32Exception( "Failed to retrieve keyboard state.", lastException );
+			return new KeyboardState( buffer );
 		}
 
 

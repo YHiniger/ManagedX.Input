@@ -13,23 +13,23 @@ namespace ManagedX.Input.Raw
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645578%28v=vs.85%29.aspx</remarks>
 	[Win32.Source( "WinUser.h", "RAWMOUSE" )]
 	[System.Diagnostics.DebuggerStepThrough]
-	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 24 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 24 )]
 	public struct RawMouse : IEquatable<RawMouse>
 	{
 
 		/// <summary>The mouse state.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public readonly RawMouseStateIndicators State;
+		// NOTE - the native structure declares an USHORT, but due to the 4-byte alignment (packing), it adds a padding USHORT after the state flags.
+		// So I defined RawMouseStateIndicators as a 32-bit signed integer to cover that padding USHORT.
+
+		private readonly int buttons;
 
 		/// <summary>The transition state of the mouse buttons.</summary>
-		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
-		public readonly RawMouseButtonStateIndicators ButtonsState; // usButtonFlags
+		public RawMouseButtonStateIndicators ButtonsState => (RawMouseButtonStateIndicators)( buttons & 0x0000FFFF );
 
-		/// <summary>If <see cref="ButtonsState"/> is <see cref="RawMouseButtonStateIndicators.Wheel"/>, indicates the wheel delta.</summary>
-		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
-		public readonly short WheelDelta;   // usButtonData
-
-		private readonly short __padding__; // no idea why but we need this
+		/// <summary>If <see cref="ButtonsState"/> indicates <see cref="RawMouseButtonStateIndicators.Wheel"/>, gets the wheel delta.</summary>
+		public int WheelDelta => buttons >> 16;
 
 		/// <summary>The raw state of the mouse buttons.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
@@ -51,7 +51,7 @@ namespace ManagedX.Input.Raw
 		/// <returns>Returns a hash code for this <see cref="RawMouse"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return (int)State ^ (int)ButtonsState ^ (int)WheelDelta ^ RawButtons ^ Motion.GetHashCode() ^ ExtraInformation;
+			return (int)State ^ buttons ^ RawButtons ^ Motion.GetHashCode() ^ ExtraInformation;
 		}
 
 

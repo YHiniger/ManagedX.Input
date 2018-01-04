@@ -28,12 +28,12 @@ namespace ManagedX.Input.Raw
 			: base( controllerIndex )
 		{
 			deviceHandle = descriptor.DeviceHandle;
-			deviceName = NativeMethods.GetRawInputDeviceName( deviceHandle );
+			deviceName = RawInputDeviceManager.GetRawInputDeviceName( deviceHandle );
 
-			Info = NativeMethods.GetRawInputDeviceInfo( deviceHandle, false );
+			Info = RawInputDeviceManager.GetRawInputDeviceInfo( deviceHandle, false );
 
 			if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
-				displayName = NativeMethods.GetHIDProductString( deviceName );
+				displayName = RawInputDeviceManager.GetHIDProductString( deviceName );
 			else
 			{
 				// Mice and keyboards seem to require this:
