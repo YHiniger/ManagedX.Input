@@ -13,7 +13,7 @@ namespace ManagedX.Input
 	public sealed class Mouse : RawInputDevice<MouseState, MouseButton>
 	{
 
-		private const int MaxSupportedMice = 4; // FIXME - actually this should be set to 2
+		//private const int MaxSupportedMice = 4; // FIXME - actually this should be set to 2
 
 		/// <summary>Defines the maximum number of supported mouse buttons: 5.</summary>
 		public const int MaxSupportedButtonCount = 5;
@@ -168,7 +168,7 @@ namespace ManagedX.Input
 					if( errorCode == (int)Win32.ErrorCode.NotConnected )
 						cursorInfo = CursorInfo.Default;
 					else
-						throw new ManagedXException( "Failed to retrieve mouse cursor position.", GetException( errorCode ) );
+						throw new Win32Exception( "Failed to retrieve mouse cursor position.", GetException( errorCode ) );
 				}
 				return cursorInfo;
 			}
@@ -223,18 +223,13 @@ namespace ManagedX.Input
 
 
 
-		internal MouseState State;		// TODO - make this internal and get rid of: motionDelta, wheelDelta and buttons (all other internal fields).
-		private int wheelValue;
-		private MouseDeviceInfo info;
+		private int wheel;
 
 
 
-		internal Mouse( int controllerIndex, ref RawInputDeviceDescriptor descriptor )
-			: base( controllerIndex, ref descriptor )
+		internal Mouse( ref RawInputDeviceDescriptor descriptor )
+			: base( ref descriptor )
 		{
-			//if( base.Index >= MaxSupportedMice )
-			//	throw new ArgumentOutOfRangeException( "controllerIndex" );
-
 			this.Reset( TimeSpan.Zero );
 		}
 
@@ -245,11 +240,11 @@ namespace ManagedX.Input
 		protected sealed override void Reset( TimeSpan time )
 		{
 			State.Motion = Point.Zero;
-			wheelValue = 0;
+			State.Wheel = State.HorizontalWheel = 0;
+
+			wheel = 0;
 
 			base.Reset( time );
-
-			info = base.Info.MouseInfo;
 		}
 
 
@@ -260,7 +255,10 @@ namespace ManagedX.Input
 		/// <exception cref="Win32Exception"/>
 		protected sealed override MouseState GetState()
 		{
-			wheelValue += State.Wheel / 120;
+			State.Wheel /= 120;
+			State.HorizontalWheel /= 120;
+
+			wheel += State.Wheel;
 
 			var output = new MouseState()
 			{
@@ -270,7 +268,7 @@ namespace ManagedX.Input
 				Buttons = State.Buttons
 			};
 
-			State.Motion.Y = State.Motion.X = State.Wheel = 0;
+			State.Motion.Y = State.Motion.X = State.Wheel = State.HorizontalWheel = 0;
 			return output;
 		}
 
@@ -302,29 +300,13 @@ namespace ManagedX.Input
 		/// <summary>Gets or sets the cumulated wheel value.</summary>
 		public int WheelValue
 		{
-			get => wheelValue;
-			set => wheelValue = value;
+			get => wheel;
+			set => wheel = value;
 		}
 
 
-		#region Device info
-
-		/// <summary>Gets the identifier of this <see cref="Mouse"/> device.</summary>
-		public int Id => info.Id;
-
-
-		/// <summary>Gets the number of buttons of this <see cref="Mouse"/>.</summary>
-		public int ButtonCount => info.ButtonCount;
-
-
-		/// <summary>Gets a value indicating whether this <see cref="Mouse"/> device has an horizontal scroll wheel.</summary>
-		public bool HasHorizontalWheel => info.HasHorizontalWheel;
-
-
-		/// <summary>Gets the number of data points per second; this information may not be applicable to every <see cref="Mouse"/> devices.</summary>
-		public int SampleRate => info.SampleRate;
-
-		#endregion Device info
+		/// <summary>Gets a description of this <see cref="Mouse"/>.</summary>
+		public MouseDeviceInfo Description => base.MouseInfo;
 
 	}
 

@@ -13,6 +13,7 @@ namespace ManagedX.Input.XInput
 		public const int MaxControllerCount = 4;
 
 
+		private readonly GameControllerIndex index;
 		private DeadZoneMode deadZoneMode;
 		private bool isDisabled;
 
@@ -21,8 +22,9 @@ namespace ManagedX.Input.XInput
 		/// <summary>Instantiates a new XInput <see cref="GameController"/>.</summary>
 		/// <param name="controllerIndex">The game controller index.</param>
 		internal GameController( GameControllerIndex controllerIndex )
-			: base( (int)controllerIndex )
+			: base()
 		{
+			index = controllerIndex;
 			deadZoneMode = DeadZoneMode.Circular;
 			
 			this.Reset( TimeSpan.Zero );
@@ -35,7 +37,7 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Gets the friendly name of this <see cref="GameController"/>.</summary>
-		public sealed override string DisplayName => Properties.Resources.GameController + " " + ( base.Index + 1 );
+		public sealed override string DisplayName => Properties.Resources.GameController + " " + ( (int)index + 1 );
 
 
 		/// <summary>Returns a value indicating whether a button is pressed in the current state, but was released in the previous state.</summary>
@@ -57,7 +59,7 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Gets the index of this <see cref="GameController"/>.</summary>
-		new public GameControllerIndex Index => (GameControllerIndex)base.Index;
+		public GameControllerIndex Index => index;
 
 
 		/// <summary>Raised when the game controller is connected.</summary>
@@ -65,10 +67,10 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Raises the <see cref="Connected"/> or Disconnected event.</summary>
-		protected sealed override void OnDisconnectedChanged()
+		protected sealed override void OnDisconnected()
 		{
 			if( base.IsDisconnected )
-				base.OnDisconnectedChanged();
+				base.OnDisconnected();
 			else
 				this.Connected?.Invoke( this, EventArgs.Empty );
 		}

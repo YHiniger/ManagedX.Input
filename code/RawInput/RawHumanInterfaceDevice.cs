@@ -11,36 +11,12 @@ namespace ManagedX.Input.Raw
 	{
 
 
-		private HumanInterfaceDeviceInfo info;
-
-
-
-		internal RawHumanInterfaceDevice( int controllerIndex, ref RawInputDeviceDescriptor descriptor )
-			: base( controllerIndex, ref descriptor )
+		internal RawHumanInterfaceDevice( ref RawInputDeviceDescriptor descriptor )
+			: base( ref descriptor )
 		{
 			this.Reset( TimeSpan.Zero );
 		}
 
-
-
-		#region Device info
-
-		/// <summary>Gets the vendor identifier of the HID.</summary>
-		public int VendorId => info.VendorId;
-
-
-		/// <summary>Gets the product identifier of the HID.</summary>
-		public int ProductId => info.ProductId;
-
-
-		/// <summary>Gets the version number for the HID.</summary>
-		public int Version => info.VersionNumber;
-
-
-		/// <summary>Gets the top-level collection (TLC usage page and usage) for the HID.</summary>
-		public TopLevelCollectionUsage TopLevelCollection => info.TopLevelCollection;
-
-		#endregion Device info
 
 
 		/// <summary>Retrieves the device state and returns it.
@@ -76,9 +52,12 @@ namespace ManagedX.Input.Raw
 		protected sealed override void Reset( TimeSpan time )
 		{
 			base.Reset( time );
-
-			info = base.Info.HumanInterfaceDeviceInfo;
 		}
+
+
+
+		/// <summary>Gets a description of this <see cref="RawHumanInterfaceDevice"/>.</summary>
+		public HumanInterfaceDeviceInfo Description => base.HumanInterfaceDeviceInfo;
 
 	}
 

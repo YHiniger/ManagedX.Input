@@ -16,21 +16,19 @@ namespace ManagedX.Input.Raw
 		private readonly IntPtr deviceHandle;
 		private readonly string deviceName;
 		private readonly string displayName;
-		internal readonly DeviceInfo Info;
+		private DeviceInfo info;
+		internal TState State;
 
 
 
 		/// <summary>Constructor.</summary>
-		/// <param name="controllerIndex">The index of the device; must be unique per device type (<see cref="InputDeviceType"/>), and at least equal to 0.</param>
 		/// <param name="descriptor">A descriptor for the device.</param>
 		/// <exception cref="ArgumentOutOfRangeException"/>
-		internal RawInputDevice( int controllerIndex, ref RawInputDeviceDescriptor descriptor )
-			: base( controllerIndex )
+		internal RawInputDevice( ref RawInputDeviceDescriptor descriptor )
+			: base()
 		{
 			deviceHandle = descriptor.DeviceHandle;
 			deviceName = RawInputDeviceManager.GetRawInputDeviceName( deviceHandle );
-
-			Info = RawInputDeviceManager.GetRawInputDeviceInfo( deviceHandle, false );
 
 			if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
 				displayName = RawInputDeviceManager.GetHIDProductString( deviceName );
@@ -46,7 +44,7 @@ namespace ManagedX.Input.Raw
 
 
 		/// <summary>Gets a value indicating the type of this raw input device.</summary>
-		public sealed override InputDeviceType DeviceType => Info.DeviceType;
+		public sealed override InputDeviceType DeviceType => info.DeviceType;
 
 
 		/// <summary>Gets the display name of this raw input device.</summary>
@@ -59,6 +57,23 @@ namespace ManagedX.Input.Raw
 
 		/// <summary>Gets the device name of this raw input device.</summary>
 		public string DeviceName => string.Copy( deviceName ?? string.Empty );
+
+
+		/// <summary>Reads the device state through GetState, and copies it to the PreviousState and the CurrentState.
+		/// <para>This method must be called in the constructor of the "final classes" for proper initialization.</para>
+		/// </summary>
+		/// <param name="time">The time elapsed since the start of the application.</param>
+		protected override void Reset( TimeSpan time )
+		{
+			info = RawInputDeviceManager.GetRawInputDeviceInfo( deviceHandle, false );
+
+			base.Reset( time );
+		}
+
+
+		internal MouseDeviceInfo MouseInfo => info.MouseInfo;
+		internal KeyboardDeviceInfo KeyboardInfo => info.KeyboardInfo;
+		internal HumanInterfaceDeviceInfo HumanInterfaceDeviceInfo => info.HumanInterfaceDeviceInfo;
 
 	}
 

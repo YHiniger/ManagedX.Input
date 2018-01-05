@@ -13,32 +13,32 @@ namespace ManagedX.Input
 	public sealed class Keyboard : RawInputDevice<KeyboardState, Key>
 	{
 
-		private const int MaxSupportedKeyboards = 4;    // FIXME - should be 2
+		//private const int MaxSupportedKeyboards = 4;    // FIXME - should be 2
 
 
-		[Win32.Source( "WinUser.h" )]
-		[SuppressUnmanagedCodeSecurity]
-		private static class SafeNativeMethods
-		{
+		//[Win32.Source( "WinUser.h" )]
+		//[SuppressUnmanagedCodeSecurity]
+		//private static class SafeNativeMethods
+		//{
 
-			private const string LibraryName = "User32.dll";
-			// WinUser.h
+		//	private const string LibraryName = "User32.dll";
+		//	// WinUser.h
 
 
-			/// <summary>Copies the status of the 256 virtual keys to the specified buffer.</summary>
-			/// <param name="state">Receives a 256-byte array containing the status data for each virtual key.</param>
-			/// <returns>Returns true on success, otherwise returns false.</returns>
-			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
-			[return: MarshalAs( UnmanagedType.Bool )]
-			internal static extern bool GetKeyboardState(
-				[Out, MarshalAs( UnmanagedType.LPArray, SizeConst = 256 )] byte[] state
-			);
-			// https://msdn.microsoft.com/en-us/library/windows/desktop/ms646299%28v=vs.85%29.aspx
-			//BOOL GetKeyboardState(
-			//	_Out_writes_(256) PBYTE lpKeyState
-			//);
+		//	/// <summary>Copies the status of the 256 virtual keys to the specified buffer.</summary>
+		//	/// <param name="state">Receives a 256-byte array containing the status data for each virtual key.</param>
+		//	/// <returns>Returns true on success, otherwise returns false.</returns>
+		//	[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
+		//	[return: MarshalAs( UnmanagedType.Bool )]
+		//	internal static extern bool GetKeyboardState(
+		//		[Out, MarshalAs( UnmanagedType.LPArray, SizeConst = 256 )] byte[] state
+		//	);
+		//	// https://msdn.microsoft.com/en-us/library/windows/desktop/ms646299%28v=vs.85%29.aspx
+		//	//BOOL GetKeyboardState(
+		//	//	_Out_writes_(256) PBYTE lpKeyState
+		//	//);
 
-		}
+		//}
 
 
 		///// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
@@ -67,16 +67,9 @@ namespace ManagedX.Input
 
 
 
-		private KeyboardDeviceInfo info;
-
-
-		
-		internal Keyboard( int controllerIndex, ref RawInputDeviceDescriptor descriptor )
-			: base( controllerIndex, ref descriptor )
+		internal Keyboard( ref RawInputDeviceDescriptor descriptor )
+			: base( ref descriptor )
 		{
-			//if( base.Index >= MaxSupportedKeyboards )
-			//	throw new ArgumentOutOfRangeException( "controllerIndex" );
-
 			this.Reset( TimeSpan.Zero );
 		}
 
@@ -113,17 +106,16 @@ namespace ManagedX.Input
 		/// <exception cref="Win32Exception"/>
 		protected sealed override KeyboardState GetState()
 		{
-			var buffer = new byte[ 256 ];
-			if( !SafeNativeMethods.GetKeyboardState( buffer ) )
-			{
-				var errorCode = Marshal.GetLastWin32Error();
-				base.IsDisconnected = true;
-				if( errorCode == (int)Win32.ErrorCode.NotConnected )
-					return KeyboardState.Empty;
-				throw new Win32Exception( "Failed to retrieve keyboard state.", GetException( errorCode ) );
-			}
+			//if( !SafeNativeMethods.GetKeyboardState( State.Data ) )
+			//{
+			//	var errorCode = Marshal.GetLastWin32Error();
+			//	base.IsDisconnected = true;
+			//	if( errorCode == (int)Win32.ErrorCode.NotConnected )
+			//		return KeyboardState.Empty;
+			//	throw new Win32Exception( "Failed to retrieve keyboard state.", GetException( errorCode ) );
+			//}
 
-			return new KeyboardState( buffer );
+			return new KeyboardState( State.Data );
 		}
 
 
@@ -131,38 +123,14 @@ namespace ManagedX.Input
 		/// <param name="time">The time elapsed since the start of the application.</param>
 		protected sealed override void Reset( TimeSpan time )
 		{
-			base.Reset( time );
+			State = KeyboardState.Empty;
 
-			info = base.Info.KeyboardInfo;
+			base.Reset( time );
 		}
 
 
-		#region Device info
-
-		/// <summary>Gets the number of function keys present on this <see cref="Keyboard"/>.</summary>
-		public int FunctionKeyCount => info.FunctionKeyCount;
-
-
-		/// <summary>Gets the number of LED indicators present on this <see cref="Keyboard"/>.</summary>
-		public int IndicatorCount => info.IndicatorCount;
-
-
-		/// <summary>Gets the type of this <see cref="Keyboard"/>.</summary>
-		public int KeyboardType => info.KeyboardType;
-		
-
-		/// <summary>Gets the sub-type of this <see cref="Keyboard"/>.</summary>
-		public int KeyboardSubtype => info.KeyboardSubtype;
-		
-		
-		/// <summary>Gets the scan code mode of this <see cref="Keyboard"/>.</summary>
-		public int Mode => info.Mode;
-
-		
-		/// <summary>Gets the total number of keys present of this <see cref="Keyboard"/>.</summary>
-		public int TotalKeyCount => info.TotalKeyCount;
-
-		#endregion Device info
+		/// <summary>Gets a description of this <see cref="Keyboard"/>.</summary>
+		public KeyboardDeviceInfo Description => base.KeyboardInfo;
 
 	}
 

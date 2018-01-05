@@ -20,11 +20,8 @@ namespace ManagedX.Input
 
 
 
-		/// <summary>Constructor.</summary>
-		/// <param name="controllerIndex">The index of the device; must be unique per device type (<see cref="InputDeviceType"/>), and at least equal to 0.</param>
-		/// <exception cref="ArgumentOutOfRangeException"/>
-		internal InputDevice( int controllerIndex )
-			: base( controllerIndex )
+		internal InputDevice()
+			: base()
 		{
 		}
 

@@ -17,25 +17,14 @@ namespace ManagedX.Input
 
 
 
-		private readonly int index;
 		private bool isDisconnected;
 
 
 
-		/// <summary>Constructor.</summary>
-		/// <param name="controllerIndex">The index of the device; must be unique per device type (<see cref="InputDeviceType"/>), and at least equal to 0.</param>
-		/// <exception cref="ArgumentOutOfRangeException"/>
-		internal InputDevice( int controllerIndex )
+		internal InputDevice()
 		{
-			if( controllerIndex < 0 )
-				throw new ArgumentOutOfRangeException( "controllerIndex" );
-			index = controllerIndex;
 		}
 
-
-
-		/// <summary>Gets the index of this <see cref="InputDevice"/>.</summary>
-		public int Index => index;
 
 
 		/// <summary>When overridden, gets a value indicating the type of the <see cref="InputDevice"/>.</summary>
@@ -52,10 +41,9 @@ namespace ManagedX.Input
 		/// <summary>Raises the <see cref="Disconnected"/> event.
 		/// <para>Called when the value of <see cref="IsDisconnected"/> changed.</para>
 		/// </summary>
-		protected virtual void OnDisconnectedChanged()
+		protected virtual void OnDisconnected()
 		{
-			if( isDisconnected )
-				this.Disconnected?.Invoke( this, EventArgs.Empty );
+			this.Disconnected?.Invoke( this, EventArgs.Empty );
 		}
 
 
@@ -63,12 +51,13 @@ namespace ManagedX.Input
 		public bool IsDisconnected
 		{
 			get => isDisconnected;
-			protected set
+			internal set
 			{
 				if( value != isDisconnected )
 				{
 					isDisconnected = value;
-					this.OnDisconnectedChanged();
+					if( isDisconnected )
+						this.OnDisconnected();
 				}
 			}
 		}

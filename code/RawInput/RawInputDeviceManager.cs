@@ -11,10 +11,68 @@ using Microsoft.Win32.SafeHandles;
 
 namespace ManagedX.Input.Raw
 {
+	using Win32;
+
 
 	/// <summary>The RawInput device manager.</summary>
 	public static class RawInputDeviceManager
 	{
+
+		/// <summary>Options for the <see cref="NativeMethods.RegisterDeviceNotificationW"/> function.</summary>
+		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/aa363431%28v=vs.85%29.aspx</remarks>
+		[Flags]
+		private enum RegisterDeviceNotificationOptions : int
+		{
+
+			/// <summary>The handle parameter is a window handle.</summary>
+			[Source( "WinUser.h", "DEVICE_NOTIFY_WINDOW_HANDLE" )]
+			WindowHandle = 0x00000000,
+
+			/// <summary>The handle parameter is a service status handle.</summary>
+			[Source( "WinUser.h", "DEVICE_NOTIFY_SERVICE_HANDLE" )]
+			ServiceHandle = 0x00000001,
+
+
+			/// <summary>Notifies the recipient of device interface events for all device interface classes (the dbcc_classguid member is ignored).
+			/// <para>This value can be used only if the dbch_devicetype member is DBT_DEVTYP_DEVICEINTERFACE.</para>
+			/// </summary>
+			[Source( "WinUser.h", "DEVICE_NOTIFY_ALL_INTERFACE_CLASSES" )]
+			AllInterfaceClasses = 0x00000004,
+
+		}
+
+
+
+		///// <summary></summary>
+		///// <param name="windowHandle"></param>
+		///// <param name="header"></param>
+		///// <param name="allInterfaceClasses"></param>
+		///// <returns></returns>
+		//public static IntPtr RegisterWindowDeviceNotification( IntPtr windowHandle, DeviceBroadcastHeader header, bool allInterfaceClasses )
+		//{
+		//	var options = RegisterDeviceNotificationOptions.WindowHandle;
+		//	if( allInterfaceClasses )
+		//		options |= RegisterDeviceNotificationOptions.AllInterfaceClasses;
+
+		//	return NativeMethods.RegisterDeviceNotificationW( windowHandle, header, options );
+		//}
+
+
+		///// <summary></summary>
+		///// <param name="serviceHandle"></param>
+		///// <param name="header"></param>
+		///// <param name="allInterfaceClasses"></param>
+		///// <returns></returns>
+		//public static IntPtr RegisterServiceDeviceNotification( IntPtr serviceHandle, DeviceBroadcastHeader header, bool allInterfaceClasses )
+		//{
+		//	var options = RegisterDeviceNotificationOptions.ServiceHandle;
+		//	if( allInterfaceClasses )
+		//		options |= RegisterDeviceNotificationOptions.AllInterfaceClasses;
+
+		//	return NativeMethods.RegisterDeviceNotificationW( serviceHandle, header, options );
+		//}
+
+
 
 		[System.Security.SuppressUnmanagedCodeSecurity]
 		private static class NativeMethods
@@ -200,25 +258,34 @@ namespace ManagedX.Input.Raw
 			);
 
 
-			/// <summary></summary>
-			/// <param name="windowHandle"></param>
-			/// <param name="notificationFilter"></param>
-			/// <param name="flags"></param>
-			/// <returns></returns>
+			/// <summary>Registers the device or type of device for which a window will receive notifications.</summary>
+			/// <param name="handle">A handle to the window or service that will receive device events for the devices specified in the NotificationFilter parameter.
+			/// The same window handle can be used in multiple calls to RegisterDeviceNotification.
+			/// <para>Services can specify either a window handle or service status handle.</para>
+			/// </param>
+			/// <param name="notificationFilter">A pointer to a block of data that specifies the type of device for which notifications should be sent. This block always begins with the DEV_BROADCAST_HDR structure. The data following this header is dependent on the value of the dbch_devicetype member, which can be DBT_DEVTYP_DEVICEINTERFACE or DBT_DEVTYP_HANDLE.</param>
+			/// <param name="options"></param>
+			/// <returns>
+			/// If the function succeeds, the return value is a device notification handle.
+			/// If the function fails, the return value is NULL. To get extended error information, call GetLastError.
+			/// </returns>
 			/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/aa363431%28v=vs.85%29.aspx</remarks>
-			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
 			extern internal static IntPtr RegisterDeviceNotificationW(
-				[In] IntPtr windowHandle,
-				[In] object notificationFilter, // FIXME - DeviceNotificationBase
-				[In] int flags
+				[In] IntPtr handle,
+				[In] DeviceBroadcastHeader notificationFilter,
+				[In] RegisterDeviceNotificationOptions options
 			);
 
 
-			/// <summary></summary>
-			/// <param name="deviceNotificationHandle"></param>
-			/// <returns></returns>
+			/// <summary>Closes the specified device notification handle.</summary>
+			/// <param name="deviceNotificationHandle">Device notification handle returned by the <see cref="RegisterDeviceNotificationW"/> function.</param>
+			/// <returns>
+			/// If the function succeeds, the return value is nonzero.
+			/// If the function fails, the return value is zero. To get extended error information, call GetLastError.
+			/// </returns>
 			/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/aa363475%28v=vs.85%29.aspx</remarks>
-			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
 			[return: MarshalAs( UnmanagedType.Bool )]
 			extern internal static bool UnregisterDeviceNotification(
 				[In] IntPtr deviceNotificationHandle
@@ -370,9 +437,6 @@ namespace ManagedX.Input.Raw
 					var errorCode = Marshal.GetLastWin32Error();
 					throw new Win32Exception( "Failed to retrieve raw input data.", InputDevice.GetException( errorCode ) );
 				}
-
-				if( count != inputSize )
-					throw new InvalidOperationException( "Bad implementation of GetRawInputData." );
 			}
 		}
 
@@ -576,123 +640,32 @@ namespace ManagedX.Input.Raw
 
 		private static void Initialize()
 		{
-			var keyboardIndex = 0;
-			var mouseIndex = 0;
-			var hidIndex = 0;
-
 			var descriptors = GetRawInputDeviceList();
 			for( var d = 0; d < descriptors.Length; ++d )
 			{
 				var descriptor = descriptors[ d ];
 				if( descriptor.DeviceType == InputDeviceType.Mouse )
 				{
-					//if( mouseIndex == 4 )
-					//	continue;
-					var m = new Mouse( mouseIndex++, ref descriptor );
-					if( !m.IsDisconnected )
-					{
-						mice.Add( m );
-						m.Disconnected += OnMouseDisconnected;
-					}
+					var m = new Mouse( ref descriptor );
+					mice.Add( m );
+					m.Disconnected += OnMouseDisconnected;
 				}
 				else if( descriptor.DeviceType == InputDeviceType.Keyboard )
 				{
-					//if( keyboardIndex == 4 )
-					//	continue;
-					var k = new Keyboard( keyboardIndex++, ref descriptor );
-					if( !k.IsDisconnected )
-					{
-						keyboards.Add( k );
-						k.Disconnected += OnKeyboardDisconnected;
-					}
+					var k = new Keyboard( ref descriptor );
+					keyboards.Add( k );
+					k.Disconnected += OnKeyboardDisconnected;
 				}
 				else // if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
 				{
-					var h = new RawHumanInterfaceDevice( hidIndex++, ref descriptor );
-					if( !h.IsDisconnected )
-					{
-						otherDevices.Add( h );
-						h.Disconnected += OnHIDDisconnected;
-					}
+					var h = new RawHumanInterfaceDevice( ref descriptor );
+					otherDevices.Add( h );
+					h.Disconnected += OnHIDDisconnected;
 				}
 			}
 
 			isInitialized = true;
 		}
-
-
-		#region Keyboard
-
-		/// <summary>Gets the keyboard.</summary>
-		public static Keyboard Keyboard
-		{
-			get
-			{
-				if( !isInitialized )
-					Initialize();
-
-				if( keyboards.Count > 0 )
-					return keyboards[ 0 ];
-
-				return null;
-			}
-		}
-
-
-		/// <summary>Gets the keyboards.</summary>
-		public static ReadOnlyCollection<Keyboard> Keyboards
-		{
-			get
-			{
-				if( !isInitialized )
-					Initialize();
-
-				return new ReadOnlyCollection<Keyboard>( keyboards );
-			}
-		}
-
-
-		/// <summary>Returns a keyboard given its device name.</summary>
-		/// <param name="deviceName">The device name of the requested keyboard.</param>
-		/// <returns>Returns the requested keyboard, or null.</returns>
-		/// <exception cref="ArgumentNullException"/>
-		/// <exception cref="ArgumentException"/>
-		public static Keyboard GetKeyboardByDeviceName( string deviceName )
-		{
-			if( string.IsNullOrWhiteSpace( deviceName ) )
-			{
-				if( deviceName == null )
-					throw new ArgumentNullException( "deviceName" );
-				throw new ArgumentException( "Invalid device name.", "deviceName" );
-			}
-
-			if( !isInitialized )
-				Initialize();
-
-			for( var k = 0; k < keyboards.Count; ++k )
-				if( keyboards[ k ].DeviceName.Equals( deviceName, StringComparison.Ordinal ) )
-					return keyboards[ k ];
-
-			return null;
-		}
-
-
-		/// <summary>Returns a keyboard given its handle.</summary>
-		/// <param name="deviceHandle">The handle of the requested keyboard.</param>
-		/// <returns>Returns the requested keyboard, or null.</returns>
-		public static Keyboard GetKeyboardByDeviceHandle( IntPtr deviceHandle )
-		{
-			if( !isInitialized )
-				Initialize();
-
-			for( var k = 0; k < keyboards.Count; ++k )
-				if( keyboards[ k ].DeviceHandle == deviceHandle )
-					return keyboards[ k ];
-
-			return null;
-		}
-
-		#endregion Keyboard
 
 
 		#region Mouse
@@ -766,7 +739,107 @@ namespace ManagedX.Input.Raw
 			return null;
 		}
 
+
+		/// <summary>Returns a mouse given its id.</summary>
+		/// <param name="id">The id of the requested mouse.</param>
+		/// <returns>Returns the mouse with the corresponding id, or null if no mouse matches.</returns>
+		public static Mouse GetMouseById( int id )
+		{
+			for( var m = 0; m < mice.Count; ++m )
+			{
+				if( mice[ m ].Description.Id == id )
+					return mice[ m ];
+			}
+			return null;
+		}
+
+
+		/// <summary>Raised when a mouse is connected to the system.
+		/// <para>Requires mice to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
+		/// </summary>
+		public static event EventHandler MouseConnected;
+
 		#endregion Mouse
+
+
+		#region Keyboard
+
+		/// <summary>Gets the keyboard.</summary>
+		public static Keyboard Keyboard
+		{
+			get
+			{
+				if( !isInitialized )
+					Initialize();
+
+				if( keyboards.Count > 0 )
+					return keyboards[ 0 ];
+
+				return null;
+			}
+		}
+
+
+		/// <summary>Gets the keyboards.</summary>
+		public static ReadOnlyCollection<Keyboard> Keyboards
+		{
+			get
+			{
+				if( !isInitialized )
+					Initialize();
+
+				return new ReadOnlyCollection<Keyboard>( keyboards );
+			}
+		}
+
+
+		/// <summary>Returns a keyboard given its device name.</summary>
+		/// <param name="deviceName">The device name of the requested keyboard.</param>
+		/// <returns>Returns the requested keyboard, or null.</returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ArgumentException"/>
+		public static Keyboard GetKeyboardByDeviceName( string deviceName )
+		{
+			if( string.IsNullOrWhiteSpace( deviceName ) )
+			{
+				if( deviceName == null )
+					throw new ArgumentNullException( "deviceName" );
+				throw new ArgumentException( "Invalid device name.", "deviceName" );
+			}
+
+			if( !isInitialized )
+				Initialize();
+
+			for( var k = 0; k < keyboards.Count; ++k )
+				if( keyboards[ k ].DeviceName.Equals( deviceName, StringComparison.Ordinal ) )
+					return keyboards[ k ];
+
+			return null;
+		}
+
+
+		/// <summary>Returns a keyboard given its handle.</summary>
+		/// <param name="deviceHandle">The handle of the requested keyboard.</param>
+		/// <returns>Returns the requested keyboard, or null.</returns>
+		public static Keyboard GetKeyboardByDeviceHandle( IntPtr deviceHandle )
+		{
+			if( !isInitialized )
+				Initialize();
+
+			for( var k = 0; k < keyboards.Count; ++k )
+				if( keyboards[ k ].DeviceHandle == deviceHandle )
+					return keyboards[ k ];
+
+			return null;
+		}
+
+
+		/// <summary>Raised when a keyboard is connected to the system.
+		/// <para>Requires keyboards to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
+		/// </summary>
+		public static event EventHandler KeyboardConnected;
+
+		#endregion Keyboard
 
 
 		#region HID
@@ -894,69 +967,91 @@ namespace ManagedX.Input.Raw
 		}
 
 
+		private static bool ProcessMouseInputMessage( ref RawInput input )
+		{
+			var mouse = GetMouseByDeviceHandle( input.Header.DeviceHandle );
+			if( mouse == null )
+				return false;   // TODO - re-enumerate devices !
+
+			if( input.Mouse.State.HasFlag( RawMouseStateIndicators.AttributesChanged ) )
+			{
+				// TODO - what are those attributes ?
+			}
+
+			if( input.Mouse.State.HasFlag( RawMouseStateIndicators.MoveAbsolute ) )
+				mouse.State.Motion = input.Mouse.Motion; // THINKABOUTME - this might be a problem...
+			else
+				mouse.State.Motion += input.Mouse.Motion;
+
+			var buttonsState = input.Mouse.ButtonsState;
+			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.LeftButtonDown ) )
+				mouse.State.Buttons |= MouseButtons.Left;
+			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.LeftButtonUp ) )
+				mouse.State.Buttons &= ~MouseButtons.Left;
+
+			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.RightButtonDown ) )
+				mouse.State.Buttons |= MouseButtons.Right;
+			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.RightButtonUp ) )
+				mouse.State.Buttons &= ~MouseButtons.Right;
+
+			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.MiddleButtonDown ) )
+				mouse.State.Buttons |= MouseButtons.Middle;
+			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.MiddleButtonUp ) )
+				mouse.State.Buttons &= ~MouseButtons.Middle;
+
+			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton1Down ) )
+				mouse.State.Buttons |= MouseButtons.X1;
+			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton1Up ) )
+				mouse.State.Buttons &= ~MouseButtons.X1;
+
+			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton2Down ) )
+				mouse.State.Buttons |= MouseButtons.X2;
+			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton2Up ) )
+				mouse.State.Buttons &= ~MouseButtons.X2;
+
+			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.Wheel ) )
+				mouse.State.Wheel += input.Mouse.WheelDelta;
+			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.HorizontalWheel ) )
+				mouse.State.HorizontalWheel += input.Mouse.WheelDelta;
+
+			return true;
+		}
+
+
+		private static bool ProcessKeyboardMessage( ref RawInput input )
+		{
+			var keyboard = GetKeyboardByDeviceHandle( input.Header.DeviceHandle );
+			if( keyboard == null )
+				return false;
+
+			var state = input.Keyboard;
+			//if( ( state.MakeCodeInfo & 0x0001 ) == 0x0001 )
+			//{
+			//	// RI_KEY_BREAK
+			//}
+			//else
+			//{
+			//	// RI_KEY_MAKE
+			//}
+			//var e0 = ( state.MakeCodeInfo & 0x0002 ) == 0x0002;
+			//var e1 = ( state.MakeCodeInfo & 0x0004 ) == 0x0004;
+
+			if( state.Message == (int)WindowMessage.KeyDown )
+				keyboard.State.Data[ state.VirtualKey ] = 0x80;
+			else if( state.Message == (int)WindowMessage.KeyUp )
+				keyboard.State.Data[ state.VirtualKey ] = 0x00;
+
+			return true;
+		}
+
 		private static bool ProcessInputMessage( IntPtr rawInputHandle )
 		{
 			GetRawInputData( rawInputHandle, out RawInput input );
 
 			if( input.Header.DeviceType == InputDeviceType.Mouse )
-			{
-				var mouse = GetMouseByDeviceHandle( input.Header.DeviceHandle );
-				if( mouse == null )
-					return false;   // TODO - re-enumerate devices !
-
-				if( input.Mouse.State.HasFlag( RawMouseStateIndicators.AttributesChanged ) )
-				{
-					// TODO - what are those attributes ?
-				}
-
-				if( input.Mouse.State.HasFlag( RawMouseStateIndicators.MoveAbsolute ) )
-					mouse.State.Motion = input.Mouse.Motion;
-				else
-					mouse.State.Motion += input.Mouse.Motion;
-
-				var buttonsState = input.Mouse.ButtonsState;
-				if( buttonsState.HasFlag( RawMouseButtonStateIndicators.Wheel ) )
-					mouse.WheelValue += input.Mouse.WheelDelta / 120;
-
-				if( buttonsState.HasFlag( RawMouseButtonStateIndicators.HorizontalWheel ) )
-				{
-					//mouse.HorizontalWheelValue += input.Mouse.ExtraInformation / 120; ?
-				}
-
-				if( buttonsState.HasFlag( RawMouseButtonStateIndicators.LeftButtonDown ) )
-					mouse.State.Buttons |= MouseButtons.Left;
-				else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.LeftButtonUp ) )
-					mouse.State.Buttons &= ~MouseButtons.Left;
-
-				if( buttonsState.HasFlag( RawMouseButtonStateIndicators.RightButtonDown ) )
-					mouse.State.Buttons |= MouseButtons.Right;
-				else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.RightButtonUp ) )
-					mouse.State.Buttons &= ~MouseButtons.Right;
-
-				if( buttonsState.HasFlag( RawMouseButtonStateIndicators.MiddleButtonDown ) )
-					mouse.State.Buttons |= MouseButtons.Middle;
-				else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.MiddleButtonUp ) )
-					mouse.State.Buttons &= ~MouseButtons.Middle;
-
-				if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton1Down ) )
-					mouse.State.Buttons |= MouseButtons.X1;
-				else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton1Up ) )
-					mouse.State.Buttons &= ~MouseButtons.X1;
-
-				if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton2Down ) )
-					mouse.State.Buttons |= MouseButtons.X2;
-				else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton2Up ) )
-					mouse.State.Buttons &= ~MouseButtons.X2;
-			}
-			//else if( input.Header.DeviceType == InputDeviceType.Keyboard )
-			//{
-			//	var targetKeyboard = GetKeyboardByDeviceHandle( input.Header.DeviceHandle );
-			//	if( targetKeyboard == null )
-			//		return false;
-
-			//	var state = input.Keyboard;
-			//	// ...
-			//}
+				return ProcessMouseInputMessage( ref input );
+			else if( input.Header.DeviceType == InputDeviceType.Keyboard )
+				return ProcessKeyboardMessage( ref input );
 			//else if( input.Header.DeviceType == InputDeviceType.HumanInterfaceDevice )
 			//{
 			//	var targetHid = GetHIDByDeviceHandle( input.Header.DeviceHandle );
@@ -977,40 +1072,72 @@ namespace ManagedX.Input.Raw
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
 		public static bool ProcessWindowMessage( ref Message message )
 		{
-			if( message.Msg == (int)WindowMessage.InputDeviceChange )
-			{
-				var wParam = message.WParam.ToInt32();
-				if( wParam == 1 )
-				{
-					// Device arrival
-				}
-				else if( wParam == 2 )
-				{
-					// Device removal
-				}
-				// TODO - mark the device as disconnected on removal, otherwise initialize a new RawInputDevice.
-				return true;
-			}
-
-
 			if( message.Msg == (int)WindowMessage.Input )
 				return ProcessInputMessage( message.LParam );
 
-			/*
-			if( message.Msg == 522 ) // WindowMessage.MouseWheel
+			if( message.Msg == (int)WindowMessage.InputDeviceChange )
 			{
-				// the high-order short int [of WParam] indicates the wheel rotation distance, expressed in multiples or divisions of 120;
-				// the low-order short int indicates the virtual key code of buttons and various modifiers (Ctrl, Shift) which are currently down (pressed).
-				// LParam indicates the x (low-order) and y (high-order) coordinate of the cursor; we don't need this here.
+				var wParam = message.WParam.ToInt32();
+				if( wParam == 1 )       // device arrival
+				{
+					var deviceName = GetRawInputDeviceName( message.LParam );
+					var deviceList = GetRawInputDeviceList();
+					for( var d = 0; d < deviceList.Length; ++d )
+					{
+						var dev = deviceList[ d ];
+						if( dev.DeviceType == InputDeviceType.Mouse )
+						{
+							if( GetMouseByDeviceName( deviceName ) == null )
+							{
+								var mouse = new Mouse( ref dev );
+								mice.Add( mouse );
+								mouse.Disconnected += OnMouseDisconnected;
+								MouseConnected?.Invoke( null, EventArgs.Empty );
+								break;
+							}
+						}
+						else if( dev.DeviceType == InputDeviceType.Keyboard )
+						{
+							if( GetKeyboardByDeviceName( deviceName ) == null )
+							{
+								var keyboard = new Keyboard( ref dev );
+								keyboards.Add( keyboard );
+								keyboard.Disconnected += OnKeyboardDisconnected;
+								KeyboardConnected?.Invoke( null, EventArgs.Empty );
+								break;
+							}
+						}
+						else //if( desc.DeviceType == InputDeviceType.HumanInterfaceDevice )
+						{
+							if( GetHIDByDeviceName( deviceName ) == null )
+							{
+								var hid = new RawHumanInterfaceDevice( ref dev );
+								otherDevices.Add( hid );
+								hid.Disconnected += OnHIDDisconnected;
+								break;
+							}
+						}
+					}
+				}
+				else if( wParam == 2 )  // device removal
+				{
+					var device = GetDeviceByHandle( message.LParam );
+					if( device != null )
+					{
+						if( device.DeviceType == InputDeviceType.Mouse )
+							mice.Remove( (Mouse)device );
+						else if( device.DeviceType == InputDeviceType.Keyboard )
+							keyboards.Remove( (Keyboard)device );
+						else //if( device.DeviceType == InputDeviceType.HumanInterfaceDevice )
+							otherDevices.Remove( (RawHumanInterfaceDevice)device );
+						device.IsDisconnected = true;
+					}
+				}
 
-				var delta = (int)( message.WParam.ToInt64() & 0xFFFF0000L ) >> 16;
-				// works both on x64 and x86 platforms, unlike "message.WParam.ToInt32()" which causes an OverflowException.
+				//NativeMethods.DefRawInputProc( new RawInput[] { }, 1, Marshal.SizeOf<RawInputHeader>() );
 
-				mice[ 0 ].wheelDelta += delta;
-				// FIXME - how do we know which mouse had its wheel scrolled ?
 				return true;
 			}
-			*/
 
 			return false;
 		}

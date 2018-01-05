@@ -80,6 +80,7 @@
     <Compile Include="code\extensions\BinaryReaderExtensions.cs" />
     <Compile Include="code\extensions\BinaryWriterExtensions.cs" />
     <Compile Include="code\InputDevice.cs" />
+    <Compile Include="code\RawInput\enumerations\DeviceType.cs" />
     <Compile Include="code\RawInput\enumerations\GetDataCommand.cs" />
     <Compile Include="code\RawInput\enumerations\GetInfoCommand.cs" />
     <Compile Include="code\RawInput\enumerations\RawInputDeviceRegistrationOptions.cs" />
@@ -112,6 +113,8 @@
     <Compile Include="code\RawInput\structures\RawMouse.cs" />
     <Compile Include="code\InputDeviceType.cs" />
     <Compile Include="code\InputDevice_T.cs" />
+    <Compile Include="code\RawInput\WiP\DeviceBroadcastHeader.cs" />
+    <Compile Include="code\RawInput\WiP\DeviceBroadcastOEM.cs" />
     <Compile Include="code\XInput\AudioDeviceIds.cs" />
     <Compile Include="code\XInput\enums\DeviceSubtype.cs" />
     <Compile Include="code\XInput\enums\GamepadButtons.cs" />

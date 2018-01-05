@@ -36,20 +36,17 @@ namespace ManagedX.Input
 		/// <exception cref="InvalidEnumArgumentException"/>
 		public bool IsDown( Key key )
 		{
-			const byte DownMask = 0x80;
-
 			if( key == Key.None )
 				throw new InvalidEnumArgumentException( "key", (int)key, typeof( Key ) );
 
-			return ( Data[ (int)key ] & DownMask ) == DownMask;
+			return ( Data[ (int)key ] & 0x80 ) != 0;
 		}
 
 
 		[MethodImpl( MethodImplOptions.AggressiveInlining )]
 		private bool GetToggleableKeyState( Key key )
 		{
-			const byte ToggleMask = 0x01;
-			return ( Data[ (int)key ] & ToggleMask ) == ToggleMask;
+			return ( Data[ (int)key ] & 0x01 ) != 0;
 		}
 
 
