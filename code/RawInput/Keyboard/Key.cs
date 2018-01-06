@@ -286,44 +286,34 @@ namespace ManagedX.Input
 
 
 		/// <summary>The 0 key on the numeric keypad.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		NumPad0 = VirtualKeyCode.NumPad0,
+		Numpad0 = VirtualKeyCode.Numpad0,
 
 		/// <summary>The 1 key on the numeric keypad.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		NumPad1 = VirtualKeyCode.NumPad1,
+		Numpad1 = VirtualKeyCode.Numpad1,
 
 		/// <summary>The 2 key on the numeric keypad.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		NumPad2 = VirtualKeyCode.NumPad2,
+		Numpad2 = VirtualKeyCode.Numpad2,
 
 		/// <summary>The 3 key on the numeric keypad.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		NumPad3 = VirtualKeyCode.NumPad3,
+		Numpad3 = VirtualKeyCode.Numpad3,
 
 		/// <summary>The 4 key on the numeric keypad.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		NumPad4 = VirtualKeyCode.NumPad4,
+		Numpad4 = VirtualKeyCode.Numpad4,
 
 		/// <summary>The 5 key on the numeric keypad.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		NumPad5 = VirtualKeyCode.NumPad5,
+		Numpad5 = VirtualKeyCode.Numpad5,
 
 		/// <summary>The 6 key on the numeric keypad.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		NumPad6 = VirtualKeyCode.NumPad6,
+		Numpad6 = VirtualKeyCode.Numpad6,
 
 		/// <summary>The 7 key on the numeric keypad.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		NumPad7 = VirtualKeyCode.NumPad7,
+		Numpad7 = VirtualKeyCode.Numpad7,
 
 		/// <summary>The 8 key on the numeric keypad.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		NumPad8 = VirtualKeyCode.NumPad8,
+		Numpad8 = VirtualKeyCode.Numpad8,
 
 		/// <summary>The 9 key on the numeric keypad.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		NumPad9 = VirtualKeyCode.NumPad9,
+		Numpad9 = VirtualKeyCode.Numpad9,
 		
 		/// <summary>The MULTIPLY key.</summary>
 		Multiply = VirtualKeyCode.Multiply,
@@ -438,10 +428,10 @@ namespace ManagedX.Input
 		RControlKey = VirtualKeyCode.RControlKey,
 		
 		/// <summary>The left ALT key.</summary>
-		LMenu = VirtualKeyCode.LMenu,
+		LAlt = VirtualKeyCode.LMenu,
 		
 		/// <summary>The right ALT key.</summary>
-		RMenu = VirtualKeyCode.RMenu,
+		RAlt = VirtualKeyCode.RMenu,
 		
 		
 		/// <summary>The browser BACK key.</summary>
@@ -499,56 +489,56 @@ namespace ManagedX.Input
 		LaunchApplication2 = VirtualKeyCode.LaunchApplication2,
 
 		/// <summary>The OEM SEMICOLON key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		OemSemicolon = VirtualKeyCode.OemSemicolon,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEMSemicolon = VirtualKeyCode.OEMSemicolon,
 
 		/// <summary>The OEM PLUS key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		OemPlus = VirtualKeyCode.OemPlus,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEMPlus = VirtualKeyCode.OEMPlus,
 
 		/// <summary>The OEM COMMA key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		OemComma = VirtualKeyCode.OemComma,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEMComma = VirtualKeyCode.OEMComma,
 
 		/// <summary>The OEM MINUS key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		OemMinus = VirtualKeyCode.OemMinus,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEMMinus = VirtualKeyCode.OEMMinus,
 
 		/// <summary>The OEM PERIOD key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		OemPeriod = VirtualKeyCode.OemPeriod,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEMPeriod = VirtualKeyCode.OEMPeriod,
 
 		/// <summary>The OEM 2 key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		Oem2 = VirtualKeyCode.Oem2,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEM2 = VirtualKeyCode.OEM2,
 
 		/// <summary>The OEM 3 key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		Oem3 = VirtualKeyCode.Oem3,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEM3 = VirtualKeyCode.OEM3,
 
 		/// <summary>The OEM 4 key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		Oem4 = VirtualKeyCode.Oem4,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEM4 = VirtualKeyCode.OEM4,
 
 		/// <summary>The OEM 5 key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		Oem5 = VirtualKeyCode.Oem5,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEM5 = VirtualKeyCode.OEM5,
 
 		/// <summary>The OEM 6 key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		Oem6 = VirtualKeyCode.Oem6,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEM6 = VirtualKeyCode.OEM6,
 
 		/// <summary>The OEM 7 key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		Oem7 = VirtualKeyCode.Oem7,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEM7 = VirtualKeyCode.OEM7,
 
 		/// <summary>The OEM 8 key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		Oem8 = VirtualKeyCode.Oem8,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEM8 = VirtualKeyCode.OEM8,
 
 		/// <summary>The OEM 102 key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		Oem102 = VirtualKeyCode.Oem102,
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		OEM102 = VirtualKeyCode.OEM102,
 
 		/// <summary>The PROCESS key.</summary>
 		ProcessKey = VirtualKeyCode.ProcessKey,
@@ -572,7 +562,7 @@ namespace ManagedX.Input
 
 		/// <summary>The ERASE EOF key.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Eof" )]
-		EraseEof = VirtualKeyCode.EraseEof,
+		EraseEof = VirtualKeyCode.EraseEOF,
 
 		/// <summary>The PLAY key.</summary>
 		Play = VirtualKeyCode.Play,
@@ -585,18 +575,9 @@ namespace ManagedX.Input
 		Pa1 = VirtualKeyCode.Pa1,
 
 		/// <summary>The CLEAR key.</summary>
-		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Oem" )]
-		OemClear = VirtualKeyCode.OemClear,
-
-
-		/// <summary>The SHIFT modifier key.</summary>
-		Shift = VirtualKeyCode.Shift,
-
-		/// <summary>The CTRL modifier key.</summary>
-		Control = VirtualKeyCode.Control,
-
-		/// <summary>The ALT modifier key.</summary>
-		Alt = VirtualKeyCode.Alt
+		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "OEM" )]
+		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "OEM" )]
+		OEMClear = VirtualKeyCode.OEMClear,
 
 	}
 

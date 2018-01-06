@@ -12,12 +12,13 @@ namespace ManagedX.Input.Raw
 		where TButton : struct
 	{
 
-
+		/// <summary>The internal buffer for the state being built.</summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
+		protected TState state;
 		private readonly IntPtr deviceHandle;
 		private readonly string deviceName;
 		private readonly string displayName;
-		private DeviceInfo info;
-		internal TState State;
+		internal DeviceInfo info;
 
 
 
@@ -72,8 +73,12 @@ namespace ManagedX.Input.Raw
 
 
 		internal MouseDeviceInfo MouseInfo => info.MouseInfo;
-		internal KeyboardDeviceInfo KeyboardInfo => info.KeyboardInfo;
+
+
 		internal HumanInterfaceDeviceInfo HumanInterfaceDeviceInfo => info.HumanInterfaceDeviceInfo;
+
+
+		internal abstract void Update( ref RawInput input );
 
 	}
 

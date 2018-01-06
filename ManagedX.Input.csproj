@@ -91,6 +91,8 @@
     <Compile Include="code\RawInput\Keyboard\Key.cs" />
     <Compile Include="code\RawInput\Keyboard\Keyboard.cs" />
     <Compile Include="code\RawInput\Keyboard\KeyboardState.cs" />
+    <Compile Include="code\RawInput\enumerations\ScanCodeCharacteristics.cs" />
+    <Compile Include="code\RawInput\Keyboard\KeyboardLEDIndicators.cs" />
     <Compile Include="code\RawInput\Mouse\CursorInfo.cs" />
     <Compile Include="code\RawInput\Mouse\Mouse.cs" />
     <Compile Include="code\RawInput\Mouse\MouseButton.cs" />

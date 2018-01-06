@@ -12,6 +12,10 @@ namespace ManagedX.Input
 	public struct KeyboardState : IEquatable<KeyboardState>
 	{
 
+		internal const byte KeyDownMask = 0x80;
+
+
+
 		[MarshalAs( UnmanagedType.ByValArray, SizeConst = 256 )]
 		internal readonly byte[] Data;
 
@@ -29,38 +33,15 @@ namespace ManagedX.Input
 		/// <exception cref="InvalidEnumArgumentException"/>
 		public bool this[ Key key ] => this.IsDown( key );
 
-		
+
 		/// <summary>Returns a value indicating whether a key is down(=pressed).</summary>
 		/// <param name="key">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
 		/// <returns>Returns true if the specified <paramref name="key"/> is down, otherwise returns false.</returns>
 		/// <exception cref="InvalidEnumArgumentException"/>
 		public bool IsDown( Key key )
 		{
-			if( key == Key.None )
-				throw new InvalidEnumArgumentException( "key", (int)key, typeof( Key ) );
-
-			return ( Data[ (int)key ] & 0x80 ) != 0;
+			return ( Data[ (int)key ] & KeyDownMask ) != 0;
 		}
-
-
-		[MethodImpl( MethodImplOptions.AggressiveInlining )]
-		private bool GetToggleableKeyState( Key key )
-		{
-			return ( Data[ (int)key ] & 0x01 ) != 0;
-		}
-
-
-		/// <summary>Gets a value indicating whether the CapsLock toggle is active.</summary>
-		public bool CapsLock => this.GetToggleableKeyState( Key.CapsLock );
-
-
-		/// <summary>Gets a value indicating whether the NumLock toggle is active.</summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Num" )]
-		public bool NumLock => this.GetToggleableKeyState( Key.NumLock );
-
-
-		/// <summary>Gets a value indicating whether the ScrollLock toggle is active.</summary>
-		public bool ScrollLock => this.GetToggleableKeyState( Key.ScrollLock );
 
 
 		/// <summary>Returns a hash code for this <see cref="KeyboardState"/> structure.</summary>

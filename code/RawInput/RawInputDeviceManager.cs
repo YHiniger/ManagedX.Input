@@ -9,8 +9,9 @@ using System.Windows.Forms;
 using Microsoft.Win32.SafeHandles;
 
 
-namespace ManagedX.Input.Raw
+namespace ManagedX.Input
 {
+	using Raw;
 	using Win32;
 
 
@@ -41,6 +42,46 @@ namespace ManagedX.Input.Raw
 
 		}
 
+
+		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms646307(v=vs.85).aspx</remarks>
+		private enum MapVirtualKeyMapType : int
+		{
+
+			/// <summary>The code parameter is a virtual-key code and is translated into a scan code.
+			/// If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned.
+			/// If there is no translation, the function returns 0.
+			/// </summary>
+			[Source( "WinUser.h", "MAPVK_VK_TO_VSC" )]
+			VirtualKeyToScanCode,
+
+			/// <summary>The code parameter is a scan code and is translated into a virtual-key code that does not distinguish between left- and right-hand keys.
+			/// If there is no translation, the function returns 0.
+			/// </summary>
+			[Source( "WinUser.h", "MAPVK_VSC_TO_VK" )]
+			ScanCodeToVirtualKey,
+
+			/// <summary>The code parameter is a virtual-key code and is translated into an unshifted character value in the low order word of the return value.
+			/// Dead keys (diacritics) are indicated by setting the top bit of the return value.
+			/// If there is no translation, the function returns 0.
+			/// </summary>
+			[Source( "WinUser.h", "MAPVK_VK_TO_CHAR" )]
+			VirtualKeyToChar,
+
+			/// <summary>The code parameter is a scan code and is translated into a virtual-key code that distinguishes between left- and right-hand keys.
+			/// If there is no translation, the function returns 0.
+			/// </summary>
+			[Source( "WinUser.h", "MAPVK_VSC_TO_VK_EX" )]
+			ScanCodeToVirtualKeyEx,
+
+			/// <summary>The code parameter is a virtual-key code and is translated into a scan code.
+			/// If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned.
+			/// If the scan code is an extended scan code, the high byte of the code value can contain either 0xE0 or 0xE1 to specify the extended scan code.
+			/// If there is no translation, the function returns 0.
+			/// </summary>
+			[Source( "WinUser.h", "MAPVK_VK_TO_VSC_EX" )]
+			VirtualKeyToScanCodeEx
+
+		}
 
 
 		///// <summary></summary>
@@ -291,6 +332,53 @@ namespace ManagedX.Input.Raw
 				[In] IntPtr deviceNotificationHandle
 			);
 
+
+			///// <summary>Retrieves the active input locale identifier (formerly called the keyboard layout).</summary>
+			///// <param name="threadId">The identifier of the thread to query, or 0 for the current thread.</param>
+			///// <returns>The return value is the input locale identifier for the thread. The low word contains a Language Identifier for the input language and the high word contains a device handle to the physical layout of the keyboard.</returns>
+			///// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms646296(v=vs.85).aspx</remarks>
+			//[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
+			//extern internal static IntPtr GetKeyboardLayout(
+			//	[In] int threadId
+			//);
+
+
+			///// <summary>Translates (maps) a virtual-key code into a scan code or character value, or translates a scan code into a virtual-key code. The function translates the codes using the input language and an input locale identifier.</summary>
+			///// <param name="code">The <see cref="VirtualKeyCode"/> or scan code for a key. How this value is interpreted depends on the value of the <paramref name="mapType"/> parameter.
+			///// <para>Starting with Windows Vista, the high byte of the <paramref name="code"/> value can contain either 0xE0 or 0xE1 to specify the extended scan code.</para>
+			///// </param>
+			///// <param name="mapType">The translation to perform. The value of this parameter depends on the value of the <paramref name="code"/> parameter.</param>
+			///// <param name="hkl">Input locale identifier to use for translating the specified code. This parameter can be any input locale identifier previously returned by the LoadKeyboardLayout function.</param>
+			///// <returns>The return value is either a scan code, a <see cref="VirtualKeyCode"/> code, or a character value, depending on the value of <paramref name="code"/> and <paramref name="mapType"/>. If there is no translation, the return value is zero.</returns>
+			///// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms646307(v=vs.85).aspx</remarks>
+			//[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			//extern internal static int MapVirtualKeyExW(
+			//	[In] int code,
+			//	[In] MapVirtualKeyMapType mapType,
+			//	[In, Out, Optional] IntPtr hkl
+			//);
+
+
+			///// <summary>Translates the specified virtual-key code and keyboard state to the corresponding Unicode character or characters.</summary>
+			///// <param name="virtKey">The virtual-key code to be translated.</param>
+			///// <param name="scanCode">The hardware scan code of the key to be translated. The high-order bit of this value is set if the key is up.</param>
+			///// <param name="keyState">A 256-byte array that contains the current keyboard state. Each element (byte) in the array contains the state of one key. If the high-order bit of a byte is set, the key is down.</param>
+			///// <param name="buffer">The buffer that receives the translated Unicode character or characters. However, this buffer may be returned without being null-terminated even though the variable name suggests that it is null-terminated.</param>
+			///// <param name="bufferSize">The size, in characters, of the buffer pointed to by the <paramref name="buffer"/> parameter.</param>
+			///// <param name="behaviorCharacteristics">The behavior of the function. If bit 0 is set, a menu is active. Bits 1 through 31 are reserved.</param>
+			///// <param name="hkl">The input locale identifier used to translate the specified code. This parameter can be any input locale identifier previously returned by the LoadKeyboardLayout function.</param>
+			///// <returns></returns>
+			///// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms646322(v=vs.85).aspx</remarks>
+			//[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = false )]
+			//extern internal static int ToUnicodeEx(
+			//	[In] VirtualKeyCode virtKey,
+			//	[In] int scanCode,
+			//	[In, MarshalAs( UnmanagedType.LPArray, SizeConst = 256 )] byte[] keyState,
+			//	[Out, MarshalAs( UnmanagedType.LPWStr, SizeParamIndex = 4 )] string buffer,
+			//	[In] int bufferSize,
+			//	[In] int behaviorCharacteristics,
+			//	[In, Optional] IntPtr hkl
+			//);
 
 
 			/// <summary>Returns the embedded string of a top-level collection that identifies the manufacturer's product.</summary>
@@ -967,113 +1055,47 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		private static bool ProcessMouseInputMessage( ref RawInput input )
-		{
-			var mouse = GetMouseByDeviceHandle( input.Header.DeviceHandle );
-			if( mouse == null )
-				return false;   // TODO - re-enumerate devices !
-
-			if( input.Mouse.State.HasFlag( RawMouseStateIndicators.AttributesChanged ) )
-			{
-				// TODO - what are those attributes ?
-			}
-
-			if( input.Mouse.State.HasFlag( RawMouseStateIndicators.MoveAbsolute ) )
-				mouse.State.Motion = input.Mouse.Motion; // THINKABOUTME - this might be a problem...
-			else
-				mouse.State.Motion += input.Mouse.Motion;
-
-			var buttonsState = input.Mouse.ButtonsState;
-			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.LeftButtonDown ) )
-				mouse.State.Buttons |= MouseButtons.Left;
-			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.LeftButtonUp ) )
-				mouse.State.Buttons &= ~MouseButtons.Left;
-
-			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.RightButtonDown ) )
-				mouse.State.Buttons |= MouseButtons.Right;
-			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.RightButtonUp ) )
-				mouse.State.Buttons &= ~MouseButtons.Right;
-
-			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.MiddleButtonDown ) )
-				mouse.State.Buttons |= MouseButtons.Middle;
-			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.MiddleButtonUp ) )
-				mouse.State.Buttons &= ~MouseButtons.Middle;
-
-			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton1Down ) )
-				mouse.State.Buttons |= MouseButtons.X1;
-			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton1Up ) )
-				mouse.State.Buttons &= ~MouseButtons.X1;
-
-			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton2Down ) )
-				mouse.State.Buttons |= MouseButtons.X2;
-			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.XButton2Up ) )
-				mouse.State.Buttons &= ~MouseButtons.X2;
-
-			if( buttonsState.HasFlag( RawMouseButtonStateIndicators.Wheel ) )
-				mouse.State.Wheel += input.Mouse.WheelDelta;
-			else if( buttonsState.HasFlag( RawMouseButtonStateIndicators.HorizontalWheel ) )
-				mouse.State.HorizontalWheel += input.Mouse.WheelDelta;
-
-			return true;
-		}
-
-
-		private static bool ProcessKeyboardMessage( ref RawInput input )
-		{
-			var keyboard = GetKeyboardByDeviceHandle( input.Header.DeviceHandle );
-			if( keyboard == null )
-				return false;
-
-			var state = input.Keyboard;
-			//if( ( state.MakeCodeInfo & 0x0001 ) == 0x0001 )
-			//{
-			//	// RI_KEY_BREAK
-			//}
-			//else
-			//{
-			//	// RI_KEY_MAKE
-			//}
-			//var e0 = ( state.MakeCodeInfo & 0x0002 ) == 0x0002;
-			//var e1 = ( state.MakeCodeInfo & 0x0004 ) == 0x0004;
-
-			if( state.Message == (int)WindowMessage.KeyDown )
-				keyboard.State.Data[ state.VirtualKey ] = 0x80;
-			else if( state.Message == (int)WindowMessage.KeyUp )
-				keyboard.State.Data[ state.VirtualKey ] = 0x00;
-
-			return true;
-		}
-
-		private static bool ProcessInputMessage( IntPtr rawInputHandle )
-		{
-			GetRawInputData( rawInputHandle, out RawInput input );
-
-			if( input.Header.DeviceType == InputDeviceType.Mouse )
-				return ProcessMouseInputMessage( ref input );
-			else if( input.Header.DeviceType == InputDeviceType.Keyboard )
-				return ProcessKeyboardMessage( ref input );
-			//else if( input.Header.DeviceType == InputDeviceType.HumanInterfaceDevice )
-			//{
-			//	var targetHid = GetHIDByDeviceHandle( input.Header.DeviceHandle );
-			//	if( targetHid == null )
-			//		return false;
-
-			//	var state = input.HumanInterfaceDevice;
-			//	// ...
-			//}
-
-			//NativeMethods.DefRawInputProc( new RawInput[] { input }, 1, Marshal.SizeOf<RawInputHeader>() );
-
-			return true;
-		}
-
 		/// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
 		/// <param name="message">A Windows message.</param>
+		/// <returns>Returns false if the devices have to be re-enumerated, otherwise returns true.</returns>
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
 		public static bool ProcessWindowMessage( ref Message message )
 		{
 			if( message.Msg == (int)WindowMessage.Input )
-				return ProcessInputMessage( message.LParam );
+			{
+				GetRawInputData( message.LParam, out RawInput input );
+
+				if( input.Header.DeviceType == InputDeviceType.Mouse )
+				{
+					var mouse = GetMouseByDeviceHandle( input.Header.DeviceHandle );
+					if( mouse == null )
+						return false;
+					mouse.Update( ref input );
+					return true;
+				}
+				else if( input.Header.DeviceType == InputDeviceType.Keyboard )
+				{
+					var keyboard = GetKeyboardByDeviceHandle( input.Header.DeviceHandle );
+					if( keyboard == null )
+						return false;
+					keyboard.Update( ref input );
+					return true;
+				}
+				//else if( input.Header.DeviceType == InputDeviceType.HumanInterfaceDevice )
+				//{
+				//	var targetHid = GetHIDByDeviceHandle( input.Header.DeviceHandle );
+				//	if( targetHid == null )
+				//		return false;
+
+				//	var state = input.HumanInterfaceDevice;
+				//	// ...
+				//}
+
+				//NativeMethods.DefRawInputProc( new RawInput[] { input }, 1, Marshal.SizeOf<RawInputHeader>() );
+
+				return true;
+			}
+
 
 			if( message.Msg == (int)WindowMessage.InputDeviceChange )
 			{

@@ -13,7 +13,7 @@ namespace ManagedX.Input.Raw
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645575%28v=vs.85%29.aspx</remarks>
 	[Win32.Source( "WinUser.h", "RAWKEYBOARD" )]
 	[System.Diagnostics.DebuggerStepThrough]
-	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 16 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
 	public struct RawKeyboard : IEquatable<RawKeyboard>
 	{
 
@@ -25,11 +25,11 @@ namespace ManagedX.Input.Raw
 
 		/// <summary>Flags for scan code information.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
-		public readonly short MakeCodeInfo;
+		public readonly ScanCodeCharacteristics MakeCodeInfo;
 
-		private readonly short reserved; // must be 0
+		private readonly short reserved; // must be 0, I believe it's used for proper packing.
 
-		/// <summary>Windows message compatible virtual-key code.</summary>
+		/// <summary>Windows message compatible <see cref="VirtualKeyCode"/>.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public readonly short VirtualKey;
 
@@ -47,7 +47,7 @@ namespace ManagedX.Input.Raw
 		/// <returns>Returns a hash code for this <see cref="RawKeyboard"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return (int)MakeCode ^ (int)MakeCodeInfo ^ (int)reserved ^ (int)VirtualKey ^ Message ^ ExtraInformation;
+			return unchecked((int)MakeCode | ( (int)MakeCodeInfo << 16 ) ^ ( (int)reserved | ( (int)VirtualKey << 16 ) ) ) ^ Message ^ ExtraInformation;
 		}
 
 

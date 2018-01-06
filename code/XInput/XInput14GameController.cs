@@ -131,7 +131,7 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		[SuppressMessage( "Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "ManagedX.Input.XInput.XInput14GameController+SafeNativeMethods.XInputGetState(ManagedX.Input.GameControllerIndex,ManagedX.Input.XInput.State@)" )]
+		[SuppressMessage( "Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "ManagedX.Input.XInput.XInput14GameController+SafeNativeMethods.XInputGetState(ManagedX.Input.XInput.GameControllerIndex,ManagedX.Input.XInput.State@)" )]
 		[SuppressMessage( "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes" )]
 		internal static bool IsAvailable
 		{

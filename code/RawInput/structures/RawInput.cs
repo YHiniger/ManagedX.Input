@@ -6,40 +6,36 @@ using System.Runtime.InteropServices;
 namespace ManagedX.Input.Raw
 {
 
-	// Important: "Pack = 4" causes the structure size to be rounded the nearest greater multiple of 4.
-	// Since it's applied to the private Data structure, its actual size is 24, instead of 22.
-	// Of course, this increases the size of the RawInput structure to 40 or 48 bytes (instead of 38 or 46 bytes), which can then safely use the same packing.
-
-
 	/// <summary>Contains the raw input from a device.
 	/// <para>This structure is equivalent to the native <code>RAWINPUT</code> structure (defined in WinUser.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645562(v=vs.85).aspx</remarks>
 	[Win32.Source( "WinUser.h", "RAWINPUT" )]
 	[System.Diagnostics.DebuggerStepThrough]
-	[StructLayout( LayoutKind.Sequential, Pack = 2 )] // Size = 40 (x86) or 48 (x64) byte
+	[StructLayout( LayoutKind.Sequential, Pack = 4 )] // Size = 40 (x86) or 48 (x64) bytes
 	internal struct RawInput : IEquatable<RawInput>
 	{
-
+		
 		[StructLayout( LayoutKind.Explicit, Pack = 4, Size = 24 )]
-		private struct Data
+		private struct Union
 		{
 
 			[FieldOffset( 0 )]
-			internal readonly RawMouse Mouse;		// Size = 24, Pack = 4
+			internal readonly RawMouse Mouse;		// Size = 24
 
 			[FieldOffset( 0 )]
-			internal readonly RawKeyboard Keyboard;	// Size = 16, Pack = 2
+			internal readonly RawKeyboard Keyboard;	// Size = 16
 
 			[FieldOffset( 0 )]
-			internal readonly RawHID HID;			// Size = 12 or 16, Pack = 4
+			internal readonly RawHID HID;			// Size = 12 (x86) or 16 (x64) bytes
 
 		}
 
 
 
-		internal readonly RawInputHeader Header; // TODO - turn RawInputHeader into a class, as well as this structure, and inherit from RawInputHeader ?
-		private readonly Data data;
+		internal readonly RawInputHeader Header;
+		// Since the header structure size depends on the platform, we can't use the FieldOffset attribute to specify the data field's position. 
+		private readonly Union data;
 
 
 

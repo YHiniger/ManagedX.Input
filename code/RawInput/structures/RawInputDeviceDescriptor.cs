@@ -13,7 +13,7 @@ namespace ManagedX.Input.Raw
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645568(v=vs.85).aspx</remarks>
 	[Win32.Source( "WinUser.h", "RAWINPUTDEVICELIST" )]
 	[System.Diagnostics.DebuggerStepThrough]
-	[StructLayout( LayoutKind.Sequential )] // Size = 8 (x86) or 12 (x64) bytes, Pack can't be set !
+	[StructLayout( LayoutKind.Sequential )] // Size = 8 (x86) or 12 (x64) bytes, Pack (which should be 4) can't be set !
 	public struct RawInputDeviceDescriptor : IEquatable<RawInputDeviceDescriptor>
 	{
 

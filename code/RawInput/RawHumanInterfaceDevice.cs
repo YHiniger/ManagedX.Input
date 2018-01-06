@@ -55,6 +55,10 @@ namespace ManagedX.Input.Raw
 		}
 
 
+		internal sealed override void Update( ref RawInput input )
+		{
+		}
+
 
 		/// <summary>Gets a description of this <see cref="RawHumanInterfaceDevice"/>.</summary>
 		public HumanInterfaceDeviceInfo Description => base.HumanInterfaceDeviceInfo;

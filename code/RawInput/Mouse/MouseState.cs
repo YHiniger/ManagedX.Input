@@ -15,13 +15,9 @@ namespace ManagedX.Input
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public Point Motion;
 
-		/// <summary>The wheel delta.</summary>
+		/// <summary>The wheels' delta.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
-		public int Wheel;
-
-		/// <summary>The horizontal wheel delta.</summary>
-		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
-		public int HorizontalWheel;
+		public Point Wheels;
 
 		internal MouseButtons Buttons;
 
@@ -46,7 +42,7 @@ namespace ManagedX.Input
 		/// <returns>Returns a hash code for this <see cref="MouseState"/> structure.</returns>
 		public override int GetHashCode()
 		{
-			return Motion.GetHashCode() ^ Wheel ^ HorizontalWheel ^ (int)Buttons;
+			return Motion.GetHashCode() ^ Wheels.GetHashCode() ^ (int)Buttons;
 		}
 
 
@@ -55,9 +51,9 @@ namespace ManagedX.Input
 		/// <returns>Returns true if this structure equals the <paramref name="other"/> structure, otherwise returns false.</returns>
 		public bool Equals( MouseState other )
 		{
-			return 
-				Motion.Equals( other.Motion ) && 
-				( Wheel == other.Wheel ) && ( HorizontalWheel == other.HorizontalWheel ) &&
+			return
+				Motion.Equals( other.Motion ) &&
+				Wheels.Equals( other.Wheels ) &&
 				( Buttons == other.Buttons );
 		}
 

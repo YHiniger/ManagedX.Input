@@ -22,7 +22,7 @@ namespace ManagedX.Input.Raw
 		/// <summary>The size, in bytes, of the entire input packet of data.
 		/// <para>This includes RAWINPUT plus possible extra input reports in the RAWHID variable length array.</para>
 		/// </summary>
-		private readonly int size;
+		internal readonly int Size;
 
 		/// <summary>A handle to the device generating the raw input data.</summary>
 		public readonly IntPtr DeviceHandle;
@@ -32,19 +32,9 @@ namespace ManagedX.Input.Raw
 
 
 
-		internal RawInputHeader( InputDeviceType deviceType, int structSize, IntPtr device, IntPtr param )
-		{
-			DeviceType = deviceType;
-			size = structSize;
-			DeviceHandle = device;
-			Parameter = param;
-		}
-
-
-
 		public override int GetHashCode()
 		{
-			return (int)DeviceType ^ size ^ DeviceHandle.GetHashCode() ^ Parameter.GetHashCode();
+			return (int)DeviceType ^ Size ^ DeviceHandle.GetHashCode() ^ Parameter.GetHashCode();
 		}
 
 
@@ -52,7 +42,7 @@ namespace ManagedX.Input.Raw
 		{
 			return
 				( DeviceType == other.DeviceType ) &&
-				( size == other.size ) &&
+				( Size == other.Size ) &&
 				( DeviceHandle == other.DeviceHandle ) &&
 				( Parameter == other.Parameter );
 		}
