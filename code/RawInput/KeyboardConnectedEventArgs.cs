@@ -1,7 +1,7 @@
 ﻿namespace ManagedX.Input
 {
 
-	/// <summary>Arguments for the <see cref="RawInputDeviceManager.KeyboardConnected"/> event.</summary>
+	/// <summary>Arguments for the <see cref="InputDeviceManager.KeyboardConnected"/> event.</summary>
 	public sealed class KeyboardConnectedEventArgs : System.EventArgs
 	{
 

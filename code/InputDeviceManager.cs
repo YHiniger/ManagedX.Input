@@ -13,11 +13,91 @@ namespace ManagedX.Input
 {
 	using Raw;
 	using Win32;
+	using XInput;
 
 
-	/// <summary>The RawInput device manager.</summary>
-	public static class RawInputDeviceManager
+	/// <summary>The input device manager (or input service).</summary>
+	public static class InputDeviceManager
 	{
+
+		#region XInput
+
+		private static XInputVersion GetXInputVersion()
+		{
+#if XINPUT_14
+			if( XInput14GameController.IsAvailable )
+				return XInputVersion.XInput14;
+#elif XINPUT_13
+			if( XInput13GameController.IsAvailable )
+				return XInputVersion.XInput13;
+#else
+
+			if( XInput14GameController.IsAvailable )
+				return XInputVersion.XInput14;
+
+			if( XInput13GameController.IsAvailable )
+				return XInputVersion.XInput13;
+#endif
+			return XInputVersion.NotSupported;
+		}
+
+
+		private static List<GameController> InitializeXInput()
+		{
+			var list = new List<GameController>( GameController.MaxControllerCount );
+
+			if( version == XInputVersion.XInput14 )
+			{
+				for( var c = 0; c < XInput14GameController.MaxControllerCount; ++c )
+					list.Add( new XInput14GameController( (GameControllerIndex)c ) );
+			}
+			else if( version == XInputVersion.XInput13 )
+			{
+				for( var c = 0; c < XInput13GameController.MaxControllerCount; ++c )
+					list.Add( new XInput13GameController( (GameControllerIndex)c ) );
+			}
+
+			return list;
+		}
+
+
+		private static readonly XInputVersion version = GetXInputVersion();
+		private static readonly List<GameController> gameControllers = InitializeXInput();
+
+
+
+		/// <summary>Gets the version of the underlying XInput API.</summary>
+		public static Version Version
+		{
+			get
+			{
+				if( version == XInputVersion.XInput14 )
+					return new Version( 1, 4 );
+
+				if( version == XInputVersion.XInput13 )
+					return new Version( 1, 3 );
+
+				return new Version( 0, 0 );
+			}
+		}
+
+
+		/// <summary>Gets a read-only collection of all supported XInput game controllers.</summary>
+		public static ReadOnlyCollection<GameController> GameControllers => new ReadOnlyCollection<GameController>( gameControllers );
+
+
+		/// <summary>Returns an XInput <see cref="GameController"/> given its index.</summary>
+		/// <param name="index">The index of the requested game controller.</param>
+		/// <returns>Returns the XInput game controller associated with the specified <paramref name="index"/>.</returns>
+		public static GameController GetController( GameControllerIndex index )
+		{
+			return gameControllers[ (int)index ];
+		}
+
+		#endregion XInput
+
+
+		#region RawInput
 
 		/// <summary>Options for the <see cref="NativeMethods.RegisterDeviceNotificationW"/> function.</summary>
 		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/aa363431%28v=vs.85%29.aspx</remarks>
@@ -43,76 +123,45 @@ namespace ManagedX.Input
 		}
 
 
-		/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms646307(v=vs.85).aspx</remarks>
-		private enum MapVirtualKeyMapType : int
-		{
-
-			/// <summary>The code parameter is a virtual-key code and is translated into a scan code.
-			/// If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned.
-			/// If there is no translation, the function returns 0.
-			/// </summary>
-			[Source( "WinUser.h", "MAPVK_VK_TO_VSC" )]
-			VirtualKeyToScanCode,
-
-			/// <summary>The code parameter is a scan code and is translated into a virtual-key code that does not distinguish between left- and right-hand keys.
-			/// If there is no translation, the function returns 0.
-			/// </summary>
-			[Source( "WinUser.h", "MAPVK_VSC_TO_VK" )]
-			ScanCodeToVirtualKey,
-
-			/// <summary>The code parameter is a virtual-key code and is translated into an unshifted character value in the low order word of the return value.
-			/// Dead keys (diacritics) are indicated by setting the top bit of the return value.
-			/// If there is no translation, the function returns 0.
-			/// </summary>
-			[Source( "WinUser.h", "MAPVK_VK_TO_CHAR" )]
-			VirtualKeyToChar,
-
-			/// <summary>The code parameter is a scan code and is translated into a virtual-key code that distinguishes between left- and right-hand keys.
-			/// If there is no translation, the function returns 0.
-			/// </summary>
-			[Source( "WinUser.h", "MAPVK_VSC_TO_VK_EX" )]
-			ScanCodeToVirtualKeyEx,
-
-			/// <summary>The code parameter is a virtual-key code and is translated into a scan code.
-			/// If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned.
-			/// If the scan code is an extended scan code, the high byte of the code value can contain either 0xE0 or 0xE1 to specify the extended scan code.
-			/// If there is no translation, the function returns 0.
-			/// </summary>
-			[Source( "WinUser.h", "MAPVK_VK_TO_VSC_EX" )]
-			VirtualKeyToScanCodeEx
-
-		}
-
-
-		///// <summary></summary>
-		///// <param name="windowHandle"></param>
-		///// <param name="header"></param>
-		///// <param name="allInterfaceClasses"></param>
-		///// <returns></returns>
-		//public static IntPtr RegisterWindowDeviceNotification( IntPtr windowHandle, DeviceBroadcastHeader header, bool allInterfaceClasses )
+		///// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms646307(v=vs.85).aspx</remarks>
+		//private enum MapVirtualKeyMapType : int
 		//{
-		//	var options = RegisterDeviceNotificationOptions.WindowHandle;
-		//	if( allInterfaceClasses )
-		//		options |= RegisterDeviceNotificationOptions.AllInterfaceClasses;
 
-		//	return NativeMethods.RegisterDeviceNotificationW( windowHandle, header, options );
+		//	/// <summary>The code parameter is a virtual-key code and is translated into a scan code.
+		//	/// If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned.
+		//	/// If there is no translation, the function returns 0.
+		//	/// </summary>
+		//	[Source( "WinUser.h", "MAPVK_VK_TO_VSC" )]
+		//	VirtualKeyToScanCode,
+
+		//	/// <summary>The code parameter is a scan code and is translated into a virtual-key code that does not distinguish between left- and right-hand keys.
+		//	/// If there is no translation, the function returns 0.
+		//	/// </summary>
+		//	[Source( "WinUser.h", "MAPVK_VSC_TO_VK" )]
+		//	ScanCodeToVirtualKey,
+
+		//	/// <summary>The code parameter is a virtual-key code and is translated into an unshifted character value in the low order word of the return value.
+		//	/// Dead keys (diacritics) are indicated by setting the top bit of the return value.
+		//	/// If there is no translation, the function returns 0.
+		//	/// </summary>
+		//	[Source( "WinUser.h", "MAPVK_VK_TO_CHAR" )]
+		//	VirtualKeyToChar,
+
+		//	/// <summary>The code parameter is a scan code and is translated into a virtual-key code that distinguishes between left- and right-hand keys.
+		//	/// If there is no translation, the function returns 0.
+		//	/// </summary>
+		//	[Source( "WinUser.h", "MAPVK_VSC_TO_VK_EX" )]
+		//	ScanCodeToVirtualKeyEx,
+
+		//	/// <summary>The code parameter is a virtual-key code and is translated into a scan code.
+		//	/// If it is a virtual-key code that does not distinguish between left- and right-hand keys, the left-hand scan code is returned.
+		//	/// If the scan code is an extended scan code, the high byte of the code value can contain either 0xE0 or 0xE1 to specify the extended scan code.
+		//	/// If there is no translation, the function returns 0.
+		//	/// </summary>
+		//	[Source( "WinUser.h", "MAPVK_VK_TO_VSC_EX" )]
+		//	VirtualKeyToScanCodeEx
+
 		//}
-
-
-		///// <summary></summary>
-		///// <param name="serviceHandle"></param>
-		///// <param name="header"></param>
-		///// <param name="allInterfaceClasses"></param>
-		///// <returns></returns>
-		//public static IntPtr RegisterServiceDeviceNotification( IntPtr serviceHandle, DeviceBroadcastHeader header, bool allInterfaceClasses )
-		//{
-		//	var options = RegisterDeviceNotificationOptions.ServiceHandle;
-		//	if( allInterfaceClasses )
-		//		options |= RegisterDeviceNotificationOptions.AllInterfaceClasses;
-
-		//	return NativeMethods.RegisterDeviceNotificationW( serviceHandle, header, options );
-		//}
-
 
 
 		[System.Security.SuppressUnmanagedCodeSecurity]
@@ -124,18 +173,18 @@ namespace ManagedX.Input
 
 
 			/// <summary>Enumerates the raw input devices attached to the system.</summary>
-			/// <param name="rawInputDeviceList">An array of <see cref="RawInputDeviceDescriptor"/> structures for the devices attached to the system. If null, the number of devices is returned in <paramref name="deviceCount"/>.</param>
-			/// <param name="deviceCount">If <paramref name="rawInputDeviceList"/> is null, receives the number of devices attached to the system; otherwise, specifies the number of RAWINPUTDEVICELIST structures that can be contained in the buffer <paramref name="rawInputDeviceList"/> points to.
-			/// <para>If this value is less than the number of devices attached to the system, the function returns the actual number of devices in this variable and fails with ERROR_INSUFFICIENT_BUFFER.</para>
+			/// <param name="descriptors">An array of <see cref="RawInputDeviceDescriptor"/> structures for the devices attached to the system. If null, the number of devices is returned in <paramref name="deviceCount"/>.</param>
+			/// <param name="deviceCount">If <paramref name="descriptors"/> is null, receives the number of devices attached to the system; otherwise, specifies the number of <see cref="RawInputDeviceDescriptor"/> structures that can be contained in the buffer <paramref name="descriptors"/> points to.
+			/// <para>If this value is less than the number of devices attached to the system, the function returns the actual number of devices in this variable and fails with <see cref="ErrorCode.InsufficientBuffer"/>.</para>
 			/// </param>
 			/// <param name="size">The size, in bytes, of a <see cref="RawInputDeviceDescriptor"/> structure.</param>
-			/// <returns>If the function is successful, the return value is the number of devices stored in the buffer pointed to by <paramref name="rawInputDeviceList"/>.
-			/// <para>On any other error, the function returns (UINT) -1 and GetLastError returns the error indication.</para>
+			/// <returns>If the function is successful, the return value is the number of devices stored in the buffer pointed to by <paramref name="descriptors"/>.
+			/// <para>On any other error, the function returns -1 and GetLastError returns the error indication.</para>
 			/// </returns>
 			/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645598%28v=vs.85%29.aspx</remarks>
 			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
 			extern internal static int GetRawInputDeviceList(
-				[Out, MarshalAs( UnmanagedType.LPArray, SizeParamIndex = 1 ), Optional] RawInputDeviceDescriptor[] rawInputDeviceList,
+				[Out, MarshalAs( UnmanagedType.LPArray, SizeParamIndex = 1 ), Optional] RawInputDeviceDescriptor[] descriptors,
 				[In, Out] ref int deviceCount,
 				[In] int size
 			);
@@ -434,6 +483,62 @@ namespace ManagedX.Input
 
 
 
+		private static readonly List<Mouse> mice = new List<Mouse>( 1 );                                                // Most systems have only one mouse
+		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );                                     // and one keyboard,
+		private static readonly List<RawHumanInterfaceDevice> otherDevices = new List<RawHumanInterfaceDevice>( 2 );    // but for some reason the mouse and keyboard have a corresponding HID.
+		private static bool isInitialized;
+		private static readonly List<InputDevice> updateList = new List<InputDevice>();
+
+
+
+		private static void Initialize()
+		{
+			var descriptors = GetRawInputDeviceList();
+			for( var d = 0; d < descriptors.Length; ++d )
+			{
+				var descriptor = descriptors[ d ];
+				if( descriptors[ d ].DeviceType == InputDeviceType.Mouse )
+				{
+					var m = new Mouse( ref descriptors[ d ] );
+					mice.Add( m );
+					m.IsDisabledChanged += OnDeviceDisabledChanged;
+					updateList.Add( m );
+				}
+				else if( descriptors[ d ].DeviceType == InputDeviceType.Keyboard )
+				{
+					var k = new Keyboard( ref descriptors[ d ] );
+					keyboards.Add( k );
+					k.IsDisabledChanged += OnDeviceDisabledChanged;
+					updateList.Add( k );
+				}
+				else if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
+				{
+					var h = new RawHumanInterfaceDevice( ref descriptor );
+					otherDevices.Add( h );
+					h.IsDisabledChanged += OnDeviceDisabledChanged;
+					updateList.Add( h );
+				}
+#if DEBUG
+				else
+					throw new NotSupportedException( "Unsupported raw input device type." );
+#endif
+			}
+
+			isInitialized = true;
+		}
+
+
+		private static void OnDeviceDisabledChanged( object sender, EventArgs e )
+		{
+			var device = (InputDevice)sender;
+			if( device.IsDisabled )
+				updateList.Remove( device );
+			else //if( !updateList.Contains( device ) )
+				updateList.Add( device );
+		}
+
+
+
 		/// <summary>Returns an array of raw input devices attached to the system.</summary>
 		/// <returns>Returns an array of raw input devices attached to the system.</returns>
 		/// <exception cref="InvalidDataException"/>
@@ -473,10 +578,10 @@ namespace ManagedX.Input
 		/// <summary>Registers the devices that supply the raw input data.</summary>
 		/// <param name="rawInputDevices">An array of <see cref="RawInputDevice"/> structures representing the devices which supply the raw input; must not be null nor empty.</param>
 		/// <remarks>
-		/// To receive WM_INPUT messages, an application must first register the raw input devices using RegisterRawInputDevices. By default, an application does not receive raw input.
-		/// <para>To receive WM_INPUT_DEVICE_CHANGE messages, an application must specify the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> flag for each device class that is specified by the UsagePage and Usage fields of the <see cref="RawInputDevice"/> structure .
-		/// By default, an application does not receive WM_INPUT_DEVICE_CHANGE notifications for raw input device arrival and removal.</para>
-		/// <para>If a <see cref="RawInputDevice"/> structure has the <see cref="RawInputDeviceRegistrationOptions.Remove"/> flag set and the <see cref="RawInputDevice.TargetWindowHandle">TargetWindowHandle</see> parameter is not set to null, then parameter validation will fail.</para>
+		/// To receive <see cref="WindowMessage.Input"/> messages, an application must first register the raw input devices using RegisterRawInputDevices. By default, an application does not receive raw input.
+		/// <para>To receive <see cref="WindowMessage.InputDeviceChange"/> messages, an application must specify the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> flag for each device class that is specified by the UsagePage and Usage fields of the <see cref="RawInputDevice"/> structure .
+		/// By default, an application does not receive <see cref="WindowMessage.InputDeviceChange"/> notifications for raw input device arrival and removal.</para>
+		/// <para>If a <see cref="RawInputDevice"/> structure has the <see cref="RawInputDeviceRegistrationOptions.Remove"/> flag set and the <see cref="RawInputDevice.TargetWindowHandle"/> parameter is not set to null, then parameter validation will fail.</para>
 		/// </remarks>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ArgumentException"/>
@@ -529,57 +634,16 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Performs a buffered read of the raw input data.</summary>
-		/// <returns></returns>
-		/// <exception cref="Win32Exception"/>
-		unsafe internal static RawInput[] GetRawInputBuffer()
-		{
-			int errorCode;
-			var headerSize = Marshal.SizeOf<RawInputHeader>();
-			var size = 0;
-
-			var result = NativeMethods.GetRawInputBuffer( null, ref size, headerSize );
-			if( result != 0 )
-			{
-				errorCode = Marshal.GetLastWin32Error();
-				throw new Win32Exception( "Failed to retrieve raw input buffer size.", InputDevice.GetException( errorCode ) );
-			}
-
-			if( size < 0 )
-				throw new InvalidDataException( "Invalid RawInput buffer size." );
-
-			var inputSize = Marshal.SizeOf<RawInput>();
-			var count = size / inputSize;
-			var buffer = new RawInput[ count ];
-
-			if( count > 0 )
-			{
-				fixed( RawInput* ptr = &buffer[ 0 ] )
-					result = NativeMethods.GetRawInputBuffer( ptr, ref inputSize, headerSize );
-				if( result < 0 )
-				{
-					errorCode = Marshal.GetLastWin32Error();
-					throw new Win32Exception( "Failed to retrieve raw input buffer.", InputDevice.GetException( errorCode ) );
-				}
-
-				if( result != count )
-					throw new InvalidDataException( "RawInput buffer size mismatch." );
-			}
-
-			return buffer;
-		}
-
-
 		/// <summary>Returns a <see cref="DeviceInfo"/> structure containing information about a raw input device.</summary>
 		/// <param name="deviceHandle">A handle to the raw input device.
-		/// <para>This comes from the LParam of the WM_INPUT message, from the <see cref="RawInputHeader.DeviceHandle"/> member, or from GetRawInputDeviceList.</para>
+		/// <para>This comes from the <see cref="Message.LParam"/> of the <see cref="WindowMessage.Input"/> message, from the <see cref="RawInputHeader.DeviceHandle"/> member, or from <see cref="GetRawInputDeviceList"/>.</para>
 		/// It can also be null if an application inserts input data, for example, by using SendInput.
 		/// </param>
 		/// <param name="preParsed">Set to true to use pre-parsed data, false otherwise; defaults to false.</param>
 		/// <returns>Returns a <see cref="DeviceInfo"/> structure containing information about a raw input device.</returns>
 		/// <exception cref="NotSupportedException"/>
 		/// <exception cref="Win32Exception"/>
-		internal static DeviceInfo GetRawInputDeviceInfo( IntPtr deviceHandle, bool preParsed )
+		internal static DeviceInfo GetRawInputDeviceInfo( IntPtr deviceHandle, bool preParsed = false )
 		{
 			var deviceInfo = DeviceInfo.Default;
 			var deviceInfoStructSize = deviceInfo.StructSize;
@@ -600,7 +664,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>Returns the device name (or device path) of a raw input device.</summary>
-		/// <param name="deviceHandle">A handle to the raw input device. This comes from the LParam of the WM_INPUT message, from <see cref="RawInputHeader.DeviceHandle"/>, or from GetRawInputDeviceList.
+		/// <param name="deviceHandle">A handle to the raw input device. This comes from the <see cref="Message.LParam"/> of the <see cref="WindowMessage.Input"/> message, from <see cref="RawInputHeader.DeviceHandle"/>, or from <see cref="GetRawInputDeviceList"/>.
 		/// <para>It can also be <see cref="IntPtr.Zero"/> if an application inserts input data, for example, by using SendInput.</para>
 		/// </param>
 		/// <returns>Returns the name of a raw input device.</returns>
@@ -640,9 +704,8 @@ namespace ManagedX.Input
 		}
 
 
-
 		/// <summary>Returns the embedded string of a top-level collection that identifies the manufacturer's product, or null.</summary>
-		/// <param name="deviceName"></param>
+		/// <param name="deviceName">The device name (or device path) of a RawInput device.</param>
 		/// <returns>Returns the embedded string of a top-level collection that identifies the manufacturer's product, or null.</returns>
 		internal static string GetHIDProductString( string deviceName )
 		{
@@ -660,100 +723,116 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Returns an array of <see cref="RawInputDevice"/> structures containing information about the raw input devices for the current application.</summary>
-		/// <returns>Returns an array of <see cref="RawInputDevice"/> structures containing information about the raw input devices for the current application; the array can be empty, but not null.</returns>
-		/// <exception cref="InvalidDataException"/>
-		/// <exception cref="Win32Exception"/>
-		internal static RawInputDevice[] GetRegisteredRawInputDevices()
-		{
-			int errorCode;
-			var structSize = Marshal.SizeOf( typeof( RawInputDevice ) );
-			var deviceCount = 0;
+		///// <summary></summary>
+		///// <param name="windowHandle"></param>
+		///// <param name="header"></param>
+		///// <param name="allInterfaceClasses"></param>
+		///// <returns></returns>
+		//public static IntPtr RegisterWindowDeviceNotification( IntPtr windowHandle, DeviceBroadcastHeader header, bool allInterfaceClasses )
+		//{
+		//	var options = RegisterDeviceNotificationOptions.WindowHandle;
+		//	if( allInterfaceClasses )
+		//		options |= RegisterDeviceNotificationOptions.AllInterfaceClasses;
 
-			var result = NativeMethods.GetRegisteredRawInputDevices( null, ref deviceCount, structSize );
-			if( result == -1 )
-			{
-				errorCode = Marshal.GetLastWin32Error();
-				throw new Win32Exception( "Failed to retrieve registered raw input device count.", InputDevice.GetException( errorCode ) );
-			}
-			if( result != 0 )
-			{
-				throw new InvalidDataException( "Failed to retrieve registered raw input device count." );
-			}
-
-			if( deviceCount < 0 )
-				throw new InvalidDataException( "Invalid registered raw input device count." );
-
-			var rawInputDevices = new RawInputDevice[ deviceCount ];
-			result = NativeMethods.GetRegisteredRawInputDevices( rawInputDevices, ref deviceCount, structSize );
-			if( result == -1 )
-			{
-				errorCode = Marshal.GetLastWin32Error();
-				throw new Win32Exception( "Failed to retrieve registered raw input devices.", InputDevice.GetException( errorCode ) );
-			}
-
-			return rawInputDevices;
-		}
+		//	return NativeMethods.RegisterDeviceNotificationW( windowHandle, header, options );
+		//}
 
 
+		///// <summary></summary>
+		///// <param name="serviceHandle"></param>
+		///// <param name="header"></param>
+		///// <param name="allInterfaceClasses"></param>
+		///// <returns></returns>
+		//public static IntPtr RegisterServiceDeviceNotification( IntPtr serviceHandle, DeviceBroadcastHeader header, bool allInterfaceClasses )
+		//{
+		//	var options = RegisterDeviceNotificationOptions.ServiceHandle;
+		//	if( allInterfaceClasses )
+		//		options |= RegisterDeviceNotificationOptions.AllInterfaceClasses;
 
-		private static readonly List<Mouse> mice = new List<Mouse>( 1 );                                                // Most systems have only one mouse
-		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );                                     // and one keyboard,
-		private static readonly List<RawHumanInterfaceDevice> otherDevices = new List<RawHumanInterfaceDevice>( 2 );    // but for some reason the mouse and keyboard have (most of the time) a corresponding HID.
-		private static bool isInitialized;
+		//	return NativeMethods.RegisterDeviceNotificationW( serviceHandle, header, options );
+		//}
 
 
+		///// <summary>Performs a buffered read of the raw input data.</summary>
+		///// <returns></returns>
+		///// <exception cref="Win32Exception"/>
+		//unsafe internal static RawInput[] GetRawInputBuffer()
+		//{
+		//	int errorCode;
+		//	var headerSize = Marshal.SizeOf<RawInputHeader>();
+		//	var size = 0;
 
-		private static void Initialize()
-		{
-			var descriptors = GetRawInputDeviceList();
-			for( var d = 0; d < descriptors.Length; ++d )
-			{
-				var descriptor = descriptors[ d ];
-				if( descriptors[ d ].DeviceType == InputDeviceType.Mouse )
-				{
-					var m = new Mouse( ref descriptors[ d ] );
-					mice.Add( m );
-				}
-				else if( descriptors[ d ].DeviceType == InputDeviceType.Keyboard )
-				{
-					var k = new Keyboard( ref descriptors[ d ] );
-					keyboards.Add( k );
-				}
-				else if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
-				{
-					var h = new RawHumanInterfaceDevice( ref descriptor );
-					otherDevices.Add( h );
-				}
-#if DEBUG
-				else
-					throw new NotSupportedException( "Unsupported raw input device type." );
-#endif
-			}
+		//	var result = NativeMethods.GetRawInputBuffer( null, ref size, headerSize );
+		//	if( result != 0 )
+		//	{
+		//		errorCode = Marshal.GetLastWin32Error();
+		//		throw new Win32Exception( "Failed to retrieve raw input buffer size.", InputDevice.GetException( errorCode ) );
+		//	}
 
-			isInitialized = true;
-		}
+		//	if( size < 0 )
+		//		throw new InvalidDataException( "Invalid RawInput buffer size." );
+
+		//	var inputSize = Marshal.SizeOf<RawInput>();
+		//	var count = size / inputSize;
+		//	var buffer = new RawInput[ count ];
+
+		//	if( count > 0 )
+		//	{
+		//		fixed ( RawInput* ptr = &buffer[ 0 ] )
+		//			result = NativeMethods.GetRawInputBuffer( ptr, ref inputSize, headerSize );
+		//		if( result < 0 )
+		//		{
+		//			errorCode = Marshal.GetLastWin32Error();
+		//			throw new Win32Exception( "Failed to retrieve raw input buffer.", InputDevice.GetException( errorCode ) );
+		//		}
+
+		//		if( result != count )
+		//			throw new InvalidDataException( "RawInput buffer size mismatch." );
+		//	}
+
+		//	return buffer;
+		//}
+
+
+		///// <summary>Returns an array of <see cref="RawInputDevice"/> structures containing information about the raw input devices for the current application.</summary>
+		///// <returns>Returns an array of <see cref="RawInputDevice"/> structures containing information about the raw input devices for the current application; the array can be empty, but not null.</returns>
+		///// <exception cref="InvalidDataException"/>
+		///// <exception cref="Win32Exception"/>
+		//internal static RawInputDevice[] GetRegisteredRawInputDevices()
+		//{
+		//	int errorCode;
+		//	var structSize = Marshal.SizeOf<RawInputDevice>();
+		//	var deviceCount = 0;
+
+		//	var result = NativeMethods.GetRegisteredRawInputDevices( null, ref deviceCount, structSize );
+		//	if( result == -1 )
+		//	{
+		//		errorCode = Marshal.GetLastWin32Error();
+		//		throw new Win32Exception( "Failed to retrieve registered raw input device count.", InputDevice.GetException( errorCode ) );
+		//	}
+		//	if( result != 0 )
+		//	{
+		//		throw new InvalidDataException( "Failed to retrieve registered raw input device count." );
+		//	}
+
+		//	if( deviceCount < 0 )
+		//		throw new InvalidDataException( "Invalid registered raw input device count." );
+
+		//	var rawInputDevices = new RawInputDevice[ deviceCount ];
+		//	result = NativeMethods.GetRegisteredRawInputDevices( rawInputDevices, ref deviceCount, structSize );
+		//	if( result == -1 )
+		//	{
+		//		errorCode = Marshal.GetLastWin32Error();
+		//		throw new Win32Exception( "Failed to retrieve registered raw input devices.", InputDevice.GetException( errorCode ) );
+		//	}
+
+		//	return rawInputDevices;
+		//}
 
 
 		#region Mouse
 
-		/// <summary>Gets the primary mouse.</summary>
-		public static Mouse Mouse
-		{
-			get
-			{
-				if( !isInitialized )
-					Initialize();
-
-				if( mice.Count > 0 )
-					return mice[ 0 ];
-
-				return null;
-			}
-		}
-
-
-		/// <summary>Gets the mice.</summary>
+		/// <summary>Gets a read-only collection of all connected mouse devices.</summary>
 		public static ReadOnlyCollection<Mouse> Mice
 		{
 			get
@@ -763,6 +842,22 @@ namespace ManagedX.Input
 
 				return new ReadOnlyCollection<Mouse>( mice );
 			}
+		}
+
+
+		/// <summary>Returns a mouse given its handle.</summary>
+		/// <param name="deviceHandle">The handle of the requested mouse.</param>
+		/// <returns>Returns the requested mouse, or null.</returns>
+		public static Mouse GetMouseByDeviceHandle( IntPtr deviceHandle )
+		{
+			if( !isInitialized )
+				Initialize();
+
+			for( var m = 0; m < mice.Count; ++m )
+				if( mice[ m ].DeviceHandle == deviceHandle )
+					return mice[ m ];
+
+			return null;
 		}
 
 
@@ -791,22 +886,6 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Returns a mouse given its handle.</summary>
-		/// <param name="deviceHandle">The handle of the requested mouse.</param>
-		/// <returns>Returns the requested mouse, or null.</returns>
-		public static Mouse GetMouseByDeviceHandle( IntPtr deviceHandle )
-		{
-			if( !isInitialized )
-				Initialize();
-
-			for( var m = 0; m < mice.Count; ++m )
-				if( mice[ m ].DeviceHandle == deviceHandle )
-					return mice[ m ];
-
-			return null;
-		}
-
-
 		/// <summary>Returns a mouse given its id.</summary>
 		/// <param name="id">The id of the requested mouse.</param>
 		/// <returns>Returns the mouse with the corresponding id, or null if no mouse matches.</returns>
@@ -822,7 +901,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>Raised when a mouse is connected to the system.
-		/// <para>Requires mice to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
+		/// <para>Requires mice (see <see cref="TopLevelCollectionUsage.Mouse"/>) to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
 		/// </summary>
 		public static event EventHandler<MouseConnectedEventArgs> MouseConnected;
 
@@ -831,23 +910,7 @@ namespace ManagedX.Input
 
 		#region Keyboard
 
-		/// <summary>Gets the keyboard.</summary>
-		public static Keyboard Keyboard
-		{
-			get
-			{
-				if( !isInitialized )
-					Initialize();
-
-				if( keyboards.Count > 0 )
-					return keyboards[ 0 ];
-
-				return null;
-			}
-		}
-
-
-		/// <summary>Gets the keyboards.</summary>
+		/// <summary>Gets a read-only collection of all connected keyboards.</summary>
 		public static ReadOnlyCollection<Keyboard> Keyboards
 		{
 			get
@@ -857,6 +920,22 @@ namespace ManagedX.Input
 
 				return new ReadOnlyCollection<Keyboard>( keyboards );
 			}
+		}
+
+
+		/// <summary>Returns a keyboard given its handle.</summary>
+		/// <param name="deviceHandle">The handle of the requested keyboard.</param>
+		/// <returns>Returns the requested keyboard, or null.</returns>
+		public static Keyboard GetKeyboardByDeviceHandle( IntPtr deviceHandle )
+		{
+			if( !isInitialized )
+				Initialize();
+
+			for( var k = 0; k < keyboards.Count; ++k )
+				if( keyboards[ k ].DeviceHandle == deviceHandle )
+					return keyboards[ k ];
+
+			return null;
 		}
 
 
@@ -885,24 +964,8 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Returns a keyboard given its handle.</summary>
-		/// <param name="deviceHandle">The handle of the requested keyboard.</param>
-		/// <returns>Returns the requested keyboard, or null.</returns>
-		public static Keyboard GetKeyboardByDeviceHandle( IntPtr deviceHandle )
-		{
-			if( !isInitialized )
-				Initialize();
-
-			for( var k = 0; k < keyboards.Count; ++k )
-				if( keyboards[ k ].DeviceHandle == deviceHandle )
-					return keyboards[ k ];
-
-			return null;
-		}
-
-
 		/// <summary>Raised when a keyboard is connected to the system.
-		/// <para>Requires keyboards to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
+		/// <para>Requires keyboards (see <see cref="TopLevelCollectionUsage.Keyboard"/>) to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
 		/// </summary>
 		public static event EventHandler<KeyboardConnectedEventArgs> KeyboardConnected;
 
@@ -911,7 +974,7 @@ namespace ManagedX.Input
 
 		#region HID
 
-		/// <summary>Gets a read-only collection containing all HIDs.</summary>
+		/// <summary>Gets a read-only collection containing all other human-interface devices (HID).</summary>
 		public static ReadOnlyCollection<RawHumanInterfaceDevice> HumanInterfaceDevices
 		{
 			get
@@ -924,13 +987,28 @@ namespace ManagedX.Input
 		}
 
 
+		/// <summary>Returns a HID given its handle.</summary>
+		/// <param name="deviceHandle">The handle of the requested HID.</param>
+		/// <returns>Returns the requested HID, or null.</returns>
+		public static RawHumanInterfaceDevice GetHumanInterfaceDeviceByDeviceHandle( IntPtr deviceHandle )
+		{
+			if( !isInitialized )
+				Initialize();
+
+			for( var d = 0; d < otherDevices.Count; ++d )
+				if( otherDevices[ d ].DeviceHandle == deviceHandle )
+					return otherDevices[ d ];
+
+			return null;
+		}
+
+
 		/// <summary>Returns a HID given its device name.</summary>
 		/// <param name="deviceName">The device name of the requested HID.</param>
 		/// <returns>Returns the requested HID, or null.</returns>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ArgumentException"/>
-		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "HID" )]
-		public static RawHumanInterfaceDevice GetHIDByDeviceName( string deviceName )
+		public static RawHumanInterfaceDevice GetHumanInterfaceDeviceByDeviceName( string deviceName )
 		{
 			if( string.IsNullOrWhiteSpace( deviceName ) )
 			{
@@ -950,29 +1028,33 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Returns a HID given its handle.</summary>
-		/// <param name="deviceHandle">The handle of the requested HID.</param>
-		/// <returns>Returns the requested HID, or null.</returns>
-		[SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "HID" )]
-		public static RawHumanInterfaceDevice GetHIDByDeviceHandle( IntPtr deviceHandle )
-		{
-			if( !isInitialized )
-				Initialize();
-
-			for( var d = 0; d < otherDevices.Count; ++d )
-				if( otherDevices[ d ].DeviceHandle == deviceHandle )
-					return otherDevices[ d ];
-
-			return null;
-		}
-
-
 		/// <summary>Raised when a <see cref="RawHumanInterfaceDevice"/> is connected to the system.
 		/// <para>Requires HIDs to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
 		/// </summary>
 		public static event EventHandler<HumanInterfaceDeviceConnectedEventArgs> HumanInterfaceDeviceConnected;
 
 		#endregion HID
+
+
+		/// <summary>Returns an input device given its handle.</summary>
+		/// <param name="deviceHandle">The handle of the requested input device.</param>
+		/// <returns>Returns the requested input device, or null.</returns>
+		public static InputDevice GetDeviceByHandle( IntPtr deviceHandle )
+		{
+			var mouse = GetMouseByDeviceHandle( deviceHandle );
+			if( mouse != null )
+				return mouse;
+
+			var keyboard = GetKeyboardByDeviceHandle( deviceHandle );
+			if( keyboard != null )
+				return keyboard;
+
+			var hid = GetHumanInterfaceDeviceByDeviceHandle( deviceHandle );
+			if( hid != null )
+				return hid;
+
+			return null;
+		}
 
 
 		/// <summary>Returns an input device given its device name.</summary>
@@ -992,7 +1074,7 @@ namespace ManagedX.Input
 				if( keyboard != null )
 					return keyboard;
 
-				var hid = GetHIDByDeviceName( deviceName );
+				var hid = GetHumanInterfaceDeviceByDeviceName( deviceName );
 				if( hid != null )
 					return hid;
 			}
@@ -1005,28 +1087,7 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Returns an input device given its handle.</summary>
-		/// <param name="deviceHandle">The handle of the requested input device.</param>
-		/// <returns>Returns the requested input device, or null.</returns>
-		public static InputDevice GetDeviceByHandle( IntPtr deviceHandle )
-		{
-			var mouse = GetMouseByDeviceHandle( deviceHandle );
-			if( mouse != null )
-				return mouse;
-
-			var keyboard = GetKeyboardByDeviceHandle( deviceHandle );
-			if( keyboard != null )
-				return keyboard;
-
-			var hid = GetHIDByDeviceHandle( deviceHandle );
-			if( hid != null )
-				return hid;
-
-			return null;
-		}
-
-
-		/// <summary>Gets a read-only collection containing all raw input devices.</summary>
+		/// <summary>Gets a read-only collection containing all input devices.</summary>
 		public static ReadOnlyCollection<InputDevice> Devices
 		{
 			get
@@ -1034,20 +1095,21 @@ namespace ManagedX.Input
 				if( !isInitialized )
 					Initialize();
 
-				var list = new List<InputDevice>( mice.Count + keyboards.Count + otherDevices.Count );
+				var list = new List<InputDevice>( mice.Count + keyboards.Count + otherDevices.Count + gameControllers.Count );
 				list.AddRange( mice );
 				list.AddRange( keyboards );
 				list.AddRange( otherDevices );
+				list.AddRange( gameControllers );
 				return new ReadOnlyCollection<InputDevice>( list );
 			}
 		}
 
 
-		/// <summary>Processes window input messages (<see cref="WindowMessage.Input"/> and <see cref="WindowMessage.InputDeviceChange"/>).</summary>
+		/// <summary>Processes input window messages (<see cref="WindowMessage.Input"/> and <see cref="WindowMessage.InputDeviceChange"/>).</summary>
 		/// <param name="message">A window message.</param>
-		/// <returns>Returns false if the devices have to be re-enumerated, otherwise returns true.</returns>
+		/// <returns>Returns true if the message has been processed, false otherwise.</returns>
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
-		public static bool ProcessWindowMessage( ref Message message )
+		public static bool PreFilterMessage( [In] ref Message message )
 		{
 			if( message.Msg == (int)WindowMessage.Input )
 			{
@@ -1057,28 +1119,31 @@ namespace ManagedX.Input
 				{
 					var mouse = GetMouseByDeviceHandle( input.Header.DeviceHandle );
 					if( mouse == null )
-						return false;
-					if( !mouse.IsDisabled )
+					{
+						// TODO - re-enumerate devices ?
+					}
+					else if( !mouse.IsDisabled )
 						mouse.Update( ref input );
-					return true;
 				}
 				else if( input.Header.DeviceType == InputDeviceType.Keyboard )
 				{
 					var keyboard = GetKeyboardByDeviceHandle( input.Header.DeviceHandle );
 					if( keyboard == null )
-						return false;
-					if( !keyboard.IsDisabled )
+					{
+						// TODO - re-enumerate devices ?
+					}
+					else if( !keyboard.IsDisabled )
 						keyboard.Update( ref input );
-					return true;
 				}
 				//else if( input.Header.DeviceType == InputDeviceType.HumanInterfaceDevice )
 				//{
 				//	var targetHid = GetHIDByDeviceHandle( input.Header.DeviceHandle );
 				//	if( targetHid == null )
-				//		return false;
-
-				//	var state = input.HumanInterfaceDevice;
-				//	// ...
+				//	{
+				//		// TODO - re-enumerate devices ?
+				//	}
+				//	else if( !targetHid.IsDisabled )
+				//		targetHid.Update( ref input );
 				//}
 
 				//NativeMethods.DefRawInputProc( new RawInput[] { input }, 1, Marshal.SizeOf<RawInputHeader>() );
@@ -1100,8 +1165,13 @@ namespace ManagedX.Input
 						{
 							if( GetMouseByDeviceHandle( dev.DeviceHandle ) == null )
 							{
-								var mouse = new Mouse( ref dev );
+								var mouse = new Mouse( ref dev )
+								{
+									IsDisabled = mice.Count > 0
+								};
 								mice.Add( mouse );
+								if( !mouse.IsDisabled )
+									updateList.Add( mouse );
 								MouseConnected?.Invoke( null, new MouseConnectedEventArgs( mouse ) );
 								break;
 							}
@@ -1110,18 +1180,28 @@ namespace ManagedX.Input
 						{
 							if( GetKeyboardByDeviceHandle( dev.DeviceHandle ) == null )
 							{
-								var keyboard = new Keyboard( ref dev );
+								var keyboard = new Keyboard( ref dev )
+								{
+									IsDisabled = keyboards.Count > 0
+								};
 								keyboards.Add( keyboard );
+								if( !keyboard.IsDisabled )
+									updateList.Add( keyboard );
 								KeyboardConnected?.Invoke( null, new KeyboardConnectedEventArgs( keyboard ) );
 								break;
 							}
 						}
 						else if( dev.DeviceType == InputDeviceType.HumanInterfaceDevice )
 						{
-							if( GetHIDByDeviceHandle( dev.DeviceHandle ) == null )
+							if( GetHumanInterfaceDeviceByDeviceHandle( dev.DeviceHandle ) == null )
 							{
-								var hid = new RawHumanInterfaceDevice( ref dev );
+								var hid = new RawHumanInterfaceDevice( ref dev )
+								{
+									IsDisabled = true
+								};
 								otherDevices.Add( hid );
+								if( !hid.IsDisabled )
+									updateList.Add( hid );
 								HumanInterfaceDeviceConnected?.Invoke( null, new HumanInterfaceDeviceConnectedEventArgs( hid ) );
 								break;
 							}
@@ -1133,17 +1213,19 @@ namespace ManagedX.Input
 					var device = GetDeviceByHandle( message.LParam );
 					if( device != null )
 					{
+						if( !device.IsDisabled )
+							updateList.Remove( device );
+
 						if( device.DeviceType == InputDeviceType.Mouse )
 							mice.Remove( (Mouse)device );
 						else if( device.DeviceType == InputDeviceType.Keyboard )
 							keyboards.Remove( (Keyboard)device );
-						else //if( device.DeviceType == InputDeviceType.HumanInterfaceDevice )
+						else if( device.DeviceType == InputDeviceType.HumanInterfaceDevice )
 							otherDevices.Remove( (RawHumanInterfaceDevice)device );
+
 						device.IsDisconnected = true;
 					}
 				}
-
-				//NativeMethods.DefRawInputProc( new RawInput[] { }, 1, Marshal.SizeOf<RawInputHeader>() );
 
 				return true;
 			}
@@ -1153,25 +1235,46 @@ namespace ManagedX.Input
 
 
 		/// <summary>Causes the target window to receive raw input messages.
-		/// <para>Important: that window must then override its WndProc method to call <see cref="ProcessWindowMessage"/> prior to its base method.</para>
+		/// <para>Important: that window must then override its WndProc method to call <see cref="PreFilterMessage"/> prior to its base method.</para>
 		/// </summary>
-		/// <param name="targetWindow">The target window.</param>
+		/// <param name="targetWindowHandle">The handle of the target window.</param>
 		/// <param name="options">One or more <see cref="RawInputDeviceRegistrationOptions"/>.</param>
-		/// <param name="usages">At least one TLC usage.</param>
-		/// <exception cref="ArgumentException"/>
-		public static void Register( IWin32Window targetWindow, RawInputDeviceRegistrationOptions options, params TopLevelCollectionUsage[] usages )
+		/// <param name="usage">Top-level collection usage.</param>
+		/// <param name="usages">Optional: other top-level collection usages.</param>
+		public static void Register( IntPtr targetWindowHandle, RawInputDeviceRegistrationOptions options, TopLevelCollectionUsage usage, params TopLevelCollectionUsage[] usages )
 		{
-			if( usages == null || usages.Length == 0 )
-				throw new ArgumentException( "No TLC usage specified.", "usages" );
+			if( usages == null )
+				usages = new TopLevelCollectionUsage[ 0 ];
 
-
-			var windowHandle = targetWindow?.Handle ?? IntPtr.Zero;
-
-			var devices = new RawInputDevice[ usages.Length ];
+			var devices = new RawInputDevice[ usages.Length + 1 ];
+			devices[ 0 ] = new RawInputDevice( usage, options, targetWindowHandle );
 			for( var d = 0; d < usages.Length; ++d )
-				devices[ d ] = new RawInputDevice( usages[ d ], options, windowHandle );
+				devices[ d + 1 ] = new RawInputDevice( usages[ d ], options, targetWindowHandle );
 
 			RegisterRawInputDevices( devices );
+		}
+
+		#endregion RawInput
+
+
+		/// <summary>Updates the state of all enabled input devices.</summary>
+		/// <param name="time">The time elapsed since the application start.</param>
+		public static void Update( TimeSpan time )
+		{
+			var max = gameControllers.Count;
+			for( var c = 0; c < max; ++c )
+			{
+				if( !gameControllers[ c ].IsDisabled )
+					gameControllers[ c ].Update( time );
+			}
+
+			max = updateList.Count;
+			for( var d = 0; d < max; ++d )
+			{
+				var device = updateList[ d ];
+				if( !device.IsDisabled && !device.IsDisconnected )
+					device.Update( time );
+			}
 		}
 
 	}

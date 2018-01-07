@@ -3,7 +3,7 @@
 	using Raw;
 
 
-	/// <summary>Arguments for the <see cref="RawInputDeviceManager.HumanInterfaceDeviceConnected"/> event.</summary>
+	/// <summary>Arguments for the <see cref="InputDeviceManager.HumanInterfaceDeviceConnected"/> event.</summary>
 	public sealed class HumanInterfaceDeviceConnectedEventArgs : System.EventArgs
 	{
 
@@ -19,7 +19,7 @@
 
 
 
-		/// <summary>Gets the newly connected device.</summary>
+		/// <summary>Gets the newly connected HID.</summary>
 		public RawHumanInterfaceDevice Device => device;
 
 	}

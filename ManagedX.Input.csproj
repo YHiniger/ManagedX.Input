@@ -80,6 +80,7 @@
     <Compile Include="code\extensions\BinaryReaderExtensions.cs" />
     <Compile Include="code\extensions\BinaryWriterExtensions.cs" />
     <Compile Include="code\InputDevice.cs" />
+    <Compile Include="code\InputDeviceManager.cs" />
     <Compile Include="code\RawInput\enumerations\DeviceType.cs" />
     <Compile Include="code\RawInput\enumerations\GetDataCommand.cs" />
     <Compile Include="code\RawInput\enumerations\GetInfoCommand.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="code\RawInput\Mouse\MouseCursorStateIndicators.cs" />
     <Compile Include="code\RawInput\Mouse\MouseState.cs" />
     <Compile Include="code\RawInput\RawHumanInterfaceDevice.cs" />
-    <Compile Include="code\RawInput\RawInputDeviceManager.cs" />
     <Compile Include="code\RawInput\RawInputDevice_T.cs" />
     <Compile Include="code\RawInput\structures\DeviceInfo.cs" />
     <Compile Include="code\RawInput\structures\HumanInterfaceDeviceInfo.cs" />
@@ -123,7 +123,6 @@
     <Compile Include="code\XInput\AudioDeviceIds.cs" />
     <Compile Include="code\XInput\enums\DeviceSubtype.cs" />
     <Compile Include="code\XInput\enums\GamepadButtons.cs" />
-    <Compile Include="code\XInput\GameControllerManager.cs" />
     <Compile Include="code\XInput\structs\Gamepad.cs" />
     <Compile Include="code\XInput\VibrationEffect.cs" />
     <Compile Include="code\XInput\VibrationSequence.cs" />

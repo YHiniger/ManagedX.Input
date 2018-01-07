@@ -1,7 +1,7 @@
 ﻿namespace ManagedX.Input
 {
 
-	/// <summary>Arguments for the <see cref="RawInputDeviceManager.MouseConnected"/> event.</summary>
+	/// <summary>Arguments for the <see cref="InputDeviceManager.MouseConnected"/> event.</summary>
 	public sealed class MouseConnectedEventArgs : System.EventArgs
 	{
 

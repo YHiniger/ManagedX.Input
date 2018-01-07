@@ -29,10 +29,10 @@ namespace ManagedX.Input.Raw
 			: base()
 		{
 			deviceHandle = descriptor.DeviceHandle;
-			deviceName = RawInputDeviceManager.GetRawInputDeviceName( deviceHandle );
+			deviceName = InputDeviceManager.GetRawInputDeviceName( deviceHandle );
 
 			if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
-				displayName = RawInputDeviceManager.GetHIDProductString( deviceName );
+				displayName = InputDeviceManager.GetHIDProductString( deviceName );
 			else
 			{
 				// Mice and keyboards seem to require this:
@@ -66,7 +66,7 @@ namespace ManagedX.Input.Raw
 		/// <param name="time">The time elapsed since the start of the application.</param>
 		protected override void Reset( TimeSpan time )
 		{
-			info = RawInputDeviceManager.GetRawInputDeviceInfo( deviceHandle, false );
+			info = InputDeviceManager.GetRawInputDeviceInfo( deviceHandle, false );
 
 			base.Reset( time );
 		}
