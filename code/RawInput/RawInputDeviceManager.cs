@@ -704,28 +704,6 @@ namespace ManagedX.Input
 
 
 
-		private static void OnHIDDisconnected( object sender, EventArgs e )
-		{
-			var device = (RawHumanInterfaceDevice)sender;
-			device.Disconnected -= OnHIDDisconnected;
-			otherDevices.Remove( device );
-		}
-
-		private static void OnMouseDisconnected( object sender, EventArgs e )
-		{
-			var mouse = (Mouse)sender;
-			mouse.Disconnected -= OnMouseDisconnected;
-			mice.Remove( mouse );
-		}
-
-		private static void OnKeyboardDisconnected( object sender, EventArgs e )
-		{
-			var keyboard = (Keyboard)sender;
-			keyboard.Disconnected -= OnKeyboardDisconnected;
-			keyboards.Remove( keyboard );
-		}
-
-
 		private static void Initialize()
 		{
 			var descriptors = GetRawInputDeviceList();
@@ -736,19 +714,16 @@ namespace ManagedX.Input
 				{
 					var m = new Mouse( ref descriptor );
 					mice.Add( m );
-					m.Disconnected += OnMouseDisconnected;
 				}
 				else if( descriptor.DeviceType == InputDeviceType.Keyboard )
 				{
 					var k = new Keyboard( ref descriptor );
 					keyboards.Add( k );
-					k.Disconnected += OnKeyboardDisconnected;
 				}
 				else // if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
 				{
 					var h = new RawHumanInterfaceDevice( ref descriptor );
 					otherDevices.Add( h );
-					h.Disconnected += OnHIDDisconnected;
 				}
 			}
 
@@ -845,7 +820,7 @@ namespace ManagedX.Input
 		/// <summary>Raised when a mouse is connected to the system.
 		/// <para>Requires mice to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
 		/// </summary>
-		public static event EventHandler MouseConnected;
+		public static event EventHandler<MouseConnectedEventArgs> MouseConnected;
 
 		#endregion Mouse
 
@@ -925,7 +900,7 @@ namespace ManagedX.Input
 		/// <summary>Raised when a keyboard is connected to the system.
 		/// <para>Requires keyboards to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
 		/// </summary>
-		public static event EventHandler KeyboardConnected;
+		public static event EventHandler<KeyboardConnectedEventArgs> KeyboardConnected;
 
 		#endregion Keyboard
 
@@ -987,6 +962,12 @@ namespace ManagedX.Input
 			return null;
 		}
 
+
+		/// <summary>Raised when a <see cref="RawHumanInterfaceDevice"/> is connected to the system.
+		/// <para>Requires HIDs to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
+		/// </summary>
+		public static event EventHandler<HumanInterfaceDeviceConnectedEventArgs> HumanInterfaceDeviceConnected;
+
 		#endregion HID
 
 
@@ -1046,9 +1027,12 @@ namespace ManagedX.Input
 		{
 			get
 			{
-				var list = new List<InputDevice>();
-				list.AddRange( keyboards );
+				if( !isInitialized )
+					Initialize();
+
+				var list = new List<InputDevice>( mice.Count + keyboards.Count + otherDevices.Count );
 				list.AddRange( mice );
+				list.AddRange( keyboards );
 				list.AddRange( otherDevices );
 				return new ReadOnlyCollection<InputDevice>( list );
 			}
@@ -1102,40 +1086,37 @@ namespace ManagedX.Input
 				var wParam = message.WParam.ToInt32();
 				if( wParam == 1 )       // device arrival
 				{
-					var deviceName = GetRawInputDeviceName( message.LParam );
 					var deviceList = GetRawInputDeviceList();
 					for( var d = 0; d < deviceList.Length; ++d )
 					{
 						var dev = deviceList[ d ];
 						if( dev.DeviceType == InputDeviceType.Mouse )
 						{
-							if( GetMouseByDeviceName( deviceName ) == null )
+							if( GetMouseByDeviceHandle( dev.DeviceHandle ) == null )
 							{
 								var mouse = new Mouse( ref dev );
 								mice.Add( mouse );
-								mouse.Disconnected += OnMouseDisconnected;
-								MouseConnected?.Invoke( null, EventArgs.Empty );
+								MouseConnected?.Invoke( null, new MouseConnectedEventArgs( mouse ) );
 								break;
 							}
 						}
 						else if( dev.DeviceType == InputDeviceType.Keyboard )
 						{
-							if( GetKeyboardByDeviceName( deviceName ) == null )
+							if( GetKeyboardByDeviceHandle( dev.DeviceHandle ) == null )
 							{
 								var keyboard = new Keyboard( ref dev );
 								keyboards.Add( keyboard );
-								keyboard.Disconnected += OnKeyboardDisconnected;
-								KeyboardConnected?.Invoke( null, EventArgs.Empty );
+								KeyboardConnected?.Invoke( null, new KeyboardConnectedEventArgs( keyboard ) );
 								break;
 							}
 						}
-						else //if( desc.DeviceType == InputDeviceType.HumanInterfaceDevice )
+						else if( dev.DeviceType == InputDeviceType.HumanInterfaceDevice )
 						{
-							if( GetHIDByDeviceName( deviceName ) == null )
+							if( GetHIDByDeviceHandle( dev.DeviceHandle ) == null )
 							{
 								var hid = new RawHumanInterfaceDevice( ref dev );
 								otherDevices.Add( hid );
-								hid.Disconnected += OnHIDDisconnected;
+								HumanInterfaceDeviceConnected?.Invoke( null, new HumanInterfaceDeviceConnectedEventArgs( hid ) );
 								break;
 							}
 						}

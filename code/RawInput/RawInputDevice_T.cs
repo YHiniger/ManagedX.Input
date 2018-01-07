@@ -72,12 +72,6 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		internal MouseDeviceInfo MouseInfo => info.MouseInfo;
-
-
-		internal HumanInterfaceDeviceInfo HumanInterfaceDeviceInfo => info.HumanInterfaceDeviceInfo;
-
-
 		internal abstract void Update( ref RawInput input );
 
 	}

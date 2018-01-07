@@ -13,8 +13,6 @@ namespace ManagedX.Input
 	public sealed class Mouse : RawInputDevice<MouseState, MouseButton>
 	{
 
-		//private const int MaxSupportedMice = 4; // FIXME - actually this should be set to 2
-
 		/// <summary>Defines the maximum number of supported mouse buttons: 5.</summary>
 		public const int MaxSupportedButtonCount = 5;
 
@@ -325,7 +323,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>Gets a description of this <see cref="Mouse"/>.</summary>
-		public MouseDeviceInfo Description => base.MouseInfo;
+		public MouseDeviceInfo Description => base.info.MouseInfo;
 
 	}
 

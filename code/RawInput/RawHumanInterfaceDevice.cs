@@ -5,7 +5,7 @@ namespace ManagedX.Input.Raw
 {
 
 	/// <summary>A raw HID.
-	/// <para>This class does not currently work properly.</para>
+	/// <para>This class is not yet implemented.</para>
 	/// </summary>
 	public sealed class RawHumanInterfaceDevice : RawInputDevice<RawHID, int>
 	{
@@ -25,7 +25,7 @@ namespace ManagedX.Input.Raw
 		/// <returns>Returns a <see cref="RawHID"/> structure representing the current state of the device.</returns>
 		protected sealed override RawHID GetState()
 		{
-			return RawHID.Empty;
+			return base.state;
 		}
 
 
@@ -55,13 +55,20 @@ namespace ManagedX.Input.Raw
 		}
 
 
-		internal sealed override void Update( ref RawInput input )
+		unsafe internal sealed override void Update( ref RawInput input )
 		{
+			//var hid = input.HumanInterfaceDevice;
+			//var buffer = new byte[ hid.Count ][];
+			//for( var b = 0; b < hid.Count; ++b )
+			//{
+			//	buffer[ b ] = new byte[ hid.Size ];
+			//	System.Runtime.InteropServices.Marshal.Copy( hid.RawData + ( hid.Size * b ), buffer[ b ], 0, hid.Size );
+			//}
 		}
 
 
 		/// <summary>Gets a description of this <see cref="RawHumanInterfaceDevice"/>.</summary>
-		public HumanInterfaceDeviceInfo Description => base.HumanInterfaceDeviceInfo;
+		public HumanInterfaceDeviceInfo Description => base.info.HumanInterfaceDeviceInfo;
 
 	}
 

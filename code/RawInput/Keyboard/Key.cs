@@ -416,22 +416,22 @@ namespace ManagedX.Input
 
 
 		/// <summary>The left SHIFT key.</summary>
-		LShiftKey = VirtualKeyCode.LShiftKey,
+		LeftShift = VirtualKeyCode.LShiftKey,
 		
 		/// <summary>The right SHIFT key.</summary>
-		RShiftKey = VirtualKeyCode.RShiftKey,
+		RightShift = VirtualKeyCode.RShiftKey,
 		
 		/// <summary>The left CTRL key.</summary>
-		LControlKey = VirtualKeyCode.LControlKey,
+		LeftControl = VirtualKeyCode.LControlKey,
 		
 		/// <summary>The right CTRL key.</summary>
-		RControlKey = VirtualKeyCode.RControlKey,
+		RightControl = VirtualKeyCode.RControlKey,
 		
 		/// <summary>The left ALT key.</summary>
-		LAlt = VirtualKeyCode.LMenu,
+		LeftAlt = VirtualKeyCode.LMenu,
 		
 		/// <summary>The right ALT key.</summary>
-		RAlt = VirtualKeyCode.RMenu,
+		RightAlt = VirtualKeyCode.RMenu,
 		
 		
 		/// <summary>The browser BACK key.</summary>

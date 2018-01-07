@@ -13,9 +13,6 @@ namespace ManagedX.Input
 	public sealed class Keyboard : RawInputDevice<KeyboardState, Key>
 	{
 
-		//private const int MaxSupportedKeyboards = 4;    // FIXME - should be 2
-
-
 		private enum ScanCode : short
 		{
 			None = 0x0000,
@@ -236,27 +233,27 @@ namespace ManagedX.Input
 
 
 		private static readonly byte[] globalState = new byte[ 256 ];
-		private static KeyboardLEDIndicators leds;
 
 
 		/// <summary>Gets a value indicating which LED indicators are active.</summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "LEDs" )]
-		public static KeyboardLEDIndicators LEDs => leds;
-
-
-		private static void UpdateGlobal()
+		public static KeyboardLEDIndicators LEDs
 		{
-			leds = KeyboardLEDIndicators.None;
-			if( SafeNativeMethods.GetKeyboardState( globalState ) )
+			get
 			{
-				if( ( globalState[ (int)Key.NumLock ] & 0x01 ) != 0 )
-					leds |= KeyboardLEDIndicators.NumLock;
+				var leds = KeyboardLEDIndicators.None;
+				if( SafeNativeMethods.GetKeyboardState( globalState ) )
+				{
+					if( ( globalState[ (int)Key.NumLock ] & 0x01 ) != 0 )
+						leds |= KeyboardLEDIndicators.NumLock;
 
-				if( ( globalState[ (int)Key.CapsLock ] & 0x01 ) != 0 )
-					leds |= KeyboardLEDIndicators.CapsLock;
+					if( ( globalState[ (int)Key.CapsLock ] & 0x01 ) != 0 )
+						leds |= KeyboardLEDIndicators.CapsLock;
 
-				if( ( globalState[ (int)Key.ScrollLock ] & 0x01 ) != 0 )
-					leds |= KeyboardLEDIndicators.ScrollLock;
+					if( ( globalState[ (int)Key.ScrollLock ] & 0x01 ) != 0 )
+						leds |= KeyboardLEDIndicators.ScrollLock;
+				}
+				return leds;
 			}
 		}
 
@@ -302,17 +299,6 @@ namespace ManagedX.Input
 		/// <exception cref="Win32Exception"/>
 		protected sealed override KeyboardState GetState()
 		{
-			//if( !SafeNativeMethods.GetKeyboardState( State.Data ) )
-			//{
-			//	var errorCode = Marshal.GetLastWin32Error();
-			//	base.IsDisconnected = true;
-			//	if( errorCode == (int)Win32.ErrorCode.NotConnected )
-			//		return KeyboardState.Empty;
-			//	throw new Win32Exception( "Failed to retrieve keyboard state.", GetException( errorCode ) );
-			//}
-
-			UpdateGlobal();
-
 			return new KeyboardState( state.Data );
 		}
 
@@ -346,14 +332,14 @@ namespace ManagedX.Input
 			{
 				var scanCode = (ScanCode)raw.MakeCode;
 				if( scanCode == ScanCode.LeftShift )
-					key = Key.LShiftKey;
+					key = Key.LeftShift;
 				else if( scanCode == ScanCode.RightShift )
-					key = Key.RShiftKey;
+					key = Key.RightShift;
 			}
 			else if( key == Key.ControlKey )
-				key = E0 ? Key.RControlKey : Key.LControlKey;
+				key = E0 ? Key.RightControl : Key.LeftControl;
 			else if( key == Key.Menu )
-				key = E0 ? Key.RAlt : Key.LAlt;
+				key = E0 ? Key.RightAlt : Key.LeftAlt;
 			//}
 
 			if( raw.MakeCodeInfo.HasFlag( ScanCodeCharacteristics.Break ) )
