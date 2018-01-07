@@ -273,10 +273,10 @@ namespace ManagedX.Input
 		
 		
 		/// <summary>The left Windows logo key (Microsoft Natural Keyboard).</summary>
-		LWin = VirtualKeyCode.LWin,
+		LeftWin = VirtualKeyCode.LWin,
 		
 		/// <summary>The right Windows logo key (Microsoft Natural Keyboard).</summary>
-		RWin = VirtualKeyCode.RWin,
+		RightWin = VirtualKeyCode.RWin,
 		
 		/// <summary>The application key (Microsoft Natural Keyboard).</summary>
 		Apps = VirtualKeyCode.Apps,

@@ -183,7 +183,7 @@ namespace ManagedX.Input.XInput
 
 		public sealed override bool SetVibration( Vibration vibration )
 		{
-			if( base.Disabled || !( capabilities.HasLeftMotor || capabilities.HasRightMotor ) )
+			if( base.IsDisabled || !( capabilities.HasLeftMotor || capabilities.HasRightMotor ) )
 				return false;
 
 			var errorCode = SafeNativeMethods.XInputSetState( base.Index, ref vibration );
@@ -224,7 +224,7 @@ namespace ManagedX.Input.XInput
 	
 		protected sealed override Gamepad GetState()
 		{
-			if( !base.Disabled )
+			if( !base.IsDisabled )
 			{
 				var errorCode = SafeNativeMethods.XInputGetState( base.Index, out rawState );
 

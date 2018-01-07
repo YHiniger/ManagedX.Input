@@ -104,9 +104,8 @@ namespace ManagedX.Input.XInput
 			var cMax = gameControllers.Count;
 			for( var c = 0; c < cMax; ++c )
 			{
-				var gameController = gameControllers[ c ];
-				if( !gameController.Disabled )
-					gameController.Update( time );
+				if( !gameControllers[ c ].IsDisabled )
+					gameControllers[ c ].Update( time );
 			}
 		}
 

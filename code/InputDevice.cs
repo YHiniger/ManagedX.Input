@@ -17,6 +17,7 @@ namespace ManagedX.Input
 
 
 
+		private bool isDisabled;
 		private bool isDisconnected;
 
 
@@ -25,6 +26,12 @@ namespace ManagedX.Input
 		{
 		}
 
+
+
+		/// <summary>Gets or sets a value indicating whether the device is disabled.
+		/// <para>Disabled devices are not updated.</para>
+		/// </summary>
+		public bool IsDisabled { get => isDisabled; set => isDisabled = value; }
 
 
 		/// <summary>When overridden, gets a value indicating the type of the <see cref="InputDevice"/>.</summary>

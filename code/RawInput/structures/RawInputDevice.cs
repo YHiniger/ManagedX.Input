@@ -12,7 +12,7 @@ namespace ManagedX.Input.Raw
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/ms645565%28v=vs.85%29.aspx</remarks>
 	[Win32.Source( "WinUser.h", "RAWINPUTDEVICE" )]
 	[System.Diagnostics.DebuggerStepThrough]
-	[StructLayout( LayoutKind.Sequential, Pack = 4 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 4 )] // Size = 12 (x86) or 16 (x64) bytes
 	internal struct RawInputDevice : IEquatable<RawInputDevice>
 	{
 

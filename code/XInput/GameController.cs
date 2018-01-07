@@ -15,7 +15,6 @@ namespace ManagedX.Input.XInput
 
 		private readonly GameControllerIndex index;
 		private DeadZoneMode deadZoneMode;
-		private bool isDisabled;
 
 
 
@@ -81,14 +80,6 @@ namespace ManagedX.Input.XInput
 		{
 			get => deadZoneMode;
 			set => deadZoneMode = value;
-		}
-
-
-		/// <summary>Gets or sets a value indicating whether the game controller is disabled.</summary>
-		public bool Disabled
-		{
-			get => isDisabled;
-			set => isDisabled = value;
 		}
 
 

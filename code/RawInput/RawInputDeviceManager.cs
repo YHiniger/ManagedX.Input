@@ -710,21 +710,25 @@ namespace ManagedX.Input
 			for( var d = 0; d < descriptors.Length; ++d )
 			{
 				var descriptor = descriptors[ d ];
-				if( descriptor.DeviceType == InputDeviceType.Mouse )
+				if( descriptors[ d ].DeviceType == InputDeviceType.Mouse )
 				{
-					var m = new Mouse( ref descriptor );
+					var m = new Mouse( ref descriptors[ d ] );
 					mice.Add( m );
 				}
-				else if( descriptor.DeviceType == InputDeviceType.Keyboard )
+				else if( descriptors[ d ].DeviceType == InputDeviceType.Keyboard )
 				{
-					var k = new Keyboard( ref descriptor );
+					var k = new Keyboard( ref descriptors[ d ] );
 					keyboards.Add( k );
 				}
-				else // if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
+				else if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
 				{
 					var h = new RawHumanInterfaceDevice( ref descriptor );
 					otherDevices.Add( h );
 				}
+#if DEBUG
+				else
+					throw new NotSupportedException( "Unsupported raw input device type." );
+#endif
 			}
 
 			isInitialized = true;
@@ -1039,8 +1043,8 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Processes window messages to ensure the mouse motion and wheel state are up-to-date.</summary>
-		/// <param name="message">A Windows message.</param>
+		/// <summary>Processes window input messages (<see cref="WindowMessage.Input"/> and <see cref="WindowMessage.InputDeviceChange"/>).</summary>
+		/// <param name="message">A window message.</param>
 		/// <returns>Returns false if the devices have to be re-enumerated, otherwise returns true.</returns>
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
 		public static bool ProcessWindowMessage( ref Message message )
@@ -1054,7 +1058,8 @@ namespace ManagedX.Input
 					var mouse = GetMouseByDeviceHandle( input.Header.DeviceHandle );
 					if( mouse == null )
 						return false;
-					mouse.Update( ref input );
+					if( !mouse.IsDisabled )
+						mouse.Update( ref input );
 					return true;
 				}
 				else if( input.Header.DeviceType == InputDeviceType.Keyboard )
@@ -1062,7 +1067,8 @@ namespace ManagedX.Input
 					var keyboard = GetKeyboardByDeviceHandle( input.Header.DeviceHandle );
 					if( keyboard == null )
 						return false;
-					keyboard.Update( ref input );
+					if( !keyboard.IsDisabled )
+						keyboard.Update( ref input );
 					return true;
 				}
 				//else if( input.Header.DeviceType == InputDeviceType.HumanInterfaceDevice )
