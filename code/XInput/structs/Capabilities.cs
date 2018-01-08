@@ -13,7 +13,7 @@ namespace ManagedX.Input.XInput
 	/// <remarks>http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_capabilities(v=vs.85).aspx</remarks>
 	[Win32.Source( "XInput.h", "XINPUT_CAPABILITIES" )]
 	[System.Diagnostics.DebuggerStepThrough]
-	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 20 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 20 )]
 	public struct Capabilities : IEquatable<Capabilities>
 	{
 

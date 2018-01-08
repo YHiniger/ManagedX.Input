@@ -14,7 +14,7 @@ namespace ManagedX.Input.XInput
 	[Win32.Source( "XInput.h", "XINPUT_VIBRATION" )]
 	[System.Diagnostics.DebuggerStepThrough]
 	[Serializable]
-	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 4 )]
+	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 4 )]
 	public struct Vibration : IEquatable<Vibration>
 	{
 

@@ -22,7 +22,6 @@ namespace ManagedX.Input.XInput
 		public readonly VirtualKeyCode VirtualKey;
 		// THINKABOUTME - remove unicodeChar from GetHashCode and Equals, to allow user-implemented (and localized) support.
 
-
 		/// <summary>This member is unused and the value is zero.</summary>
 		internal char unicodeChar;
 
