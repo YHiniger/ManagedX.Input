@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 
 namespace ManagedX.Input.Raw
@@ -71,6 +72,29 @@ namespace ManagedX.Input.Raw
 		public override bool Equals( object obj )
 		{
 			return obj is HumanInterfaceDeviceState state && this.Equals( state );
+		}
+
+
+
+		/// <summary></summary>
+		/// <param name="state"></param>
+		/// <param name="other"></param>
+		/// <returns></returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
+		public static bool operator ==( HumanInterfaceDeviceState state, HumanInterfaceDeviceState other )
+		{
+			return state.Equals( other );
+		}
+
+
+		/// <summary></summary>
+		/// <param name="state"></param>
+		/// <param name="other"></param>
+		/// <returns></returns>
+		[MethodImpl( MethodImplOptions.AggressiveInlining )]
+		public static bool operator !=( HumanInterfaceDeviceState state, HumanInterfaceDeviceState other )
+		{
+			return !state.Equals( other );
 		}
 
 	}
