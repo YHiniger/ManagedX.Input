@@ -25,9 +25,9 @@ namespace ManagedX.Input.XInput
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public readonly DeviceSubtype ControllerSubtype;
 
-		private Caps caps;				// capability flags
-		private Gamepad gamePad;		// describes available controller features and control resolutions
-		private Vibration vibration;	// describes available vibration functionality and resolutions
+		private readonly Caps caps;				// capability flags
+		private readonly Gamepad gamePad;		// describes available controller features and control resolutions
+		private readonly Vibration vibration;	// describes available vibration functionality and resolutions
 
 
 

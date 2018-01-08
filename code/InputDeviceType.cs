@@ -1,7 +1,7 @@
 ﻿namespace ManagedX.Input
 {
 
-	/// <summary>Enumerates (raw) input device types.</summary>
+	/// <summary>Input device types.</summary>
 	public enum InputDeviceType : int
 	{
 

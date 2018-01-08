@@ -39,22 +39,6 @@ namespace ManagedX.Input.XInput
 		public sealed override string DisplayName => Properties.Resources.GameController + " " + ( (int)index + 1 );
 
 
-		/// <summary>Sends a vibration state to the controller.</summary>
-		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		/// <returns>Returns false if the controller has no vibration support or is not connected, otherwise returns true.</returns>
-		public abstract bool SetVibration( Vibration vibration );
-		
-
-		/// <summary>Gets information about keystrokes.
-		/// <para>Only available on Windows 8 and newer (and XBOX 360 and newer).</para>
-		/// </summary>
-		public abstract Keystroke Keystroke { get; }
-
-
-		/// <summary>Gets the index of this <see cref="GameController"/>.</summary>
-		public GameControllerIndex Index => index;
-
-
 		/// <summary>Raised when the game controller is connected.</summary>
 		public event EventHandler Connected;
 
@@ -69,12 +53,28 @@ namespace ManagedX.Input.XInput
 		}
 
 
+		/// <summary>Gets the index of this <see cref="GameController"/>.</summary>
+		public GameControllerIndex Index => index;
+
+
 		/// <summary>Gets or sets a value indicating the type of dead zone to apply.</summary>
 		public DeadZoneMode DeadZoneMode
 		{
 			get => deadZoneMode;
 			set => deadZoneMode = value;
 		}
+
+
+		/// <summary>Sends a vibration state to the controller.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <returns>Returns false if the controller has no vibration support or is not connected, otherwise returns true.</returns>
+		public abstract bool SetVibration( Vibration vibration );
+		
+
+		/// <summary>Gets information about keystrokes.
+		/// <para>Only available on Windows 8 and newer (and XBOX 360 and newer).</para>
+		/// </summary>
+		public abstract Keystroke Keystroke { get; }
 
 
 		#region Description

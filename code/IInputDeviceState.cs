@@ -3,7 +3,7 @@
 
 	/// <summary>Defines a method which indicates whether a key or button is pressed.</summary>
 	/// <typeparam name="TButton">An enumeration representing the input device keys or buttons.</typeparam>
-	public interface IInputDeviceState<TButton>
+	public interface IInputDeviceState<in TButton>
 		where TButton : struct
 	{
 

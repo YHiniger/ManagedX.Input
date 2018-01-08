@@ -27,33 +27,6 @@ namespace ManagedX.Input
 
 
 
-		#region State
-
-		/// <summary>When overridden, reads and returns the input device state.
-		/// <para>This method is called by <see cref="Reset"/> and <see cref="Update"/> to retrieve the device state (<see cref="CurrentState"/>).</para>
-		/// It's also responsible of keeping the Disconnected property synchronized.
-		/// </summary>
-		/// <returns>Returns the input device state.</returns>
-		[SuppressMessage( "Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Disambiguation: this method retrieves the device state." )]
-		protected abstract TState GetState();
-
-
-		/// <summary>Gets the current state.</summary>
-		public TState CurrentState => currentState;
-
-		/// <summary>Gets the time associated with the <see cref="CurrentState"/>.</summary>
-		public TimeSpan CurrentStateTime => currentStateTime;
-
-
-		/// <summary>Gets the previous state.</summary>
-		public TState PreviousState => previousState;
-
-		/// <summary>Gets the time associated with the <see cref="PreviousState"/>.</summary>
-		public TimeSpan PreviousStateTime => previousStateTime;
-
-		#endregion State
-
-
 		/// <summary>Copies the <see cref="CurrentState"/> to the <see cref="PreviousState"/>, and calls <see cref="GetState"/> to update the former.
 		/// <para>If the device is not connected, calls <see cref="Reset"/> prior to the copy and state update.</para>
 		/// </summary>
@@ -83,6 +56,33 @@ namespace ManagedX.Input
 			previousStateTime = currentStateTime = time;
 			previousState = currentState = this.GetState();	// NOTE - GetState is in charge of setting Disconnected to the appropriate value.
 		}
+
+
+		#region State
+
+		/// <summary>When overridden, reads and returns the input device state.
+		/// <para>This method is called by <see cref="Reset"/> and <see cref="Update"/> to retrieve the device state (<see cref="CurrentState"/>).</para>
+		/// It's also responsible of keeping the Disconnected property synchronized.
+		/// </summary>
+		/// <returns>Returns the input device state.</returns>
+		[SuppressMessage( "Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Disambiguation: this method retrieves the device state." )]
+		protected abstract TState GetState();
+
+
+		/// <summary>Gets the current state.</summary>
+		public TState CurrentState => currentState;
+
+		/// <summary>Gets the time associated with the <see cref="CurrentState"/>.</summary>
+		public TimeSpan CurrentStateTime => currentStateTime;
+
+
+		/// <summary>Gets the previous state.</summary>
+		public TState PreviousState => previousState;
+
+		/// <summary>Gets the time associated with the <see cref="PreviousState"/>.</summary>
+		public TimeSpan PreviousStateTime => previousStateTime;
+
+		#endregion State
 
 
 		/// <summary>Returns a value indicating whether a button (or key) has just been pressed.</summary>

@@ -95,6 +95,13 @@ namespace ManagedX.Input.XInput
 		}
 
 
+		/// <summary>Gets a value indicating whether a button is pressed.</summary>
+		/// <param name="button">A button.</param>
+		/// <returns>Returns true if the specified button is pressed, false otherwise.</returns>
+		[SuppressMessage( "Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers" )]
+		public bool this[ GamepadButtons button ] => ( button == GamepadButtons.None ) ? ( Buttons == GamepadButtons.None ) : Buttons.HasFlag( button );
+
+
 		/// <summary>Gets a value, within the range [0,1], representing the state of the left trigger.</summary>
 		public float LeftTrigger => ( triggers & 0xFF ) / 255.0f;
 
