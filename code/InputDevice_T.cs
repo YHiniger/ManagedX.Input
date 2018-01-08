@@ -9,7 +9,7 @@ namespace ManagedX.Input
 	/// <typeparam name="TState">A structure representing the device state.</typeparam>
 	/// <typeparam name="TButton">An enumeration of the device buttons/keys.</typeparam>
 	public abstract class InputDevice<TState, TButton> : InputDevice
-		where TState : struct, IEquatable<TState>
+		where TState : struct, IInputDeviceState<TButton>, IEquatable<TState>
 		where TButton : struct
 	{
 
@@ -85,16 +85,22 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>When overridden, returns a value indicating whether a button (or key) has just been pressed.</summary>
+		/// <summary>Returns a value indicating whether a button (or key) has just been pressed.</summary>
 		/// <param name="button">A button (or key).</param>
-		/// <returns>Returns true if the button (or key) is released in the <see cref="PreviousState">previous state</see> and is pressed in the <see cref="CurrentState">current state</see>, otherwise returns false.</returns>
-		public abstract bool HasJustBeenPressed( TButton button );
+		/// <returns>Returns true if the button (or key) is released in the <see cref="PreviousState"/> and is pressed in the <see cref="CurrentState"/>, otherwise returns false.</returns>
+		public bool HasJustBeenPressed( TButton button )
+		{
+			return currentState.IsPressed( button ) && !previousState.IsPressed( button );
+		}
 
 
-		/// <summary>When overridden, returns a value indicating whether a button (or key) has just been released.</summary>
+		/// <summary>Returns a value indicating whether a button (or key) has just been released.</summary>
 		/// <param name="button">A button (or key).</param>
-		/// <returns>Returns true if the button (or key) is pressed in the <see cref="PreviousState">previous state</see> and is released in the <see cref="CurrentState">current state</see>, otherwise returns false.</returns>
-		public abstract bool HasJustBeenReleased( TButton button );
+		/// <returns>Returns true if the button (or key) is pressed in the <see cref="PreviousState"/> and is released in the <see cref="CurrentState"/>, otherwise returns false.</returns>
+		public bool HasJustBeenReleased( TButton button )
+		{
+			return !currentState.IsPressed( button ) && previousState.IsPressed( button );
+		}
 
 	}
 

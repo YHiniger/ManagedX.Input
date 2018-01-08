@@ -211,17 +211,6 @@ namespace ManagedX.Input
 
 
 
-		/// <summary>Resets the state and information about this <see cref="Mouse"/>.</summary>
-		/// <param name="time">The time elapsed since the start of the application.</param>
-		protected sealed override void Reset( TimeSpan time )
-		{
-			state.Motion = state.Wheels = Point.Zero;
-			wheel = 0;
-
-			base.Reset( time );
-		}
-
-
 		/// <summary>Returns the mouse state.
 		/// <para>This method is called by Reset and Update.</para>
 		/// </summary>
@@ -245,27 +234,14 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Gets a value indicating whether a button is pressed in the current state and released in the previous state.</summary>
-		/// <param name="button">A mouse button.</param>
-		/// <returns>Returns true if the specified <paramref name="button"/> is pressed in the current state and released in the previous state, otherwise returns false.</returns>
-		public sealed override bool HasJustBeenPressed( MouseButton button )
+		/// <summary>Resets the state and information about this <see cref="Mouse"/>.</summary>
+		/// <param name="time">The time elapsed since the start of the application.</param>
+		protected sealed override void Reset( TimeSpan time )
 		{
-			if( base.IsDisconnected )
-				return false;
+			state.Motion = state.Wheels = Point.Zero;
+			wheel = 0;
 
-			return base.CurrentState[ button ] && !base.PreviousState[ button ];
-		}
-
-
-		/// <summary>Gets a value indicating whether a button is released in the current state and pressed in the previous state.</summary>
-		/// <param name="button">A mouse button.</param>
-		/// <returns>Returns true if the specified <paramref name="button"/> is released in the current state and pressed in the previous state, otherwise returns false.</returns>
-		public sealed override bool HasJustBeenReleased( MouseButton button )
-		{
-			if( base.IsDisconnected )
-				return false;
-
-			return !base.CurrentState[ button ] && base.PreviousState[ button ];
+			base.Reset( time );
 		}
 
 
@@ -314,16 +290,16 @@ namespace ManagedX.Input
 		}
 
 
+		/// <summary>Gets a description of this <see cref="Mouse"/>.</summary>
+		public MouseDeviceInfo Description => base.info.MouseInfo;
+
+
 		/// <summary>Gets or sets the cumulated wheel value.</summary>
 		public int WheelValue
 		{
 			get => wheel;
 			set => wheel = value;
 		}
-
-
-		/// <summary>Gets a description of this <see cref="Mouse"/>.</summary>
-		public MouseDeviceInfo Description => base.info.MouseInfo;
 
 	}
 

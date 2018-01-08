@@ -10,16 +10,16 @@ namespace ManagedX.Input
 	public enum KeyboardLEDIndicators : int
 	{
 
-		/// <summary>No LED indicators.</summary>
+		/// <summary>No active LED indicators.</summary>
 		None = 0x00000000,
 
-		/// <summary>Num lock LED is active.</summary>
-		NumLock = 0x00000001,
+		/// <summary>The caps lock LED is active.</summary>
+		CapsLock = 0x00000001,
 
-		/// <summary>Caps lock LED is active.</summary>
-		CapsLock = 0x00000002,
+		/// <summary>The num lock LED is active.</summary>
+		NumLock = 0x00000002,
 
-		/// <summary>Scroll lock LED is active.</summary>
+		/// <summary>The scroll lock LED is active.</summary>
 		ScrollLock = 0x00000004
 
 	}

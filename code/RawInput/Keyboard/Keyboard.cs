@@ -268,30 +268,6 @@ namespace ManagedX.Input
 
 		
 
-		/// <summary>Returns a value indicating whether a key is pressed in the current state and released in the previous state.</summary>
-		/// <param name="button">A keyboard key.</param>
-		/// <returns>Returns true if the key specified by <paramref name="button"/> is pressed in the current state and released in the previous state, otherwise returns false.</returns>
-		public sealed override bool HasJustBeenPressed( Key button )
-		{
-			if( base.IsDisconnected )
-				return false;
-
-			return base.CurrentState[ button ] && !base.PreviousState[ button ];
-		}
-
-
-		/// <summary>Returns a value indicating whether a key is released in the current state and pressed in the previous state.</summary>
-		/// <param name="button">A keyboard key.</param>
-		/// <returns>Returns true if the key specified by <paramref name="button"/> is released in the current state and pressed in the previous state, otherwise returns false.</returns>
-		public sealed override bool HasJustBeenReleased( Key button )
-		{
-			if( base.IsDisconnected )
-				return false;
-
-			return !base.CurrentState[ button ] && base.PreviousState[ button ];
-		}
-
-
 		/// <summary>Retrieves the keyboard state and returns it.
 		/// <para>This method is called by Reset and Update.</para>
 		/// </summary>
@@ -347,7 +323,6 @@ namespace ManagedX.Input
 			else
 				base.state.Data[ (int)key ] |= KeyboardState.KeyDownMask;
 		}
-
 
 
 		/// <summary>Gets a description of this <see cref="Keyboard"/>.</summary>

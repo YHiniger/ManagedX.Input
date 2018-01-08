@@ -485,7 +485,7 @@ namespace ManagedX.Input
 
 		private static readonly List<Mouse> mice = new List<Mouse>( 1 );                                                // Most systems have only one mouse
 		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );                                     // and one keyboard,
-		private static readonly List<RawHumanInterfaceDevice> otherDevices = new List<RawHumanInterfaceDevice>( 2 );    // but for some reason the mouse and keyboard have a corresponding HID.
+		private static readonly List<HumanInterfaceDevice> otherDevices = new List<HumanInterfaceDevice>( 2 );    // but for some reason the mouse and keyboard have a corresponding HID.
 		private static bool isInitialized;
 		private static readonly List<InputDevice> updateList = new List<InputDevice>();
 
@@ -513,7 +513,7 @@ namespace ManagedX.Input
 				}
 				else if( descriptor.DeviceType == InputDeviceType.HumanInterfaceDevice )
 				{
-					var h = new RawHumanInterfaceDevice( ref descriptor );
+					var h = new HumanInterfaceDevice( ref descriptor );
 					otherDevices.Add( h );
 					h.IsDisabledChanged += OnDeviceDisabledChanged;
 					updateList.Add( h );
@@ -975,14 +975,14 @@ namespace ManagedX.Input
 		#region HID
 
 		/// <summary>Gets a read-only collection containing all other human-interface devices (HID).</summary>
-		public static ReadOnlyCollection<RawHumanInterfaceDevice> HumanInterfaceDevices
+		public static ReadOnlyCollection<HumanInterfaceDevice> HumanInterfaceDevices
 		{
 			get
 			{
 				if( !isInitialized )
 					Initialize();
 
-				return new ReadOnlyCollection<RawHumanInterfaceDevice>( otherDevices );
+				return new ReadOnlyCollection<HumanInterfaceDevice>( otherDevices );
 			}
 		}
 
@@ -990,7 +990,7 @@ namespace ManagedX.Input
 		/// <summary>Returns a HID given its handle.</summary>
 		/// <param name="deviceHandle">The handle of the requested HID.</param>
 		/// <returns>Returns the requested HID, or null.</returns>
-		public static RawHumanInterfaceDevice GetHumanInterfaceDeviceByDeviceHandle( IntPtr deviceHandle )
+		public static HumanInterfaceDevice GetHumanInterfaceDeviceByDeviceHandle( IntPtr deviceHandle )
 		{
 			if( !isInitialized )
 				Initialize();
@@ -1008,7 +1008,7 @@ namespace ManagedX.Input
 		/// <returns>Returns the requested HID, or null.</returns>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ArgumentException"/>
-		public static RawHumanInterfaceDevice GetHumanInterfaceDeviceByDeviceName( string deviceName )
+		public static HumanInterfaceDevice GetHumanInterfaceDeviceByDeviceName( string deviceName )
 		{
 			if( string.IsNullOrWhiteSpace( deviceName ) )
 			{
@@ -1028,7 +1028,7 @@ namespace ManagedX.Input
 		}
 
 
-		/// <summary>Raised when a <see cref="RawHumanInterfaceDevice"/> is connected to the system.
+		/// <summary>Raised when a <see cref="HumanInterfaceDevice"/> is connected to the system.
 		/// <para>Requires HIDs to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
 		/// </summary>
 		public static event EventHandler<HumanInterfaceDeviceConnectedEventArgs> HumanInterfaceDeviceConnected;
@@ -1195,7 +1195,7 @@ namespace ManagedX.Input
 						{
 							if( GetHumanInterfaceDeviceByDeviceHandle( dev.DeviceHandle ) == null )
 							{
-								var hid = new RawHumanInterfaceDevice( ref dev )
+								var hid = new HumanInterfaceDevice( ref dev )
 								{
 									IsDisabled = true
 								};
@@ -1221,7 +1221,7 @@ namespace ManagedX.Input
 						else if( device.DeviceType == InputDeviceType.Keyboard )
 							keyboards.Remove( (Keyboard)device );
 						else if( device.DeviceType == InputDeviceType.HumanInterfaceDevice )
-							otherDevices.Remove( (RawHumanInterfaceDevice)device );
+							otherDevices.Remove( (HumanInterfaceDevice)device );
 
 						device.IsDisconnected = true;
 					}

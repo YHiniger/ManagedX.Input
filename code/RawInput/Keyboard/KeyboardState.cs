@@ -9,7 +9,7 @@ namespace ManagedX.Input
 
 	/// <summary>Contains the state of a keyboard.</summary>
 	[StructLayout( LayoutKind.Sequential, Size = 256 )]
-	public struct KeyboardState : IEquatable<KeyboardState>
+	public struct KeyboardState : IInputDeviceState<Key>, IEquatable<KeyboardState>
 	{
 
 		internal const byte KeyDownMask = 0x80;
@@ -31,16 +31,16 @@ namespace ManagedX.Input
 		/// <summary>Gets a value indicating whether a key is down(=pressed).</summary>
 		/// <param name="key">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
 		/// <exception cref="InvalidEnumArgumentException"/>
-		public bool this[ Key key ] => this.IsDown( key );
+		public bool this[ Key key ] => ( this.Data[ (int)key ] & KeyDownMask ) != 0;
 
 
 		/// <summary>Returns a value indicating whether a key is down(=pressed).</summary>
-		/// <param name="key">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
-		/// <returns>Returns true if the specified <paramref name="key"/> is down, otherwise returns false.</returns>
+		/// <param name="button">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
+		/// <returns>Returns true if the specified <paramref name="button"/> is down, otherwise returns false.</returns>
 		/// <exception cref="InvalidEnumArgumentException"/>
-		public bool IsDown( Key key )
+		public bool IsPressed( Key button )
 		{
-			return ( Data[ (int)key ] & KeyDownMask ) != 0;
+			return ( this.Data[ (int)button ] & KeyDownMask ) != 0;
 		}
 
 

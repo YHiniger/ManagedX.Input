@@ -8,7 +8,7 @@ namespace ManagedX.Input
 
 	/// <summary>A mouse state.</summary>
 	[System.Diagnostics.DebuggerStepThrough]
-	public struct MouseState : IEquatable<MouseState>
+	public struct MouseState : IInputDeviceState<MouseButton>, IEquatable<MouseState>
 	{
 
 		/// <summary>The raw mouse motion.</summary>

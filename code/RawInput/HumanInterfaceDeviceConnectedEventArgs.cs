@@ -7,11 +7,11 @@
 	public sealed class HumanInterfaceDeviceConnectedEventArgs : System.EventArgs
 	{
 
-		private readonly RawHumanInterfaceDevice device;
+		private readonly HumanInterfaceDevice device;
 
 
 
-		internal HumanInterfaceDeviceConnectedEventArgs( RawHumanInterfaceDevice device )
+		internal HumanInterfaceDeviceConnectedEventArgs( HumanInterfaceDevice device )
 			: base()
 		{
 			this.device = device;
@@ -20,7 +20,7 @@
 
 
 		/// <summary>Gets the newly connected HID.</summary>
-		public RawHumanInterfaceDevice Device => device;
+		public HumanInterfaceDevice Device => device;
 
 	}
 

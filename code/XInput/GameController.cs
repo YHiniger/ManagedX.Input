@@ -39,22 +39,16 @@ namespace ManagedX.Input.XInput
 		public sealed override string DisplayName => Properties.Resources.GameController + " " + ( (int)index + 1 );
 
 
-		/// <summary>Returns a value indicating whether a button is pressed in the current state, but was released in the previous state.</summary>
-		/// <param name="button">A gamepad button.</param>
-		/// <returns>Returns true if the specified <paramref name="button"/> is pressed in the current state and was released in the previous state; otherwise returns false.</returns>
-		public sealed override bool HasJustBeenPressed( GamepadButtons button )
-		{
-			return !base.PreviousState.Buttons.HasFlag( button ) && base.CurrentState.Buttons.HasFlag( button );
-		}
+		/// <summary>Sends a vibration state to the controller.</summary>
+		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
+		/// <returns>Returns false if the controller has no vibration support or is not connected, otherwise returns true.</returns>
+		public abstract bool SetVibration( Vibration vibration );
+		
 
-
-		/// <summary>Returns a value indicating whether a button is released in the current state, but was pressed in the previous state.</summary>
-		/// <param name="button">A gamepad button.</param>
-		/// <returns>Returns true if the specified <paramref name="button"/> is released in the current state and was pressed in the previous state; otherwise returns false.</returns>
-		public sealed override bool HasJustBeenReleased( GamepadButtons button )
-		{
-			return base.PreviousState.Buttons.HasFlag( button ) && !base.CurrentState.Buttons.HasFlag( button );
-		}
+		/// <summary>Gets information about keystrokes.
+		/// <para>Only available on Windows 8 and newer (and XBOX 360 and newer).</para>
+		/// </summary>
+		public abstract Keystroke Keystroke { get; }
 
 
 		/// <summary>Gets the index of this <see cref="GameController"/>.</summary>
@@ -83,7 +77,7 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		#region Device info
+		#region Description
 
 		/// <summary>Gets the capabilities of this <see cref="GameController"/>.</summary>
 		public abstract Capabilities Capabilities { get; }
@@ -104,19 +98,7 @@ namespace ManagedX.Input.XInput
 		/// </summary>
 		public abstract DSoundAudioDeviceGuids DSoundAudioDeviceGuids { get; }
 
-		#endregion Device info
-
-
-		/// <summary>Sends a vibration state to the controller.</summary>
-		/// <param name="vibration">A <see cref="Vibration"/> structure.</param>
-		/// <returns>Returns false if the controller has no vibration support or is not connected, otherwise returns true.</returns>
-		public abstract bool SetVibration( Vibration vibration );
-		
-
-		/// <summary>Gets information about keystrokes.
-		/// <para>Only available on Windows 8 and newer (and XBOX 360 and newer).</para>
-		/// </summary>
-		public abstract Keystroke Keystroke { get; }
+		#endregion Description
 
 	}
 

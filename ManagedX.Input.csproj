@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="code\extensions\BinaryReaderExtensions.cs" />
     <Compile Include="code\extensions\BinaryWriterExtensions.cs" />
+    <Compile Include="code\IInputDeviceState.cs" />
     <Compile Include="code\InputDevice.cs" />
     <Compile Include="code\InputDeviceManager.cs" />
     <Compile Include="code\RawInput\enumerations\DeviceType.cs" />
@@ -89,7 +90,9 @@
     <Compile Include="code\RawInput\enumerations\RawMouseStateIndicators.cs" />
     <Compile Include="code\RawInput\enumerations\TopLevelCollectionUsage.cs" />
     <Compile Include="code\RawInput\enumerations\WindowMessage.cs" />
+    <Compile Include="code\RawInput\HumanInterfaceDevice.cs" />
     <Compile Include="code\RawInput\HumanInterfaceDeviceConnectedEventArgs.cs" />
+    <Compile Include="code\RawInput\HumanInterfaceDeviceState.cs" />
     <Compile Include="code\RawInput\KeyboardConnectedEventArgs.cs" />
     <Compile Include="code\RawInput\Keyboard\Key.cs" />
     <Compile Include="code\RawInput\Keyboard\Keyboard.cs" />
@@ -103,7 +106,6 @@
     <Compile Include="code\RawInput\Mouse\MouseButtons.cs" />
     <Compile Include="code\RawInput\Mouse\MouseCursorStateIndicators.cs" />
     <Compile Include="code\RawInput\Mouse\MouseState.cs" />
-    <Compile Include="code\RawInput\RawHumanInterfaceDevice.cs" />
     <Compile Include="code\RawInput\RawInputDevice_T.cs" />
     <Compile Include="code\RawInput\structures\DeviceInfo.cs" />
     <Compile Include="code\RawInput\structures\HumanInterfaceDeviceInfo.cs" />

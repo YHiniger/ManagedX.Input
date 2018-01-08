@@ -8,7 +8,7 @@ namespace ManagedX.Input.Raw
 	/// <typeparam name="TState">A structure representing the raw input device state.</typeparam>
 	/// <typeparam name="TButton">An enumeration of the raw input device buttons/keys, or a value type.</typeparam>
 	public abstract class RawInputDevice<TState, TButton> : InputDevice<TState, TButton>
-		where TState : struct, IEquatable<TState>
+		where TState : struct, IInputDeviceState<TButton>, IEquatable<TState>
 		where TButton : struct
 	{
 
@@ -52,14 +52,6 @@ namespace ManagedX.Input.Raw
 		public sealed override string DisplayName => string.Copy( displayName ?? string.Empty );
 
 
-		/// <summary>Gets the handle of this raw input device.</summary>
-		public IntPtr DeviceHandle => deviceHandle;
-
-
-		/// <summary>Gets the device name of this raw input device.</summary>
-		public string DeviceName => string.Copy( deviceName ?? string.Empty );
-
-
 		/// <summary>Reads the device state through GetState, and copies it to the PreviousState and the CurrentState.
 		/// <para>This method must be called in the constructor of the "final classes" for proper initialization.</para>
 		/// </summary>
@@ -73,6 +65,14 @@ namespace ManagedX.Input.Raw
 
 
 		internal abstract void Update( ref RawInput input );
+
+
+		/// <summary>Gets the handle of this raw input device.</summary>
+		public IntPtr DeviceHandle => deviceHandle;
+
+
+		/// <summary>Gets the device name of this raw input device.</summary>
+		public string DeviceName => string.Copy( deviceName ?? string.Empty );
 
 	}
 

@@ -15,8 +15,8 @@ namespace ManagedX.Input.XInput
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_gamepad%28v=vs.85%29.aspx</remarks>
 	[Source( "XInput.h", "XINPUT_GAMEPAD" )]
 	[System.Diagnostics.DebuggerStepThrough]
-	[StructLayout( LayoutKind.Sequential, Pack = 2, Size = 12 )]
-	public struct Gamepad : IEquatable<Gamepad>
+	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 12 )]
+	public struct Gamepad : IInputDeviceState<GamepadButtons>, IEquatable<Gamepad>
 	{
 
 		#region Constants
@@ -87,7 +87,7 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Returns a value indicating whether a button is pressed.</summary>
-		/// <param name="button">A <see cref="GamepadButtons">button</see>.</param>
+		/// <param name="button">A <see cref="GamepadButtons"/>.</param>
 		/// <returns>Returns true if the specified <paramref name="button"/> is pressed, otherwise returns false.</returns>
 		public bool IsPressed( GamepadButtons button )
 		{
