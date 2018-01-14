@@ -58,11 +58,11 @@ namespace ManagedX.Input.XInput
 
 
 		/// <summary>Indicates whether the XInput controller has the specified button (or an equivalent).</summary>
-		/// <param name="button">A <see cref="GamepadButtons">gamepad button</see>.</param>
+		/// <param name="button">A button.</param>
 		/// <returns>Returns true if the specified <paramref name="button"/> is present on the XInput controller, otherwise returns false.</returns>
-		public bool HasButton( GamepadButtons button )
+		public bool HasButton( GameControllerButtons button )
 		{
-			return gamePad.IsPressed( button );
+			return gamePad.Buttons.HasFlag( (GamepadButtons)button );
 		}
 
 

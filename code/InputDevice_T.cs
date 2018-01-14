@@ -38,9 +38,9 @@ namespace ManagedX.Input
 			//	if( ( time - currentStateTime ).TotalSeconds < 2.0 )
 			//		return;
 			//}
-			
-			previousState = currentState;
+
 			previousStateTime = currentStateTime;
+			previousState = currentState;
 			
 			currentStateTime = time;
 			currentState = this.GetState();
@@ -54,7 +54,7 @@ namespace ManagedX.Input
 		protected virtual void Reset( TimeSpan time )
 		{
 			previousStateTime = currentStateTime = time;
-			previousState = currentState = this.GetState();	// NOTE - GetState is in charge of setting Disconnected to the appropriate value.
+			previousState = currentState = this.GetState();
 		}
 
 
@@ -90,7 +90,7 @@ namespace ManagedX.Input
 		/// <returns>Returns true if the button (or key) is released in the <see cref="PreviousState"/> and is pressed in the <see cref="CurrentState"/>, otherwise returns false.</returns>
 		public bool HasJustBeenPressed( TButton button )
 		{
-			return currentState.IsPressed( button ) && !previousState.IsPressed( button );
+			return currentState[ button ] && !previousState[ button ];
 		}
 
 
@@ -99,7 +99,7 @@ namespace ManagedX.Input
 		/// <returns>Returns true if the button (or key) is pressed in the <see cref="PreviousState"/> and is released in the <see cref="CurrentState"/>, otherwise returns false.</returns>
 		public bool HasJustBeenReleased( TButton button )
 		{
-			return !currentState.IsPressed( button ) && previousState.IsPressed( button );
+			return !currentState[ button ] && previousState[ button ];
 		}
 
 	}

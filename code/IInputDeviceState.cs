@@ -1,16 +1,20 @@
 ﻿namespace ManagedX.Input
 {
-
-	/// <summary>Defines a method which indicates whether a key or button is pressed.</summary>
-	/// <typeparam name="TButton">An enumeration representing the input device keys or buttons.</typeparam>
+	
+	/// <summary>Defines a property which indicates whether a button/key is pressed.</summary>
+	/// <typeparam name="TButton">An enumeration representing the input device buttons/keys.</typeparam>
 	public interface IInputDeviceState<in TButton>
 		where TButton : struct
 	{
 
-		/// <summary>Gets a value indicating whether a key or button is pressed.</summary>
-		/// <param name="button">A key or button.</param>
-		/// <returns>Returns true if the specified key or button is pressed, false otherwise.</returns>
-		bool IsPressed( TButton button );
+		/// <summary>Gets a value indicating whether a button/key is pressed.</summary>
+		/// <param name="button">A button/key.</param>
+		/// <returns>Returns true if the specified button/key is pressed, false otherwise.</returns>
+		bool this[ TButton button ] { get; }
+
+
+		///// <summary>Gets the time the state has been retrieved.</summary>
+		//System.TimeSpan Time { get; }
 
 	}
 

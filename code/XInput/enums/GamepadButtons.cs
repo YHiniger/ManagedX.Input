@@ -11,13 +11,11 @@ namespace ManagedX.Input.XInput
 	/// <para>This enumeration is equivalent to the native <code>XINPUT_GAMEPAD_*</code> constants (defined in XInput.h).</para>
 	/// </summary>
 	/// <remarks>https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_gamepad%28v=vs.85%29.aspx</remarks>
-	[SuppressMessage( "Microsoft.Design", "CA1028:EnumStorageShouldBeInt32", Justification = "Required by implementation." )]
-	[SuppressMessage( "Microsoft.Usage", "CA2217:DoNotMarkEnumsWithFlags" )]
 	[Flags]
-	public enum GamepadButtons : short
+	internal enum GamepadButtons : ushort
 	{
-		
-		/// <summary>No button.</summary>
+
+		/// <summary>No buttons specified.</summary>
 		None = 0x0000,
 
 		/// <summary>Directional pad up.</summary>
@@ -83,7 +81,7 @@ namespace ManagedX.Input.XInput
 		/// <summary>The Y button.</summary>
 		[SuppressMessage( "Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Y" )]
 		[Source( "XInput.h", "XINPUT_GAMEPAD_Y" )]
-		Y = unchecked( (short)0x8000 )
+		Y = 0x8000
 
 	}
 

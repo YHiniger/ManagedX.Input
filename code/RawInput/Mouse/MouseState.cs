@@ -29,15 +29,6 @@ namespace ManagedX.Input
 		public bool this[ MouseButton button ] => Buttons.HasFlag( (MouseButtons)( 1 << (int)button ) );
 
 
-		/// <summary>Returns a value indicating whether a button is down.</summary>
-		/// <param name="button">A mouse button.</param>
-		/// <returns>Returns true if the button is down, otherwise returns false.</returns>
-		public bool IsPressed( MouseButton button )
-		{
-			return Buttons.HasFlag( (MouseButtons)( 1 << (int)button ) );
-		}
-
-		
 		/// <summary>Returns a hash code for this <see cref="MouseState"/> structure.</summary>
 		/// <returns>Returns a hash code for this <see cref="MouseState"/> structure.</returns>
 		public override int GetHashCode()

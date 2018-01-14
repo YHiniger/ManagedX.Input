@@ -3,18 +3,40 @@
 
 namespace ManagedX.Input.XInput
 {
+	using Win32;
 
-	/// <summary>Represents an XInput (1.3 or greater) controller, as a managed input device.</summary>
-	public abstract class GameController : InputDevice<Gamepad, GamepadButtons>
+
+	/// <summary>Represents an XInput controller, as a managed input device.</summary>
+	public abstract class GameController : InputDevice<GameControllerState, GameControllerButtons>
 	{
 
 		/// <summary>Defines the maximum number of controllers supported by XInput: 4.</summary>
-		[Win32.Source( "XInput.h", "XUSER_MAX_COUNT" )]
+		[Source( "XInput.h", "XUSER_MAX_COUNT" )]
 		public const int MaxControllerCount = 4;
+
+
+		#region Constants
+
+		/// <summary>Defines the default threshold value used for triggers: 30.</summary>
+		[Source( "XInput.h", "XINPUT_GAMEPAD_TRIGGER_THRESHOLD" )]
+		public const byte DefaultTriggerThreshold = 30;
+
+		/// <summary>Defines the default dead zone for the left thumbstick: 7849.</summary>
+		[Source( "XInput.h", "XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE" )]
+		public const short DefaultLeftThumbDeadZone = 7849;
+
+		/// <summary>Defines the default dead zone for the right thumbstick: 8689.</summary>
+		[Source( "XInput.h", "XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE" )]
+		public const short DefaultRightThumbDeadZone = 8689;
+
+		#endregion Constants
 
 
 		private readonly GameControllerIndex index;
 		private DeadZoneMode deadZoneMode;
+		private byte triggersThreshold = DefaultTriggerThreshold;
+		private short leftThumbstickDeadZone = DefaultLeftThumbDeadZone;
+		private short rightThumbstickDeadZone = DefaultRightThumbDeadZone;
 
 
 
@@ -24,7 +46,6 @@ namespace ManagedX.Input.XInput
 			: base()
 		{
 			index = controllerIndex;
-			deadZoneMode = DeadZoneMode.Circular;
 			
 			this.Reset( TimeSpan.Zero );
 		}
@@ -62,6 +83,48 @@ namespace ManagedX.Input.XInput
 		{
 			get => deadZoneMode;
 			set => deadZoneMode = value;
+		}
+
+
+		/// <summary>Gets or sets the threshold value for the triggers dead-zone; must be less than 255, defaults to <see cref="DefaultTriggerThreshold"/>.
+		/// <para>This property is ignored when <see cref="DeadZoneMode"/> is set to <see cref="DeadZoneMode.None"/>.</para>
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException"/>
+		public byte TriggersThreshold
+		{
+			get => triggersThreshold;
+			set
+			{
+				if( value == 255 )
+					throw new ArgumentOutOfRangeException( "value" );
+				triggersThreshold = value;
+			}
+		}
+
+
+		/// <summary>Gets or sets the threshold value for the left stick; must be less than 32767, and greater than -1. Defaults to <see cref="DefaultLeftThumbDeadZone"/>.</summary>
+		public short LeftThumbstickDeadZone
+		{
+			get => leftThumbstickDeadZone;
+			set
+			{
+				if( value < 0 || value == short.MaxValue )
+					throw new ArgumentOutOfRangeException( "value" );
+				leftThumbstickDeadZone = value;
+			}
+		}
+
+
+		/// <summary>Gets or sets the threshold value for the right stick; must be less than 32767, and greater than -1. Defaults to <see cref="DefaultRightThumbDeadZone"/>.</summary>
+		public short RightThumbstickDeadZone
+		{
+			get => rightThumbstickDeadZone;
+			set
+			{
+				if( value < 0 || value == short.MaxValue )
+					throw new ArgumentOutOfRangeException( "value" );
+				rightThumbstickDeadZone = value;
+			}
 		}
 
 

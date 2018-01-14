@@ -63,6 +63,7 @@ namespace ManagedX.Input
 
 		private static readonly XInputVersion version = GetXInputVersion();
 		private static readonly List<GameController> gameControllers = InitializeXInput();
+		private static bool xInputEnabled = true;
 
 
 
@@ -89,10 +90,7 @@ namespace ManagedX.Input
 		/// <summary>Returns an XInput <see cref="GameController"/> given its index.</summary>
 		/// <param name="index">The index of the requested game controller.</param>
 		/// <returns>Returns the XInput game controller associated with the specified <paramref name="index"/>.</returns>
-		public static GameController GetController( GameControllerIndex index )
-		{
-			return gameControllers[ (int)index ];
-		}
+		public static GameController GetController( GameControllerIndex index ) => gameControllers[ (int)index ];
 
 		#endregion XInput
 
@@ -483,11 +481,12 @@ namespace ManagedX.Input
 
 
 
-		private static readonly List<Mouse> mice = new List<Mouse>( 1 );                                                // Most systems have only one mouse
-		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );                                     // and one keyboard,
-		private static readonly List<HumanInterfaceDevice> otherDevices = new List<HumanInterfaceDevice>( 2 );    // but for some reason the mouse and keyboard have a corresponding HID.
+		private static readonly List<Mouse> mice = new List<Mouse>( 1 );                                        // Most systems have only one mouse
+		private static readonly List<Keyboard> keyboards = new List<Keyboard>( 1 );                             // and one keyboard,
+		private static readonly List<HumanInterfaceDevice> otherDevices = new List<HumanInterfaceDevice>( 2 );	// but for some reason the mouse and keyboard have a corresponding HID.
 		private static bool isInitialized;
 		private static readonly List<InputDevice> updateList = new List<InputDevice>();
+		private static bool rawInputEnabled = false;
 
 
 
@@ -901,7 +900,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>Raised when a mouse is connected to the system.
-		/// <para>Requires mice (see <see cref="TopLevelCollectionUsage.Mouse"/>) to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
+		/// <para>Requires mice (see <see cref="TopLevelCollectionUsage.Mouse"/>) to be registered with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
 		/// </summary>
 		public static event EventHandler<MouseConnectedEventArgs> MouseConnected;
 
@@ -965,7 +964,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>Raised when a keyboard is connected to the system.
-		/// <para>Requires keyboards (see <see cref="TopLevelCollectionUsage.Keyboard"/>) to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
+		/// <para>Requires keyboards (see <see cref="TopLevelCollectionUsage.Keyboard"/>) to be registered with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
 		/// </summary>
 		public static event EventHandler<KeyboardConnectedEventArgs> KeyboardConnected;
 
@@ -1029,7 +1028,7 @@ namespace ManagedX.Input
 
 
 		/// <summary>Raised when a <see cref="HumanInterfaceDevice"/> is connected to the system.
-		/// <para>Requires HIDs to be registered through <see cref="Register"/> with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
+		/// <para>Requires HIDs to be registered with the <see cref="RawInputDeviceRegistrationOptions.DevNotify"/> option.</para>
 		/// </summary>
 		public static event EventHandler<HumanInterfaceDeviceConnectedEventArgs> HumanInterfaceDeviceConnected;
 
@@ -1111,6 +1110,9 @@ namespace ManagedX.Input
 		[SuppressMessage( "Microsoft.Design", "CA1045:DoNotPassTypesByReference" )]
 		public static bool PreFilterMessage( [In] ref Message message )
 		{
+			if( !rawInputEnabled )
+				return false;
+
 			if( message.Msg == (int)WindowMessage.Input )
 			{
 				GetRawInputData( message.LParam, out RawInput input );
@@ -1252,6 +1254,27 @@ namespace ManagedX.Input
 				devices[ d + 1 ] = new RawInputDevice( usages[ d ], options, targetWindowHandle );
 
 			RegisterRawInputDevices( devices );
+
+			rawInputEnabled = true;
+		}
+
+
+		/// <summary>Causes the target window to receive raw input messages.
+		/// <para>Important: that window must then override its WndProc method to call <see cref="PreFilterMessage"/> prior to its base method.
+		/// The base method doesn't need to be called if <see cref="PreFilterMessage"/> returns true.
+		/// </para>
+		/// </summary>
+		/// <param name="targetWindow">The target window; must not be null.</param>
+		/// <param name="options">One or more <see cref="RawInputDeviceRegistrationOptions"/>.</param>
+		/// <param name="usage">Top-level collection usage.</param>
+		/// <param name="usages">Optional: other top-level collection usages.</param>
+		/// <exception cref="ArgumentNullException"/>
+		public static void Register( IWin32Window targetWindow, RawInputDeviceRegistrationOptions options, TopLevelCollectionUsage usage, params TopLevelCollectionUsage[] usages )
+		{
+			if( targetWindow == null )
+				throw new ArgumentNullException( "targetWindow" );
+
+			Register( targetWindow.Handle, options, usage, usages );
 		}
 
 		#endregion RawInput
@@ -1261,19 +1284,23 @@ namespace ManagedX.Input
 		/// <param name="time">The time elapsed since the application start.</param>
 		public static void Update( TimeSpan time )
 		{
-			var max = gameControllers.Count;
-			for( var c = 0; c < max; ++c )
+			if( xInputEnabled )
 			{
-				if( !gameControllers[ c ].IsDisabled )
-					gameControllers[ c ].Update( time );
+				for( var c = 0; c < gameControllers.Count; ++c )
+				{
+					if( !gameControllers[ c ].IsDisabled )
+						gameControllers[ c ].Update( time );
+				}
 			}
 
-			max = updateList.Count;
-			for( var d = 0; d < max; ++d )
+			if( rawInputEnabled )
 			{
-				var device = updateList[ d ];
-				if( !device.IsDisabled && !device.IsDisconnected )
-					device.Update( time );
+				for( var d = 0; d < updateList.Count; ++d )
+				{
+					var device = updateList[ d ];
+					if( !device.IsDisabled && !device.IsDisconnected )
+						device.Update( time );
+				}
 			}
 		}
 

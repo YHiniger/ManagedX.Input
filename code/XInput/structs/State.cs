@@ -14,7 +14,7 @@ namespace ManagedX.Input.XInput
 	[Win32.Source( "XInput.h", "XINPUT_STATE" )]
 	[System.Diagnostics.DebuggerStepThrough]
 	[StructLayout( LayoutKind.Sequential, Pack = 4, Size = 16 )]
-	internal struct State : IEquatable<State>
+	internal struct State
 	{
 
 		/// <summary>The state packet number.
@@ -24,66 +24,9 @@ namespace ManagedX.Input.XInput
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
 		public readonly int PacketNumber;
 
-		/// <summary>An <see cref="Gamepad"/> structure containing the state of an XInput Controller.</summary>
+		/// <summary>A <see cref="Gamepad"/> structure containing the state of an XInput Controller.</summary>
 		[SuppressMessage( "Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields" )]
-		public readonly Gamepad GamePadState;
-
-
-
-		/// <summary>Returns a hash code for this <see cref="State"/> structure.</summary>
-		/// <returns>Returns a hash code for this <see cref="State"/> structure.</returns>
-		public override int GetHashCode()
-		{
-			return PacketNumber ^ GamePadState.GetHashCode();
-		}
-
-
-		/// <summary>Returns a value indicating whether this <see cref="State"/> structure equals another structure of the same type.</summary>
-		/// <param name="other">A <see cref="State"/> structure.</param>
-		/// <returns>Returns true if the <paramref name="other"/> structure equals this <see cref="State"/> structure, otherwise returns false.</returns>
-		public bool Equals( State other )
-		{
-			return ( PacketNumber == other.PacketNumber ) || GamePadState.Equals( other.GamePadState );
-		}
-
-
-		/// <summary>Returns a value indicating whether this <see cref="State"/> structure is equivalent to an object.</summary>
-		/// <param name="obj">An object; if null, it is replaced with the <see cref="Empty"/> structure.</param>
-		/// <returns>Returns true if the specified object is a <see cref="State"/> structure equal to this structure, otherwise returns false.</returns>
-		public override bool Equals( object obj )
-		{
-			return obj is State state && this.Equals( state );
-		}
-
-
-		/// <summary>The empty <see cref="State"/>.</summary>
-		public static readonly State Empty;
-
-
-		#region Operators
-
-		/// <summary>Equality comparer.</summary>
-		/// <param name="state">A <see cref="State"/> structure.</param>
-		/// <param name="other">A <see cref="State"/> structure.</param>
-		/// <returns>Returns true if the structures are equal, otherwise returns false.</returns>
-		[MethodImpl( MethodImplOptions.AggressiveInlining )]
-		public static bool operator ==( State state, State other )
-		{
-			return state.Equals( other );
-		}
-
-
-		/// <summary>Inequality comparer.</summary>
-		/// <param name="state">A <see cref="State"/> structure.</param>
-		/// <param name="other">A <see cref="State"/> structure.</param>
-		/// <returns>Returns true if the structures are not equal, otherwise returns false.</returns>
-		[MethodImpl( MethodImplOptions.AggressiveInlining )]
-		public static bool operator !=( State state, State other )
-		{
-			return !state.Equals( other );
-		}
-
-		#endregion Operators
+		public Gamepad GamePadState;
 
 	}
 

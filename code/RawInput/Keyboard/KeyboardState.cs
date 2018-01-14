@@ -29,19 +29,9 @@ namespace ManagedX.Input
 
 
 		/// <summary>Gets a value indicating whether a key is down(=pressed).</summary>
-		/// <param name="key">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
-		/// <exception cref="InvalidEnumArgumentException"/>
-		public bool this[ Key key ] => ( this.Data[ (int)key ] & KeyDownMask ) != 0;
-
-
-		/// <summary>Returns a value indicating whether a key is down(=pressed).</summary>
 		/// <param name="button">A <see cref="Key"/> value, except <see cref="Key.None"/>.</param>
-		/// <returns>Returns true if the specified <paramref name="button"/> is down, otherwise returns false.</returns>
 		/// <exception cref="InvalidEnumArgumentException"/>
-		public bool IsPressed( Key button )
-		{
-			return ( this.Data[ (int)button ] & KeyDownMask ) != 0;
-		}
+		public bool this[ Key button ] => ( this.Data[ (int)button ] & KeyDownMask ) != 0;
 
 
 		/// <summary>Returns a hash code for this <see cref="KeyboardState"/> structure.</summary>

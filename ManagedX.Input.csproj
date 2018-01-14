@@ -125,6 +125,8 @@
     <Compile Include="code\XInput\AudioDeviceIds.cs" />
     <Compile Include="code\XInput\enums\DeviceSubtype.cs" />
     <Compile Include="code\XInput\enums\GamepadButtons.cs" />
+    <Compile Include="code\XInput\GameControllerButtons.cs" />
+    <Compile Include="code\XInput\GameControllerState.cs" />
     <Compile Include="code\XInput\structs\Gamepad.cs" />
     <Compile Include="code\XInput\VibrationEffect.cs" />
     <Compile Include="code\XInput\VibrationSequence.cs" />

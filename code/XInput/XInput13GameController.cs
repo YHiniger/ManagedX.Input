@@ -8,7 +8,7 @@ namespace ManagedX.Input.XInput
 	using Win32;
 
 
-	// Represents an XInput 1.3 device, for Windows Vista or newer; Windows Vista and 7 require the DirectX End-User Runtime (June 2010).
+	// Represents an XInput 1.3 device, for Windows 7. Requires the DirectX End-User Runtime (June 2010).
 	internal sealed class XInput13GameController : GameController
 	{
 
@@ -62,7 +62,7 @@ namespace ManagedX.Input.XInput
 			/// <returns>
 			/// <para>If the function succeeds, the return value is <see cref="ErrorCode.None"/>.</para>
 			/// <para>If the controller is not connected, the return value is <see cref="ErrorCode.NotConnected"/>.</para>
-			/// <para>If the function fails, the return value is an <see cref="ErrorCode">error code</see> (defined in WinError.h).</para>
+			/// <para>If the function fails, the return value is an <see cref="ErrorCode"/> (defined in WinError.h).</para>
 			/// </returns>
 			/// <remarks>
 			/// When XInputGetState is used to retrieve controller data, the left and right triggers are each reported separately.
@@ -70,7 +70,7 @@ namespace ManagedX.Input.XInput
 			/// The legacy behavior is noticeable in the current Game Device Control Panel, which uses DirectInput for controller state.
 			/// </remarks>
 			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true )]
-			internal static extern int XInputGetState(
+			internal static extern ErrorCode XInputGetState(
 				[In] GameControllerIndex userIndex,
 				[Out] out State state
 			);
@@ -156,8 +156,6 @@ namespace ManagedX.Input.XInput
 		internal XInput13GameController( GameControllerIndex controllerIndex )
 			: base( controllerIndex )
 		{
-			//if( controllerIndex > GameControllerIndex.Four )
-			//	throw new NotSupportedException( "XInput 1.3 doesn't support more than 4 game controllers." );
 		}
 
 
@@ -219,28 +217,28 @@ namespace ManagedX.Input.XInput
 		}
 
 
-		protected sealed override Gamepad GetState()
+		protected sealed override GameControllerState GetState()
 		{
 			if( !base.IsDisabled )
 			{
 				var errorCode = SafeNativeMethods.XInputGetState( base.Index, out rawState );
 
-				if( errorCode == (int)ErrorCode.NotConnected )
+				if( errorCode == ErrorCode.NotConnected )
 					base.IsDisconnected = true;
-				else if( errorCode == 0 )
+				else if( errorCode == ErrorCode.None )
 				{
 					base.IsDisconnected = false;
-					var state = rawState.GamePadState;
+					var state = new GameControllerState( ref rawState.GamePadState );
 					if( base.DeadZoneMode != DeadZoneMode.None )
 					{
-						state.ApplyThumbSticksDeadZone( base.DeadZoneMode, Gamepad.DefaultLeftThumbDeadZone, Gamepad.DefaultRightThumbDeadZone );
-						state.ApplyTriggersDeadZone();
+						state.ApplyTriggersDeadZone( base.TriggersThreshold / 255.0f );
+						state.ApplyThumbSticksDeadZone( base.DeadZoneMode, base.LeftThumbstickDeadZone / 32767.0f, base.RightThumbstickDeadZone / 32767.0f );
 					}
 					return state;
 				}
 			}
 
-			return Gamepad.Empty;
+			return GameControllerState.Empty;
 		}
 
 

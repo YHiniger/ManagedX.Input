@@ -39,10 +39,7 @@ namespace ManagedX.Input.Raw
 		/// <summary></summary>
 		/// <param name="button"></param>
 		/// <returns></returns>
-		public bool IsPressed( int button )
-		{
-			return false;
-		}
+		public bool this[ int button ] => false;
 
 
 		/// <summary></summary>
