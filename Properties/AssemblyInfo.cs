@@ -13,8 +13,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "Release" )]
 #endif
 [assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "ManagedX Framework" )]
-[assembly: AssemblyCopyright( "Copyright © Yvan J.W. HINIGER 2014-2018" )]
+[assembly: AssemblyProduct( "ManagedX" )]
+[assembly: AssemblyCopyright( "Copyright © Yvan J.W. HINIGER 2014-2019" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

@@ -47,6 +47,9 @@ namespace ManagedX.Input.Raw
 		/// <returns></returns>
 		public bool Equals( HumanInterfaceDeviceState other )
 		{
+			if( other == null )
+				return false;
+
 			if( data == null )
 				return other.data == null;
 
